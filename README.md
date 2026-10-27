@@ -43,6 +43,6 @@ needs a Notion MCP connection for state. Claude-specific frontmatter (`tools`, `
 ## Change it
 - A fact or a state → Notion, right away.
 - A way of working → a row in the Notion **Brain Inbox** (any session, any machine).
-- The harness itself → a PR on this repo from a cloud session; Aurélien reviews and merges. A weekly routine
+- The harness itself → a PR on this repo from a cloud session, merged by the session once re-read. A weekly routine
   (planned) turns accepted Brain Inbox rows into such a PR.
 - Each merged release bumps `CHANGELOG.md` and gets a Build Roadmap row (Project = Brain).

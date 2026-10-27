@@ -3,6 +3,11 @@
 The brain is versioned like any project: `v0.x` while the skeleton settles. Each release is a merged PR on
 `ac-ua/brain` and a row in the Notion Build Roadmap (Project = Brain).
 
+## v0.2.3 — Notion is the system of record for work (2026-10-27)
+- `AGENTS.md`, `session-close`, `domains/work.md`, blueprint: every work session writes its deal brief (CRM
+  opportunity page) and learnings (Memories) to Notion; the old "generic lessons only, no client names" rule is gone.
+- `brain-inbox`: client names allowed in pro lessons; no secrets.
+
 ## v0.2.2 — weekly sweep: clean panel, roll over only what's needed (2026-10-27)
 - `brain-maintenance` runs Friday night (Saturday ~00:52 New York) and no longer opens sessions for planned work: it
   only replaces an archived session worth restarting (weekly sessions, long sessions still in use).

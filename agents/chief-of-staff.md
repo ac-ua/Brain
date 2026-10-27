@@ -17,7 +17,7 @@ at the end, tasks triaged, nothing lost between machines.
 - Planning: today, the week, deadlines across domains.
 - The brain's own upkeep: Brain Inbox entries, Session Log, the brain's roadmap items, the weekly brain maintenance
   (`brain-maintenance`).
-- Later: morning brief, pro → perso learnings, monthly retro.
+- Later: morning brief, work context check, monthly retro.
 
 Out of scope: building apps (builder), producing content (content-studio), anything in pro systems from a cloud session.
 

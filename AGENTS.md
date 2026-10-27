@@ -22,6 +22,9 @@ with no working notes. Don't edit a page he has already reviewed without asking.
 - Nothing personal ever goes to pro systems (work Drive, work Slack, `Unifyapps-Internal/*`, work Notion pages).
 - The brain covers both pro and perso (Aurélien's call, 2026-10-27): pro context, pro skills and client names may be
   stored in this private repo and in his Notion, tagged `Scope = Work` / `Domain = Work`.
+- **Notion is also the system of record for work.** Every work session writes its context back to Notion before it
+  ends: the deal brief on the CRM opportunity page, durable learnings to Memories (Domain Work). Distilled, never raw
+  dumps; nothing pro may live only on the work Mac or in a session.
 - Never move pro *files* to personal storage through the cloud. Pro work runs in a local session on the work Mac.
 - Never secrets, anywhere.
 

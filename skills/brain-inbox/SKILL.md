@@ -21,7 +21,7 @@ Database: **Brain Inbox** under ⚙️ System, data source `collection://49575d7
 ## Rules
 - One row per change. Write it when it happens, not at the end of the week.
 - A **fact** (date, status, preference) is not a Brain Inbox row: it goes to Memories or the domain card.
-- No client names, no pro data, no secrets. From the work Mac, rewrite a pro lesson in generic terms.
+- No secrets. A pro lesson may name the client when it helps; client facts themselves go to the CRM, not here.
 - Only Aurélien moves a row to `Accepted` or `Rejected`. The PR that applies it sets `Applied`.
 
 ## Examples

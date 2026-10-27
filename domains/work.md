@@ -4,6 +4,12 @@ Aurélien's job at UnifyApps (Solution Architect): accounts, POCs, demos, decks,
 Notion domain page: **💼 Work** (`40619ca798938177a168dccd513c8e4b`); the Unify Apps tree (CRM, Demo Nuggets, Trainings)
 sits under it. Practices and pitfalls: 🧠 Memories with Domain = Work.
 
+**Notion is the system of record for work.** Each opportunity page in the CRM starts with a **deal brief**
+(AI-maintained, ~60–100 lines): snapshot, people and stance, numbers (source, validated or not), solution and what is
+built, dated decisions, open questions, next steps, assets, meeting log. Transcripts sit below it. Every `Work ·`
+session reads the brief at start and updates it at close (`session-close`); durable learnings go to Memories.
+The opportunity format itself is being redesigned (project "AI-native opportunity pages").
+
 ## Where work runs
 Pro work runs in a **local session on the work Mac** (browser, pro files, the team plugin). The work Mac reads `ac-ua/*`
 but cannot push: ways of working found there go to the Brain Inbox.

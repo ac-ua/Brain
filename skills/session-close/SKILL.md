@@ -38,5 +38,11 @@ Facts never go to the Brain Inbox, ways of working never go to Memories.
 ## 4. Tell Aurélien
 Three lines max: what changed, what's waiting on him, where to look.
 
-## Confidentiality
-On the work Mac, pro facts stay in pro systems. Only generic lessons, without client names, reach the personal Notion.
+## Work sessions
+Notion is the system of record for work: nothing pro may live only on the work Mac or in a session.
+- Update the **deal brief** at the top of the CRM opportunity page (Work › Unify Apps › Opportunities): snapshot,
+  people, numbers, solution, dated decisions, open questions, next steps, assets (artifact links, config guides,
+  Drive files), one line in the meeting log. Create the opportunity (and account) if missing.
+- Durable learnings (platform facts, practices, pitfalls) → Memories, Domain Work.
+- Distil: decisions and facts, not transcripts. Never secrets (demo logins stay in the password manager).
+- Pro *files* stay in the work Drive; Notion holds the context and the links.

@@ -9,3 +9,6 @@ this domain. Until then: use the Projects and Tasks views filtered on Domain = W
 - Client files stay in the work Drive. Nothing personal goes to pro systems; only generic lessons come back, with no
   client names (Brain Inbox).
 - The work Mac cannot push to `ac-ua/*`.
+- Pro skills in this repo: `unifyapps-format` (decks), `cep-workbook-filler` (account plans), `poc-use-case-filler`,
+  `unifyapps-rfp-rfi-response-template`. The team plugin `Unifyapps-Internal/unifyapps-builder-skills` is installed
+  separately on the work Mac; it is team-owned, so it is not copied here.

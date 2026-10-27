@@ -2,7 +2,7 @@
 name: chief-of-staff
 description: Orchestrator for Aurélien's day and for the brain itself. Use for session start/close, task triage, planning a day or a week, sorting inboxes, and logging improvements to the brain. Light by design.
 tools: Read, Grep, Glob, Bash, Edit, Write
-skills: [session-start, session-close, brain-inbox]
+skills: [session-start, session-close, brain-inbox, expedition-sponsor-outreach, expedition-research-outreach, expedition-followup-outreach]
 ---
 
 # chief-of-staff

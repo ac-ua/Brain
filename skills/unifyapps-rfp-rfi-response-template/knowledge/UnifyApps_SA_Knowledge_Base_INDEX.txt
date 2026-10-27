@@ -1,0 +1,128 @@
+2	# UNIFYAPPS SOLUTION ARCHITECT KNOWLEDGE BASE
+4	## 1. Purpose of This Knowledge Base
+12	# 2. UnifyApps Platform Overview
+18	## 2.1 Unify Applications
+31	## 2.2 Unify Automations
+45	## 2.3 Unify Agentic AI
+61	## 2.4 Unify Data
+75	## 2.5 Connectors / API Manager
+89	# 3. Strategic Positioning
+91	## 3.1 Digital Era to Cognitive Era
+99	## 3.2 The App Trap
+105	## Data Trap
+128	## Action Trap
+150	## Governance Trap
+172	# 4. Cognitive OS / Smart Worker Positioning
+180	## Traditional Digital Era User
+192	## Cognitive Era User
+205	# 5. CCRAG Architecture Model
+219	# 6. Standard UnifyApps Solution Template
+223	## 6.1 Problem Statement
+238	## 6.2 Current State
+254	## 6.3 Desired State
+271	## 6.4 Negative Consequences of Current State
+285	## 6.5 Positive Business Outcomes and ROI
+298	## 6.6 Build ROI
+315	## 6.7 How UnifyApps Delivers It
+409	## 6.8 Why UnifyApps
+426	## 6.9 Summary
+432	# 7. Website Use Case Template
+436	## 7.1 Business Problem
+440	## 7.2 Why Traditional Approaches Fail
+450	## 7.3 Solution
+454	## 7.4 How It Works
+468	## 7.5 Quantified Business Impact
+481	## 7.6 ROI Summary
+485	## 7.7 Why UnifyApps
+489	## 7.8 What This Enables Next
+502	# 8. Prototype Template
+506	## 8.1 Prototype Goal
+518	## 8.2 Target Users
+532	## 8.3 Core Screens
+547	## 8.4 Data Model
+589	## 8.5 Workflow
+606	## 8.6 AI Capabilities
+623	## 8.7 Automation
+638	## 8.8 Dashboard
+653	## 8.9 Governance
+667	## 8.10 Demo Success Criteria
+681	# 9. AI Agent Design Template
+685	## 9.1 Agent Name
+699	## 9.2 Role
+707	## 9.3 Goal
+715	## 9.4 Users
+727	## 9.5 Systems / Tools
+744	## 9.6 Topics
+758	## 9.7 Governance
+774	# 10. Standard AI Agent Topic Example
+776	## Topic Name
+780	## Objective
+784	## Trigger Examples
+791	## Step-by-Step Instructions
+802	## Required Inputs
+809	## Actions / Tools
+817	## Output Format
+828	## Escalation Rules
+839	## Guardrails
+848	# 11. RFP / RFI Response Framework
+855	## 11.1 Compliance Position Definitions
+889	# 12. Common Safe RFP Wording
+891	## 12.1 LLM-Agnostic
+895	## 12.2 BYO LLM
+899	## 12.3 Human-in-the-Loop
+903	## 12.4 Integration Dependency
+907	## 12.5 Data Quality
+911	## 12.6 Compliance
+915	## 12.7 Delivery
+921	# 13. Sizing Methodology
+923	## 13.1 Core Principle
+929	## 13.2 Default SKUs
+947	## 13.3 Default Rates
+955	## 13.4 Workflow Action Counting
+984	## 13.5 AI Session Counting
+1003	## 13.6 Standard Sizing Tables
+1027	# 14. Clarification Questions Template
+1031	## 14.1 Business Scope
+1039	## 14.2 Users and Roles
+1047	## 14.3 Systems and Integrations
+1057	## 14.4 Data and Documents
+1067	## 14.5 AI and Governance
+1078	## 14.6 Deployment and Security
+1088	## 14.7 Commercial and Delivery
+1099	# 15. Risk Review Checklist
+1101	## 15.1 Critical Risk Areas
+1118	## 15.2 Recommended Risk Output Format
+1123	## 15.3 Safer Wording Format
+1130	# 16. HubSpot Activity Logging Template
+1167	# 17. Common Use Case Patterns
+1169	## 17.1 Claims Processing Automation
+1203	## 17.2 Invoice Processing and Matching
+1235	## 17.3 HR Leave / Employee Service Agent
+1262	## 17.4 Customer Support Agent
+1293	## 17.5 Compliance / Governance Agent
+1324	# 18. Standard Customer-Facing Assumptions
+1328	## 18.1 Platform Assumptions
+1336	## 18.2 LLM Assumptions
+1343	## 18.3 Data Assumptions
+1350	## 18.4 Integration Assumptions
+1357	## 18.5 Security Assumptions
+1366	# 19. Customer-Safe Out-of-Scope Language
+1389	# 20. Standard Executive Summary Pattern
+1397	# 21. Standard "Why UnifyApps" Points
+1421	# 22. Standard Delivery Phasing
+1425	## Phase 1: Discovery and Scope Finalization
+1435	## Phase 2: Solution Design
+1445	## Phase 3: Build and Configure
+1455	## Phase 4: Testing and Validation
+1464	## Phase 5: Go-Live and Stabilization
+1474	# 23. Workshop Agenda Template
+1478	## Workshop Title
+1482	## Objective
+1486	## Sample Agenda
+1498	## Workshop Logistics
+1514	# 24. Known Maher Preferences and Rules
+1518	## 24.1 Response Style
+1532	## 24.2 UnifyApps Sizing Preferences
+1546	## 24.3 Agent Design Preference
+1565	# 25. Reusable Prompt for Building Enterprise Landing Pages
+1632	# 26. Final Knowledge Base Rule

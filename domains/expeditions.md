@@ -20,8 +20,8 @@ field mode, calendar, nutrition). The repo's `CLAUDE.md` and `docs/HANDOFF.md` w
 `scripts/apply_supabase.py` **before** merging the code that uses them, one Notion changelog row per release.
 Work in the `app-base-camp` environment (it holds the app's secrets).
 
-**chief-of-staff — outreach and deadlines.** Sponsor, research and follow-up outreach run through three existing
-claude.ai skills (`expedition-sponsor-outreach`, `expedition-research-outreach`, `expedition-followup-outreach`). They
+**chief-of-staff — outreach and deadlines.** Sponsor, research and follow-up outreach run through three skills in this
+repo (`skills/expedition-sponsor-outreach`, `skills/expedition-research-outreach`, `skills/expedition-followup-outreach`). They
 create **Gmail drafts only** and update Sponso; Aurélien sends. Gmail connector = the sponsors mailbox.
 Deadlines (permits, logistics payments, partner promises) go to Tasks with Domain = Expeditions.
 
@@ -34,4 +34,3 @@ content) are tracked in Camp de Base's partnerships module once it exists; until
 
 ## TODO(Aurélien)
 - Context card: current goals (expedition dates, funding target) — fill during the migration.
-- Decide whether the outreach skills move into `skills/` here (they live in the claude.ai account today).

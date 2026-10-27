@@ -3,6 +3,12 @@
 The brain is versioned like any project: `v0.x` while the skeleton settles. Each release is a merged PR on
 `ac-ua/brain` and a row in the Notion Build Roadmap (Project = Brain).
 
+## v0.2.0 — full migration (in progress)
+- Account skills moved into the repo: the 3 expedition outreach skills, `spanish-teacher`, and the pro skills
+  (`unifyapps-format`, `cep-workbook-filler`, `poc-use-case-filler`, `unifyapps-rfp-rfi-response-template`).
+- Confidentiality rule updated: the brain covers pro and perso; nothing personal goes to pro systems.
+- Skills index per domain in `AGENTS.md`; one-source rule for skills in `README.md`.
+
 ## v0.1.0 — skeleton (2026-10-27)
 - `AGENTS.md` constitution: hard rules (autonomy, confidentiality, secrets, voice), routing table, session protocol,
   startup budget. `CLAUDE.md` points to it.

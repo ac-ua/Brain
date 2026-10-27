@@ -40,6 +40,11 @@ On the work Mac the repo is read-only (the proxy blocks pushes): ways of working
 **Codex, ChatGPT or another AI**: point it at this repo. It reads `AGENTS.md`, finds skills in `.agents/skills/`, and
 needs a Notion MCP connection for state. Claude-specific frontmatter (`tools`, `skills`) is ignored safely.
 
+## Skills: one source
+`skills/` is the source of truth. Some skills also exist as uploads in the claude.ai account (so Cowork and claude.ai chats
+have them): the outreach skills, `spanish-teacher` and the pro skills. Change a skill here first, then re-upload that
+folder to the account; never edit the account copy alone.
+
 ## Change it
 - A fact or a state → Notion, right away.
 - A way of working → a row in the Notion **Brain Inbox** (any session, any machine).

@@ -20,10 +20,10 @@ with no working notes. Don't edit a page he has already reviewed without asking.
 
 ### Confidentiality (one way)
 - Nothing personal ever goes to pro systems (work Drive, work Slack, `Unifyapps-Internal/*`, work Notion pages).
-- From pro to personal, only **generic lessons**, rewritten, with no client names and no client data.
-- Never move pro files to personal storage through the cloud. Pro work runs in a local session on the work Mac.
-- Rules, agents, skills and templates contain no client names, no pro data, no secrets. Archived docs (handoffs,
-  the blueprint source) are kept verbatim, client names included (Aurélien's call, 2026-10-27). Never secrets.
+- The brain covers both pro and perso (Aurélien's call, 2026-10-27): pro context, pro skills and client names may be
+  stored in this private repo and in his Notion, tagged `Scope = Work` / `Domain = Work`.
+- Never move pro *files* to personal storage through the cloud. Pro work runs in a local session on the work Mac.
+- Never secrets, anywhere.
 
 ### Secrets
 Secrets live in Aurélien's password manager, never in Notion, GitHub, a memory or the chat. If you need one, ask him
@@ -72,9 +72,15 @@ Agents are capabilities, the same in every domain (`agents/`). Skills are open `
 
 | Agent | Does | Skills |
 |---|---|---|
-| `chief-of-staff` | session protocol, tasks, triage, planning, the brain's own upkeep | session-start, session-close, brain-inbox |
+| `chief-of-staff` | session protocol, tasks, triage, planning, outreach drafts, the brain's own upkeep | session-start, session-close, brain-inbox, expedition-sponsor-outreach, expedition-research-outreach, expedition-followup-outreach |
 | `builder` | web apps, deploys, roadmaps, config guides, new projects | build-webapp, build-roadmap, config-guide, project-kickoff |
 | `content-studio` | content strategy, scripts, posts, explainers | brain-inbox (more as Content migrates) |
+
+Domain skills, loaded directly in a session (no agent needed):
+| Domain | Skills |
+|---|---|
+| Learning | `spanish-teacher` |
+| Work (local session, work Mac) | `unifyapps-format`, `cep-workbook-filler`, `poc-use-case-filler`, `unifyapps-rfp-rfi-response-template`; the team plugin `Unifyapps-Internal/unifyapps-builder-skills` stays installed separately |
 
 Work in one session that loads skills. Call a sub-agent only for heavy, isolated work (research, video, audits):
 a sub-agent costs much more tokens than a skill.

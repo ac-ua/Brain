@@ -1,13 +1,14 @@
 ---
 name: brain-maintenance
-description: Weekly upkeep of the brain — apply accepted Brain Inbox rows as one merged PR on ac-ua/brain, close the week (archive finished or blocked sessions, turning loose ends into Tasks), open the week (one empty session per planned piece of work), and send a French recap. Use for the Friday weekly routine, or when Aurélien says "brain maintenance", "maintenance du brain", "weekly sweep".
+description: Weekly upkeep of the brain — apply accepted Brain Inbox rows as one merged PR on ac-ua/brain, clean the left panel (archive finished or blocked sessions, turning loose ends into Tasks; roll over only the sessions worth restarting), and send a French recap. Use for the weekly routine (Friday night), or when Aurélien says "brain maintenance", "maintenance du brain", "weekly sweep".
 ---
 
 # brain-maintenance
 
-Runs every Friday at ~01:00 America/New_York as a cloud scheduled task (fresh session, environment `perso-general`,
+Runs every Friday night (Saturday ~00:52 America/New_York) as a cloud scheduled task (fresh session, environment `perso-general`,
 repo `ac-ua/brain`, Notion connector), listed in [`docs/routines.md`](../../docs/routines.md). Can also be run by hand.
 Unattended: do every step, decide alone within the rules below, and report at the end.
+**Goal:** when Aurélien opens the app on Saturday morning, the left panel holds only live work, as clean as possible.
 
 ## Hard rules
 - **No deletion** of anything: no Notion page or row, file, branch, repo, session. Archiving a session is allowed
@@ -50,7 +51,7 @@ Use the claude-code-remote tools: `list_sessions` (mine: true) and `list_trigger
 **Never archive:**
 - the running maintenance session itself;
 - a session bound to a trigger (the `persistent_session_id` of an enabled trigger);
-- a session with activity in the last 48 h;
+- a session with activity in the last 48 h, unless step 4 rolls it over;
 - a session whose title starts with `Keep ·`.
 
 **Archive** any other session when:
@@ -60,13 +61,16 @@ Use the claude-code-remote tools: `list_sessions` (mine: true) and `list_trigger
 
 Local work-Mac sessions (environment `bridge`) follow the same rules.
 
-## 4. Open the week (sessions)
-Planned work only:
-- Build Roadmap rows with Status `In progress` or Priority `P0 Now` (not Done or Dropped);
-- Tasks due in the next 7 days, or with Status `Next` or `Doing`.
+## 4. Roll over (sessions)
+Don't open sessions by default. Create one only to **replace a session you archive that is still worth having**:
+- **Weekly sessions** (title ending in a week number, `Work · Ops · S45`): if it was used this week, archive it and
+  create the next one (`… · S46`).
+- **A long session still in use** (compacted, or most of its context used, and active in the last 7 days): archive it
+  and create a fresh one with the same title plus a counter (`CdB · chantier 4 inventory (2)`). First write the
+  handoff in its Session Log row (where it stopped, next step), so the new session can start from it.
+- Nothing else: finished work is not replaced, and new work is opened by Aurélien when he needs it.
 
-Group them **one session per project or topic, 5 at most** (most urgent first). Skip a group that already has a
-live session for the same work. Call `list_environments`, then `create_session`:
+Recreate it in the same place. Call `list_environments`, then `create_session`:
 
 | Work | Environment (docs) | Repo |
 |---|---|---|
@@ -84,10 +88,10 @@ The environments have other display names. Pick by id; fall back to the display 
 | `app-element` | Logbook (created 2026-10-27) | `env_01TBxwoTQ3zoTd4n8L9NQHRg` |
 | `app-base-camp` | Base Camp | `env_01HhuNJ5ge9FDJSfCxTWBiXH` |
 
-- Title `Area · subject`, as in [`docs/sessions.md`](../../docs/sessions.md) (`Element · v175 pick your team`).
+- Title `Area · subject`, as in [`docs/sessions.md`](../../docs/sessions.md).
 - **No initial prompt**: nothing runs until Aurélien writes in it.
-- Pro and client work cannot be created from the cloud: list the `Work · <client>` sessions to open on the work Mac
-  in the recap instead.
+- Work-Mac sessions (`bridge`) cannot be created from the cloud: archive them by the same rules and list the
+  replacements to open on the work Mac in the recap (`Work · Ops · S46`, a long `Work · <client>` session to restart).
 
 ## 5. Recap
 1. One Session Log row (`session-close` format): Title `YYYY-MM-DD · Brain · weekly maintenance`, Domain Brain,
@@ -95,9 +99,9 @@ The environments have other display names. Pick by id; fall back to the display 
 2. A short final message **in French** (it becomes the push notification), about 10 lines:
    - PR merged (link, version) or « aucune PR » ;
    - sessions archivées : nombre + titres ;
-   - sessions créées : titres ;
+   - sessions remplacées : ancien titre → nouveau titre ;
    - tâches créées ;
-   - sessions à ouvrir sur le Mac pro ;
+   - sessions à relancer sur le Mac pro ;
    - bloqué : tâches en retard, `TODO(Aurélien)` restants dans `docs/routines.md`, PR non fusionnée.
 
 ## Run by hand

@@ -3,6 +3,10 @@
 The brain is versioned like any project: `v0.x` while the skeleton settles. Each release is a merged PR on
 `ac-ua/brain` and a row in the Notion Build Roadmap (Project = Brain).
 
+## v0.2.2 — weekly sweep: clean panel, roll over only what's needed (2026-10-27)
+- `brain-maintenance` runs Friday night (Saturday ~00:52 New York) and no longer opens sessions for planned work: it
+  only replaces an archived session worth restarting (weekly sessions, long sessions still in use).
+
 ## v0.2.1 — weekly brain maintenance (2026-10-27)
 - Skill `brain-maintenance`, run every Friday ~01:00 America/New_York by a cloud scheduled task: applies accepted
   Brain Inbox rows as one merged PR, archives finished or blocked sessions (blocked ones become Tasks), opens one

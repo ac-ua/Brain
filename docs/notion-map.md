@@ -11,6 +11,7 @@ URLs are `https://app.notion.com/p/<id>`. Data sources (`collection://…`) are 
 | 📥 Brain Inbox | database | System | `4f7a52915a724c7da08b3c8d9167c470` | `collection://49575d7c-0da1-43c9-a54d-5a0b3c8effc4` |
 | 🧠 Memories | database | System | `2effbd92c2dc4e5ea2b059cd058b7338` | `collection://5b6902fc-e510-4975-b133-06e9273f602e` |
 | 🧩 Domain template | page | System | `40619ca7989381a08cd7c93c8f4c011e` | |
+| 🖼️ Artifacts index | page | System | `40619ca7989381508cc1d9d9e314e71f` | every claude.ai artifact by domain |
 | 🏠 Home | page | workspace | `40619ca79893813b8899c27a533cf076` | |
 | 📋 Tasks | database | workspace | `9ac22ef9618d4645a0741102863e60fc` | `collection://d2dce682-22a5-4e39-b0d3-75b9399b5c47` |
 | 📁 Projects | database | workspace | `abea83098f1f4534a66b6dc1f180e3e0` | `collection://127dc180-4e2f-4650-b120-0b4ff4cc9eab` |

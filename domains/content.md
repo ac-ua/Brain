@@ -31,6 +31,10 @@ for November 2026; the expedition moved to November 2027 (fix at the next websit
 - The cloned voice is used only on his explicit request.
 - Footage of other people: check consent before it goes into a public cut.
 
+## Accounts
+Instagram `@aureliencaye` · TikTok `@aureliencaye` · YouTube `@aureliencaye-exploration` · LinkedIn `aurelien-caye`
+(from the website's links).
+
 ## TODO(Aurélien)
-- Which accounts (TikTok, Instagram handles) and which first pillar to test.
+- Which first pillar to test.
 - Where finished exports live and who uploads.

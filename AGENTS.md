@@ -52,7 +52,7 @@ The work Mac cannot push to `ac-ua/*` (corporate proxy). Sessions there write to
 Load only the row you need: the domain page starts with its context card (< 60 lines); its sub-pages are loaded
 only when the task needs them.
 
-| Domain | Notion context card | Harness file | Main agent |
+| Domain | Notion domain page | Harness file | Main agent |
 |---|---|---|---|
 | Work | 💼 Work (`40619ca798938177a168dccd513c8e4b`) | `domains/work.md` | chief-of-staff |
 | Expeditions | 🧭 Expeditions (`83e58afbe55443f1b234ef36a63a3c1f`) | `domains/expeditions.md` | builder, chief-of-staff |

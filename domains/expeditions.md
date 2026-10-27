@@ -10,7 +10,7 @@ It holds the goals and facts; this file only says how each capability works here
 | Expeditions page (Notion) | `83e58afbe55443f1b234ef36a63a3c1f` |
 | **Sponso** database (brands + science partners) | `collection://2ae19ca7-9893-80d6-b263-000b7171b431` — **never move or rename its statuses without a validated plan**: the outreach skills read and write it |
 | Camp de Base app | repo `ac-ua/Base-Camp`, cloud environment `app-base-camp` |
-| Camp de Base roadmap & changelog (Notion, to merge into Build Roadmap at migration) | `collection://6aec51dc-a4b4-4f69-be60-341dea003e59` |
+| Camp de Base roadmap & changelog | Build Roadmap (`collection://8ce17531-538f-4186-9f58-8a8c17c14a14`), Project = Camp de Base |
 | Old memories for this domain | 🧳 Brain — Migration inbox (`40619ca7989381cf9cb4dda8206db206`) |
 
 ## How each capability applies
@@ -32,5 +32,3 @@ content) are tracked in Camp de Base's partnerships module once it exists; until
 - Never send to a brand, a lab or the press without Aurélien. Drafts only.
 - Partner and sponsor data stays in Notion/Camp de Base; no copy in this repo.
 
-## TODO(Aurélien)
-- Context card: current goals (expedition dates, funding target) — fill during the migration.

@@ -22,7 +22,8 @@ Facts never go to the Brain Inbox, ways of working never go to Memories.
 ## 2. Write the deltas
 - Update existing rows rather than adding duplicates (search by title first).
 - Close finished tasks (Status = Done). Move roadmap items you shipped to Done with `Shipped on`.
-- Code: commit and push the session branch. Don't merge.
+- Code: commit, push the session branch and merge the PR once tested (on an app repo, it is the release; the same
+  on `ac-ua/brain`).
 
 ## 3. One Session Log row
 | Property | Value |

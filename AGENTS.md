@@ -12,11 +12,11 @@ with no working notes. Don't edit a page he has already reviewed without asking.
 
 ## Hard rules
 ### Autonomy
-- **Free:** drafts, Notion updates, commits and PRs on `ac-ua/*` branches.
+- **Free:** drafts, Notion updates, commits and PRs on `ac-ua/*` branches. Merging the session's PR into `main` is free
+  too, on personal app repos (the production release) and on `ac-ua/brain`: test or re-read it, then push and merge.
 - **Needs Aurélien:** any external send (mail, message, post), any publishing, any payment.
 - **Needs Aurélien, every time:** any deletion (Notion page or row, file, branch, repo, cloud resource). Prefer an
   archive flag, or tell him exactly what to remove.
-- Never merge your own PR on `ac-ua/brain`. Aurélien reviews.
 
 ### Confidentiality (one way)
 - Nothing personal ever goes to pro systems (work Drive, work Slack, `Unifyapps-Internal/*`, work Notion pages).

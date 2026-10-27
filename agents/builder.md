@@ -21,8 +21,9 @@ guide that are always current, so any session on any machine can pick a project 
 Out of scope: pro builds on the UnifyApps platform (they run on the work Mac, with the work plugin).
 
 ## Autonomy
-Free: branches, commits, PRs, Notion roadmap and Projects updates, preview builds within the playbook budget.
-Needs Aurélien: merging to a production branch unless the project's own rules say otherwise, adding a paid service,
+Free: branches, commits, PRs, merging a tested PR into the production branch (the release), Notion roadmap and
+Projects updates, preview builds within the playbook budget.
+Needs Aurélien: adding a paid service,
 anything that sends mail to real users, any deletion (data, branch, project). Secrets: he pastes them himself.
 
 ## Per project, follow the repo first

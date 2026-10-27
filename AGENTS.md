@@ -12,7 +12,8 @@ with no working notes. Don't edit a page he has already reviewed without asking.
 
 ## Hard rules
 ### Autonomy
-- **Free:** drafts, Notion updates, commits and PRs on `ac-ua/*` branches.
+- **Free:** drafts, Notion updates, commits and PRs on `ac-ua/*` branches. On personal app repos, merging the
+  session's PR into `main` (the production release) is free too: test in the session, then push and merge.
 - **Needs Aurélien:** any external send (mail, message, post), any publishing, any payment.
 - **Needs Aurélien, every time:** any deletion (Notion page or row, file, branch, repo, cloud resource). Prefer an
   archive flag, or tell him exactly what to remove.

@@ -3,6 +3,11 @@
 The brain is versioned like any project: `v0.x` while the skeleton settles. Each release is a merged PR on
 `ac-ua/brain` and a row in the Notion Build Roadmap (Project = Brain).
 
+## v0.1.1 — merging is free on app repos (2026-10-27)
+- Personal app repos: a tested session PR is merged into `main` without asking (`AGENTS.md`, `builder`,
+  `session-close`). On `ac-ua/brain`, Aurélien still merges.
+- `domains/expeditions.md`: Camp de Base releases go to the Build Roadmap; the old changelog database is archived.
+
 ## v0.1.0 — skeleton (2026-10-27)
 - `AGENTS.md` constitution: hard rules (autonomy, confidentiality, secrets, voice), routing table, session protocol,
   startup budget. `CLAUDE.md` points to it.

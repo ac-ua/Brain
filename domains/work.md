@@ -7,8 +7,9 @@ sits under it. Practices and pitfalls: 🧠 Memories with Domain = Work.
 **Notion is the system of record for work.** Each opportunity page in the CRM starts with a **deal brief**
 (AI-maintained, ~60–100 lines): snapshot, people and stance, numbers (source, validated or not), solution and what is
 built, dated decisions, open questions, next steps, assets, meeting log. Transcripts sit below it. Every `Work ·`
-session reads the brief at start and updates it at close (`session-close`); durable learnings go to Memories.
-The opportunity format itself is being redesigned (project "AI-native opportunity pages").
+session reads the brief at start and updates it at close; durable learnings go to Memories. Skill `work-notes` does
+it: transcripts and notes → the right Opportunity (client) or Projects row (cross work), brief on top, one
+structured entry per meeting, tasks and learnings. Template: `skills/work-notes/references/template.md`.
 
 ## Where work runs
 Pro work runs in a **local session on the work Mac** (browser, pro files, the team plugin). The work Mac reads `ac-ua/*`

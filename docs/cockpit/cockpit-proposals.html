@@ -1,0 +1,520 @@
+<title>Cockpit du Brain</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a long single-column report (~70ch) that breaks out to wide "device" mockups for the design directions. */
+:root{
+  --paper:#f2f4f5; --sheet:#ffffff; --ink:#14202b; --ink-2:#4a5866; --ink-3:#7b8894;
+  --line:#d9dfe3; --line-2:#e8ecee;
+  --signal:#e2531b; --signal-soft:#fbe7dd;
+  --ice:#2f6f8f; --ice-soft:#e1eef4;
+  --ok:#2e7d4f; --ok-soft:#e0f0e6; --warn:#a86b00; --warn-soft:#f8ecd2; --bad:#b3261e; --bad-soft:#f8dedb;
+  --screen:#f7f9fa; --chrome:#e3e8eb;
+  --f-display:"Familjen Grotesk","Helvetica Neue",Arial,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0f151b; --sheet:#151d25; --ink:#e6ecf0; --ink-2:#a9b5bf; --ink-3:#7d8a95;
+  --line:#2a3540; --line-2:#212b35;
+  --signal:#ff7a45; --signal-soft:#3a2219;
+  --ice:#7cb8d6; --ice-soft:#16303d;
+  --ok:#6cc98f; --ok-soft:#173225; --warn:#e3b04f; --warn-soft:#3a2e14; --bad:#ff8a80; --bad-soft:#3d1c1a;
+  --screen:#111920; --chrome:#1f2932; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0f151b; --sheet:#151d25; --ink:#e6ecf0; --ink-2:#a9b5bf; --ink-3:#7d8a95;
+  --line:#2a3540; --line-2:#212b35;
+  --signal:#ff7a45; --signal-soft:#3a2219;
+  --ice:#7cb8d6; --ice-soft:#16303d;
+  --ok:#6cc98f; --ok-soft:#173225; --warn:#e3b04f; --warn-soft:#3a2e14; --bad:#ff8a80; --bad-soft:#3d1c1a;
+  --screen:#111920; --chrome:#1f2932; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
+.wrap{max-width:1180px;margin:0 auto}
+.col{max-width:70ch}
+h1,h2,h3,h4{font-family:var(--f-display);text-wrap:balance;line-height:1.15;margin:0}
+h1{font-size:clamp(2.1rem,5vw,3.4rem);font-weight:700;letter-spacing:-.01em}
+h2{font-size:clamp(1.5rem,3vw,2rem);font-weight:700;margin-top:72px;padding-top:20px;border-top:2px solid var(--ink)}
+h3{font-size:1.2rem;font-weight:600;margin-top:32px}
+h4{font-size:1rem;font-weight:600}
+p{margin:12px 0}
+a{color:var(--ice)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+.eyebrow{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+ul,ol{padding-left:1.2em;margin:10px 0}
+li{margin:4px 0}
+strong{font-weight:600}
+.lede{font-size:1.15rem;color:var(--ink-2);max-width:62ch}
+
+/* header */
+.masthead{padding-top:48px;display:grid;gap:16px}
+.coords{display:flex;flex-wrap:wrap;gap:8px 20px;font-family:var(--f-mono);font-size:.8rem;color:var(--ink-3)}
+
+/* verdict block */
+.verdict{margin-top:32px;background:var(--sheet);border:1px solid var(--line);border-left:6px solid var(--signal);padding:20px 24px;border-radius:4px}
+.verdict ol{margin:8px 0 0}
+.verdict li{margin:8px 0}
+
+/* stat strip */
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin:20px 0;border-radius:4px;overflow:hidden}
+.fact{background:var(--sheet);padding:14px 16px;min-width:0}
+.fact b{display:block;font-family:var(--f-display);font-size:1.9rem;line-height:1;font-variant-numeric:tabular-nums}
+.fact span{font-size:.85rem;color:var(--ink-2)}
+
+/* challenge 3 columns */
+.tri{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:16px}
+.tri > div{background:var(--sheet);border:1px solid var(--line);padding:16px 18px;border-radius:4px;min-width:0}
+.tri h4{margin-bottom:6px}
+.tag{display:inline-block;font-family:var(--f-mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:3px}
+.t-ok{background:var(--ok-soft);color:var(--ok)} .t-warn{background:var(--warn-soft);color:var(--warn)} .t-sig{background:var(--signal-soft);color:var(--signal)} .t-ice{background:var(--ice-soft);color:var(--ice)}
+
+/* patterns */
+.patterns{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;margin-top:16px}
+.pat{border-top:1px solid var(--line);padding-top:12px;min-width:0}
+.pat .src{font-size:.82rem;color:var(--ink-3)}
+
+/* tables */
+.tbl{overflow-x:auto;margin:16px 0;border:1px solid var(--line);border-radius:4px;background:var(--sheet)}
+table{border-collapse:collapse;width:100%;font-size:.9rem;min-width:720px}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--line-2)}
+th{font-family:var(--f-mono);font-weight:500;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);background:var(--paper)}
+tr:last-child td{border-bottom:0}
+td.pick{background:var(--signal-soft)}
+
+/* ---------- mockups ---------- */
+.dir{margin-top:40px}
+.dir-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 16px}
+.dir-head h3{margin:0}
+.stage{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:24px;align-items:start;margin-top:16px}
+@media (max-width:900px){.stage{grid-template-columns:minmax(0,1fr)}}
+.device{border:1px solid var(--line);border-radius:10px;background:var(--screen);overflow:hidden;min-width:0;font-size:13px;line-height:1.45}
+.device .bar{background:var(--chrome);padding:7px 12px;display:flex;align-items:center;gap:6px;font-family:var(--f-mono);font-size:11px;color:var(--ink-3)}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--line);display:inline-block}
+.screen{padding:14px;overflow-x:auto}
+.phone{max-width:300px;width:100%;justify-self:center;border-radius:28px;border:8px solid var(--chrome)}
+.phone .screen{padding:12px 12px 0}
+.caption{font-size:.85rem;color:var(--ink-3);margin-top:8px}
+
+.topline{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;padding-bottom:10px;border-bottom:1px solid var(--line);margin-bottom:12px}
+.brand{font-family:var(--f-display);font-weight:700;font-size:15px}
+.kbd{font-family:var(--f-mono);font-size:11px;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:1px 6px;background:var(--sheet);color:var(--ink-2)}
+.search{flex:1;min-width:160px;border:1px solid var(--line);border-radius:6px;padding:5px 10px;color:var(--ink-3);background:var(--sheet);display:flex;justify-content:space-between}
+.count{display:flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:12px}
+.meter{width:110px;height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--ice)}
+.fresh{font-family:var(--f-mono);font-size:11px;color:var(--ok)}
+
+.grid3{display:grid;grid-template-columns:1.15fr 1fr .95fr;gap:12px;min-width:640px}
+.panel{background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:10px 12px;min-width:0}
+.panel h5{margin:0 0 8px;font-family:var(--f-mono);font-weight:500;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);display:flex;justify-content:space-between}
+.panel h5 em{font-style:normal;color:var(--signal)}
+.card{border:1px solid var(--line);border-radius:6px;padding:8px 10px;margin-bottom:8px;background:var(--sheet)}
+.card.need{border-left:3px solid var(--signal)}
+.card .k{font-family:var(--f-mono);font-size:10px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em}
+.card .t{font-weight:500;margin:2px 0 6px}
+.acts{display:flex;flex-wrap:wrap;gap:5px}
+.btn{font:inherit;font-size:11px;border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:4px;padding:2px 8px}
+.btn.pri{background:var(--ink);color:var(--sheet);border-color:var(--ink)}
+.task{display:flex;gap:8px;align-items:flex-start;padding:5px 0;border-bottom:1px dashed var(--line-2)}
+.task:last-child{border-bottom:0}
+.box{width:13px;height:13px;border:1.5px solid var(--ink-3);border-radius:3px;flex:none;margin-top:3px}
+.pill{font-family:var(--f-mono);font-size:10px;padding:0 5px;border-radius:3px;white-space:nowrap}
+.p0{background:var(--bad-soft);color:var(--bad)} .p1{background:var(--warn-soft);color:var(--warn)} .p2{background:var(--line-2);color:var(--ink-2)}
+.dom{display:grid;grid-template-columns:10px 1fr auto;gap:8px;align-items:center;padding:4px 0;border-bottom:1px solid var(--line-2)}
+.dom:last-child{border-bottom:0}
+.sd{width:8px;height:8px;border-radius:50%}
+.s-ok{background:var(--ok)} .s-warn{background:var(--warn)} .s-bad{background:var(--bad)} .s-off{background:var(--line)}
+.dom small{color:var(--ink-3);font-size:11px;display:block}
+.agents{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;min-width:640px}
+.chip{border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:11.5px;background:var(--sheet);display:flex;gap:6px;align-items:center}
+.feed{font-size:12px;color:var(--ink-2)}
+.feed div{padding:3px 0}
+.feed b{color:var(--ink);font-weight:500}
+
+/* phone */
+.ph-count{display:flex;justify-content:space-between;align-items:center;font-family:var(--f-mono);font-size:11px;margin-bottom:10px}
+.tabs{display:flex;justify-content:space-around;border-top:1px solid var(--line);margin:12px -12px 0;padding:8px 0 10px;background:var(--sheet);font-size:10.5px;color:var(--ink-3)}
+.tabs span{display:flex;flex-direction:column;align-items:center;gap:2px}
+.tabs .on{color:var(--signal);font-weight:600}
+.badge{background:var(--signal);color:#fff;border-radius:999px;font-size:9px;padding:0 5px;font-family:var(--f-mono)}
+.fab{position:relative;height:0}
+.fab i{position:absolute;right:4px;top:-52px;width:40px;height:40px;border-radius:50%;background:var(--ink);color:var(--sheet);display:grid;place-items:center;font-style:normal;font-size:20px}
+
+/* direction B: map */
+.map{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;min-width:640px}
+.tile{background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:10px 12px;min-width:0}
+.tile .hd{display:flex;justify-content:space-between;align-items:center}
+.tile .hd b{font-family:var(--f-display);font-size:14px}
+.tile .now{font-size:12px;margin:6px 0 4px}
+.tile .nums{display:flex;gap:10px;font-family:var(--f-mono);font-size:11px;color:var(--ink-3)}
+.tile .bar2{height:4px;background:var(--line-2);border-radius:2px;margin-top:8px;overflow:hidden}
+.tile .bar2 i{display:block;height:100%;background:var(--ice)}
+.tile.locked{background:repeating-linear-gradient(135deg,var(--sheet) 0 8px,var(--line-2) 8px 9px)}
+
+/* direction C: console */
+.console{display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:12px;min-width:640px}
+.msg{max-width:88%;padding:8px 11px;border-radius:8px;margin-bottom:8px}
+.msg.me{margin-left:auto;background:var(--ink);color:var(--sheet)}
+.msg.ai{background:var(--sheet);border:1px solid var(--line)}
+.inputbar{border:1px solid var(--line);border-radius:8px;padding:7px 10px;color:var(--ink-3);background:var(--sheet);display:flex;justify-content:space-between;margin-top:6px}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.chips span{border:1px dashed var(--ink-3);border-radius:999px;padding:1px 8px;font-size:11px;color:var(--ink-2)}
+
+/* phases */
+.phases{display:grid;gap:0;margin-top:16px;border-left:2px solid var(--ink);padding-left:0}
+.phase{display:grid;grid-template-columns:120px minmax(0,1fr);gap:16px;padding:14px 0 14px 18px;border-bottom:1px solid var(--line-2);position:relative}
+.phase::before{content:"";position:absolute;left:-7px;top:20px;width:12px;height:12px;border-radius:50%;background:var(--paper);border:2px solid var(--ink)}
+.phase.go::before{background:var(--signal);border-color:var(--signal)}
+.phase .when{font-family:var(--f-mono);font-size:.8rem;color:var(--ink-3)}
+@media (max-width:600px){.phase{grid-template-columns:minmax(0,1fr);gap:4px}}
+
+.decide{background:var(--sheet);border:1px solid var(--line);border-radius:4px;padding:6px 20px}
+.decide li{margin:10px 0}
+.src-list{font-size:.85rem;color:var(--ink-2);columns:2 320px;column-gap:32px}
+.src-list li{break-inside:avoid}
+pre.mermaid{background:var(--sheet);border:1px solid var(--line);border-radius:4px;padding:16px;overflow-x:auto}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+<header class="masthead">
+  <div class="eyebrow">Brain · étude et propositions · 27 octobre 2026</div>
+  <h1>Cockpit du Brain</h1>
+  <p class="lede">Une interface au-dessus de Notion pour voir en dix secondes ce qui t'attend, ce que les agents ont fait, et où en sont tes projets. Elle te laisse aussi parler à Claude sans changer d'outil. Cette page résume quatre recherches menées en parallèle, ce que j'en retiens pour toi, trois directions de design et un plan par étapes.</p>
+  <div class="coords"><span>Sources de vérité : Notion (état) · ac-ua/brain (méthode)</span><span>Offre gratuite partout</span><span>Mac · iPad · iPhone</span></div>
+</header>
+
+<section class="col">
+  <div class="verdict">
+    <div class="eyebrow">En bref</div>
+    <ol>
+      <li><strong>Le cockpit répond à une seule question : « qu'est-ce qui m'attend, moi ? »</strong> Dans cet ordre : les validations demandées par les agents, tes 3 priorités du jour, l'état de chaque domaine en une ligne, puis ce que les agents ont fait. Tout le reste est à un clic.</li>
+      <li><strong>Il lit, il n'édite presque pas.</strong> Notion reste la seule base. Le cockpit est une vue dessus, avec quatre gestes : valider, cocher, capturer, demander à Claude.</li>
+      <li><strong>Commencer par un prototype hébergé sur claude.ai, sans infrastructure</strong> (un Artifact qui lit Notion via ton connecteur, parle à Claude et lance des sessions cloud, le tout sur ton forfait Max). Tu l'utilises trois semaines. Ce n'est qu'ensuite qu'on construit une vraie app sur ton domaine (Cloudflare Pages), si l'usage le justifie.</li>
+      <li><strong>Parler à Claude depuis le cockpit, c'est possible sans payer l'API</strong> : dans l'Artifact, et sur ton app via des boutons qui déclenchent une routine cloud. Un vrai chat sur ton domaine passerait par l'API, facturée à part (environ 5 à 30 $/mois).</li>
+    </ol>
+  </div>
+</section>
+
+<section class="col">
+  <h2>Ce que montre ton Notion aujourd'hui</h2>
+  <p>Avant de dessiner quoi que ce soit, j'ai lu ta base Tasks et tes Projects. Les chiffres disent déjà ce que le cockpit doit corriger.</p>
+  <div class="facts">
+    <div class="fact"><b class="mono">25</b><span>tâches ouvertes</span></div>
+    <div class="fact"><b class="mono">21</b><span>encore en Inbox, jamais triées</span></div>
+    <div class="fact"><b class="mono">0</b><span>avec une date d'échéance</span></div>
+    <div class="fact"><b class="mono">~10</b><span>sont des décisions (« Decide… », « confirm… »), pas des actions</span></div>
+    <div class="fact"><b class="mono">6</b><span>projets actifs</span></div>
+  </div>
+  <p>Trois conséquences pour le design :</p>
+  <ul>
+    <li><strong>Le tri est le vrai goulot.</strong> Un tableau de bord ne priorise pas ce qui n'est pas priorisé. Le cockpit doit rendre le tri rapide (une touche par tâche) et laisser un agent proposer le tri à ta place.</li>
+    <li><strong>Les décisions méritent leur propre file.</strong> Choisir le nom de l'expédition, signer avec Versacom ou non, garder FindPenguins : ce ne sont pas des tâches à cocher mais des choix à faire, souvent avec un agent qui prépare les options. Les montrer à part les rend visibles.</li>
+    <li><strong>Sans dates, un compte à rebours ne sert à rien.</strong> Les dates fixes (départ de l'expédition reporté à 2027, échéances sponsors, passeport) doivent exister dans Notion pour que le cockpit puisse alerter.</li>
+  </ul>
+</section>
+
+<section class="col">
+  <h2>Mon avis sur l'idée</h2>
+  <div class="tri" style="max-width:none">
+    <div><span class="tag t-ok">Ce qui tient</span><h4 style="margin-top:8px">Un seul écran d'entrée</h4><p>Ta page Home Notion empile six vues de bases ; elle montre tout et ne hiérarchise rien. Les outils qui durent (Sunsama, le « My Day » de Thomas Frank, les cockpits faits maison avec Claude Code) ont tous un seul écran quotidien. Et tes agents écrivent déjà tout ce qu'il faut : Tasks, Session Log, Build Roadmap, Brain Inbox.</p></div>
+    <div><span class="tag t-warn">L'angle mort</span><h4 style="margin-top:8px">Un projet de plus à maintenir</h4><p>Les tableaux de bord personnels meurent pour trois raisons : la saisie à la main, des données périmées qui tuent la confiance, et le plaisir de construire le système qui remplace le travail. Tu as déjà quatre apps en cours. Un cockpit sur mesure, c'est une cinquième, avec son code, ses jetons et ses quotas. Et un mauvais cockpit crée une deuxième boîte de réception au lieu d'en supprimer une.</p></div>
+    <div><span class="tag t-sig">Version ajustée</span><h4 style="margin-top:8px">Prouver l'usage avant de construire</h4><p>Étape 1 : un prototype jetable sur claude.ai, zéro infrastructure, branché sur tes vues Notion existantes. Règle d'or : le cockpit ne demande aucune saisie qu'un agent pourrait faire. Étape 2, seulement si tu l'ouvres chaque jour : la vraie app installable, avec notifications sur le téléphone. Le critère de passage est écrit plus bas.</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="col">
+    <h2>Ce que font les autres</h2>
+    <p>J'ai regardé les produits (Sunsama, Akiflow, Motion, Morgen, Linear, Things, Tana, les templates « Life OS » de Notion) et une dizaine de cockpits faits maison sur Claude Code. Ces derniers sont les plus proches de toi : le « Jarvis » de Sid Bharath, le PAI de Daniel Miessler, Teresa Torres, la page /today de runwithfoxes, le tableau de bord de vie de Casey Danielle. Six idées reviennent partout.</p>
+  </div>
+  <div class="patterns">
+    <div class="pat"><h4>1. Un rituel du matin qui oblige à trancher</h4><p>Les restes de la veille ne glissent pas en silence : on choisit pour chacun fait, reporté, abandonné ou confié à un agent. Le soir, une « fermeture » de 3 minutes.</p><div class="src">Sunsama, Ultimate Brain « My Day »</div></div>
+    <div class="pat"><h4>2. L'IA propose, tu disposes</h4><p>Chaque sortie d'agent qui te concerne devient une carte avec quatre réponses : valider, modifier, refuser avec un mot, plus tard. C'est exactement ta règle « Needs Aurélien » d'AGENTS.md. Motion, qui agit sans demander, est le contre-exemple qu'on abandonne.</p><div class="src">LangChain Agent Inbox, Morgen, runwithfoxes</div></div>
+    <div class="pat"><h4>3. Un fil « ce que les agents ont fait »</h4><p>La confiance vient de la visibilité. Un résumé par session (agent, domaine, livrable, lien) évite d'ouvrir Notion pour savoir si le travail est fait.</p><div class="src">PAI « Pulse », Copilot mission control</div></div>
+    <div class="pat"><h4>4. Zéro saisie manuelle</h4><p>Tous ceux qui ont tenu le disent : si le système dépend d'une saisie à la main, il meurt en quelques semaines. Les agents écrivent, le cockpit lit. Seule exception : la capture rapide.</p><div class="src">runwithfoxes, Casey Danielle</div></div>
+    <div class="pat"><h4>5. Clavier d'abord, Cmd+K partout</h4><p>Une palette pour capturer (« tâche P1 Expeditions… »), sauter à un projet, valider, demander à Claude. Chaque résultat affiche son raccourci, qu'on finit par retenir.</p><div class="src">Superhuman, Linear</div></div>
+    <div class="pat"><h4>6. Peu d'engagements à la fois</h4><p>3 priorités par jour, pas plus de 3 tâches « Doing », le reste replié. La revue de la semaine est pré-remplie par un agent, tu valides.</p><div class="src">Personal Kanban, solo Linear, GTD</div></div>
+  </div>
+  <div class="col">
+    <h3>À éviter</h3>
+    <ul>
+      <li><strong>Refaire Notion</strong> : tout éditable, des vues partout. Le cockpit reste en lecture, l'édition fine se fait dans Notion.</li>
+      <li><strong>Les chiffres décoratifs</strong> : séries de jours, nombre total de tâches, météo. Chaque chiffre doit mener à une action ou avoir un seuil.</li>
+      <li><strong>Les séries quotidiennes pour l'espagnol ou le contenu.</strong> Une série cassée fait abandonner. Mieux vaut « 5 jours sur les 7 derniers ».</li>
+      <li><strong>Mélanger Work et Perso par défaut.</strong> Sid Bharath a dû séparer les deux. Chez toi, Work apparaît en une ligne, détails sur demande.</li>
+      <li><strong>Des données sans âge.</strong> Chaque bloc affiche « mis à jour il y a 4 min », et passe en gris au-delà de son délai normal.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="col">
+    <h2>Trois directions de design</h2>
+    <p>Les maquettes utilisent tes vraies tâches Perso (lues le 27 octobre). Les cartes « à valider » sont des exemples de ce que les agents y déposeraient ; elles sont marquées comme telles. Les tâches Work sont volontairement réduites à un compteur.</p>
+  </div>
+
+  <!-- ===== Direction A ===== -->
+  <div class="dir">
+    <div class="dir-head"><span class="tag t-sig">Recommandée</span><h3>A · Le poste de quart</h3><span class="eyebrow">Today d'abord</span></div>
+    <p class="col">Un écran, quatre zones, de gauche à droite par ordre d'urgence : ce qui t'attend, ta journée, l'état des domaines, l'activité des agents. C'est le modèle qui revient chez tous les outils qui durent. Le chat s'ouvre en panneau latéral (<span class="kbd">/</span>) ou depuis n'importe quelle carte (« Demander à Claude »).</p>
+    <div class="stage">
+      <div class="device">
+        <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>&nbsp; cockpit.aureliencaye.com · Mac</div>
+        <div class="screen">
+          <div class="topline">
+            <span class="brand">Brain</span>
+            <span class="mono" style="font-size:12px">Mar. 27 oct.</span>
+            <span class="count">Pôle Sud 2027 <span class="meter"><i style="width:34%"></i></span> date à fixer</span>
+            <span class="search">Capturer, chercher, demander… <span class="kbd">⌘K</span></span>
+            <span class="fresh">● Notion il y a 3 min</span>
+          </div>
+          <div class="grid3">
+            <div class="panel">
+              <h5>T'attend <em>5</em></h5>
+              <div class="card need"><div class="k">Validation · chief-of-staff · exemple</div><div class="t">6 relances partenaires après le report (Thermic, Baffin, Alter Eco…) : brouillons Gmail prêts</div><div class="acts"><span class="btn pri">Tout valider</span><span class="btn">Revoir 1 par 1</span><span class="btn">Plus tard</span></div></div>
+              <div class="card need"><div class="k">Décision · Expeditions</div><div class="t">Nom de l'expédition : Polar ou Planet Heritage Project</div><div class="acts"><span class="btn pri">Décider</span><span class="btn">Préparer les options ✦</span></div></div>
+              <div class="card need"><div class="k">Décision · Expeditions</div><div class="t">Versacom : signer, et avec quelle exclusivité</div><div class="acts"><span class="btn pri">Décider</span><span class="btn">Préparer les options ✦</span></div></div>
+              <div class="card"><div class="k">Brain Inbox · 3 propositions</div><div class="t">Améliorations de skills à accepter avant la maintenance de vendredi</div><div class="acts"><span class="btn">Trier</span></div></div>
+            </div>
+            <div class="panel">
+              <h5>Aujourd'hui · 3 max <span>Planifier ▸</span></h5>
+              <div class="task"><span class="box"></span><div>Séance de vérification : cartes de domaine et Memories <span class="pill p0">P0</span></div></div>
+              <div class="task"><span class="box"></span><div>Vérifier que la clé FileVault est dans le gestionnaire de mots de passe <span class="pill p1">P1</span></div></div>
+              <div class="task"><span class="box"></span><div>Sortir les identifiants de Notion (Element) <span class="pill p1">P1</span></div></div>
+              <h5 style="margin-top:14px">Inbox à trier <em>21</em></h5>
+              <div class="task"><span class="box" style="border-style:dashed"></span><div>Renouveler le passeport <span class="pill p2">P2</span><br><span class="mono" style="font-size:10.5px;color:var(--ink-3)">↹ trier · N next · S someday · A agent</span></div></div>
+              <div class="task"><span class="box" style="border-style:dashed"></span><div>Relais HYROX Miami : temps de passage <span class="pill p2">P2</span></div></div>
+              <div class="acts" style="margin-top:6px"><span class="btn">Trier les 21 (≈ 4 min)</span><span class="btn">Tri proposé par l'agent ✦</span></div>
+            </div>
+            <div class="panel">
+              <h5>Domaines</h5>
+              <div class="dom"><span class="sd s-warn"></span><div>Expeditions<small>8 décisions ouvertes · aucun échéancier</small></div><span class="mono" style="font-size:11px">10</span></div>
+              <div class="dom"><span class="sd s-ok"></span><div>Brain<small>v0.5 · maintenance ven.</small></div><span class="mono" style="font-size:11px">1</span></div>
+              <div class="dom"><span class="sd s-ok"></span><div>Sport<small>Element Logbook actif</small></div><span class="mono" style="font-size:11px">2</span></div>
+              <div class="dom"><span class="sd s-warn"></span><div>Content<small>stratégie à écrire (agent)</small></div><span class="mono" style="font-size:11px">5</span></div>
+              <div class="dom"><span class="sd s-warn"></span><div>Admin &amp; Finance<small>passeport, TVA location</small></div><span class="mono" style="font-size:11px">4</span></div>
+              <div class="dom"><span class="sd s-off"></span><div>Career · Learning · Life<small>calme</small></div><span class="mono" style="font-size:11px">2</span></div>
+              <div class="dom"><span class="sd s-off"></span><div>Work<small>détails masqués · ouvrir</small></div><span class="mono" style="font-size:11px">3</span></div>
+            </div>
+          </div>
+          <div class="agents">
+            <span class="chip"><span class="sd s-ok"></span>builder · Camp de Base · PR prête</span>
+            <span class="chip"><span class="sd s-warn"></span>content-studio · stratégie · attend ta réponse</span>
+            <span class="chip"><span class="sd s-off"></span>brain-maintenance · ven. 00:52</span>
+            <span class="chip">Journal des sessions ▸</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="device phone">
+          <div class="screen">
+            <div class="ph-count"><b class="brand">Brain</b><span>Pôle Sud 2027 · <span style="color:var(--ice)">34 %</span></span></div>
+            <div class="panel" style="padding:8px 10px">
+              <h5>T'attend <em>5</em></h5>
+              <div class="card need" style="margin-bottom:6px"><div class="k">Validation · exemple</div><div class="t">6 relances partenaires prêtes</div><div class="acts"><span class="btn pri">Valider</span><span class="btn">Voir</span></div></div>
+              <div class="mono" style="font-size:10.5px;color:var(--ink-3)">← glisser : plus tard · → valider</div>
+            </div>
+            <div class="panel" style="padding:8px 10px;margin-top:8px">
+              <h5>Aujourd'hui</h5>
+              <div class="task"><span class="box"></span><div>Séance de vérification Brain</div></div>
+              <div class="task"><span class="box"></span><div>Clé FileVault</div></div>
+              <div class="task"><span class="box"></span><div>Identifiants hors de Notion</div></div>
+            </div>
+            <div class="panel" style="padding:8px 10px;margin-top:8px">
+              <h5>Domaines</h5>
+              <div style="display:flex;gap:7px;align-items:center"><span class="sd s-warn"></span><span class="sd s-ok"></span><span class="sd s-ok"></span><span class="sd s-warn"></span><span class="sd s-warn"></span><span class="sd s-off"></span><span class="sd s-off"></span><span class="sd s-off"></span><span class="sd s-off"></span><span style="font-size:11px;color:var(--ink-3)">toucher pour ouvrir</span></div>
+            </div>
+            <div class="fab"><i>+</i></div>
+            <div class="tabs"><span class="on">◉<b>Jour</b></span><span>✓ Valider <span class="badge">5</span></span><span>▦ Projets</span><span>✦ Claude</span></div>
+          </div>
+        </div>
+        <p class="caption">iPhone : cinq blocs, un pouce. Le « + » capture du texte ou de la voix dans Inbox, et un agent trie ensuite.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Direction B ===== -->
+  <div class="dir">
+    <div class="dir-head"><span class="tag t-ice">Deuxième onglet</span><h3>B · La carte des domaines</h3><span class="eyebrow">Vue d'ensemble d'abord</span></div>
+    <p class="col">Une tuile par domaine : son projet « Now », son prochain jalon, ce qui est bloqué, et une jauge d'avancement tirée de la Build Roadmap. C'est la « checklist rapide de où j'en suis » que tu décris. Elle fait un mauvais écran d'accueil (rien n'y dit quoi faire maintenant) mais un excellent deuxième onglet et le support de la revue du vendredi.</p>
+    <div class="device" style="margin-top:16px">
+      <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>&nbsp; Projets · iPad</div>
+      <div class="screen">
+        <div class="map">
+          <div class="tile"><div class="hd"><b>Expeditions</b><span class="sd s-warn"></span></div><div class="now">Now : partenaires après le report · Camp de Base</div><div class="nums"><span>10 ouvertes</span><span>8 décisions</span><span>0 date</span></div><div class="bar2"><i style="width:34%"></i></div></div>
+          <div class="tile"><div class="hd"><b>Sport</b><span class="sd s-ok"></span></div><div class="now">Now : Element Logbook · relais HYROX Miami</div><div class="nums"><span>2 ouvertes</span><span>tests nocturnes ✓</span></div><div class="bar2"><i style="width:70%"></i></div></div>
+          <div class="tile"><div class="hd"><b>Brain</b><span class="sd s-ok"></span></div><div class="now">Now : vérification domaine par domaine</div><div class="nums"><span>v0.5</span><span>21 items roadmap</span></div><div class="bar2"><i style="width:45%"></i></div></div>
+          <div class="tile"><div class="hd"><b>Content</b><span class="sd s-warn"></span></div><div class="now">Now : stratégie short-form (content-studio)</div><div class="nums"><span>5 ouvertes</span><span>site en ligne</span></div><div class="bar2"><i style="width:15%"></i></div></div>
+          <div class="tile"><div class="hd"><b>Learning</b><span class="sd s-ok"></span></div><div class="now">Now : app d'espagnol</div><div class="nums"><span>5 j sur les 7 derniers</span></div><div class="bar2"><i style="width:60%"></i></div></div>
+          <div class="tile locked"><div class="hd"><b>Work</b><span class="sd s-off"></span></div><div class="now">3 ouvertes · détails masqués par défaut</div><div class="nums"><span>ouvrir ▸</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Direction C ===== -->
+  <div class="dir">
+    <div class="dir-head"><span class="tag t-ice">Panneau, pas accueil</span><h3>C · La console</h3><span class="eyebrow">Conversation d'abord</span></div>
+    <p class="col">L'accueil est une conversation : le brief du matin est le premier message, et Claude répond avec des cartes cliquables (une tâche à cocher, un brouillon à valider) plutôt qu'avec des paragraphes. C'est la direction la plus « IA » et la plus séduisante en démo. Comme écran principal, elle cache l'état derrière des questions. Je la garde comme panneau latéral de A et comme onglet « Claude » sur téléphone.</p>
+    <div class="device" style="margin-top:16px">
+      <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>&nbsp; Claude · panneau du cockpit</div>
+      <div class="screen">
+        <div class="console">
+          <div>
+            <div class="msg ai"><b>Brief · mardi</b><br>Rien d'urgent côté calendrier. Trois choses t'attendent : valider 6 relances (prêtes depuis hier), trancher le nom de l'expédition, et 21 tâches à trier. Je te propose un tri, à valider en un clic.</div>
+            <div class="msg me">Prépare-moi les options pour Versacom.</div>
+            <div class="msg ai">Je lance une session cloud chief-of-staff avec la fiche Versacom et l'historique Sponso. Résultat écrit sur la page Notion, notification quand c'est prêt.
+              <div class="card" style="margin-top:8px"><div class="k">Session cloud · en cours</div><div class="t">Versacom : options et exclusivité</div><div class="acts"><span class="btn">Suivre</span><span class="btn">Ouvrir dans Claude</span></div></div></div>
+            <div class="inputbar">Demander au brain… <span class="kbd">↵</span></div>
+            <div class="chips"><span>Planifier ma journée</span><span>Où en est l'expé ?</span><span>Lancer les relances</span><span>Revue de la semaine</span><span>Fermer la journée</span></div>
+          </div>
+          <div class="panel">
+            <h5>Contexte chargé</h5>
+            <div class="feed"><div><b>AGENTS.md</b> · règles</div><div><b>Expeditions</b> · fiche domaine</div><div><b>Tasks</b> · vue Today</div><div style="margin-top:8px;color:var(--ink-3)">Écritures Notion : confirmation demandée. Envoi, publication, suppression : jamais depuis le chat.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+    <h3>Ma recommandation</h3>
+    <p><strong>A comme écran d'accueil, B en deuxième onglet, C en panneau.</strong> Le tout se règle autour de trois rituels déjà prévus dans le brain :</p>
+    <ul>
+      <li><strong>Matin, 3 minutes.</strong> Un agent prépare la veille au soir le brief et ses 3 priorités proposées. Tu valides ou tu échanges.</li>
+      <li><strong>Soir, 3 minutes.</strong> Fermeture : ce qui est fait, ce qui glisse, et c'est aussi le moment du session-close.</li>
+      <li><strong>Vendredi.</strong> Revue en trois temps (vider les inbox, remettre à jour, regarder le « un jour peut-être »), branchée sur la routine brain-maintenance qui existe déjà.</li>
+    </ul>
+    <p>Budget de notifications : <strong>3 par jour au plus</strong>, seulement pour une validation qui bloque un agent ou une échéance. Tout le reste va dans le brief.</p>
+  </div>
+</section>
+
+<section>
+  <div class="col">
+    <h2>Parler à Claude depuis le cockpit</h2>
+    <p>C'est possible, mais par des chemins différents selon l'endroit où vit le cockpit. Un point décide de presque tout : <strong>le forfait Max ne couvre pas l'API</strong> (confirmé par l'aide Anthropic, mise à jour du 7 octobre 2026). Et brancher ton jeton Max derrière ton propre serveur sort de l'usage individuel prévu par les conditions : à éviter.</p>
+  </div>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Option</th><th>Ce que ça permet</th><th>Forfait</th><th>Coût en plus</th><th>Effort</th><th>Verdict</th></tr></thead>
+      <tbody>
+        <tr><td class="pick"><strong>Artifact claude.ai</strong> (capacités <span class="mono">sample</span>, <span class="mono">mcp</span>, <span class="mono">db</span>)</td><td class="pick">Vrai chat dans la page ; lecture et écriture Notion via ton connecteur ; création de sessions cloud et lancement de routines via le connecteur Claude Code Remote</td><td class="pick">Max</td><td class="pick">0 €</td><td class="pick">faible</td><td class="pick"><strong>Pour démarrer.</strong> Vit sur claude.ai, pas sur ton domaine.</td></tr>
+        <tr><td><strong>Bouton « Confier au brain »</strong> (API de déclenchement de routine)</td><td>Ton app envoie une consigne et le contexte de la carte ; une session cloud fait le travail avec tout le harnais (AGENTS.md, skills, connecteurs) et écrit le résultat dans Notion</td><td>Max</td><td>0 €</td><td>faible</td><td><strong>Sur ton app.</strong> Asynchrone, pas un chat. 30 lancements/h par routine.</td></tr>
+        <tr><td>Liens « Ouvrir dans Claude »</td><td>Ouvre claude.ai ou Claude Code avec une consigne pré-remplie (paramètres non documentés, à vérifier)</td><td>Max</td><td>0 €</td><td>minimal</td><td>Filet de secours.</td></tr>
+        <tr><td>API Messages depuis un Worker</td><td>Vrai chat en streaming sur ton domaine, outils Notion sur mesure, réponses en cartes</td><td>API</td><td>≈ 3 $/mois (Haiku) à 20–30 $/mois (Sonnet, avec cache) pour 20 échanges/jour</td><td>moyen</td><td>Seulement si l'Artifact ne suffit plus.</td></tr>
+        <tr><td>Managed Agents / Agent SDK</td><td>Agent avec bac à sable, réutilise le harnais tel quel</td><td>API</td><td>tokens + hébergement ou 0,08 $/h de session</td><td>élevé</td><td>Surdimensionné pour un chat.</td></tr>
+        <tr><td>MCP App</td><td>L'inverse : tes widgets de cockpit affichés dans les conversations Claude</td><td>Max</td><td>0 €</td><td>moyen</td><td>Plus tard, joli complément.</td></tr>
+        <tr><td>Agents Notion</td><td>Agents intégrés à Notion</td><td>Notion Business</td><td>abonnement + crédits</td><td>—</td><td>Écarté : offre gratuite, et ils ne connaissent pas ton harnais.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col">
+    <p><strong>La pièce maîtresse, c'est le bouton « Confier au brain ».</strong> Le cockpit n'a pas besoin de tout faire lui-même : il envoie le travail à une vraie session Claude Code, qui a tes skills et tes règles, et il affiche le résultat quand Notion est à jour. Les règles d'AGENTS.md s'appliquent telles quelles : un brouillon revient en carte « à valider », jamais envoyé.</p>
+    <p><strong>Sécurité.</strong> Le chat du cockpit n'a qu'une liste courte d'outils : lire, créer, mettre à jour. Jamais supprimer, déplacer ni envoyer. Toute écriture demande un clic. Un agent qui lit du contenu externe (une réponse de sponsor, une page web) n'a pas en même temps le droit d'écrire partout. Work n'est jamais chargé dans le chat Perso.</p>
+  </div>
+</section>
+
+<section>
+  <div class="col">
+    <h2>Où l'héberger</h2>
+  </div>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Hôte</th><th>Pour</th><th>Contre</th><th>Quand</th></tr></thead>
+      <tbody>
+        <tr><td><strong>0 · Refaire la page Home Notion</strong></td><td>Rien à construire ; une heure de travail (une vue « T'attend », une vue « Décisions », tri par Owner)</td><td>Reste Notion : lent, peu lisible sur téléphone, pas de chat, pas de validation en un geste</td><td>Tout de suite, en parallèle : c'est utile quoi qu'on choisisse</td></tr>
+        <tr><td class="pick"><strong>1 · Artifact claude.ai</strong></td><td class="pick">Zéro serveur, zéro secret ; connecteurs Notion et Claude Code Remote déjà branchés ; chat inclus sur Max ; un agent le construit en une session</td><td class="pick">Sur claude.ai, pas sur ton domaine ; pas installable comme app, pas de notifications push ; consentement à la première utilisation de chaque connecteur ; interface encore jeune</td><td class="pick">Prototype, 3 semaines</td></tr>
+        <tr><td><strong>2 · App sur ton domaine</strong> (Cloudflare Pages + Functions + D1, derrière Cloudflare Access)</td><td>Rapide, installable sur l'écran d'accueil, notifications, raccourci iOS de capture, croise Calendar, GitHub et intervals.icu ; c'est ta pile habituelle</td><td>Un projet de plus ; jetons à coller (Notion, Google, GitHub) ; miroir des données à tenir à jour ; 1 des 5 crons Cloudflare du compte</td><td>Si le prototype passe le test d'usage</td></tr>
+        <tr><td><strong>3 · Widgets dans Claude</strong> (MCP App)</td><td>Le cockpit apparaît là où tu parles déjà à Claude</td><td>Serveur MCP + OAuth à construire ; support encore inégal selon les clients</td><td>Plus tard</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col">
+    <h3>Architecture cible de l'étape 2</h3>
+    <p>Notion reste la source de vérité. Un miroir dans D1 rend l'app instantanée et économise le quota d'API Notion, que le cockpit partage avec tes agents (180 requêtes/minute par connexion, plus un budget commun à l'espace de travail depuis juin 2026). D1 plutôt que Supabase : pas de mise en pause après 7 jours, et tes deux projets Supabase gratuits sont déjà pris par Element et Camp de Base.</p>
+  </div>
+  <pre class="mermaid">
+flowchart LR
+  A["Agents Claude Code<br/>(cloud et Mac)"] -->|écrivent| N[("Notion<br/>source de vérité")]
+  N -->|webhook, ~1 min| W["Cloudflare Pages Functions<br/>derrière Cloudflare Access"]
+  W -->|réconciliation 15 min| N
+  W --> D[("D1<br/>miroir")]
+  W -->|lit| X["Calendar · GitHub · intervals.icu"]
+  P["App installable<br/>Mac · iPad · iPhone"] -->|/api/snapshot| W
+  P -->|/api/act : coche, tri, validation| W
+  W -->|écrit d'abord| N
+  P -->|Confier au brain| R["Routine cloud<br/>Claude Code (Max)"]
+  R -->|résultat| N
+  </pre>
+  <div class="col">
+    <p><strong>Pièges vérifiés</strong> :</p>
+    <ul>
+      <li>Les webhooks Notion ne portent que des identifiants, sans garantie d'ordre ni de livraison. Une réconciliation périodique est donc obligatoire.</li>
+      <li>Un espace Notion gratuit avec plus d'un membre est plafonné à 1 000 blocs écrits par l'API depuis septembre 2026. Ton espace doit rester à un seul membre.</li>
+      <li>Côté Cloudflare gratuit : 10 ms de CPU par requête, 5 crons pour tout le compte.</li>
+      <li>Google en mode « Testing » fait expirer le jeton tous les 7 jours : il faut passer l'app « en production ».</li>
+      <li>Sur iOS, les notifications ne marchent que pour l'app installée, et il n'y a pas de widget web. Le raccourci iOS + Scriptable prend le relais.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="col">
+  <h2>Plan par étapes</h2>
+  <div class="phases">
+    <div class="phase go"><div class="when">Cette semaine</div><div><strong>0 · Préparer Notion.</strong> Ajouter à Tasks une propriété <span class="mono">Kind</span> (Action · Décision · Validation) et un statut « Review » pour ce qu'un agent te soumet. Puis une séance de tri des 21 tâches en Inbox, en donnant une date aux échéances réelles (départ 2027, passeport). Le cockpit en dépend, quel que soit l'hébergement.</div></div>
+    <div class="phase go"><div class="when">Semaine 1</div><div><strong>1 · Prototype Artifact.</strong> Direction A sur claude.ai : lecture des vues Home existantes (Today, Inbox, Active projects, Latest Brain Inbox) en mode « vue », donc sans entamer le quota SQL de Notion. Tri au clavier, cartes à valider, panneau Claude, bouton qui lance une session cloud. Aucune donnée Work en clair.</div></div>
+    <div class="phase"><div class="when">Semaines 2 à 4</div><div><strong>Test d'usage.</strong> Critère de passage : tu l'ouvres au moins 5 jours sur 7, et l'Inbox reste sous 10 tâches non triées. Sinon, on corrige le prototype ou on s'arrête là. Les frictions vont dans le Brain Inbox.</div></div>
+    <div class="phase"><div class="when">Mois 2</div><div><strong>2 · App sur ton domaine.</strong> Nouveau dépôt via project-kickoff, pile build-webapp, Cloudflare Access, miroir D1, app installable, raccourci de capture iOS, boutons « Confier au brain » branchés sur des routines. Le brief du matin (déjà au backlog des routines) devient sa notification.</div></div>
+    <div class="phase"><div class="when">Ensuite</div><div><strong>3 · Au besoin.</strong> Chat API sur ton domaine (plafond de dépense dans la Console), vue entraînement depuis intervals.icu, widgets MCP App dans Claude.</div></div>
+  </div>
+</section>
+
+<section class="col">
+  <h2>Ce que tu dois trancher</h2>
+  <ol class="decide">
+    <li><strong>Direction</strong> : A en accueil, B en onglet, C en panneau, ou une autre combinaison ?</li>
+    <li><strong>Prototype sur claude.ai d'abord</strong>, ou directement l'app sur ton domaine ?</li>
+    <li><strong>Work dans le cockpit</strong> : un compteur seul, ou les tâches Work visibles sur le Mac du travail ?</li>
+    <li><strong>Notion</strong> : j'ajoute la propriété <span class="mono">Kind</span> et le statut « Review » à Tasks ?</li>
+    <li><strong>Date de départ de l'expédition</strong> à inscrire, pour le compte à rebours et les jalons de préparation. TODO(Aurélien)</li>
+    <li><strong>Chat payant via l'API</strong> : accepté pour plus tard avec un plafond (par exemple 20 $/mois), ou exclu ?</li>
+  </ol>
+</section>
+
+<section class="col">
+  <h2>Sources</h2>
+  <ul class="src-list">
+    <li><a href="https://help.sunsama.com/docs/daily-planning">Sunsama, planification et fermeture</a></li>
+    <li><a href="https://thomasjfrank.com/docs/ultimate-brain/whats-new-in-ultimate-brain-3-0/">Ultimate Brain 3.0, My Day</a></li>
+    <li><a href="https://github.com/langchain-ai/agent-inbox">LangChain Agent Inbox</a></li>
+    <li><a href="https://runwithfoxes.substack.com/p/today">runwithfoxes, /today</a></li>
+    <li><a href="https://sidbharath.com/blog/how-i-built-jarvis/">Sid Bharath, How I Built Jarvis</a></li>
+    <li><a href="https://danielmiessler.com/blog/announcing-pai-5-life-operating-system">Daniel Miessler, PAI 5</a></li>
+    <li><a href="https://caseydanielle.substack.com/p/i-built-a-personal-life-dashboard">Casey Danielle, life dashboard</a></li>
+    <li><a href="https://www.chatprd.ai/how-i-ai/teresa-torres-claude-code-obsdian-task-management">Teresa Torres, Claude Code + Obsidian</a></li>
+    <li><a href="https://www.morgen.so/blog-posts/motion-review">Morgen, critique de Motion</a></li>
+    <li><a href="https://blog.superhuman.com/how-to-build-a-remarkable-command-palette/">Superhuman, palette de commandes</a></li>
+    <li><a href="https://calmtech.institute/calm-tech-principles">Calm Tech Institute</a></li>
+    <li><a href="https://www.nngroup.com/articles/dashboards-preattentive/">NN/g, tableaux de bord</a></li>
+    <li><a href="https://smashingmagazine.com/2026/02/designing-agentic-ai-practical-ux-patterns/">Smashing, UX des agents (2026)</a></li>
+    <li><a href="https://support.claude.com/en/articles/9876003">Anthropic, API facturée à part</a></li>
+    <li><a href="https://code.claude.com/docs/en/legal-and-compliance">Claude Code, conditions d'usage</a></li>
+    <li><a href="https://platform.claude.com/docs/en/api/claude-code/routines-fire">API de déclenchement des routines</a></li>
+    <li><a href="https://platform.claude.com/docs/en/about-claude/pricing">Tarifs de l'API Claude</a></li>
+    <li><a href="https://modelcontextprotocol.io/seps/1865-mcp-apps-interactive-user-interfaces-for-mcp">MCP Apps (SEP-1865)</a></li>
+    <li><a href="https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/">Simon Willison, lethal trifecta</a></li>
+    <li><a href="https://developers.notion.com/reference/request-limits">Notion, limites de l'API</a></li>
+    <li><a href="https://developers.notion.com/reference/webhooks-events-delivery">Notion, webhooks</a></li>
+    <li><a href="https://developers.notion.com/reference/workspace-block-limits">Notion, plafond de blocs</a></li>
+    <li><a href="https://developers.cloudflare.com/workers/platform/limits/">Cloudflare Workers, limites</a></li>
+    <li><a href="https://developers.cloudflare.com/d1/platform/pricing/">Cloudflare D1, offre gratuite</a></li>
+    <li><a href="https://webkit.org/blog/16535/meet-declarative-web-push/">WebKit, Declarative Web Push</a></li>
+    <li><a href="https://forum.intervals.icu/t/intervals-icu-api-integration-cookbook/80090">intervals.icu, API</a></li>
+  </ul>
+</section>
+</div>

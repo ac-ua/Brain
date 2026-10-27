@@ -17,7 +17,7 @@ Goal: the right context in **~8–10k tokens**, nothing more. Load in this order
    - the Projects row (repo, prod URL, artifacts);
    - the Build Roadmap view on the project page (In progress, To do);
    - open Tasks for the project or domain (a saved view, not a SQL query).
-5. **Memories**: only if a specific fact is missing, search Memories by keyword or filter by Domain. One fact per row.
+5. **Memories** (`collection://5b6902fc-e510-4975-b133-06e9273f602e`): only if a specific fact is missing, search by keyword or filter by Domain. One fact per row.
 6. Say in two or three lines what you loaded and what you're about to do.
 
 ## Don't

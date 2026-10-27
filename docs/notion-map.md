@@ -9,6 +9,7 @@ URLs are `https://app.notion.com/p/<id>`. Data sources (`collection://…`) are 
 | ⚙️ System | page | workspace | `40619ca7989381c7ac74e43b0d146e62` | |
 | 📓 Session Log | database | System | `49ffc3ee378147489d1824798ba9c908` | `collection://89c0d830-aec0-4bd7-b16f-f2d939db3d58` |
 | 📥 Brain Inbox | database | System | `4f7a52915a724c7da08b3c8d9167c470` | `collection://49575d7c-0da1-43c9-a54d-5a0b3c8effc4` |
+| 🧠 Memories | database | System | `2effbd92c2dc4e5ea2b059cd058b7338` | `collection://5b6902fc-e510-4975-b133-06e9273f602e` |
 | 🧩 Domain template | page | System | `40619ca7989381a08cd7c93c8f4c011e` | |
 | 🏠 Home | page | workspace | `40619ca79893813b8899c27a533cf076` | |
 | 📋 Tasks | database | workspace | `9ac22ef9618d4645a0741102863e60fc` | `collection://d2dce682-22a5-4e39-b0d3-75b9399b5c47` |
@@ -39,7 +40,7 @@ URLs are `https://app.notion.com/p/<id>`. Data sources (`collection://…`) are 
 | Name | Kind | ID | Note |
 |---|---|---|---|
 | About Aurélien | page (Notion Memory) | `40619ca7989381599acfdce904faf34f` | loaded at every session start |
-| Memories | database (Notion Memory) | `40619ca7989381f59000cf1f8b6cff47` | data source `collection://40619ca7-9893-812b-ac2f-000b6ad93569`; `Domain` and `Scope` to add by hand (the API refused the schema change) |
+| Memories (Notion Memory) | database | `40619ca7989381f59000cf1f8b6cff47` | Notion Memory's system database: schema locked to the API, not in the sidebar. Left as is; the brain uses 🧠 Memories |
 | 🧳 Brain — Migration inbox | page | `40619ca7989381cf9cb4dda8206db206` | 44 old memories, sorted by domain |
 | 📦 Brain — Handoff (2026-10-27) | page | `40619ca7989381659f0bc60d4591471c` | handoff bundle + full transcript (pro data: stays in Notion) |
 | Expeditions | page | `83e58afbe55443f1b234ef36a63a3c1f` | |

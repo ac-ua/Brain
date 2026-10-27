@@ -11,7 +11,7 @@ IDs in `docs/notion-map.md`.
 ## 1. Sort what you learned
 | It is… | It goes to |
 |---|---|
-| A fact or state about Aurélien, a person, a decision | **Memories** (one fact per row; `Domain`, `Scope` Work/Perso when those properties exist) |
+| A fact or state about Aurélien, a person, a decision | **Memories** (`collection://5b6902fc-e510-4975-b133-06e9273f602e`; one fact per row, with Type, Domain, Scope, Project, Source) |
 | Something to do | **Tasks** (Status, Domain, Context, Owner, Due, Priority, Project) |
 | Progress on a build | **Build Roadmap** row (Status, Version, Shipped on) |
 | A stable fact of a domain | the domain card, one line, and its "Last update" |

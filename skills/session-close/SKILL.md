@@ -39,7 +39,8 @@ Facts never go to the Brain Inbox, ways of working never go to Memories.
 Three lines max: what changed, what's waiting on him, where to look.
 
 ## Work sessions
-Notion is the system of record for work: nothing pro may live only on the work Mac or in a session.
+Notion is the system of record for work: nothing pro may live only on the work Mac or in a session. Run `work-notes`
+on the session's results; it does what follows.
 - Update the **deal brief** at the top of the CRM opportunity page (Work › Unify Apps › Opportunities): snapshot,
   people, numbers, solution, dated decisions, open questions, next steps, assets (artifact links, config guides,
   Drive files), one line in the meeting log. Create the opportunity (and account) if missing.

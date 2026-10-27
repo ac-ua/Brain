@@ -72,7 +72,7 @@ Agents are capabilities, the same in every domain (`agents/`). Skills are open `
 
 | Agent | Does | Skills |
 |---|---|---|
-| `chief-of-staff` | session protocol, tasks, triage, planning, outreach drafts, the brain's own upkeep | session-start, session-close, brain-inbox, expedition-sponsor-outreach, expedition-research-outreach, expedition-followup-outreach |
+| `chief-of-staff` | session protocol, tasks, triage, planning, outreach drafts, the brain's own upkeep | session-start, session-close, brain-inbox, brain-maintenance, expedition-sponsor-outreach, expedition-research-outreach, expedition-followup-outreach |
 | `builder` | web apps, deploys, roadmaps, config guides, new projects | build-webapp, build-roadmap, config-guide, project-kickoff |
 | `content-studio` | content strategy, scripts, posts, explainers | brain-inbox, explainer-video (more as Content migrates) |
 

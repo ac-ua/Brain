@@ -10,6 +10,7 @@ Where it runs: **cloud routine** (Claude Code scheduled task in the cloud, runs 
 ## Active
 | Name | What it does | Schedule | Where it runs | Reads / writes | Status | Owner (skill or file) |
 |---|---|---|---|---|---|---|
+| Weekly brain maintenance | Applies accepted Brain Inbox rows as one merged PR on `ac-ua/brain`; archives finished or blocked sessions (blocked ones become Tasks); creates an empty session per planned piece of work (max 5); recap in French | Fridays ~01:00 America/New_York | cloud routine (scheduled task, fresh session per run, `perso-general`, repo `ac-ua/brain`) | reads Brain Inbox, Tasks, Build Roadmap, sessions and triggers; writes a PR, CHANGELOG, Build Roadmap, Brain Inbox status, Tasks, Session Log, a push notification | active | `skills/brain-maintenance` |
 | Nightly full test suite (Element Logbook) | Runs the whole test suite on `ac-ua/c_ET` `main`; reports in French by push notification | every night 02:51 America/New_York (created 2026-10-15) | cloud routine | reads the repo; writes nothing (read-only) | active | the routine itself; tests in `ac-ua/c_ET` `tests/` |
 | Check the c_ET backup after the minutes reset | One-off reminder: check that the Element Logbook nightly backup ran green once the GitHub Actions minutes are back | 2026-11-01 08:15 UTC, once | cloud routine | reads the `backup.yml` run; writes a notification | active (one-off) | `ac-ua/c_ET` `docs/MOVE.md` |
 | Element Logbook database backup | `pg_dump` of the Supabase database (sign-in accounts, then the `public` schema), gzipped | every day 07:23 UTC, and on demand | GitHub Actions (`ac-ua/c_ET` `.github/workflows/backup.yml`) | reads Supabase (secret `SUPABASE_DB_URL`); writes a run artifact kept 30 days | active; blocked 16–31 Oct 2026 (Actions minutes used up), due back 2026-11-01 | `ac-ua/c_ET` `.github/workflows/backup.yml`, `DEPLOY.md` §5 |
@@ -24,7 +25,6 @@ Where it runs: **cloud routine** (Claude Code scheduled task in the cloud, runs 
 ## Planned and ideas
 | Name | What it does | Schedule | Where it runs | Reads / writes | Status | Owner (skill or file) |
 |---|---|---|---|---|---|---|
-| Weekly brain-maintenance | Turns accepted Brain Inbox rows into one PR on `ac-ua/brain`; Aurélien reviews and merges | weekly | cloud routine | reads Brain Inbox; writes a branch + PR, Brain Inbox status | planned | `skills/brain-inbox`, `docs/BLUEPRINT.md` (learning loop) |
 | Morning brief | A short daily brief to start the day. TODO(Aurélien): contents and channel | daily, morning | cloud routine | TODO(Aurélien) | idea | `chief-of-staff` |
 | Pro learnings to the brain | Extracts generic lessons (no client names) from the UnifyApps learnings into the Brain Inbox | every 2 weeks | work Mac scheduled task (pro material stays there) | reads the pro learnings; writes Brain Inbox | idea | `skills/brain-inbox` |
 | Monthly plugin copy | Copies the team plugin into this private repo as a backup | monthly | TODO(Aurélien) | reads the plugin repo; writes `backups/` | idea | TODO(Aurélien) |

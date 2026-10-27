@@ -32,6 +32,6 @@ Database: **Brain Inbox** under ⚙️ System, data source `collection://49575d7
 | Never post to a sponsor thread from a cloud routine | rule | Expeditions | Draft only; Aurélien sends |
 | Notion SQL quota hit during session-start | friction | Brain | Two queries per start is too many; use saved views |
 
-## Applying (later: weekly brain-maintenance routine)
+## Applying (weekly: `brain-maintenance`)
 A cloud session reads `Accepted` rows, changes the files, opens one PR on `ac-ua/brain`, bumps `CHANGELOG.md`, and
 sets each row to `Applied` with the PR link in Detail once merged.

@@ -42,8 +42,8 @@ URLs are `https://app.notion.com/p/<id>`. Data sources (`collection://…`) are 
 |---|---|---|---|
 | About Aurélien | page (Notion Memory) | `40619ca7989381599acfdce904faf34f` | loaded at every session start |
 | Memories (Notion Memory) | database | `40619ca7989381f59000cf1f8b6cff47` | Notion Memory's system database: schema locked to the API, not in the sidebar. Left as is; the brain uses 🧠 Memories |
-| 🧳 Brain — Migration inbox | page | `40619ca7989381cf9cb4dda8206db206` | 44 old memories, sorted by domain |
-| 📦 Brain — Handoff (2026-10-27) | page | `40619ca7989381659f0bc60d4591471c` | handoff bundle + full transcript (pro data: stays in Notion) |
+| 🧳 Brain — Migration inbox (under System) | page | `40619ca7989381cf9cb4dda8206db206` | 44 old memories: migrated to 🧠 Memories; kept as the archive of the work details |
+| 📦 Brain — Handoff (2026-10-27) (under System) | page | `40619ca7989381659f0bc60d4591471c` | handoff bundle + full transcript (pro data: stays in Notion) |
 | Expeditions | page | `83e58afbe55443f1b234ef36a63a3c1f` | |
 | Sponso | database | `collection://2ae19ca7-9893-80d6-b263-000b7171b431` | never move without a validated plan |
 | Camp de Base — Roadmap & changelog | database | `collection://6aec51dc-a4b4-4f69-be60-341dea003e59` | merges into Build Roadmap at the Expeditions migration |
@@ -55,7 +55,7 @@ linked views of its Projects and open Tasks; the domain's existing pages sit und
 | Domain | Page | ID |
 |---|---|---|
 | Work | 💼 Work | `40619ca798938177a168dccd513c8e4b` |
-| Expeditions | 🧭 Expeditions (existing root) + Expeditions — context card | `83e58afbe55443f1b234ef36a63a3c1f` · card `40619ca7989381628da7f60326404e83` |
+| Expeditions | 🧭 Expeditions (card at the top of the existing page) | `83e58afbe55443f1b234ef36a63a3c1f` |
 | Sport | 🏃 Sport | `40619ca7989381abb531ce6f783a94ec` |
 | Content | 🎬 Content | `40619ca798938123b03de86d3c1a9f8e` |
 | Admin & Finance | 🗂️ Admin & Finance | `40619ca7989381c38215c78e47b4d0c3` |
@@ -72,3 +72,25 @@ linked views of its Projects and open Tasks; the domain's existing pages sit und
 | 🇪🇸 Español hub | `3dc19ca7989381c78132e747f403f832` (Producción, Recomendaciones, Catálogo, Diario: ids in the skill) | spanish-teacher |
 | 🏋️ Element Logbook project page | `3ec19ca7989381e79a04f8cb11087cb1` | builder (Element) |
 | Old roadmaps (copied into Build Roadmap, to archive) | Camp de Base `709d23a467e44037918e3a3da9f99d68` · Element `094a1fd8f76148938cdd569a19fc3f82` · Spanish `3d919ca798938023ac9ff5f3298a5c29` | none after the merge |
+
+## Reorganisation of 2026-10-27 (after Aurélien's native export)
+Nothing was deleted; page ids are unchanged, so old links still work.
+
+| Page | Was under | Now under |
+|---|---|---|
+| Unify Apps (CRM, Demo Nuggets, Trainings, Context For Claude…) | workspace root | 💼 Work |
+| ↳ QBR 23/10/2025 | the 401k call toggle | Unify Apps › Work notes (ex "Brain Drop") |
+| Context For Claude | Unify Apps | 🎯 Career |
+| Tik Tok, Speeches, Communication (ex "Com") | 🧭 Expeditions | 🎬 Content |
+| Camera | Perso | 🎬 Content |
+| Training log 2021 (ex "Prep"), Marathon plan, 🏋️ Element Logbook | Expeditions / Perso | 🏃 Sport |
+| Healthcare, Taxes, US Visas, Investments | Perso › Admin | 🗂️ Admin & Finance |
+| Job Hunt 2025, Job Hunt 2026, Entrepreneurship | Perso, Perso › Admin | 🎯 Career |
+| Español | Perso | 🗣️ Learning |
+| Voyage, Yearly review, List, Bucket Lists, NYCs, Hunting licence | Perso, root, Perso › Admin | 🌍 Life |
+| Sprinklr, 2024 database, Vatnajokull, Kungerlusen, Descente du Rhone, Admin › Archive checklists, Perso (now empty) | various | 🗄️ Archive |
+| Expeditions — context card | 🧭 Expeditions | 🗄️ Archive (its content now heads 🧭 Expeditions) |
+| 🧳 Migration inbox, 📦 Handoff | workspace root | ⚙️ System |
+
+Left in place on purpose: Sponso and its siblings (outreach skills), the 401k/healthcare call (a toggle block inside
+Work notes, not a movable page), the UnifyApps inline Projects database (work data).

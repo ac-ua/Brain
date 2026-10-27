@@ -64,8 +64,9 @@ isolated work, because it costs much more tokens.
 📋 Tasks           one database: Domain, Context, Owner, Due, Priority, Project
 📁 Projects        registry: Domain, Status, Repo, Drive folder, Artifacts, Prod URL
 🛠️ Build Roadmap   one database for every build, Project relation, per-project views
-── Domains ──      one page per domain from the template, created at migration
-🗄️ Archive         old employer pages, 2024, old ideas (at migration)
+💼 Work · 🧭 Expeditions · 🏃 Sport · 🎬 Content · 🗂️ Admin & Finance · 🎯 Career · 🗣️ Learning · 🌍 Life
+                   one page per domain: context card on top, Projects/Tasks views, the domain's pages below
+🗄️ Archive         old employer (Sprinklr), 2024, empty or superseded pages
 ```
 Free plan: SQL queries capped at ~13/hour, no cross-database joins, 7 days of page history. So: few, wide databases;
 agents read through saved views and `fetch`.

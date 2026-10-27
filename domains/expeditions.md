@@ -1,7 +1,7 @@
 # Domain: Expeditions
 
 Polar and adventure expeditions: planning, gear, logistics, budget, partners and sponsors, science partnerships.
-Notion context card: **Expeditions — context card** (`40619ca7989381628da7f60326404e83`), under the existing 🧭 Expeditions page.
+Notion domain page: **🧭 Expeditions** (`83e58afbe55443f1b234ef36a63a3c1f`); its context card is at the top of the page.
 It holds the goals and facts; this file only says how each capability works here.
 
 ## Where things live

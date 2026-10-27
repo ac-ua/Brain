@@ -55,7 +55,7 @@ only when the task needs them.
 | Domain | Notion context card | Harness file | Main agent |
 |---|---|---|---|
 | Work | 💼 Work (`40619ca798938177a168dccd513c8e4b`) | `domains/work.md` | chief-of-staff |
-| Expeditions | Expeditions — context card (`40619ca7989381628da7f60326404e83`) | `domains/expeditions.md` | builder, chief-of-staff |
+| Expeditions | 🧭 Expeditions (`83e58afbe55443f1b234ef36a63a3c1f`) | `domains/expeditions.md` | builder, chief-of-staff |
 | Sport | 🏃 Sport (`40619ca7989381abb531ce6f783a94ec`) | `domains/sport.md` | builder |
 | Content | 🎬 Content (`40619ca798938123b03de86d3c1a9f8e`) | `domains/content.md` | content-studio |
 | Admin & Finance | 🗂️ Admin & Finance (`40619ca7989381c38215c78e47b4d0c3`) | `domains/admin-finance.md` | chief-of-staff |

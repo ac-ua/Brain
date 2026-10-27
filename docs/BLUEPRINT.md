@@ -79,7 +79,7 @@ facts · rules · where things live · links to the Projects and Tasks views · 
 flowchart LR
   S["Sessions (any machine, any AI)"] -->|facts, state| N["Notion: Memories, Tasks, Projects"]
   S -->|a way of working, a friction| I["Brain Inbox"]
-  P["Pro learnings (every 2 weeks)"] -->|generic, no client names| I
+  P["Work sessions"] -->|deal briefs, learnings| N
   I --> W["weekly brain-maintenance"]
   W -->|PR to review| G["ac-ua/brain"]
   G -->|CHANGELOG + version| R["Build Roadmap (Project = Brain)"]
@@ -110,7 +110,8 @@ iPad. Cloud environments: `perso-general` (default), `app-element`, `app-base-ca
 
 ## Files
 The Drive is the source of files; local disks are a throwaway cache. Work and personal Drives stay apart.
-Allowed: pro → personal, generic lessons only. Forbidden: personal → pro, and pro files to personal storage.
+Pro context and learnings go to Aurélien's Notion (his work system of record too). Forbidden: personal → pro systems,
+and pro *files* to personal storage.
 Large media is processed in the cloud or on a future personal machine, never on the work Mac.
 
 ## Decisions (2026-10-27)
@@ -128,7 +129,8 @@ Large media is processed in the cloud or on a future personal machine, never on 
    the domain is touched.
 10. Autonomy: no external send, publishing or payment without Aurélien; every deletion needs his approval; drafts,
     Notion and commits are free. Can be relaxed later, domain by domain.
-11. Work data stays where it is; generic pro lessons flow to personal skills every two weeks, without client names.
+11. Notion is the system of record for work too (revised 2026-10-27): every work session writes its deal brief and
+    learnings to Notion; pro files stay in the work Drive.
     Monthly copy of the work plugin: decided, with a flagged IP risk (rewriting generic methods is the safer path).
 12. Voice clone: only on explicit request; nothing about it in this repo. Stock voice by default.
 13. Content: short-form first (TikTok, Instagram), published by hand at first; strategy is content-studio's first job.

@@ -26,7 +26,7 @@ Where it runs: **cloud routine** (Claude Code scheduled task in the cloud, runs 
 | Name | What it does | Schedule | Where it runs | Reads / writes | Status | Owner (skill or file) |
 |---|---|---|---|---|---|---|
 | Morning brief | A short daily brief to start the day. TODO(Aurélien): contents and channel | daily, morning | cloud routine | TODO(Aurélien) | idea | `chief-of-staff` |
-| Pro learnings to the brain | Extracts generic lessons (no client names) from the UnifyApps learnings into the Brain Inbox | every 2 weeks | work Mac scheduled task (pro material stays there) | reads the pro learnings; writes Brain Inbox | idea | `skills/brain-inbox` |
+| Work context check | Checks that every active opportunity's deal brief is current and that work learnings reached Memories | weekly, inside the brain maintenance | cloud (reads work sessions and the CRM) | reads sessions, CRM; writes deal briefs, Memories | idea | `skills/brain-maintenance` |
 | Monthly plugin copy | Copies the team plugin into this private repo as a backup | monthly | TODO(Aurélien) | reads the plugin repo; writes `backups/` | idea | TODO(Aurélien) |
 | Monthly brain retro | Reviews the brain's roadmap, changelog and Session Log; feeds the weekly maintenance | monthly | cloud routine | reads Build Roadmap (Project = Brain), Session Log; writes Brain Inbox | idea | `chief-of-staff` |
 | Notion export reminder | Reminds Aurélien to run the native Notion export (Markdown + CSV) to the personal Drive | monthly | cloud routine (reminder), export manual | writes a notification | idea | `docs/BLUEPRINT.md` decision 6 |

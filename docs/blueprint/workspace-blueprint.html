@@ -1,0 +1,511 @@
+<title>Workspace Blueprint v0.2</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: single reading column (~72ch) with wide figures; topographic/field-notebook feel for an expedition person */
+:root{
+  --bg:#f6f7f4; --surface:#ffffff; --fg:#1d2420; --muted:#5b665f; --line:#d8ddd6;
+  --accent:#1f5f5b; --accent-soft:#e3efec; --warn:#a4471f; --warn-soft:#f8e9e1; --ok:#2f6b2f;
+  --display:"Fraunces", Georgia, serif; --body:"Source Sans 3", system-ui, sans-serif; --mono:"JetBrains Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121614; --surface:#1a201d; --fg:#e4e9e5; --muted:#9aa69f; --line:#2c3531;
+  --accent:#7cc2b8; --accent-soft:#1f2f2c; --warn:#f0a07c; --warn-soft:#33221a; --ok:#8fcf8f; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121614; --surface:#1a201d; --fg:#e4e9e5; --muted:#9aa69f; --line:#2c3531;
+  --accent:#7cc2b8; --accent-soft:#1f2f2c; --warn:#f0a07c; --warn-soft:#33221a; --ok:#8fcf8f; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16.5px;line-height:1.6}
+.wrap{max-width:860px;margin:0 auto;padding-block:40px 80px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);font-weight:650;text-wrap:balance;line-height:1.2}
+h1{font-size:2.3rem;margin:0 0 .3rem}
+h2{font-size:1.55rem;margin:3rem 0 .8rem;padding-top:1.2rem;border-top:1px solid var(--line)}
+h3{font-size:1.15rem;margin:1.8rem 0 .5rem;font-weight:500}
+p,li{max-width:70ch}
+.lede{color:var(--muted);font-size:1.08rem}
+.meta{font-family:var(--mono);font-size:.78rem;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+code,.mono{font-family:var(--mono);font-size:.86em;background:var(--accent-soft);padding:.05em .35em;border-radius:3px}
+nav.toc{display:flex;flex-wrap:wrap;gap:6px 14px;margin:1.4rem 0;font-size:.92rem}
+nav.toc a{color:var(--accent);text-decoration:none;border-bottom:1px dotted var(--accent)}
+.alert{background:var(--warn-soft);border-left:3px solid var(--warn);padding:12px 16px;margin:1.2rem 0;border-radius:0 4px 4px 0}
+.alert strong{color:var(--warn)}
+.note{background:var(--accent-soft);padding:12px 16px;border-radius:4px;margin:1rem 0}
+.fb{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;margin:1rem 0}
+.fb>div{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px 16px;min-width:0}
+.fb h4{margin:0 0 .35rem;font-family:var(--body);font-weight:600;font-size:1rem}
+.fb .you{color:var(--muted);font-style:italic;font-size:.93rem;margin:0 0 .4rem}
+.verdict{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:3px;margin-left:6px;vertical-align:2px}
+.v-ok{background:var(--accent-soft);color:var(--accent)} .v-ch{background:var(--warn-soft);color:var(--warn)}
+.scroll{overflow-x:auto;margin:1rem 0}
+table{border-collapse:collapse;font-size:.88rem;min-width:640px;width:100%}
+th,td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+th{background:var(--accent-soft);font-weight:600}
+td.na{color:var(--muted)}
+.tree{font-family:var(--mono);font-size:.8rem;line-height:1.55;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px 16px;white-space:pre;overflow-x:auto}
+.tree b{color:var(--accent);font-weight:500}
+.tree i{color:var(--muted);font-style:normal}
+pre.mermaid{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px;overflow-x:auto}
+figure{margin:1.2rem 0} figcaption{font-size:.85rem;color:var(--muted);margin-top:.4rem}
+ol.q>li{margin-bottom:.55rem}
+.tag{font-family:var(--mono);font-size:.7rem;padding:1px 6px;border-radius:3px;background:var(--accent-soft);color:var(--accent);margin-right:4px}
+.tag.w{background:var(--warn-soft);color:var(--warn)}
+.phase{display:grid;grid-template-columns:90px minmax(0,1fr);gap:4px 16px;border-top:1px solid var(--line);padding:10px 0}
+.phase .ph{font-family:var(--mono);font-size:.8rem;color:var(--accent)}
+.phase ul{margin:.2rem 0;padding-left:1.1rem}
+@media (max-width:560px){.phase{grid-template-columns:minmax(0,1fr)} h1{font-size:1.8rem}}
+</style>
+
+<div class="wrap">
+<p class="meta">Version 0.5 · 27 oct. 2026 · tes réponses sont intégrées, avec une analyse critique</p>
+<h1>Workspace Blueprint</h1>
+<p class="lede">Comment organiser tout ton travail avec l'IA (pro et perso), sans dépendre d'une machine ni d'une IA en particulier. Cette version tient compte de tes retours, de l'audit de ton Notion, de ton Drive pro et de ce Mac, et de recherches sur les middlewares et sur le fonctionnement de Claude.</p>
+
+<nav class="toc">
+<a href="#alertes">Alertes</a><a href="#decisions">Décisions</a><a href="#critique">Analyse critique</a><a href="#archi">Architecture</a><a href="#matrice">Compétences × domaines</a><a href="#notion">Notion</a><a href="#github">GitHub</a><a href="#fichiers">Fichiers</a><a href="#execution">Exécution</a><a href="#memoire">Mémoire</a><a href="#connecteurs">Connecteurs</a><a href="#retours">Retours point par point</a><a href="#migration">Migration</a><a href="#questions">Questions</a>
+</nav>
+
+<h2 id="alertes">À traiter tout de suite (hors plan)</h2>
+<div class="alert"><strong>Clé de récupération FileVault en clair dans Notion</strong>, sur la page racine « Unify Apps ». Mets-la dans 1Password, puis supprime-la de la page. Elle reste 7 jours dans l'historique Notion.</div>
+<div class="alert"><strong>Identifiants dans Notion et dans Téléchargements.</strong> La page Element Logbook contient l'URL et la clé Supabase, le client OAuth, un utilisateur sandbox Mindbody et un e-mail de compte de service. <code>~/Downloads/element-logbook-*.json</code> ressemble à un fichier de compte de service : je ne l'ai pas ouvert. Leur place est dans les secrets du repo ou dans 1Password.</div>
+<div class="alert"><strong>Mémoire fragile.</strong> 55 fichiers de mémoire sont répartis dans 23 dossiers locaux, la plupart dans des dossiers temporaires liés à une session. Ils ne sont pas partagés avec les sessions cloud, et ils disparaissent si tu supprimes la session ou si tu perds ce Mac. La base Memories de Notion contient <b>1 seule ligne</b>.</div>
+
+<h2 id="decisions">Décisions prises (27 oct.)</h2>
+<div class="scroll"><table>
+<tr><th>Sujet</th><th>Décision</th><th>Vérifié</th></tr>
+<tr><td>GitHub perso depuis le Mac pro</td><td>Lecture et clonage OK. Repo privé <code>ac-ua/brain</code> validé.</td><td>✅ clone de <code>ac-ua/Base-Camp</code> réussi. ❌ <b>Push testé le 27 oct. : bloqué</b> par le réseau de l'entreprise (redirection HTTP 302), même si le compte a les droits. Les modifications du harnais passent donc par une session cloud, l'iPad ou la Brain Inbox. Pas besoin de hook.</td></tr>
+<tr><td>Domaine pilote</td><td>Expeditions + Content. On avance au fil de l'eau, sans finir un domaine avant d'en ouvrir un autre.</td><td></td></tr>
+<tr><td>Le brain évolue</td><td>Le brain est un projet à part entière, avec sa roadmap, son changelog, ses versions et une rétro régulière.</td><td></td></tr>
+<tr><td>Comptes branchés aujourd'hui</td><td>Gmail = <code>aurelien.exploration@gmail.com</code> (sponsors). Agenda = <code>a.caye@hotmail.com</code> (compte Google perso, avec en plus le calendrier Runna). Drive = <code>ac@unifyapps.com</code> (pro). Il faut aussi la boîte carrière (Gmail), la boîte Outlook et le Gmail pro, soit <b>4 boîtes au total</b>.</td><td>✅ vérifié par les connecteurs</td></tr>
+<tr><td>Contenu</td><td>Format court d'abord (TikTok, Instagram), objectif plusieurs posts par semaine, voire un par jour sur TikTok. Tu publies à la main au début. La stratégie elle-même sera le premier travail de l'agent Content.</td><td></td></tr>
+<tr><td>Montage</td><td>On cherche un outil pilotable par l'IA <i>et</i> facile à retoucher pour toi (voir l'analyse critique, point 4).</td><td></td></tr>
+<tr><td>Voix clonée</td><td>Uniquement quand tu le demandes (inchangé). Le stockage des modèles est à définir (point 5).</td><td></td></tr>
+<tr><td>Autonomie</td><td>Jamais d'envoi externe, de publication ni de paiement sans toi. Toute suppression demande ton accord. Brouillons, Notion et commits sont libres. Ces règles pourront s'assouplir plus tard, domaine par domaine (par exemple pour la prospection automatisée).</td><td></td></tr>
+<tr><td>Données UA dans Notion</td><td>Elles <b>restent</b> dans Notion.</td><td></td></tr>
+<tr><td>Plugin UA</td><td><b>Copie mensuelle</b> vers le perso (c'est aussi ton travail). Toutes les deux semaines, une revue des learnings pro pour améliorer les compétences perso.</td><td></td></tr>
+<tr><td>App espagnol</td><td>Toujours active. Aujourd'hui c'est un artifact ; passage dans un repo à prévoir.</td><td></td></tr>
+<tr><td>Sprinklr</td><td>Archivé tel quel.</td><td></td></tr>
+<tr><td>Strava</td><td>Abonnement prévu, donc connecteur officiel Strava + intervals.icu.</td><td></td></tr>
+<tr><td>ChatGPT</td><td>Compte gratuit, utilisable pour tester la portabilité.</td><td></td></tr>
+<tr><td>Roadmaps</td><td><b>Une base commune, une vue filtrée par projet</b> sur chaque page projet. <b>Exception :</b> un projet partagé à l'extérieur, ou qui a des champs vraiment spécifiques, a sa propre base, créée depuis le même modèle. Le modèle est défini dans le repo brain, et la skill project-kickoff le crée toujours à l'identique.</td><td></td></tr>
+<tr><td>Sauvegarde Notion</td><td>Le risque, ce sont les erreurs d'agents et l'historique de 7 jours seulement sur le plan gratuit. <b>Export natif manuel une fois par mois</b> (Markdown + CSV) vers le Drive perso. Un script automatique seulement plus tard, si besoin, et limité à System, aux cartes de contexte, à Tasks, Projects, Roadmap et Sponso.</td><td></td></tr>
+<tr><td>Où travailler</td><td><b>Pro : session locale sur le Mac pro. Perso : session cloud.</b> Écriture sur le Drive perso depuis le cloud via rclone (à tester en P1). Règle dure : on ne fait jamais passer de fichier pro vers le perso par le cloud.</td><td>❌ push testé : bloqué par le proxy de l'entreprise</td></tr>
+<tr><td>Environnements cloud</td><td>Un environnement <b>par app qui a ses propres secrets</b> (<code>app-base-camp</code>, <code>app-element</code>…) et un environnement <code>perso-general</code> pour le reste (brain, Notion, Drive). Pas d'environnement par domaine.</td><td></td></tr>
+<tr><td>Claude Code, Projects, Cowork</td><td>On n'abandonne rien. Claude Code est l'atelier principal. Les Projects et Cowork restent pour les conversations rapides, notamment sur le téléphone. Leur contenu (fichiers, instructions) migre vers le brain quand on touche au domaine concerné.</td><td></td></tr>
+<tr><td>Voix TTS</td><td>Dictionnaire de prononciation appliqué uniquement à la voix : « UnifyApps » → « Iou-ni-faï Apps ».</td><td>✅ vérifié par transcription</td></tr>
+</table></div>
+
+<h2 id="critique">Analyse critique de la stratégie</h2>
+<p>Je relis tout ce qu'on a posé et je te dis ce qui tient, ce qui est fragile et ce que je change. Les points sont classés par impact.</p>
+<div class="fb">
+<div><h4>Ce qui tient <span class="verdict v-ok">à garder</span></h4>
+<ul>
+<li>La séparation <b>savoir et état (Notion) / harnais (GitHub) / exécution (n'importe quelle IA)</b>.</li>
+<li>Le tableau compétences × domaines.</li>
+<li>Les formats ouverts : AGENTS.md, SKILL.md, MCP.</li>
+<li>La règle de confidentialité à sens unique.</li>
+</ul>
+Surtout, <b>tu as déjà construit et fait tourner ce type de système</b> : la boucle des learnings UA (collecte → revue → PR → release) est exactement le mécanisme d'apprentissage qu'il faut au brain. On le réutilise au lieu d'inventer.</div>
+
+<div><h4>1. Les gros calculs n'ont nulle part où tourner <span class="verdict v-ch">le plus gros trou</span></h4>
+Indexer 200 Go de rushes, sortir une vidéo par jour et faire tourner tes modèles locaux (14 Go dans <code>~/voice-clone</code>, plus whisper) demandent une vraie machine.
+<ul>
+<li>Le Mac pro ne convient pas : il est géré par l'entreprise, tu n'y es pas admin, et ce sont des données perso.</li>
+<li>Les sessions cloud ne conviennent pas non plus : pas de GPU, disque limité, pas de navigateur, et elles ne sont pas faites pour des centaines de Go.</li>
+</ul>
+<b>Conclusion :</b> pour le contenu à grande échelle, le Mac mini n'est pas un « peut-être un jour », c'est la pièce qui manque.<br/>
+<b>Proposition (payante) :</b> un Mac mini M4, 24 Go de mémoire de préférence pour la voix et whisper. Ce serait ton serveur perso : vidéo, modèles locaux, routines locales, pilotable depuis l'iPad.<br/>
+<b>En attendant :</b> le pilote Content se limite à la stratégie, au format du catalogue de rushes, aux scripts et à un test sur un petit lot.</div>
+
+<div><h4>2. La frontière Notion / GitHub fuit sur les bords <span class="verdict v-ch">à corriger</span></h4>
+Où va une leçon apprise en cours de session, quand on est sur le Mac pro qui ne peut pas pousser ? Sans règle claire, elle finit dans une mémoire Notion qui ressemble à une procédure, et les skills ne s'améliorent jamais.<br/>
+<b>La règle :</b>
+<ul>
+<li>un <i>fait</i> ou un <i>état</i> va dans Notion, tout de suite ;</li>
+<li>une <i>façon de faire</i> va dans une <b>Brain Inbox</b> (base Notion), écrite par n'importe quelle session sur n'importe quelle machine ;</li>
+<li>une routine cloud hebdomadaire transforme l'inbox en modifications des skills, avec une PR sur <code>brain</code> que tu valides.</li>
+</ul>
+C'est ta boucle UA, appliquée au perso. Elle règle à la fois la plasticité, la contrainte du Mac pro et la qualité des skills.</div>
+
+<div><h4>3. Lire Notion coûte plus cher que prévu <span class="verdict v-ch">à mesurer</span></h4>
+<ul>
+<li><b>Plan gratuit :</b> l'audit a épuisé le quota de requêtes de base en environ 13 appels.</li>
+<li><b>Réponses volumineuses :</b> le seul fetch de la page mémoire a renvoyé un gros bloc de schéma.</li>
+<li><b>Ma « sauvegarde nocturne par l'IA » était une mauvaise idée</b> : elle aurait brûlé des tokens et le quota Notion chaque nuit.</li>
+</ul>
+<b>Corrections :</b>
+<ul>
+<li>(a) La sauvegarde passe par un <b>script sans IA</b> : l'API Notion avec un jeton d'intégration gratuit, lancée par une GitHub Action hebdomadaire de quelques minutes. Plus un export natif complet que tu fais à la main une fois par mois.</li>
+<li>(b) Les agents lisent par vues enregistrées et pages courtes.</li>
+<li>(c) On fixe un budget de démarrage de session (environ 8 à 10 k tokens) et on le mesure pendant le pilote.</li>
+<li>(d) Si c'est trop lourd, la routine hebdo génère une copie markdown des cartes de contexte dans <code>brain</code>, moins chère à charger.</li>
+</ul></div>
+
+<div><h4>4. Montage : ni tout automatique, ni tout manuel <span class="verdict v-ok">proposition</span></h4>
+<b>Contrainte découverte :</b> la version gratuite de DaVinci Resolve <b>n'a pas d'API de script</b>, réservée à Resolve Studio. En revanche, elle <b>importe des timelines FCPXML et OpenTimelineIO</b>. D'où un workflow hybride :
+<ul>
+<li>l'IA indexe les rushes : transcription, plans, tags dans le catalogue Notion, proxies ;</li>
+<li>elle choisit les moments et écrit le script ;</li>
+<li>elle génère un <b>premier montage en FCPXML</b> ;</li>
+<li>tu l'ouvres dans Resolve gratuit, tu fais tes retouches toi-même, puis tu exportes.</li>
+</ul>
+Les sous-titres et les habillages récurrents se font par template, avec Remotion (montage vidéo en code) ou Resolve.<br/>
+<b>Option payante plus tard :</b> Resolve Studio (licence unique, environ 300 $). Il débloque l'API, et des serveurs MCP existent pour que l'IA pilote Resolve directement. À considérer quand le volume le justifie.</div>
+
+<div><h4>5. Les modèles locaux (voix, whisper) <span class="verdict v-ok">en trois couches</span></h4>
+<ol>
+<li><b>Le code et la recette</b> (scripts, versions figées, script d'installation) vont dans un repo <b>privé séparé</b>, <code>ac-ua/voice-clone</code>, sans aucun enregistrement. Ils ne vont pas dans <code>brain</code>, pour respecter ta règle de confidentialité sur le clone.</li>
+<li><b>Les poids des modèles</b> sont retéléchargeables depuis Hugging Face. On ne les stocke nulle part, on note juste les versions.</li>
+<li><b>Tes enregistrements de référence</b> : ta règle dit qu'ils ne quittent pas ta machine. Ils restent en local, et leur sauvegarde est <b>ta</b> décision manuelle (clé USB chiffrée, coffre 1Password…).</li>
+</ol>
+Nouvelle machine = cloner le repo, lancer l'installation, recopier les enregistrements. Environ 30 minutes.</div>
+
+<div><h4>6. Les boîtes mail sont le maillon faible du cockpit <span class="verdict v-ch">je révise ma reco</span></h4>
+J'avais proposé de tout faire suivre vers une seule boîte. Ça ne suffit pas :
+<ul>
+<li>tu as 4 boîtes ;</li>
+<li>le <b>mail pro ne peut sans doute pas être transféré</b> vers le perso (les entreprises le bloquent souvent) ;</li>
+<li>les connecteurs natifs ne gèrent qu'un compte par service.</li>
+</ul>
+Le connecteur multi-comptes arrive donc plus tôt.<br/>
+<b>Proposition :</b> un test rapide en P1 avec <code>google_workspace_mcp</code> (open source, multi-comptes) pour les 3 Gmail, plus un connecteur Outlook. On vérifie d'abord que l'admin Google de UnifyApps autorise ce genre d'application. En attendant, on garde les connecteurs natifs et on change le compte branché selon le besoin.</div>
+
+<div><h4>7. Un seul compte GitHub pour le pro et le perso <span class="verdict v-ok">réglé</span></h4>
+Une routine cloud peut faire la copie mensuelle du plugin UA en quelques lignes, et le compte te reste si tu pars. Le push depuis le Mac pro a été testé : il est bloqué par le réseau de l'entreprise. Aucun garde-fou n'est donc nécessaire, et on ne cherche pas à contourner ce blocage.</div>
+
+<div><h4>8. Trop d'agents d'emblée <span class="verdict v-ch">simplifier</span></h4>
+Sept fiches d'agents et une vingtaine de skills dès le départ, c'est construire un organigramme avant d'avoir du travail à confier.<br/>
+<b>Le tableau est une carte, pas une liste de tâches.</b> Pour le pilote, on démarre avec 3 agents : Chief of Staff (léger), Builder et Content Studio, plus tes 3 skills d'outreach existants. Les autres apparaissent quand une vraie tâche les réclame.</div>
+
+<div><h4>9. Migrer « au fil de l'eau » plutôt que domaine par domaine <span class="verdict v-ok">nouveau</span></h4>
+Tu travailles sur plusieurs sujets en parallèle, et un pilote rigide ne tiendra pas.<br/>
+<b>Nouveau principe :</b> on pose le squelette (P1) une fois, puis <b>chaque session migre le domaine qu'elle touche</b>. Elle lit les vieilles mémoires du sujet, écrit la carte de contexte, et coche ce domaine dans la roadmap du brain. Expeditions + Content reste le premier, parce que c'est là qu'il y a le plus d'activité.</div>
+
+<div><h4>10. Ce qui manquait au plan <span class="verdict v-ch">ajouté</span></h4>
+<ul>
+<li><b>Les secrets :</b> 1Password devient la source unique. Jamais de secret dans Notion, GitHub ou la mémoire. L'audit des secrets fait partie de la migration.</li>
+<li><b>Des critères de réussite mesurables :</b>
+  <ul>
+  <li>reprendre le travail depuis n'importe quel appareil en moins de 2 minutes avec le bon contexte ;</li>
+  <li>zéro mémoire qui n'existe qu'en local ;</li>
+  <li>démarrage de session sous budget ;</li>
+  <li>ajouter un domaine en moins de 15 minutes ;</li>
+  <li>tout restaurer en moins d'une heure si tu perds le Mac.</li>
+  </ul></li>
+<li><b>Un exercice « Mac perdu »</b> : une fois P1 terminé, on reprend une tâche réelle depuis l'iPad et une session cloud seulement.</li>
+<li><b>L'indépendance vis-à-vis des outils, vérifiée :</b> le connecteur Strava officiel ne marche qu'avec Claude, donc intervals.icu reste la voie neutre. L'app espagnol hébergée en artifact passera dans un repo et sur Cloudflare Pages à la prochaine modification.</li>
+</ul></div>
+</div>
+
+<h3>Le brain comme projet vivant</h3>
+<figure>
+<pre class="mermaid">
+flowchart LR
+  S["Sessions<br/>(toute machine, toute IA)"] -->|"faits et état"| N["Notion<br/>Memories · Tasks · Projects"]
+  S -->|"une façon de faire,<br/>une friction"| I["Brain Inbox<br/>(Notion)"]
+  P["Learnings pro<br/>(toutes les 2 semaines)"] -->|"leçons génériques,<br/>sans client"| I
+  I --> W["Routine hebdo<br/>brain-maintenance"]
+  W -->|"PR à valider"| G["GitHub brain<br/>skills · agents · AGENTS.md"]
+  G -->|"CHANGELOG + version"| R["Brain Roadmap<br/>(Build Roadmap, Project = Brain)"]
+  R -->|"rétro mensuelle"| W
+  G --> S
+</pre>
+<figcaption>Le brain a une version (v0.x), un changelog dans le repo, sa propre ligne dans Projects et ses items dans Build Roadmap. Cette page deviendra <code>docs/BLUEPRINT.md</code> dans le repo.</figcaption>
+</figure>
+
+<h2 id="archi">1 · L'architecture en un schéma</h2>
+<p>Quatre couches, chacune remplaçable sans toucher aux autres. Notion et GitHub sont les deux sources de vérité, et elles ne se chevauchent pas : <b>Notion répond à « quoi et où on en est », GitHub répond à « comment on fait ».</b> Ta formule « base de connaissances » et « base d'action » résume bien cette séparation.</p>
+<figure>
+<pre class="mermaid">
+flowchart TB
+  subgraph RUN["EXÉCUTION · interchangeable"]
+    direction LR
+    R1["Claude Code desktop<br/>Mac pro · navigateur"]
+    R2["Claude Code cloud<br/>GitHub perso · routines"]
+    R3["iPad · Android<br/>pilotage à distance"]
+    R4["Demain<br/>ChatGPT/Codex · Mac mini"]
+  end
+  subgraph HARN["HARNAIS · GitHub ac-ua/brain"]
+    direction LR
+    H1["AGENTS.md<br/>règles + routage"]
+    H2["agents/<br/>par compétence"]
+    H3["skills/<br/>SKILL.md"]
+    H4["domains/<br/>spécificités"]
+    H5["templates/"]
+  end
+  subgraph KNOW["SAVOIR & ÉTAT · Notion"]
+    direction LR
+    K1["System<br/>profil · mémoires · journal"]
+    K2["Tasks · Projects<br/>Build Roadmap"]
+    K3["Pages domaine<br/>carte de contexte"]
+  end
+  subgraph FILES["FICHIERS · Drive"]
+    direction LR
+    F1["Drive pro<br/>lecture + écriture"]
+    F2["Drive perso<br/>lecture seule depuis le Mac pro"]
+  end
+  RUN -->|"charge les règles et les skills"| HARN
+  RUN -->|"lit le contexte et écrit l'état"| KNOW
+  RUN -->|"lit les entrées et dépose les sorties"| FILES
+  KNOW -.->|"sauvegarde nocturne en markdown"| HARN
+</pre>
+<figcaption>Une IA qui comprend MCP (Claude, ChatGPT, Codex, Gemini) et qui lit AGENTS.md et SKILL.md peut prendre la place de la couche Exécution sans rien changer au reste.</figcaption>
+</figure>
+
+<h2 id="matrice">2 · Ton tableau à deux entrées : compétences × domaines</h2>
+<p>Ton intuition est la bonne. Elle remplace ma proposition précédente (8 rôles par domaine). Les deux axes se rangent ainsi :</p>
+<ul>
+<li><b>Les lignes = les agents par compétence</b>, avec leurs skills, dans GitHub. Ils sont identiques partout : le Builder applique toujours le même playbook « tiers gratuits », la même roadmap et le même guide de configuration.</li>
+<li><b>Les colonnes = les domaines</b>, dans Notion. Chacun a une carte de contexte, ses projets et ses tâches, plus un petit fichier dans <code>domains/</code> qui dit comment chaque compétence s'y applique.</li>
+<li><b>Une case = compétence + domaine.</b> On charge l'agent, ses skills et le fichier du domaine, et rien d'autre. C'est ce qui économise les tokens.</li>
+</ul>
+<div class="scroll"><table>
+<tr><th>Compétence ↓ · Domaine →</th><th>Work (UnifyApps)</th><th>Expeditions</th><th>Sport</th><th>Content</th><th>Admin & Finance</th><th>Career</th><th>Learning</th></tr>
+<tr><th>Chief of Staff<br/><small>orchestrateur : agenda, mails, tâches, brief</small></th><td>agenda et mails pro</td><td>échéances</td><td>plan de la semaine</td><td>calendrier éditorial</td><td>dates limites (visa, impôts)</td><td>relances</td><td>—</td></tr>
+<tr><th>Builder<br/><small>apps, déploiements</small></th><td>plateforme UA, via le plugin UA, <b>pas</b> Cloudflare</td><td>Camp de Base</td><td>Element Logbook</td><td>site perso</td><td>outil finances (plus tard)</td><td>—</td><td>app espagnol</td></tr>
+<tr><th>Researcher</th><td>comptes, concurrence</td><td>labos, logistique</td><td>science de l'entraînement</td><td>tendances, sujets</td><td>règles visa et fiscalité</td><td>entreprises cibles</td><td>—</td></tr>
+<tr><th>Writer / Designer<br/><small>docs, decks, posts</small></th><td>decks UA (charte UA)</td><td>dossier sponsor</td><td>—</td><td>scripts, posts</td><td>courriers</td><td>CV, lettres</td><td>—</td></tr>
+<tr><th>Video Studio<br/><small>indexation, montage, sous-titres, voix</small></th><td>vidéos de démo</td><td>films d'expédition</td><td>clips d'entraînement</td><td>shorts, YouTube</td><td>—</td><td>—</td><td>—</td></tr>
+<tr><th>Analyst<br/><small>données, tableaux de bord</small></th><td>prévisions</td><td>budget expé</td><td>Garmin et intervals.icu</td><td>statistiques des posts</td><td>budget, appartements</td><td>—</td><td>progression</td></tr>
+<tr><th>Outreach<br/><small>prospection, relances</small></th><td>—</td><td>sponsors, science <span class="tag">3 skills existants</span></td><td>—</td><td>marques</td><td>—</td><td>réseau</td><td>—</td></tr>
+</table></div>
+<p><b>Plusieurs agents pour le montage ?</b> Je te recommande <b>un seul agent Video Studio avec plusieurs skills</b> : indexer les rushes, monter un short, monter un format long, sous-titres et voix. Plusieurs agents vidéo dupliqueraient le même contexte pour presque rien. Un sous-agent séparé ne se justifie que pour une tâche longue et isolée, comme l'indexation des 200 Go, qui encombrerait la conversation principale.</p>
+<div class="note"><b>Comment Claude met en œuvre ce modèle.</b> Une compétence = un fichier <code>agents/builder.md</code> (sous-agent Claude Code). Ce fichier précharge ses skills (<code>skills: [build-webapp, free-tier-playbook, config-guide]</code>) et peut avoir sa propre mémoire. Le domaine est ajouté par la règle de routage dans AGENTS.md. Le concept d'« agent », tu le connais chez UnifyApps ; chez Claude, c'est un sous-agent qui précharge des skills. Les deux notions coexistent bien.<br/><b>Un garde-fou :</b> un sous-agent consomme sensiblement plus de tokens qu'une skill chargée dans la session. La règle : on travaille dans une session par domaine qui charge des skills, et on n'appelle un sous-agent que pour un travail lourd et isolé (recherche, vidéo, audit).</div>
+
+<h2 id="notion">3 · Notion : intégrer, pas créer un « Cloud Brain » à part</h2>
+<p>Ma réponse à ton challenge : <b>pas de cerveau séparé.</b> Un « Cloud Brain » isolé deviendrait vite une seconde vérité désynchronisée de tes vraies bases (Sponso, roadmaps…). La bonne solution :</p>
+<ul>
+<li>une petite section <b>System</b> réservée à l'IA : profil, mémoires, journal, registre des agents ;</li>
+<li><b>trois bases transverses</b> : Tasks, Projects et Build Roadmap ;</li>
+<li>une page par <b>domaine</b>, qui pointe vers tes bases existantes au lieu de les recopier.</li>
+</ul>
+<p>Les mémoires sont reliées aux domaines et aux projets, ce qui permet de filtrer « tout ce qui concerne Sport ».</p>
+
+<h3>Ce que l'audit a trouvé</h3>
+<ul>
+<li><b>Racines actuelles :</b> 🧭 Expeditions (plus de 20 pages à plat), 🤓 Perso (fourre-tout), Unify Apps (mini-CRM : 135 opportunités, transcriptions d'appels), Sprinklr (ancien employeur, 4 à 5 niveaux de profondeur), NYCs, et 3 pages de notes de réunion vides.</li>
+<li><b>Tes 3 roadmaps</b> (Camp de Base, Element, Espagnol) viennent du <b>même template, mais ont divergé</b>. Les noms de propriétés sont en FR, en EN ou mélangés (« Statut / Status », « Livré le / Shipped on »).</li>
+<li><b>Doublons :</b> Job Hunt ×2, deux concepts « Memories », deux CRM (Sprinklr et UA), une base 2024 abandonnée en double avec la Yearly review.</li>
+<li><b>Mal placés :</b> Element Logbook (un projet de build) rangé sous Perso à côté d'Admin ; une note santé/401k sous UA ; « Context For Claude » enterré sous UA.</li>
+<li><b>Pas de section</b> finances, appartements, sport ou contenu. Ces sujets n'existent qu'en pages isolées.</li>
+<li><b>Contrainte du plan gratuit :</b> les requêtes SQL ont un quota de requêtes de base par heure (épuisé après environ 13 appels pendant l'audit). Les jointures entre bases sont réservées aux plans payants. <b>Conséquence pour l'architecture :</b> peu de bases, mais larges, et les agents lisent par <i>vues enregistrées</i> (non limitées) plutôt que par requêtes SQL.</li>
+</ul>
+
+<h3>Structure cible (noms en anglais)</h3>
+<div class="tree"><b>🏠 Home</b>                          <i>cockpit : Today, Inbox, filtre Work/Perso, projets actifs</i>
+<b>⚙️ System</b>                        <i>la couche IA, petite et stable</i>
+   ├─ About me                     <i>profil global, moins d'une page, toujours chargé</i>
+   ├─ Memories (DB)                <i>base existante, enrichie : Domain, Project, Scope work/perso, Type</i>
+   ├─ Session Log (DB)             <i>1 ligne par session : ce qui a changé, et pour quel domaine</i>
+   ├─ Agents & Skills              <i>registre, avec lien vers chaque fichier GitHub</i>
+   └─ Templates                    <i>Domain page, Project page, Build Roadmap row</i>
+<b>📋 Tasks (DB)</b>                     <i>UNE seule base : Domain, Context work/perso, Owner (agent), Due, Project</i>
+<b>📁 Projects (DB)</b>                  <i>registre : Domain, Status, Repo, Drive folder, Artifacts, Prod URL</i>
+<b>🛠️ Build Roadmap (DB)</b>             <i>fusion des 3 roadmaps, avec une propriété Project et une seule langue</i>
+<b>── Domains ──</b>                    <i>chacun créé depuis le même template</i>
+   ├─ 💼 Work                      <i>tâches et pointeurs ; le contenu client reste dans le Drive pro (voir Q8)</i>
+   ├─ 🧭 Expeditions               <i>Expeditions (DB) : statut idée/active/passée ; Sponso ; Camp de Base</i>
+   ├─ 🏃 Sport                     <i>profil athlète, plans, courses, Element Logbook</i>
+   ├─ 🎬 Content                   <i>Rushes catalog (DB), Editorial calendar (DB), Published posts (DB)</i>
+   ├─ 🗂️ Admin & Finance           <i>Visa, Taxes, Health, Housing ; Finance arrive plus tard</i>
+   ├─ 🎯 Career                    <i>Job hunt (fusionné), réseau</i>
+   ├─ 🗣️ Learning                  <i>Español (bases existantes), lectures</i>
+   └─ 🌍 Life                      <i>voyages, listes, bucket list ; Social/Family plus tard</i>
+<b>🗄️ Archive</b>                       <i>Sprinklr, 2024, OLD Spanish V0, anciennes idées d'expé</i></div>
+<p><b>Ajouter un domaine plus tard</b> (Finance, Social…) prend trois étapes :</p>
+<ol>
+<li>dupliquer le template de page domaine ;</li>
+<li>ajouter une option au select « Domain » ;</li>
+<li>ajouter une ligne à la table de routage d'AGENTS.md.</li>
+</ol>
+<p>Rien d'autre ne casse, et les domaines vides peuvent exister sans rien coûter.</p>
+
+<h3>Carte de contexte d'un domaine (le format qui économise les tokens)</h3>
+<div class="tree">## Sport, context card              <i>moins de 60 lignes, la seule chose chargée par défaut</i>
+Purpose · Current goals (3 max) · Key facts (LTHR, PB, no power meter…)
+Rules (e.g. never feed Element into UA learnings)
+Where things live: DB links, repos, Drive folders
+Active projects → Projects view · Open tasks → Tasks view
+Last updated + by which session</div>
+
+<h2 id="github">4 · GitHub : la base d'action</h2>
+<p>Un repo privé sur ton GitHub perso (<code>ac-ua/brain</code>, le nom reste à choisir). Il ne contient que du texte : règles, agents, skills, templates et sauvegardes.</p>
+<div class="tree"><b>ac-ua/brain</b>
+├─ AGENTS.md            <i>constitution : qui tu es (lien), règles dures, table de routage domaine → contexte</i>
+├─ CLAUDE.md            <i>une ligne : @AGENTS.md</i>
+├─ agents/              <i>une fiche par compétence : mission, skills, autonomie, mémoire</i>
+│   ├─ chief-of-staff.md  builder.md  researcher.md  writer.md
+│   └─ video-studio.md  analyst.md  outreach.md
+├─ skills/              <i>format ouvert SKILL.md, lu par Claude, Codex, Gemini, Cursor…</i>
+│   ├─ build-webapp/        <i>stack GitHub + Cloudflare + Supabase, playbook « tiers gratuits » (aujourd'hui dans Téléchargements !)</i>
+│   ├─ build-roadmap/       <i>crée et tient la ligne de roadmap dans Notion, même format partout</i>
+│   ├─ config-guide/        <i>ledger + guide HTML, version perso (chapitres features/screens/data/deploy)</i>
+│   ├─ project-kickoff/     <i>nouveau projet = repo depuis template + ligne Projects + roadmap + guide</i>
+│   ├─ session-close/       <i>écrit les deltas : mémoires, tâches, journal</i>
+│   ├─ daily-brief/  weekly-review/  memory-consolidate/
+│   ├─ video-index/  video-edit-short/  captions/
+│   ├─ training-analysis/   expedition-*-outreach/ (les 3 existants)   spanish-teacher/
+│   └─ …
+├─ domains/             <i>surcouches fines : comment chaque compétence s'applique ici + IDs Notion</i>
+│   └─ work.md expeditions.md sport.md content.md admin.md career.md learning.md
+├─ templates/           <i>repo de projet (AGENTS.md, docs/, ledger), schémas des bases Notion</i>
+├─ backups/             <i>export Notion en markdown (nuit), source des artifacts, snapshots</i>
+├─ .claude/agents → ../agents   .claude/skills → ../skills   <i>adaptateur Claude</i>
+└─ .agents/skills → ../skills                              <i>adaptateur Codex / autres</i></div>
+<p><b>Pour que ces skills soient disponibles partout, y compris sur le Mac pro qui ne peut pas pousser :</b></p>
+<ol>
+<li>Le repo est aussi publié comme <b>plugin marketplace</b> : une commande l'installe sur une nouvelle machine. Il faut que le Mac pro puisse <i>lire</i> ton GitHub perso (voir Q2).</li>
+<li>Sinon, on publie les skills clés comme <b>skills de ton compte claude.ai</b>. Elles arrivent alors automatiquement partout : desktop, cloud, Cowork.</li>
+<li>Les sessions cloud qui travaillent dans le repo les ont nativement.</li>
+</ol>
+<p>On modifie le harnais depuis une session cloud ou depuis l'iPad, jamais depuis le Mac pro.</p>
+
+<h2 id="fichiers">5 · La couche fichiers (entrées et sorties)</h2>
+<p><b>Règle :</b> le Drive est la source des fichiers, et le disque local n'est qu'un cache jetable. Chaque côté a son Drive, et la règle de confidentialité suit le sens des flèches.</p>
+<figure>
+<pre class="mermaid">
+flowchart LR
+  subgraph PRO["CÔTÉ PRO"]
+    DP["Drive UnifyApps<br/>01_Accounts/Client/…"]
+    GP["GitHub Unifyapps-Internal"]
+  end
+  subgraph LOC["SESSION (cache jetable)"]
+    IN["_in/ fichiers lus"]
+    OUT["_out/ fichiers produits"]
+  end
+  subgraph PERSO["CÔTÉ PERSO"]
+    DPe["Drive perso<br/>lecture seule depuis le Mac pro"]
+    N["Notion<br/>pages, pièces jointes de 5 Mo max"]
+    GH["GitHub ac-ua<br/>via session cloud"]
+    AR["Artifacts claude.ai<br/>liés au compte"]
+  end
+  DP -->|"connecteur Drive"| IN
+  DPe -->|"téléchargement"| IN
+  IN --> OUT
+  OUT -->|"connecteur, écriture OK"| DP
+  OUT -->|"docs, tableaux"| N
+  OUT -->|"code, texte"| GH
+  OUT -->|"pages, decks"| AR
+  PERSO -.->|"INTERDIT : perso vers pro"| PRO
+  PRO -.->|"OK : leçons génériques, sans nom de client"| PERSO
+</pre>
+<figcaption>Sorties perso produites sur le Mac pro : elles vont dans Notion, un artifact ou GitHub via une session cloud. Les gros fichiers (vidéo) se traitent dans le cloud ou sur une future machine perso, jamais sur le Mac pro (tu n'y es pas admin, et c'est un poste géré).</figcaption>
+</figure>
+<h3>Ton Drive pro aujourd'hui, et une proposition</h3>
+<p>Environ 84 éléments à la racine, dont <b>73 fichiers en vrac</b>. « Customers & Prospects » s'est arrêté à 8 clients. GeBBS est à la racine, et Trane, IRM, Pernod et Global Payments sont en vrac. Les decks Citi existent en 3 endroits et en 2 formats. Les versions sont dans les noms de fichiers (v0, v0.2, v0.3) au lieu de l'historique de version. On trouve 5 formats de date différents et ton guide d'athlète 70.3 au milieu du pro.</p>
+<div class="tree"><b>My Drive (UnifyApps)</b>
+├─ 00_Inbox                     <i>tout ce qui arrive, trié chaque semaine</i>
+├─ 01_Accounts/
+│   └─ &lt;Client&gt;/  00_Account-plan · 10_Discovery · 20_Solution · 30_Decks · 40_POC · 90_Archive
+├─ 02_Assets/                   <i>decks génériques, concurrence, thought leadership, templates</i>
+├─ 03_Demos/                    <i>enregistrements</i>
+├─ 04_Internal/                 <i>skills feedback, RH, admin</i>
+├─ 99_Archive/
+└─ Google Meet                  <i>automatique, on n'y touche pas</i>
+<i>Nommage : "Client – Sujet" (pas de date ni de version dans le nom ; l'historique Drive fait le travail).</i></div>
+<div class="tree"><b>Drive perso</b>  <i>(même logique)</i>
+00_Inbox · 10_Admin (Visa, Taxes, Housing, Health) · 20_Finance · 30_Expeditions/&lt;expé&gt;
+40_Content (Rushes/&lt;année&gt;-&lt;événement&gt; · Projects · Exports) · 50_Sport · 60_Career · 90_Archive</div>
+
+<h2 id="execution">6 · Exécution : où lancer quoi</h2>
+<div class="scroll"><table>
+<tr><th></th><th>Desktop sur Mac pro</th><th>Session cloud</th><th>iPad / Android</th><th>Mac mini (futur)</th></tr>
+<tr><th>Coût</th><td colspan="2">Même forfait Max, mêmes limites. <b>Pas de surcoût pour la machine cloud.</b> Des sessions en parallèle consomment le quota plus vite.</td><td>client uniquement</td><td>forfait Max</td></tr>
+<tr><th>Navigateur</th><td>✅ panneau intégré + Chrome + contrôle de l'écran</td><td>❌ pas de navigateur. Playwright possible avec un accès réseau élargi, à tester</td><td>—</td><td>✅</td></tr>
+<tr><th>Pousser vers GitHub perso</th><td>❌ interdit</td><td>✅</td><td>via le cloud</td><td>✅</td></tr>
+<tr><th>Connecteurs claude.ai</th><td>✅</td><td>✅ (passent par Anthropic)</td><td>✅</td><td>✅</td></tr>
+<tr><th>Routines planifiées</th><td>Mac allumé requis</td><td>✅ Mac éteint OK, une heure d'intervalle minimum</td><td>—</td><td>✅ toujours allumé</td></tr>
+<tr><th>Claude Code en local</th><td>✅</td><td>—</td><td>❌ pas possible : client seulement (Remote Control, cloud)</td><td>✅, pilotable depuis l'iPad</td></tr>
+</table></div>
+<p><b>Règle d'aiguillage :</b></p>
+<ul>
+<li>Tâche qui a besoin d'un navigateur ou de fichiers pro : <b>local, sur le Mac pro</b>.</li>
+<li>Code perso, harnais, routines : <b>cloud</b>.</li>
+<li>Tu pilotes les deux depuis l'iPad ou le téléphone.</li>
+</ul>
+<p><b>Rendre le Mac mini possible plus tard :</b> rien à préparer, à condition que tout l'état soit dans Notion et GitHub. Le Mac mini devient une machine de plus qui clone <code>brain</code>. Tu le pilotes en Remote Control ou en SSH depuis l'app desktop. Il pourrait aussi héberger les tâches lourdes (vidéo) et, si un jour tu le veux, un middleware.</p>
+<p><b>Plusieurs « clouds » ?</b> Non. Un seul compte suffit. Tu crées un <i>environnement</i> cloud par type de travail (par exemple « perso-build » avec accès à tes repos perso). Comme Notion et GitHub sont la source, il n'y a rien à synchroniser entre sessions.</p>
+
+<h2 id="memoire">7 · Mémoire : cycle de vie d'une session</h2>
+<figure>
+<pre class="mermaid">
+sequenceDiagram
+  participant S as Session (n'importe quelle IA)
+  participant G as GitHub (brain)
+  participant N as Notion
+  S->>G: lit AGENTS.md (règles + routage)
+  S->>N: lit About me (1 page) + carte du domaine
+  S->>N: lit l'état du projet (Projects + Roadmap + tâches ouvertes)
+  Note over S: travail, en chargeant seulement les skills utiles
+  S->>N: écrit les deltas : mémoires, tâches, ligne de roadmap
+  S->>N: ajoute 1 ligne au Session Log
+  Note over N: chaque semaine, consolidation : fusion, nettoyage, mise à jour des cartes
+  N-->>G: chaque nuit, export markdown (sauvegarde, portabilité)
+</pre>
+</figure>
+<ul>
+<li><b>La mémoire automatique de Claude</b> (locale, par dossier) n'est <b>ni partagée entre machines ni disponible dans le cloud</b>. Elle sert de brouillon. Ce qui compte est écrit dans Notion par la skill <code>session-close</code>.</li>
+<li><b>Économie de tokens :</b> au démarrage, une session charge environ 3 petites pages (règles, profil, carte du domaine) et non tout le Notion. Les mémoires sont atomiques (un fait par ligne) et filtrées par domaine.</li>
+<li><b>Les learnings des compétences</b> (par exemple « le guide de config se tient à jour à chaque release ») vivent dans les skills sur GitHub, pas dans la mémoire du domaine. Ils profitent donc à tous les domaines.</li>
+</ul>
+
+<h2 id="connecteurs">8 · Connecteurs, middleware, OpenClaw</h2>
+<div class="fb">
+<div><h4>OpenClaw <span class="verdict v-ch">à éviter pour l'instant</span></h4>
+C'est l'agent personnel open source (anciennement Clawdbot/Moltbot). Gratuit, mais :
+<ul>
+<li><b>Sécurité préoccupante en 2026</b> : 2 CVE critiques, et une marketplace de skills attaquée (des centaines de skills malveillantes qui volaient des données sur macOS).</li>
+<li>Il demande une machine toujours allumée avec un accès complet au système.</li>
+<li>Son accès WhatsApp passe par un protocole non officiel, avec un risque de bannissement.</li>
+</ul>
+À reconsidérer seulement sur un Mac mini dédié et isolé.</div>
+<div><h4>Plusieurs comptes mail et agenda <span class="verdict v-ok">recommandé, en 2 temps</span></h4>
+<b>Étape 1, gratuite et sans infrastructure :</b> consolider côté fournisseur. Les mails carrière et sponsors sont transférés vers ta boîte perso principale avec des libellés, et « Envoyer en tant que » permet de répondre depuis la bonne adresse. Les agendas perso sont partagés vers un seul agenda. Un seul connecteur voit alors tout le perso. Le connecteur natif reste sur le pro.<br/>
+<b>Étape 2, si besoin :</b> nos propres serveurs MCP gratuits sur Cloudflare Workers (tu as déjà un compte), qui gèrent plusieurs comptes Gmail et Outlook. Ils marchent sur claude.ai, desktop, cloud, iPad et ChatGPT, sans rien installer sur le Mac pro. Option prête à l'emploi : <code>google_workspace_mcp</code> (MIT, multi-comptes) sur Cloud Run en offre gratuite.</div>
+<div><h4>Orchestrateur toujours allumé <span class="verdict v-ch">pas nécessaire</span></h4>
+Pour une personne seule, les bonnes pratiques 2026 convergent : <b>une session principale avec des skills, et des routines planifiées</b> plutôt qu'un service qui tourne en continu. Ton orchestrateur, c'est le Chief of Staff lancé par des routines cloud (brief du matin, revue hebdo, consolidation), plus une session que tu ouvres quand tu veux. n8n ou Activepieces ne serviraient que plus tard, pour des automatisations sans IA, sur un Mac mini.</div>
+<div><h4>Slack, WhatsApp</h4>
+Slack : le connecteur est déjà en place (pro). WhatsApp : <b>pas d'intégration fiable et conforme</b> pour un compte personnel. L'API officielle exige un numéro professionnel. On le laisse de côté.</div>
+<div><h4>Sport : intervals.icu</h4>
+C'est une plateforme d'analyse d'entraînement gratuite (financée par des dons). Elle se synchronise automatiquement avec Garmin et calcule forme, fatigue et charge. Elle donne une clé d'API à chaque utilisateur, et des connecteurs MCP communautaires existent. <b>Strava interdit l'usage IA de son API</b>, sauf via son connecteur officiel (réservé aux abonnés payants). Comme Garmin est ta source, Strava n'est pas nécessaire. Pour HYROX et le renforcement : séances enregistrées sur la montre, ou dans Element Logbook.</div>
+</div>
+
+<h2 id="retours">9 · Retours sur ton message, point par point</h2>
+<div class="fb">
+<div><h4>« Un Cloud Brain à part ou lié à mes bases ? » <span class="verdict v-ok">lié</span></h4>Une petite section System réservée à l'IA, et tout le reste branché sur tes bases existantes (voir §3). On restructure Notion au passage, parce que l'audit montre que c'est nécessaire.</div>
+<div><h4>« GitHub = base d'action » <span class="verdict v-ok">oui</span></h4>C'est exactement ça. Les agents par compétence et leurs skills sont dans GitHub. Les spécificités par domaine sont dans un petit fichier <code>domains/</code>, avec la carte de contexte dans Notion.</div>
+<div><h4>Roadmap, changelog et guide de config à chaque build <span class="verdict v-ok">intégré</span></h4>
+<ul>
+<li>Le skill <code>project-kickoff</code> crée tout d'un coup.</li>
+<li>Une seule base <b>Build Roadmap</b> remplace les 3 clones qui ont divergé.</li>
+<li>Le guide de config devient un skill perso, adapté du pattern UA (ledger + guide + vérification).</li>
+<li>Le playbook « tiers gratuits » quitte Téléchargements et devient la référence du Builder.</li>
+</ul></div>
+<div><h4>Artifacts <span class="verdict v-ok">moins fragiles que tu ne le penses</span></h4>Ils appartiennent à ton <b>compte</b> claude.ai, pas à la session ni au PC : tu les retrouves sur claude.ai/code/artifacts depuis n'importe où. Il reste deux protections à ajouter :
+<ol>
+<li>pour les apps, la source vit dans le repo, et l'artifact n'est qu'une vitrine ;</li>
+<li>chaque artifact est enregistré dans la base Projects, et une routine mensuelle copie leur source dans <code>brain/backups/</code>.</li>
+</ol></div>
+<div><h4>Learnings pro → perso <span class="verdict v-ok">oui, filtrés</span></h4>Les leçons de compétence (comment on build, comment on fait un deck) remontent vers les skills perso, <b>sans nom de client ni de donnée client</b>. Dans l'autre sens, une règle dure dans AGENTS.md interdit de faire passer du perso vers le pro (c'est déjà le cas pour Element).</div>
+<div><h4>Sauvegarder le plugin UA en perso <span class="verdict v-ch">je te challenge</span></h4>Copier le repo interne UnifyApps sur ton GitHub perso, c'est sortir de la propriété intellectuelle de l'entreprise. Selon ton contrat, c'est risqué, surtout au moment d'un départ. Je propose plutôt d'<b>extraire les méthodes génériques en les réécrivant</b> dans tes skills perso : demo-studio, le pattern du guide de config, la méthode de deck, l'architecture d'agents. On le fait au fil de l'eau, sans copier de code ni de contenu client. Résultat : tu gardes le savoir-faire, pas les actifs de l'entreprise.</div>
+<div><h4>Données UA dans ton Notion perso <span class="verdict v-ch">à décider</span></h4>Ton Notion contient un mini-CRM UA : 135 opportunités, avec des transcriptions d'appels clients. Tu dis qu'un peu de pro dans le perso, ce n'est pas grave, mais des données clients dans un espace personnel posent le même problème quand tu partiras. Je recommande de les déplacer vers le Drive pro et de ne garder dans Notion que les tâches et les pointeurs. Voir Q8.</div>
+<div><h4>Un cockpit unique avec un filtre pro/perso <span class="verdict v-ok">oui</span></h4>Une seule base Tasks avec un champ Context (Work/Perso), et une page Home avec deux vues. C'est ton « interrupteur ». Une vraie app Cloudflare + Supabase viendra plus tard, sur la même base, quand on saura quoi y afficher.</div>
+<div><h4>Projects claude.ai <span class="verdict v-ok">secondaires</span></h4>Ils deviennent optionnels. Ils restent pratiques pour discuter sur le téléphone avec un contexte fixe, mais la source reste Notion et GitHub. À noter : Anthropic teste des « Projects » dans Claude Code (bêta), qui coordonnent des sessions cloud parallèles sur tes repos. À évaluer plus tard.</div>
+<div><h4>Langue <span class="verdict v-ok">anglais pour la structure</span></h4>Tous les noms, propriétés et fichiers sont en anglais. Nos conversations restent en FR ou en EN. Attention : renommer les statuts de Sponso (« Contacté », « relancé ») oblige à mettre à jour tes 3 skills d'outreach en même temps.</div>
+</div>
+
+<h2 id="migration">10 · Plan de migration (non exécuté)</h2>
+<p>On pose le squelette une fois, puis chaque domaine migre <b>quand on y travaille</b> (voir l'analyse critique, point 9). Tout l'avancement est suivi dans la Brain Roadmap.</p>
+<div class="phase"><div class="ph">P0 · 1 h</div><div><b>Sécuriser.</b><ul><li>Toi : la clé FileVault et les identifiants hors de Notion et de Téléchargements.</li><li>Moi : copie brute des 55 mémoires locales dans une page Notion « Migration inbox ».</li><li>Moi : le playbook « tiers gratuits » mis à l'abri.</li></ul></div></div>
+<div class="phase"><div class="ph">P1 · 1 j</div><div><b>Squelette (brain v0.1).</b><ul><li>Repo <code>ac-ua/brain</code> créé en session cloud : AGENTS.md, CHANGELOG, 3 agents (chief-of-staff, builder, content-studio), skills de base (session-close, project-kickoff, build-webapp avec le playbook, config-guide, build-roadmap).</li><li>Notion : System (About, Memories enrichie, Session Log, Brain Inbox), Home, Tasks, Projects, Build Roadmap fusionnée, template de domaine.</li><li>Environnement cloud <code>perso-general</code>, avec un test d'écriture sur le Drive perso via rclone.</li><li>Test multi-comptes mail.</li></ul></div></div>
+<div class="phase"><div class="ph">P1 bis</div><div><b>Exercice « Mac perdu ».</b> Reprendre une vraie tâche depuis l'iPad et une session cloud seulement. Mesure du budget de démarrage de session.</div></div>
+<div class="phase"><div class="ph">Au fil de l'eau</div><div><b>Migration par domaine, au moment où on y travaille.</b><ul><li>Expeditions + Content en premier : carte de contexte, Sponso, Camp de Base dans la roadmap commune, stratégie de contenu, format du catalogue de rushes.</li><li>Puis Sport (intervals.icu, Strava), Learning (app espagnol dans un repo), Career, Admin, et le Work (rangement du Drive pro avec une liste de déplacements à valider).</li><li>Archivage de Sprinklr et des vieilles pages, passage des noms en anglais.</li></ul></div></div>
+<div class="phase"><div class="ph">Routines</div><div><b>Une fois le squelette stable :</b><ul><li>brief du matin dans Home ;</li><li>brain-maintenance chaque semaine (Brain Inbox → PR) ;</li><li>learnings pro → perso toutes les 2 semaines ;</li><li>copie du plugin UA et rétro du brain chaque mois ;</li><li>rappel de l'export Notion manuel chaque mois ;</li><li>sauvegarde de la source des artifacts chaque mois.</li></ul></div></div>
+<div class="phase"><div class="ph">Plus tard</div><div>Mac mini (vidéo, modèles locaux), Resolve Studio, domaine Finance (appartements, budget), Social/Family, app cockpit dédiée, outils de publication, prospection automatisée.</div></div>
+
+<h2 id="questions">11 · Questions encore ouvertes</h2>
+<ol class="q">
+<li>Mac mini : est-ce que tu l'envisages, et quand ? Ça décide de la date de démarrage du pipeline vidéo et des modèles locaux.</li>
+<li>Orthographe exacte de ta boîte carrière (<code>aurelien.pro@gmail.com</code> ?).</li>
+</ol>
+<h3>Backlog du brain (noté, pas encore lancé)</h3>
+<ul><li><b>Skill « vidéo explicative / podcast »</b> : généraliser la méthode de ce podcast, de la prépa Vocca et des explications GeBBS (script à deux voix, visuels avec révélation progressive, vérification de chaque clip, MP4 + MP3 + sous-titres).</li></ul>
+</div>

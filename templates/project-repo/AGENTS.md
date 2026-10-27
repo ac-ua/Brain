@@ -1,0 +1,28 @@
+# AGENTS.md — PROJECT
+
+PURPOSE (one line). Owner: Aurélien. Domain: DOMAIN. Part of the brain (`ac-ua/brain`): its `AGENTS.md` hard rules
+apply here too (autonomy, confidentiality, secrets, voice).
+
+## Context
+- Notion: Projects row `PROJECT_PAGE_ID`; roadmap = Build Roadmap filtered on this project.
+- Configuration guide: `docs/config-guide/guide.html` (published at ARTIFACT_URL), generated from `docs/build-ledger.json`.
+- Cloud environment: `ENVIRONMENT` (holds this app's secrets).
+
+## Stack
+STACK (default: static front on Cloudflare Pages, Functions under `/api/*`, Supabase). Free-tier rules:
+`ac-ua/brain` → `skills/build-webapp`.
+
+## Rules
+- Work on the session branch. **Every branch commit starts with `[CF-Pages-Skip]`.** Release = PR merged into `main`.
+- Docs, scripts, workflows or data only: squash-merge with a `[CF-Pages-Skip] …` title.
+- Test in the session before shipping: CHECKS.
+- Migrations applied before merging the code that uses them.
+- After each release: Build Roadmap row, ledger (`ledger.py change …`), guide refresh.
+- Secrets: never in the repo or the chat. Aurélien pastes them into Cloudflare / GitHub / Supabase.
+- Anything uncertain: `TODO(Aurélien)`.
+
+## Layout
+| Path | What |
+|---|---|
+| `docs/build-ledger.json` | record of features, screens, data, deploy, decisions, open items, changes |
+| `docs/config-guide/` | the guide and its screenshots |

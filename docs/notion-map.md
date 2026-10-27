@@ -71,7 +71,7 @@ linked views of its Projects and open Tasks; the domain's existing pages sit und
 | Idee sponsors · Idee recherche | `37319ca79893804fbd90c46c840c92f4` · `3a419ca7989380c58078d01c44481dcd` | sponsor / research outreach |
 | 🇪🇸 Español hub | `3dc19ca7989381c78132e747f403f832` (Producción, Recomendaciones, Catálogo, Diario: ids in the skill) | spanish-teacher |
 | 🏋️ Element Logbook project page | `3ec19ca7989381e79a04f8cb11087cb1` | builder (Element) |
-| Old roadmaps (copied into Build Roadmap, to archive) | Camp de Base `709d23a467e44037918e3a3da9f99d68` · Element `094a1fd8f76148938cdd569a19fc3f82` · Spanish `3d919ca798938023ac9ff5f3298a5c29` | none after the merge |
+| Old roadmaps (all 385 rows copied into Build Roadmap; databases now in 🗄️ Archive) | Camp de Base `709d23a467e44037918e3a3da9f99d68` · Element `094a1fd8f76148938cdd569a19fc3f82` · Spanish `3d919ca798938023ac9ff5f3298a5c29` | none after the merge |
 
 ## Reorganisation of 2026-10-27 (after Aurélien's native export)
 Nothing was deleted; page ids are unchanged, so old links still work.
@@ -91,6 +91,7 @@ Nothing was deleted; page ids are unchanged, so old links still work.
 | Sprinklr, 2024 database, Vatnajokull, Kungerlusen, Descente du Rhone, Admin › Archive checklists, Perso (now empty) | various | 🗄️ Archive |
 | Expeditions — context card | 🧭 Expeditions | 🗄️ Archive (its content now heads 🧭 Expeditions) |
 | 🧳 Migration inbox, 📦 Handoff | workspace root | ⚙️ System |
+| Old roadmaps: Camp de Base page + database, Element and Spanish databases | Expeditions, Element Logbook, Español | 🗄️ Archive (rows copied; Build Roadmap views replace them on each project page) |
 
 Left in place on purpose: Sponso and its siblings (outreach skills), the 401k/healthcare call (a toggle block inside
 Work notes, not a movable page), the UnifyApps inline Projects database (work data).

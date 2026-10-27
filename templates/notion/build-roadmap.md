@@ -8,7 +8,7 @@ Element Logbook roadmap schema, in English, shared by every build. One row per r
 | Priority | select | P0 Now · P1 Next · P2 Later · P3 Someday |
 | Value | select | High · Medium · Low |
 | Effort | select | S · M · L |
-| Area | select | Harness · Notion · Routines · Infra · Domains · Skills (add per project as needed) |
+| Area | select | Brain: Harness · Notion · Routines · Infra · Domains · Skills. Camp de Base: Inventory · Expeditions · Partnerships · Comms & content · Accounting · Field mode. Element: Logging · Programming & coach · Progress & stats · Schedule & Mindbody · Exercise library · Admin & settings. Spanish: Vocabulary · Grammar · Sync & data · Tutor & curriculum. Shared: App & UX · Production & infra · Integrations. Add per project as needed. |
 | Detail | text | |
 | Version | text | |
 | Shipped on | date | |

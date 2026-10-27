@@ -31,4 +31,4 @@ programming", "Migrate to Supabase auth".
 - Starting work → `In progress`. Shipped → `Done` + `Version` + `Shipped on`. Abandoned → `Dropped` (never delete).
 - Fetch the data source before writing; use the project view to read, not SQL queries.
 - A project shared outside, or with truly specific fields, gets its own database built from the same schema.
-- Existing per-project roadmaps (Camp de Base, Element, Spanish) move here during each domain's migration, not before.
+- The old per-project roadmaps (Camp de Base, Element, Spanish) were merged here on 2026-10-27 (385 rows) and archived.

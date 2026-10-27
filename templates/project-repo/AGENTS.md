@@ -17,7 +17,8 @@ STACK (default: static front on Cloudflare Pages, Functions under `/api/*`, Supa
 - Docs, scripts, workflows or data only: squash-merge with a `[CF-Pages-Skip] …` title.
 - Test in the session before shipping: CHECKS.
 - Migrations applied before merging the code that uses them.
-- After each release: Build Roadmap row, ledger (`ledger.py change …`), guide refresh.
+- After each release: Build Roadmap row, ledger (`ledger.py change …`), guide refresh. The release commands live in
+  `docs/RELEASE.md` (skill `release-webapp`); what a session needs in `docs/environment.json` (`cloud-env-preflight`).
 - Secrets: never in the repo or the chat. Aurélien pastes them into Cloudflare / GitHub / Supabase.
 - Anything uncertain: `TODO(Aurélien)`.
 

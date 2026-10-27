@@ -35,7 +35,11 @@ Facts never go to the Brain Inbox, ways of working never go to Memories.
 | Summary | 1–3 sentences, outcome first |
 | Changes | what was created or changed, with links (PRs, pages, rows); what is left open |
 
-## 4. Tell Aurélien
+## 4. Work continues elsewhere?
+If the next step needs another session (a restart, another environment, the work Mac, later), write the handoff
+with `session-handoff` (note outside the session + prompt to paste) before archiving.
+
+## 5. Tell Aurélien
 Three lines max: what changed, what's waiting on him, where to look.
 
 ## Work sessions
@@ -47,3 +51,5 @@ on the session's results; it does what follows.
 - Durable learnings (platform facts, practices, pitfalls) → Memories, Domain Work.
 - Distil: decisions and facts, not transcripts. Never secrets; demo-environment logins already on a page stay there, never copied elsewhere.
 - Pro *files* stay in the work Drive; Notion holds the context and the links.
+- Lessons written to a local session memory (deck lessons, client preferences) are not saved: copy them to
+  Memories or, for a way of working, to the Brain Inbox.

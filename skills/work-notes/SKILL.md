@@ -22,6 +22,10 @@ session. Template and examples: [`references/template.md`](references/template.m
 Client contacts are not rows in People: they go in the brief's People section (name, title, role in the deal).
 
 ## Steps
+0. **Recordings** (mp4, m4a, a meeting with no transcript): transcribe locally on the work Mac (`mlx-whisper`, see
+   `skills/video-edit/references/tooling.md`), and for screen-shared calls take one frame a minute to tie what was
+   shown to what was said. The transcript then goes through the steps below like any other; the recording stays in
+   the work Drive.
 1. **Classify the input.** Client meeting or deal work → Opportunity. Internal or cross work → Project. Several
    topics in one transcript → split them. A durable lesson (platform fact, practice, pitfall) → also Memories.
 2. **Find the page.** Search Notion by account and opportunity name. A page exists for most topics: enrich it.
@@ -40,7 +44,12 @@ Client contacts are not rows in People: they go in the brief's People section (n
 6. **Spin-offs.** Aurélien's own next steps → Tasks (Context Work, Due if stated, link the page in the task).
    Durable learnings → Memories (Domain Work, Scope Work), one row each, deduplicated. A change to how work is done
    → Brain Inbox.
-7. **Reply in three lines:** what was written where (links), what changed in the brief, what needs his eye
+7. **Account questions** ("what does X know of the platform", "which calls did he attend", "a short paragraph on
+   this account, same style as the other one"): answer from the brief and the meeting log, citing the entries;
+   short blurbs go through `message-drafting`.
+8. **Work that continues in another session:** add a `Handoff` toggle under the brief (`session-handoff`): state,
+   next steps, where the files are, the prompt for the next session. Remove it once picked up.
+9. **Reply in three lines:** what was written where (links), what changed in the brief, what needs his eye
    (unclear attendee, conflicting figure, Activity Level change).
 
 ## Rules
@@ -59,4 +68,6 @@ Client contacts are not rows in People: they go in the brief's People section (n
 
 ## Related
 `cep-workbook-filler` (detailed MEDDPICC account plan in the work Drive; the brief links to it) ·
-`poc-use-case-filler` · `unifyapps-format` · `explainer-video` · `session-close` (Work sessions end with this skill).
+`poc-use-case-filler` · `demo-prep` · `case-for-change` · `message-drafting` · `unifyapps-format` (or the team
+plugin's `unifyapps-brand-deck`) · `explainer-video` · `session-handoff` · `session-close` (Work sessions end with
+this skill).

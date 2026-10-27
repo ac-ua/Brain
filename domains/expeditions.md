@@ -20,6 +20,9 @@ field mode, calendar, nutrition). The repo's `CLAUDE.md` and `docs/HANDOFF.md` w
 `scripts/apply_supabase.py` **before** merging the code that uses them, one Build Roadmap row per release.
 Work in the `app-base-camp` environment (it holds the app's secrets).
 
+**builder — routes.** Planned GPX tracks, stages and variants for an expedition: skill `gpx-route`; the result is
+imported into Camp de Base's Route tab.
+
 **chief-of-staff — outreach and deadlines.** Sponsor, research and follow-up outreach run through three skills in this
 repo (`skills/expedition-sponsor-outreach`, `skills/expedition-research-outreach`, `skills/expedition-followup-outreach`). They
 create **Gmail drafts only** and update Sponso; Aurélien sends. Gmail connector = the sponsors mailbox.

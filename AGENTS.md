@@ -26,6 +26,10 @@ with no working notes. Don't edit a page he has already reviewed without asking.
   ends: the deal brief on the CRM opportunity page, durable learnings to Memories (Domain Work). Distilled, never raw
   dumps; nothing pro may live only on the work Mac or in a session.
 - Never move pro *files* to personal storage through the cloud. Pro work runs in a local session on the work Mac.
+- **Two skill repos, never mixed.** Aurélien's own skills, pro ones included (demos, decks, messages, account work),
+  live in `ac-ua/brain`. The shared team repo `Unifyapps-Internal/unifyapps-builder-skills` is common to all the
+  Solution Architects: it only receives learnings about what it already covers (building and configuring on the
+  platform), through its own loop. Never add his skills or anything unrelated to it.
 - Never secrets, anywhere.
 
 ### Secrets
@@ -78,15 +82,17 @@ Agents are capabilities, the same in every domain (`agents/`). Skills are open `
 
 | Agent | Does | Skills |
 |---|---|---|
-| `chief-of-staff` | session protocol, tasks, triage, planning, outreach drafts, the brain's own upkeep | session-start, session-close, brain-inbox, brain-maintenance, expedition-sponsor-outreach, expedition-research-outreach, expedition-followup-outreach |
-| `builder` | web apps, deploys, roadmaps, config guides, new projects | build-webapp, build-roadmap, config-guide, project-kickoff |
-| `content-studio` | content strategy, scripts, posts, explainers | brain-inbox, explainer-video (more as Content migrates) |
+| `chief-of-staff` | session protocol, handoffs, tasks, triage, planning, messages and outreach drafts, the brain's own upkeep | session-start, session-close, session-handoff, brain-inbox, brain-maintenance, message-drafting, expedition-sponsor-outreach, expedition-research-outreach, expedition-followup-outreach |
+| `builder` | web apps, environments, releases, deploys, roadmaps, config guides, new projects | build-webapp, cloud-env-preflight, release-webapp, build-roadmap, config-guide, project-kickoff, session-handoff |
+| `content-studio` | content strategy, scripts, posts, explainers, video edits | brain-inbox, explainer-video, video-edit |
 
 Domain skills, loaded directly in a session (no agent needed):
 | Domain | Skills |
 |---|---|
 | Learning | `spanish-teacher` |
-| Work (local session, work Mac) | `work-notes` (transcripts and session results → CRM pages, briefs, tasks, learnings), `unifyapps-format`, `cep-workbook-filler`, `poc-use-case-filler`, `unifyapps-rfp-rfi-response-template`, `explainer-video` (client and account explainers; outputs stay in the work Drive); the team plugin `Unifyapps-Internal/unifyapps-builder-skills` stays installed separately |
+| Expeditions | `gpx-route` (planned GPX tracks, stages, variants, reconstructions → Camp de Base) |
+| Career | `interview-prep` (from the master profile; also career and visa forms), `message-drafting` |
+| Work (local session, work Mac) | `work-notes` (transcripts and session results → CRM pages, briefs, tasks, learnings), `demo-prep` (brief → approach → build → demo pack → write-back), `case-for-change` (storyline, exec recap, discovery questions, competitive angle), `message-drafting` (client recaps, Slack, replies), `cep-workbook-filler`, `poc-use-case-filler`, `unifyapps-rfp-rfi-response-template`, `explainer-video` (outputs stay in the work Drive); slides with the team plugin's `unifyapps-brand-deck` (`unifyapps-format` as fallback). The team plugin `Unifyapps-Internal/unifyapps-builder-skills` stays installed separately |
 
 Work in one session that loads skills. Call a sub-agent only for heavy, isolated work (research, video, audits):
 a sub-agent costs much more tokens than a skill.
@@ -95,7 +101,8 @@ a sub-agent costs much more tokens than a skill.
 **Start** (`skills/session-start`): this file → About me → the domain card → the project state (Projects row,
 roadmap view, open tasks). Nothing else by default. **Budget: ~8–10k tokens** before real work starts.
 **Close** (`skills/session-close`): write the deltas (Memories, Tasks, Build Roadmap, Brain Inbox), then one
-Session Log row. Do it before ending any session that changed something.
+Session Log row. Do it before ending any session that changed something. Work that continues in another session
+gets a handoff note outside the session and a prompt to paste (`skills/session-handoff`).
 
 ## Where work runs
 | Surface | Use for | Limits |

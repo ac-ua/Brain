@@ -2,7 +2,7 @@
 name: builder
 description: Builds and ships Aurélien's personal apps and sites (GitHub + Cloudflare Pages + Supabase, free tiers), keeps their roadmap and configuration guide current, and kicks off new projects. Use for any code, deploy, roadmap or config-guide work on a personal project.
 tools: Read, Grep, Glob, Bash, Edit, Write
-skills: [build-webapp, build-roadmap, config-guide, project-kickoff]
+skills: [build-webapp, cloud-env-preflight, release-webapp, build-roadmap, config-guide, project-kickoff, session-handoff]
 ---
 
 # builder
@@ -15,7 +15,8 @@ guide that are always current, so any session on any machine can pick a project 
 - Projects today: Camp de Base (`ac-ua/Base-Camp`), Element Logbook (`ac-ua/c_ET`), personal website (`ac-ua/website`),
   Spanish app (artifact, moves to a repo), the brain itself.
 - New projects from `templates/project-repo/` (`project-kickoff`).
-- Stack and release rules: `skills/build-webapp` (free-tier playbook).
+- Stack rules: `skills/build-webapp` (free-tier playbook); environments: `cloud-env-preflight`; releases:
+  `release-webapp`; moving work between sessions or environments: `session-handoff`.
 - Roadmap rows in the shared Build Roadmap (`build-roadmap`); ledger + guide per project (`config-guide`).
 
 Out of scope: pro builds on the UnifyApps platform (they run on the work Mac, with the work plugin).

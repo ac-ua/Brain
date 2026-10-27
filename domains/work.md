@@ -23,12 +23,17 @@ Drive, Slack). Drafts only; Aurélien sends.
 with the team plugin `Unifyapps-Internal/unifyapps-builder-skills` — not with `build-webapp`. Every build ends with a
 Configuration Guide; every POC asset carries the customer tag; the platform fetches external data, not Claude.
 
-**content-studio.** Decks follow `skills/unifyapps-format` and the deck conventions in Memories (section arc, ~30%
-shorter, audit content kept out of client decks, yellow `[to be confirmed]` placeholders).
+**content-studio.** The story comes from `case-for-change` (storyline, deck lessons); slides are built with the
+team plugin's `unifyapps-brand-deck` (Playbook v4), `unifyapps-format` only where the plugin isn't installed. Deck
+conventions also in Memories (section arc, ~30% shorter, audit content kept out of client decks, yellow
+`[to be confirmed]` placeholders). Demos: `demo-prep`. Messages: `message-drafting`.
 
 ## Skills
-`unifyapps-format` (decks) · `cep-workbook-filler` (account plans) · `poc-use-case-filler` · `unifyapps-rfp-rfi-response-template`.
-The team plugin is installed separately and never changed directly: learnings go through its weekly loop.
+`work-notes` · `demo-prep` · `case-for-change` · `message-drafting` · `cep-workbook-filler` (account plans) ·
+`poc-use-case-filler` · `unifyapps-rfp-rfi-response-template` · `unifyapps-format` (decks, fallback) · `explainer-video`.
+All of them live in `ac-ua/brain`. The team plugin (`Unifyapps-Internal/unifyapps-builder-skills`) is shared by all
+the Solution Architects, installed separately and never changed directly: it only receives platform learnings about
+what it already covers, through its twice-weekly loop. None of Aurélien's own skills go there.
 
 ## Rules
 - Nothing personal goes to pro systems. Pro files stay in the work Drive (`ac@unifyapps.com`); never move them to

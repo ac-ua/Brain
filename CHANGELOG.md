@@ -3,7 +3,7 @@
 The brain is versioned like any project: `v0.x` while the skeleton settles. Each release is a merged PR on
 `ac-ua/brain` and a row in the Notion Build Roadmap (Project = Brain).
 
-## v0.4.0 — skills from the session audit (2026-10-28)
+## v0.4.0 — skills from the session audit (2026-10-27)
 From an audit of 55 Claude Code sessions (17 Aug – 27 Oct 2026): repeated tasks became skills, frictions became
 fixes.
 - New skills: `session-handoff` (resume note outside the session, environment inventory, smoke test, prompt to

@@ -26,6 +26,7 @@ Notion copy: ⚙️ System › **Sessions playbook** (`40619ca79893812a866ed99e2
 | Driving any of the above from iPad or phone | Claude app → cloud sessions, or Remote Control to the work Mac | — | — | — |
 
 Cloud environments stay three: `perso-general` (default), `app-element`, `app-base-camp`. None per domain.
+In the Claude app they are shown as **Default**, **Logbook** and **Base Camp**; ids in `skills/brain-maintenance`.
 
 claude.ai Projects are frozen: their content is copied into Notion (one page per Project under its domain); no new
 Projects. Quick chats and Cowork keep no state: anything worth keeping goes to Notion or continues in a cloud session.
@@ -42,5 +43,7 @@ Projects. Quick chats and Cowork keep no state: anything worth keeping goes to N
 ## Left panel
 - Only live work: about one session per active project plus the active pro accounts.
 - A session blocked on Aurélien is not left open: its action becomes a Task, then the session is archived.
-- Weekly sweep (part of the weekly brain-maintenance routine): archive finished sessions, turn loose ends into Tasks.
+- Weekly sweep, every Friday ~01:00 America/New_York (`skills/brain-maintenance`): archives finished and blocked
+  sessions (blocked ones become Tasks first) and opens one empty session per planned piece of work. Keep a session
+  out of the sweep by starting its title with `Keep ·`.
 - Scheduled routines run in their own sessions ([`routines.md`](routines.md)); they don't stay in the panel.

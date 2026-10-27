@@ -3,6 +3,13 @@
 The brain is versioned like any project: `v0.x` while the skeleton settles. Each release is a merged PR on
 `ac-ua/brain` and a row in the Notion Build Roadmap (Project = Brain).
 
+## v0.2.1 — weekly brain maintenance (2026-10-27)
+- Skill `brain-maintenance`, run every Friday ~01:00 America/New_York by a cloud scheduled task: applies accepted
+  Brain Inbox rows as one merged PR, archives finished or blocked sessions (blocked ones become Tasks), opens one
+  empty session per planned piece of work (max 5), and sends a French recap.
+- `docs/routines.md` (active), `docs/sessions.md` (left panel, `Keep ·` titles), `chief-of-staff` and `AGENTS.md`
+  updated.
+
 ## v0.2.0 — full migration (in progress)
 - Account skills moved into the repo: the 3 expedition outreach skills, `spanish-teacher`, and the pro skills
   (`unifyapps-format`, `cep-workbook-filler`, `poc-use-case-filler`, `unifyapps-rfp-rfi-response-template`).

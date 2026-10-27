@@ -47,5 +47,11 @@ URLs are `https://app.notion.com/p/<id>`. Data sources (`collection://…`) are 
 | Camp de Base — Roadmap & changelog | database | `collection://6aec51dc-a4b4-4f69-be60-341dea003e59` | merges into Build Roadmap at the Expeditions migration |
 
 ## Domain context cards
-None yet. Each is created from the Domain template when its domain is migrated; add its ID here and in the routing
-table of `AGENTS.md`.
+Created from the Domain template when a domain is migrated; each has linked views of its Projects and open Tasks.
+
+| Domain | Card | ID | Views |
+|---|---|---|---|
+| Expeditions | Expeditions — context card (child of 🧭 Expeditions) | `40619ca7989381628da7f60326404e83` | `view://40619ca7-9893-81f9-879e-000c4a6b6dce` projects · `view://40619ca7-9893-810a-83c2-000cae8a99b5` tasks |
+| Content | 🎬 Content (workspace top level) | `40619ca798938123b03de86d3c1a9f8e` | `view://40619ca7-9893-81f8-b93b-000cc00eb165` projects · `view://40619ca7-9893-81fd-a19b-000ce2ad4798` tasks |
+
+Other domains: not migrated. Add each new card here and in the routing table of `AGENTS.md`.

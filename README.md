@@ -9,8 +9,8 @@ Aurélien's AI workspace, independent of any machine and of any AI.
 | Execution | any AI that reads `AGENTS.md` / `SKILL.md` and speaks MCP | *do it* |
 | Files | Google Drive (personal and work, kept apart) | inputs and outputs |
 
-This repo holds only text we write ourselves. It is never a copy of Notion, and it holds no secrets, no client names
-and no pro data. Full design: [`docs/BLUEPRINT.md`](docs/BLUEPRINT.md). Notion IDs: [`docs/notion-map.md`](docs/notion-map.md).
+This repo holds only text we write ourselves. It is never a copy of Notion, and it holds no secrets. Rules and skills
+hold no client names or pro data; archived docs in `docs/` are kept verbatim. Full design: [`docs/BLUEPRINT.md`](docs/BLUEPRINT.md). Notion IDs: [`docs/notion-map.md`](docs/notion-map.md).
 
 ## Layout
 ```

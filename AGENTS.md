@@ -22,7 +22,8 @@ with no working notes. Don't edit a page he has already reviewed without asking.
 - Nothing personal ever goes to pro systems (work Drive, work Slack, `Unifyapps-Internal/*`, work Notion pages).
 - From pro to personal, only **generic lessons**, rewritten, with no client names and no client data.
 - Never move pro files to personal storage through the cloud. Pro work runs in a local session on the work Mac.
-- This repo contains no client names, no pro data, no secrets.
+- Rules, agents, skills and templates contain no client names, no pro data, no secrets. Archived docs (handoffs,
+  the blueprint source) are kept verbatim, client names included (Aurélien's call, 2026-10-27). Never secrets.
 
 ### Secrets
 Secrets live in Aurélien's password manager, never in Notion, GitHub, a memory or the chat. If you need one, ask him
@@ -54,9 +55,9 @@ and the Migration inbox, and offer to migrate the domain (`docs/BLUEPRINT.md` §
 | Domain | Notion context card | Harness file | Main agent |
 |---|---|---|---|
 | Work | not migrated (pro data stays in the work Drive) | `domains/work.md` | chief-of-staff |
-| Expeditions | not migrated | `domains/expeditions.md` | builder, chief-of-staff |
+| Expeditions | Expeditions — context card (`40619ca7989381628da7f60326404e83`) | `domains/expeditions.md` | builder, chief-of-staff |
 | Sport | not migrated | `domains/sport.md` | builder |
-| Content | not migrated | `domains/content.md` | content-studio |
+| Content | 🎬 Content (`40619ca798938123b03de86d3c1a9f8e`) | `domains/content.md` | content-studio |
 | Admin & Finance | not migrated | `domains/admin-finance.md` | chief-of-staff |
 | Career | not migrated | `domains/career.md` | chief-of-staff |
 | Learning | not migrated | `domains/learning.md` | builder |

@@ -13,3 +13,5 @@ The brain is versioned like any project: `v0.x` while the skeleton settles. Each
 - Templates: project repo (AGENTS.md, build ledger, config guide skeleton) and the 5 Notion database schemas.
 - Docs: blueprint (text + HTML source), Notion map, phase 0 handoff. Explainer-video kit in `tools/`.
 - Claude and Codex adapters (symlinks).
+- Expeditions and Content migrated: Notion context cards with Projects/Tasks views, routing table updated.
+- Archived docs (handoff, blueprint source) kept verbatim.

@@ -1,7 +1,8 @@
 # Domain: Content
 
 Aurélien's personal content: short-form video first (TikTok, Instagram), expedition films, posts, the personal website,
-explainers and podcasts. Notion context card: not migrated yet (Expeditions + Content migration).
+explainers and podcasts. Notion context card: **🎬 Content** (`40619ca798938123b03de86d3c1a9f8e`). It holds the goals and facts;
+this file only says how each capability works here. Old TikTok strategy notes: Notion page `dc84acf748974d718ecf625a04070a38`.
 
 ## Where things live
 | What | Where |

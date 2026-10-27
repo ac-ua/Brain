@@ -68,12 +68,21 @@ Planned work only:
 Group them **one session per project or topic, 5 at most** (most urgent first). Skip a group that already has a
 live session for the same work. Call `list_environments`, then `create_session`:
 
-| Work | Environment | Repo |
+| Work | Environment (docs) | Repo |
 |---|---|---|
 | Element Logbook | `app-element` | `ac-ua/c_ET` |
 | Camp de Base | `app-base-camp` | `ac-ua/Base-Camp` |
 | Personal website | `perso-general` | `ac-ua/website` |
 | Brain, and any perso topic without code | `perso-general` | `ac-ua/brain` |
+
+The environments have other display names. Pick by id; fall back to the display name only if the id is gone.
+**Never use the older `Logbook` environment** (`env_01TPGpjpSxfgD5jwYJH8LvY8`, created 2026-10-26).
+
+| Docs name | Display name | Id |
+|---|---|---|
+| `perso-general` | Default | `env_019TW5YFcoCLXFd8PNyjobYe` |
+| `app-element` | Logbook (created 2026-10-27) | `env_01TBxwoTQ3zoTd4n8L9NQHRg` |
+| `app-base-camp` | Base Camp | `env_01HhuNJ5ge9FDJSfCxTWBiXH` |
 
 - Title `Area · subject`, as in [`docs/sessions.md`](../../docs/sessions.md) (`Element · v175 pick your team`).
 - **No initial prompt**: nothing runs until Aurélien writes in it.

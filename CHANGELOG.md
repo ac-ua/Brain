@@ -14,6 +14,8 @@ The brain is versioned like any project: `v0.x` while the skeleton settles. Each
 - Skill `explainer-video`: two-voice podcast with progressive-reveal slides (stock voices, pronunciation dictionary,
   per-clip check; MP4 with subtitles, MP3, SRT, script), generalised from the kit in `tools/explainer-video/`, which
   stays as the reference episode. Usable from Content and from Work (work Mac, outputs in the work Drive).
+- `docs/routines.md`: every routine (cloud, GitHub Actions, Supabase pg_cron, work Mac), active and planned, and how
+  to add one.
 
 ## v0.1.0 — skeleton (2026-10-27)
 - `AGENTS.md` constitution: hard rules (autonomy, confidentiality, secrets, voice), routing table, session protocol,

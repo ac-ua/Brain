@@ -145,7 +145,7 @@ Large media is processed in the cloud or on a future personal machine, never on 
 | P1 | Skeleton (`v0.1.0`): this repo; Notion System, Home, Tasks, Projects, Build Roadmap, Domain template | done (PR) |
 | P1 bis | "Mac lost" drill: resume a real task from the iPad and a cloud session only; measure the start budget | to do |
 | Rolling | Each session migrates the domain it touches: read its old memories, write its card, tick it in the roadmap. Expeditions + Content first, then Sport, Learning, Career, Admin, Work | to do |
-| Routines | morning brief; weekly brain-maintenance; pro learnings every 2 weeks; monthly plugin copy, retro, export reminder, artifact source backup | idea |
+| Routines | morning brief; weekly brain-maintenance; pro learnings every 2 weeks; monthly plugin copy, retro, export reminder, artifact source backup. All routines: [`routines.md`](routines.md) | idea |
 | Later | Mac mini (video, local models), Resolve Studio, Finance domain, cockpit app, publishing tools | idea |
 
 ## Backlog

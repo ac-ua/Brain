@@ -45,5 +45,5 @@ on the session's results; it does what follows.
   people, numbers, solution, dated decisions, open questions, next steps, assets (artifact links, config guides,
   Drive files), one line in the meeting log. Create the opportunity (and account) if missing.
 - Durable learnings (platform facts, practices, pitfalls) → Memories, Domain Work.
-- Distil: decisions and facts, not transcripts. Never secrets (demo logins stay in the password manager).
+- Distil: decisions and facts, not transcripts. Never secrets; demo-environment logins already on a page stay there, never copied elsewhere.
 - Pro *files* stay in the work Drive; Notion holds the context and the links.

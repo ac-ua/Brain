@@ -47,7 +47,8 @@ Client contacts are not rows in People: they go in the brief's People section (n
 - Distil, don't dump: decisions, facts, numbers and next steps in the brief; raw text only in the nested toggle.
 - Separate what the client said, what UnifyApps proposed and what Claude suggests; never record a suggestion as a
   decision. Unsure → `[to confirm]`.
-- Never secrets: demo-environment logins, API keys and passwords stay in the password manager.
+- Never secrets: API keys and real passwords stay in the password manager. Demo-environment logins Aurélien wrote on
+  a page stay where they are (his call); don't remove them and don't copy them into the brief or anywhere else.
 - Existing content written by Aurélien stays untouched: add the brief above it and new entries in the log; don't
   rewrite or reorder his notes.
 - Files stay in the work Drive; the page holds links and names.

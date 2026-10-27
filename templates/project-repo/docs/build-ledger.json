@@ -1,0 +1,19 @@
+{
+ "build": {
+  "project": "PROJECT",
+  "tag": "TAG",
+  "owner": "Aurélien",
+  "use_cases": [],
+  "created": null
+ },
+ "guide": {
+  "path": "docs/config-guide/guide.html",
+  "url": null,
+  "version": "v0",
+  "updated": null
+ },
+ "assets": [],
+ "decisions": [],
+ "open_items": [],
+ "changes": []
+}

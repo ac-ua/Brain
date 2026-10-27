@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PROJECT Guide</title>
+<style>
+:root{--bg:#fbfaf7;--fg:#1d2321;--mut:#5d6964;--line:#dfe3df;--acc:#2f6f66;--card:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121816;--fg:#e6ece9;--mut:#9aa8a3;--line:#2a3532;--acc:#7cc2b8;--card:#18201e}}
+:root[data-theme="dark"]{--bg:#121816;--fg:#e6ece9;--mut:#9aa8a3;--line:#2a3532;--acc:#7cc2b8;--card:#18201e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:860px;margin:0 auto;padding:32px 16px 80px}
+h1{font-size:2rem;margin:0 0 4px} h2{margin-top:48px;padding-top:12px;border-top:1px solid var(--line)}
+.meta{color:var(--mut);font-size:.9rem}
+nav ol{columns:2;padding-left:20px;color:var(--mut)} nav a{color:var(--acc)}
+table{width:100%;border-collapse:collapse;font-size:.95rem} th,td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top}
+.tag{display:inline-block;font-size:.75rem;padding:1px 8px;border-radius:10px;border:1px solid var(--line)}
+.live{color:#2e7d32} .sample{color:#a46a00} .unfinished{color:#b23b2e}
+figure{margin:16px 0;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px}
+figure img{max-width:100%;display:block;margin:0 auto} figcaption{color:var(--mut);font-size:.85rem;text-align:center}
+code{font-size:.9em}
+@media (max-width:600px){nav ol{columns:1}}
+</style>
+</head>
+<body>
+<main>
+<h1>PROJECT</h1>
+<p class="meta">Configuration guide · VERSION · updated DATE · repo <code>ac-ua/REPO</code></p>
+
+<nav><ol>
+<li><a href="#what">What it is</a></li>
+<li><a href="#features">Features</a></li>
+<li><a href="#screens">Screens</a></li>
+<li><a href="#data">Data &amp; backups</a></li>
+<li><a href="#deploy">Deploy</a></li>
+<li><a href="#decisions">Decisions &amp; open items</a></li>
+<li><a href="#changes">What changed</a></li>
+</ol></nav>
+
+<h2 id="what">1. What it is</h2>
+<p>Who it is for, in one paragraph. The problems it solves, as a short list.</p>
+
+<h2 id="features">2. Features</h2>
+<table>
+<tr><th>Feature</th><th>What it does</th><th>Status</th></tr>
+<tr><td>FEATURE</td><td>…</td><td><span class="tag live">live</span></td></tr>
+</table>
+
+<h2 id="screens">3. Screens</h2>
+<h3>SCREEN</h3>
+<p>What you see and what you can do.</p>
+<figure><img src="img/01-screen.jpg" alt="SCREEN"><figcaption>Figure 1 · SCREEN</figcaption></figure>
+
+<h2 id="data">4. Data &amp; backups</h2>
+<table>
+<tr><th>Store</th><th>Where</th><th>What it holds</th><th>Backup</th></tr>
+<tr><td>STORE</td><td>Supabase: <code>public.table</code></td><td>…</td><td>nightly pg_dump, 30 days</td></tr>
+</table>
+<p>How to restore, step by step.</p>
+
+<h2 id="deploy">5. Deploy</h2>
+<table>
+<tr><th>Piece</th><th>Where</th><th>Notes</th></tr>
+<tr><td>Front</td><td>Cloudflare Pages</td><td>preview branches off; <code>[CF-Pages-Skip]</code> on branch commits</td></tr>
+<tr><td>API</td><td>Pages Functions, <code>/api/*</code></td><td>…</td></tr>
+</table>
+<p><b>Secrets</b> (names and locations only): <code>NAME</code> in Cloudflare env.</p>
+<p><b>Release steps:</b> checks in the session → merge to <code>main</code> → verify prod → roadmap and ledger.</p>
+
+<h2 id="decisions">6. Decisions &amp; open items</h2>
+<table>
+<tr><th>Date</th><th>Decision</th><th>Why</th></tr>
+<tr><td>DATE</td><td>…</td><td>…</td></tr>
+</table>
+<table>
+<tr><th>Open item</th><th>Kind</th><th>Owner</th></tr>
+<tr><td>…</td><td>choice</td><td>Aurélien</td></tr>
+</table>
+
+<h2 id="changes">7. What changed</h2>
+<ul><li>VERSION · DATE · Guide created.</li></ul>
+</main>
+</body>
+</html>

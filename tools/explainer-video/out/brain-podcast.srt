@@ -1,0 +1,1011 @@
+1
+00:00:00,000 --> 00:00:01,110
+Vivienne : Bonjour et bienvenue.
+
+2
+00:00:01,110 --> 00:00:05,869
+Vivienne : Aujourd'hui, on décortique le nouveau workspace d'Aurélien, celui qu'on a appelé le brain.
+
+3
+00:00:05,869 --> 00:00:06,504
+Vivienne : L'objectif :
+
+4
+00:00:06,504 --> 00:00:11,210
+Vivienne : qu'à la fin de cet épisode, il comprenne exactement comment tout fonctionne, et pourquoi.
+
+5
+00:00:11,560 --> 00:00:19,212
+Rémy : Et c'est important, parce que ce workspace va servir de base à tout ce qu'il va faire avec l'IA dans les prochains mois.
+
+6
+00:00:19,212 --> 00:00:24,441
+Rémy : Les expéditions, le sport, le contenu, le travail chez UnifyApps, l'administratif.
+
+7
+00:00:24,441 --> 00:00:24,760
+Rémy : Tout.
+
+8
+00:00:25,660 --> 00:00:27,346
+Vivienne : Commençons par le constat.
+
+9
+00:00:27,346 --> 00:00:30,200
+Vivienne : Rémy, c'était quoi, la situation de départ ?
+
+10
+00:00:30,550 --> 00:00:34,800
+Rémy : Une soixantaine de sessions Claude, dont la moitié ne sont rangées dans aucun groupe.
+
+11
+00:00:35,150 --> 00:00:36,363
+Rémy : Ensuite, la mémoire.
+
+12
+00:00:36,363 --> 00:00:42,549
+Rémy : Cinquante-cinq petits fichiers de mémoire, répartis dans vingt-trois dossiers, la plupart temporaires.
+
+13
+00:00:42,549 --> 00:00:46,430
+Rémy : Si on supprime la session, ou si on perd le Mac, tout part avec.
+
+14
+00:00:46,780 --> 00:00:51,220
+Rémy : Et à l'inverse, dans Notion, la base de mémoires ne contient qu'une seule ligne.
+
+15
+00:00:51,570 --> 00:00:58,373
+Rémy : Ajoute à ça deux Drive, un pro et un perso, quatre boîtes mail, et un Mac pro qui peut lire le GitHub perso, mais pas y écrire.
+
+16
+00:00:58,373 --> 00:00:59,765
+Rémy : On l'a testé aujourd'hui :
+
+17
+00:00:59,765 --> 00:01:02,390
+Rémy : l'envoi est bloqué par le réseau de l'entreprise.
+
+18
+00:01:02,740 --> 00:01:07,442
+Rémy : Et l'audit a trouvé une clé de récupération FileVault en clair dans une page Notion.
+
+19
+00:01:07,442 --> 00:01:10,800
+Rémy : Ça, c'est à corriger tout de suite, indépendamment du reste.
+
+20
+00:01:11,150 --> 00:01:13,702
+Vivienne : Donc le problème, ce n'est pas le manque d'outils.
+
+21
+00:01:13,702 --> 00:01:15,590
+Vivienne : C'est que rien n'a de place attitrée.
+
+22
+00:01:15,940 --> 00:01:16,706
+Rémy : Exactement.
+
+23
+00:01:16,706 --> 00:01:20,190
+Rémy : Tout le reste de l'épisode, c'est la réponse à ça.
+
+24
+00:01:21,090 --> 00:01:22,990
+Vivienne : Alors, l'idée centrale ?
+
+25
+00:01:23,340 --> 00:01:24,685
+Rémy : Séparer trois choses.
+
+26
+00:01:24,685 --> 00:01:25,773
+Rémy : Première couche :
+
+27
+00:01:25,773 --> 00:01:27,054
+Rémy : le savoir et l'état.
+
+28
+00:01:27,054 --> 00:01:31,343
+Rémy : Qui est Aurélien, où en est chaque projet, quelles sont les tâches.
+
+29
+00:01:31,343 --> 00:01:32,560
+Rémy : Ça vit dans Notion.
+
+30
+00:01:32,910 --> 00:01:34,158
+Rémy : Deuxième couche :
+
+31
+00:01:34,158 --> 00:01:34,965
+Rémy : le harnais.
+
+32
+00:01:34,965 --> 00:01:36,507
+Rémy : Comment on travaille.
+
+33
+00:01:36,507 --> 00:01:39,076
+Rémy : Les agents, les skills, les règles.
+
+34
+00:01:39,076 --> 00:01:43,040
+Rémy : Ça vit dans un repo GitHub privé, qu'on appelle brain.
+
+35
+00:01:43,390 --> 00:01:44,647
+Rémy : Troisième couche :
+
+36
+00:01:44,647 --> 00:01:45,485
+Rémy : l'exécution.
+
+37
+00:01:45,485 --> 00:01:47,650
+Rémy : C'est l'IA qui fait le travail.
+
+38
+00:01:47,650 --> 00:01:53,027
+Rémy : Aujourd'hui Claude Code, sur le Mac, dans le cloud, ou pilotée depuis l'iPad.
+
+39
+00:01:53,027 --> 00:01:55,890
+Rémy : Demain peut-être ChatGPT, ou un Mac mini.
+
+40
+00:01:56,240 --> 00:01:59,540
+Rémy : Et à côté, les fichiers lourds, les decks, les vidéos :
+
+41
+00:01:59,540 --> 00:02:01,160
+Rémy : ils restent dans les Drive.
+
+42
+00:02:01,510 --> 00:02:03,435
+Vivienne : Aurélien l'a résumé d'une formule :
+
+43
+00:02:03,435 --> 00:02:07,340
+Vivienne : Notion, c'est la base de connaissances, GitHub, c'est la base d'action.
+
+44
+00:02:07,690 --> 00:02:08,540
+Rémy : C'est parfait.
+
+45
+00:02:08,540 --> 00:02:11,638
+Rémy : Et la clé, c'est que chaque couche est remplaçable.
+
+46
+00:02:11,638 --> 00:02:15,465
+Rémy : Si demain il change d'IA, il garde Notion et GitHub tels quels.
+
+47
+00:02:15,465 --> 00:02:17,044
+Rémy : Les formats sont ouverts :
+
+48
+00:02:17,044 --> 00:02:23,725
+Rémy : le fichier agents point M D, les skills au format skill point M D, et le protocole M C P pour les connecteurs.
+
+49
+00:02:23,725 --> 00:02:26,580
+Rémy : ChatGPT, Codex ou Gemini les comprennent aussi.
+
+50
+00:02:27,480 --> 00:02:28,553
+Vivienne : Zoomons sur Notion.
+
+51
+00:02:28,553 --> 00:02:33,410
+Vivienne : Aurélien se demandait s'il fallait un cerveau séparé, une sorte de cloud brain à part.
+
+52
+00:02:33,760 --> 00:02:35,322
+Rémy : Et la réponse, c'est non.
+
+53
+00:02:35,322 --> 00:02:39,382
+Rémy : Un cerveau à part deviendrait une deuxième vérité, jamais à jour.
+
+54
+00:02:39,382 --> 00:02:43,380
+Rémy : On intègre plutôt dans son Notion existant, en le restructurant.
+
+55
+00:02:43,730 --> 00:02:45,533
+Rémy : En haut, une page Home :
+
+56
+00:02:45,533 --> 00:02:46,359
+Rémy : le cockpit.
+
+57
+00:02:46,359 --> 00:02:50,640
+Rémy : Les tâches du jour, l'inbox, avec un filtre pro ou perso.
+
+58
+00:02:50,990 --> 00:02:54,064
+Rémy : Ensuite une petite section System, réservée à l'IA :
+
+59
+00:02:54,064 --> 00:02:59,680
+Rémy : son profil, la base de mémoires, un journal des sessions, et la Brain Inbox, dont on reparlera.
+
+60
+00:03:00,030 --> 00:03:01,675
+Rémy : Puis trois bases transverses.
+
+61
+00:03:01,675 --> 00:03:04,227
+Rémy : Tasks, une seule base pour toutes les tâches.
+
+62
+00:03:04,227 --> 00:03:06,609
+Rémy : Projects, le registre de tous les projets.
+
+63
+00:03:06,609 --> 00:03:14,720
+Rémy : Et Build Roadmap, qui fusionne les trois roadmaps qu'il avait recopiées pour Camp de Base, Element et l'app d'espagnol, et qui avaient divergé.
+
+64
+00:03:15,070 --> 00:03:17,400
+Rémy : Ensuite, une page par domaine :
+
+65
+00:03:17,400 --> 00:03:23,113
+Rémy : Work, Expeditions, Sport, Content, Admin et Finance, Career, Learning, Life.
+
+66
+00:03:23,113 --> 00:03:25,970
+Rémy : Chacun est créé depuis le même modèle.
+
+67
+00:03:26,320 --> 00:03:29,560
+Rémy : Et enfin une archive, pour Sprinklr et les vieilles pages.
+
+68
+00:03:29,910 --> 00:03:33,030
+Vivienne : Et ajouter un domaine plus tard, la finance par exemple ?
+
+69
+00:03:33,380 --> 00:03:34,132
+Rémy : Trois gestes.
+
+70
+00:03:34,132 --> 00:03:41,247
+Rémy : Dupliquer le modèle de page, ajouter une option dans la liste des domaines, et ajouter une ligne dans le fichier de règles.
+
+71
+00:03:41,247 --> 00:03:42,520
+Rémy : Rien d'autre ne casse.
+
+72
+00:03:43,420 --> 00:03:45,685
+Vivienne : Tu parles souvent de carte de contexte.
+
+73
+00:03:45,685 --> 00:03:47,020
+Vivienne : C'est quoi exactement ?
+
+74
+00:03:47,370 --> 00:03:51,429
+Rémy : C'est une page courte, moins de soixante lignes, en tête de chaque domaine.
+
+75
+00:03:51,429 --> 00:03:55,758
+Rémy : L'objectif du domaine, les faits clés, les règles, et où se trouvent les choses.
+
+76
+00:03:55,758 --> 00:03:57,219
+Rémy : Par exemple pour le sport :
+
+77
+00:03:57,219 --> 00:04:03,280
+Rémy : son seuil cardiaque, son record sur semi-marathon, et le fait qu'il n'a pas de capteur de puissance sur le vélo.
+
+78
+00:04:03,630 --> 00:04:08,154
+Rémy : C'est la seule chose qu'une session charge par défaut, avec le profil et les règles.
+
+79
+00:04:08,154 --> 00:04:11,386
+Rémy : Trois petites pages au démarrage, au lieu de tout le Notion.
+
+80
+00:04:11,386 --> 00:04:13,217
+Rémy : C'est ça qui économise les tokens.
+
+81
+00:04:13,217 --> 00:04:17,310
+Rémy : On vise un démarrage autour de huit à dix mille tokens, et on va le mesurer.
+
+82
+00:04:17,660 --> 00:04:19,192
+Rémy : Il y a aussi une contrainte :
+
+83
+00:04:19,192 --> 00:04:22,362
+Rémy : le plan gratuit de Notion limite les requêtes sur les bases.
+
+84
+00:04:22,362 --> 00:04:25,532
+Rémy : Pendant l'audit, treize appels ont suffi à épuiser le quota.
+
+85
+00:04:25,532 --> 00:04:31,080
+Rémy : Donc les agents lisent par vues enregistrées et par pages courtes, et on garde peu de bases, mais larges.
+
+86
+00:04:31,980 --> 00:04:32,881
+Vivienne : Passons à GitHub.
+
+87
+00:04:32,881 --> 00:04:35,000
+Vivienne : Qu'est-ce qu'il y a dans le repo brain ?
+
+88
+00:04:35,350 --> 00:04:37,731
+Rémy : À la racine, le fichier agents point M D.
+
+89
+00:04:37,731 --> 00:04:39,067
+Rémy : C'est la constitution :
+
+90
+00:04:39,067 --> 00:04:43,830
+Rémy : les règles dures, et une table de routage qui dit, pour chaque domaine, quoi lire.
+
+91
+00:04:43,830 --> 00:04:48,070
+Rémy : Le fichier claude point M D contient juste une ligne qui pointe vers lui.
+
+92
+00:04:48,420 --> 00:04:51,900
+Rémy : Ensuite un dossier agents, avec une fiche par compétence.
+
+93
+00:04:52,250 --> 00:04:53,300
+Rémy : Un dossier skills :
+
+94
+00:04:53,300 --> 00:04:55,013
+Rémy : les savoir-faire réutilisables.
+
+95
+00:04:55,013 --> 00:05:03,026
+Rémy : Par exemple build webapp, avec son playbook des offres gratuites Cloudflare, Supabase et GitHub, qui traîne aujourd'hui dans ses Téléchargements.
+
+96
+00:05:03,026 --> 00:05:08,110
+Rémy : Ou le guide de configuration, ou les trois skills de prospection sponsors qui existent déjà.
+
+97
+00:05:08,460 --> 00:05:13,636
+Rémy : Un dossier domains, avec un petit fichier par domaine qui dit comment chaque compétence s'y applique.
+
+98
+00:05:13,636 --> 00:05:17,530
+Rémy : Et des templates, pour démarrer un nouveau projet toujours de la même façon.
+
+99
+00:05:17,880 --> 00:05:19,395
+Rémy : Enfin, des sauvegardes :
+
+100
+00:05:19,395 --> 00:05:26,210
+Rémy : un export de Notion chaque semaine par un simple script, sans IA, et la copie mensuelle du plugin UnifyApps.
+
+101
+00:05:26,560 --> 00:05:30,710
+Vivienne : Et sur le Mac pro, qui ne peut pas écrire sur GitHub, comment il récupère tout ça ?
+
+102
+00:05:31,060 --> 00:05:31,850
+Rémy : Il peut lire.
+
+103
+00:05:31,850 --> 00:05:35,617
+Rémy : Donc il clone le repo, ou installe les skills comme un plugin.
+
+104
+00:05:35,617 --> 00:05:40,539
+Rémy : Les modifications du harnais, elles, passent par une session cloud ou par l'iPad.
+
+105
+00:05:40,539 --> 00:05:42,240
+Rémy : On y revient tout à l'heure.
+
+106
+00:05:43,140 --> 00:05:44,929
+Vivienne : Aurélien avait une intuition :
+
+107
+00:05:44,929 --> 00:05:46,480
+Vivienne : un tableau à deux entrées.
+
+108
+00:05:46,830 --> 00:05:48,550
+Rémy : Oui, et c'est le cœur du modèle.
+
+109
+00:05:48,550 --> 00:05:50,324
+Rémy : Sur les lignes, les compétences :
+
+110
+00:05:50,324 --> 00:06:01,130
+Rémy : le Chief of Staff qui orchestre l'agenda, les mails et les tâches, le Builder qui construit les applis, le Content Studio pour la vidéo et les posts, et plus tard un Researcher, un Analyst, l'Outreach.
+
+111
+00:06:01,480 --> 00:06:03,760
+Rémy : Sur les colonnes, les domaines.
+
+112
+00:06:04,110 --> 00:06:07,167
+Rémy : Une case, c'est une compétence appliquée à un domaine.
+
+113
+00:06:07,167 --> 00:06:10,336
+Rémy : Le Builder dans le domaine Sport, c'est Element Logbook.
+
+114
+00:06:10,336 --> 00:06:13,337
+Rémy : Le même Builder dans Expeditions, c'est Camp de Base.
+
+115
+00:06:13,337 --> 00:06:18,091
+Rémy : Et c'est toujours le même playbook, la même roadmap, le même guide de configuration.
+
+116
+00:06:18,091 --> 00:06:22,280
+Rémy : Les bonnes pratiques sont écrites une fois, et elles s'appliquent partout.
+
+117
+00:06:22,630 --> 00:06:24,982
+Rémy : Pour démarrer, seulement trois agents :
+
+118
+00:06:24,982 --> 00:06:27,515
+Rémy : Chief of Staff, Builder et Content Studio.
+
+119
+00:06:27,515 --> 00:06:32,280
+Rémy : Et on les construit à partir de ce qu'on sait déjà faire, pas à partir de rien.
+
+120
+00:06:32,630 --> 00:06:35,680
+Vivienne : Pourquoi pas un agent par domaine, comme une vraie entreprise ?
+
+121
+00:06:36,030 --> 00:06:38,939
+Rémy : Parce qu'un domaine, c'est du contexte, pas un savoir-faire.
+
+122
+00:06:38,939 --> 00:06:43,205
+Rémy : Et un sous-agent consomme nettement plus de tokens qu'une skill chargée dans la session.
+
+123
+00:06:43,205 --> 00:06:51,010
+Rémy : Donc on travaille dans une session par domaine qui charge des skills, et on n'appelle un sous-agent que pour un travail lourd et isolé, comme indexer des rushes.
+
+124
+00:06:51,910 --> 00:06:54,380
+Vivienne : Concrètement, à quoi ressemble une session ?
+
+125
+00:06:54,730 --> 00:06:57,680
+Rémy : Elle commence par lire le fichier de règles dans GitHub.
+
+126
+00:06:58,030 --> 00:07:01,800
+Rémy : Puis le profil d'Aurélien et la carte du domaine, dans Notion.
+
+127
+00:07:02,150 --> 00:07:03,728
+Rémy : Puis l'état du projet :
+
+128
+00:07:03,728 --> 00:07:06,610
+Rémy : sa fiche, sa roadmap, les tâches ouvertes.
+
+129
+00:07:06,960 --> 00:07:10,370
+Rémy : Ensuite elle travaille, en chargeant seulement les skills utiles.
+
+130
+00:07:10,720 --> 00:07:13,683
+Rémy : Et à la fin, une skill de clôture écrit ce qui a changé :
+
+131
+00:07:13,683 --> 00:07:18,830
+Rémy : les nouvelles mémoires, les tâches, la ligne de roadmap, et une ligne dans le journal des sessions.
+
+132
+00:07:19,180 --> 00:07:22,350
+Vivienne : Et la mémoire automatique de Claude, celle des dossiers locaux ?
+
+133
+00:07:22,700 --> 00:07:24,092
+Rémy : Elle reste un brouillon.
+
+134
+00:07:24,092 --> 00:07:27,339
+Rémy : Elle n'est partagée ni entre machines, ni avec le cloud.
+
+135
+00:07:27,339 --> 00:07:29,717
+Rémy : Tout ce qui compte est écrit dans Notion.
+
+136
+00:07:29,717 --> 00:07:34,240
+Rémy : Comme ça, si Aurélien perd son Mac, il reprend depuis l'iPad sans rien perdre.
+
+137
+00:07:35,140 --> 00:07:36,948
+Vivienne : Aurélien insistait sur un point :
+
+138
+00:07:36,948 --> 00:07:38,537
+Vivienne : le brain doit être plastique.
+
+139
+00:07:38,537 --> 00:07:40,400
+Vivienne : Il doit s'améliorer avec le temps.
+
+140
+00:07:40,750 --> 00:07:43,552
+Rémy : Pour ça, on distingue deux types d'apprentissages.
+
+141
+00:07:43,552 --> 00:07:44,448
+Rémy : Un fait, comme :
+
+142
+00:07:44,448 --> 00:07:49,940
+Rémy : l'expédition au pôle Sud est décalée à novembre deux mille vingt-sept, va directement dans Notion.
+
+143
+00:07:50,290 --> 00:07:51,798
+Rémy : Une façon de faire, comme :
+
+144
+00:07:51,798 --> 00:07:57,831
+Rémy : toujours mettre à jour le guide de configuration à chaque version, va dans une Brain Inbox, une base Notion.
+
+145
+00:07:57,831 --> 00:08:01,350
+Rémy : N'importe quelle session peut y écrire, même depuis le Mac pro.
+
+146
+00:08:01,700 --> 00:08:09,140
+Rémy : Toutes les deux semaines, une routine lit aussi les learnings côté UnifyApps, et en extrait les leçons génériques, sans nom de client.
+
+147
+00:08:09,490 --> 00:08:16,500
+Rémy : Chaque semaine, une routine cloud transforme l'inbox en modifications des skills, sous forme de pull request qu'Aurélien valide.
+
+148
+00:08:16,850 --> 00:08:22,350
+Rémy : Et le brain a sa propre roadmap, un numéro de version, un changelog, et une rétro chaque mois.
+
+149
+00:08:22,700 --> 00:08:25,940
+Vivienne : C'est la boucle des learnings UnifyApps, en fait.
+
+150
+00:08:26,290 --> 00:08:27,092
+Rémy : Exactement.
+
+151
+00:08:27,092 --> 00:08:29,934
+Rémy : Il l'a déjà construite, et elle tourne.
+
+152
+00:08:29,934 --> 00:08:32,120
+Rémy : On la réutilise pour le perso.
+
+153
+00:08:33,020 --> 00:08:33,998
+Vivienne : Et les fichiers ?
+
+154
+00:08:33,998 --> 00:08:36,760
+Vivienne : Les decks qu'il télécharge, ceux qu'on produit ?
+
+155
+00:08:37,110 --> 00:08:38,040
+Rémy : Règle simple :
+
+156
+00:08:38,040 --> 00:08:42,426
+Rémy : le Drive est la source, le disque local n'est qu'un cache jetable.
+
+157
+00:08:42,426 --> 00:08:47,210
+Rémy : Côté pro, on lit et on écrit dans le Drive UnifyApps, via le connecteur.
+
+158
+00:08:47,560 --> 00:08:52,550
+Rémy : Côté perso, depuis le Mac pro, on peut lire le Drive perso, mais pas y écrire.
+
+159
+00:08:52,900 --> 00:08:57,410
+Rémy : Donc pendant une session, les fichiers transitent par un dossier de travail temporaire.
+
+160
+00:08:57,760 --> 00:09:03,592
+Rémy : Et les sorties perso vont dans Notion, dans un artifact Claude, ou dans GitHub via une session cloud.
+
+161
+00:09:03,592 --> 00:09:07,808
+Rémy : Les artifacts, d'ailleurs, sont liés à son compte, pas à son ordinateur :
+
+162
+00:09:07,808 --> 00:09:09,540
+Rémy : ils survivent si le Mac casse.
+
+163
+00:09:09,890 --> 00:09:13,244
+Rémy : Enfin, la règle de confidentialité est à sens unique.
+
+164
+00:09:13,244 --> 00:09:15,396
+Rémy : Rien du perso ne part vers le pro.
+
+165
+00:09:15,396 --> 00:09:18,940
+Rémy : Dans l'autre sens, seules les leçons génériques passent.
+
+166
+00:09:19,290 --> 00:09:21,430
+Vivienne : Et le Drive pro, il est rangé ?
+
+167
+00:09:21,780 --> 00:09:22,491
+Rémy : Pas vraiment :
+
+168
+00:09:22,491 --> 00:09:27,927
+Rémy : environ soixante-treize fichiers en vrac à la racine, des doublons, des versions dans les noms de fichiers.
+
+169
+00:09:27,927 --> 00:09:31,584
+Rémy : On propose un dossier par client, toujours avec les mêmes sous-dossiers.
+
+170
+00:09:31,584 --> 00:09:34,480
+Rémy : Mais on le fera au moment où on touchera au domaine Work.
+
+171
+00:09:35,380 --> 00:09:36,720
+Vivienne : Où est-ce qu'on lance quoi ?
+
+172
+00:09:37,070 --> 00:09:38,566
+Rémy : Sur le Mac pro, en local :
+
+173
+00:09:38,566 --> 00:09:41,674
+Rémy : tout ce qui demande un navigateur ou des fichiers pro.
+
+174
+00:09:41,674 --> 00:09:45,300
+Rémy : C'est là que Claude peut naviguer sur le web et piloter Chrome.
+
+175
+00:09:45,650 --> 00:09:46,576
+Rémy : Dans le cloud :
+
+176
+00:09:46,576 --> 00:09:51,764
+Rémy : le code perso, le harnais, et les routines planifiées, qui tournent même Mac éteint.
+
+177
+00:09:51,764 --> 00:09:54,913
+Rémy : C'est le même forfait Max, sans surcoût de machine.
+
+178
+00:09:54,913 --> 00:09:57,630
+Rémy : Par contre, pas de navigateur dans le cloud.
+
+179
+00:09:57,980 --> 00:10:01,519
+Rémy : L'iPad et le téléphone ne font pas tourner Claude Code eux-mêmes.
+
+180
+00:10:01,519 --> 00:10:05,440
+Rémy : Ce sont des télécommandes, pour piloter les sessions du Mac ou du cloud.
+
+181
+00:10:05,790 --> 00:10:09,677
+Rémy : Et un Mac mini, plus tard, deviendrait simplement une machine de plus.
+
+182
+00:10:09,677 --> 00:10:13,508
+Rémy : Comme tout l'état est dans Notion et GitHub, il n'y a rien à migrer :
+
+183
+00:10:13,508 --> 00:10:15,340
+Rémy : il clone le repo, et c'est parti.
+
+184
+00:10:16,240 --> 00:10:18,128
+Vivienne : Les connecteurs, maintenant.
+
+185
+00:10:18,128 --> 00:10:20,150
+Vivienne : Aurélien a quatre boîtes mail.
+
+186
+00:10:20,500 --> 00:10:20,855
+Rémy : Oui :
+
+187
+00:10:20,855 --> 00:10:28,520
+Rémy : le Gmail pro UnifyApps, le Gmail expédition pour les sponsors, le Gmail carrière, et la boîte Hotmail perso.
+
+188
+00:10:28,870 --> 00:10:32,998
+Rémy : Aujourd'hui, les connecteurs de Claude ne gèrent qu'un compte par service.
+
+189
+00:10:32,998 --> 00:10:38,520
+Rémy : Le Gmail est branché sur la boîte expédition, l'agenda sur le compte perso, et le Drive sur le pro.
+
+190
+00:10:38,870 --> 00:10:44,814
+Rémy : Pour tout voir dans un seul cockpit, il faudra un connecteur multi-comptes, open source, hébergé par lui.
+
+191
+00:10:44,814 --> 00:10:48,040
+Rémy : On garde la porte ouverte, mais ce n'est pas la priorité.
+
+192
+00:10:48,390 --> 00:10:50,665
+Rémy : Et OpenClaw, dont il avait entendu parler ?
+
+193
+00:10:50,665 --> 00:10:52,093
+Rémy : On l'écarte pour l'instant.
+
+194
+00:10:52,093 --> 00:10:59,181
+Rémy : Il a eu de sérieux problèmes de sécurité en deux mille vingt-six, et il exige une machine allumée en permanence avec un accès complet.
+
+195
+00:10:59,181 --> 00:11:03,730
+Rémy : Pour une personne seule, des routines planifiées font le même travail d'orchestration.
+
+196
+00:11:04,080 --> 00:11:10,621
+Rémy : Côté sport, on passe par intervals point i c u, une plateforme gratuite synchronisée avec Garmin, qui a une API.
+
+197
+00:11:10,621 --> 00:11:14,300
+Rémy : Et le connecteur officiel Strava quand il prendra l'abonnement.
+
+198
+00:11:15,200 --> 00:11:16,263
+Vivienne : Parlons contenu.
+
+199
+00:11:16,263 --> 00:11:17,790
+Vivienne : C'est un gros chantier.
+
+200
+00:11:18,140 --> 00:11:24,748
+Rémy : L'objectif, c'est du format court, pour TikTok et Instagram, plusieurs fois par semaine, voire tous les jours sur TikTok.
+
+201
+00:11:24,748 --> 00:11:28,680
+Rémy : Avec environ deux cents gigas de rushes, il y a de quoi tenir longtemps.
+
+202
+00:11:28,680 --> 00:11:32,230
+Rémy : La stratégie elle-même sera le premier travail du Content Studio.
+
+203
+00:11:32,580 --> 00:11:35,239
+Rémy : Pour le montage, on vise un modèle hybride.
+
+204
+00:11:35,239 --> 00:11:36,724
+Rémy : L'IA indexe les rushes :
+
+205
+00:11:36,724 --> 00:11:40,002
+Rémy : transcription, plans, tags, dans un catalogue Notion.
+
+206
+00:11:40,002 --> 00:11:46,310
+Rémy : Elle choisit les moments, écrit le script, et livre un premier montage sous forme de fichier timeline.
+
+207
+00:11:46,660 --> 00:11:54,496
+Rémy : Aurélien ouvre ce fichier dans DaVinci Resolve, sur le Mac ou sur l'iPad, et fait ses retouches lui-même, sans avoir à nous les décrire.
+
+208
+00:11:54,496 --> 00:11:58,989
+Rémy : La version gratuite de Resolve n'a pas d'API, mais elle importe ces timelines.
+
+209
+00:11:58,989 --> 00:12:03,080
+Rémy : Resolve Studio, environ trois cents dollars, ouvrirait l'API plus tard.
+
+210
+00:12:03,430 --> 00:12:06,533
+Rémy : Le vrai point d'attention, c'est la puissance de calcul.
+
+211
+00:12:06,533 --> 00:12:12,682
+Rémy : Indexer des centaines de gigas, faire tourner la transcription ou la voix clonée, ça demande une vraie machine.
+
+212
+00:12:12,682 --> 00:12:15,120
+Rémy : C'est l'argument principal pour un Mac mini.
+
+213
+00:12:15,470 --> 00:12:17,510
+Vivienne : Et la voix clonée, justement ?
+
+214
+00:12:17,860 --> 00:12:20,484
+Rémy : Uniquement quand il la demande, comme aujourd'hui.
+
+215
+00:12:20,484 --> 00:12:27,150
+Rémy : Le code pourra aller dans un repo privé séparé, les modèles se retéléchargent, et ses enregistrements de voix restent chez lui.
+
+216
+00:12:28,050 --> 00:12:30,140
+Vivienne : Quelles sont les règles du jeu pour les agents ?
+
+217
+00:12:30,490 --> 00:12:34,880
+Rémy : Aucun envoi externe, aucune publication, aucun paiement sans Aurélien.
+
+218
+00:12:35,230 --> 00:12:37,610
+Rémy : Toute suppression demande son accord.
+
+219
+00:12:37,960 --> 00:12:42,087
+Rémy : Par contre, les brouillons, les mises à jour Notion et les commits sont libres.
+
+220
+00:12:42,087 --> 00:12:47,990
+Rémy : Ces règles pourront s'assouplir domaine par domaine, par exemple le jour où il voudra automatiser la prospection.
+
+221
+00:12:48,340 --> 00:12:53,880
+Rémy : Les secrets vivent dans un gestionnaire de mots de passe, jamais dans Notion, dans GitHub ou dans la mémoire.
+
+222
+00:12:54,230 --> 00:12:56,721
+Rémy : Et la confidentialité reste à sens unique :
+
+223
+00:12:56,721 --> 00:12:58,690
+Rémy : le perso ne va jamais vers le pro.
+
+224
+00:12:59,590 --> 00:13:00,392
+Vivienne : Dernier point :
+
+225
+00:13:00,392 --> 00:13:01,086
+Vivienne : la migration.
+
+226
+00:13:01,086 --> 00:13:04,560
+Vivienne : Aurélien n'avait pas bien compris le principe du au fil de l'eau.
+
+227
+00:13:04,910 --> 00:13:06,953
+Rémy : On commence par une heure de sécurisation :
+
+228
+00:13:06,953 --> 00:13:14,650
+Rémy : la clé FileVault et les identifiants sortis de Notion, une copie des cinquante-cinq mémoires locales dans Notion pour ne rien perdre, et le playbook mis à l'abri.
+
+229
+00:13:15,000 --> 00:13:17,490
+Rémy : Ensuite, une journée pour poser le squelette :
+
+230
+00:13:17,490 --> 00:13:23,930
+Rémy : le repo brain, les trois agents, les skills de base, et dans Notion la section System, la page Home et les trois bases.
+
+231
+00:13:24,280 --> 00:13:25,826
+Rémy : Puis un test grandeur nature :
+
+232
+00:13:25,826 --> 00:13:30,620
+Rémy : on reprend une vraie tâche uniquement depuis l'iPad et le cloud, comme si le Mac était perdu.
+
+233
+00:13:30,970 --> 00:13:32,203
+Rémy : Et après, au fil de l'eau.
+
+234
+00:13:32,203 --> 00:13:34,432
+Rémy : Ça veut dire qu'on ne migre pas tout d'un coup.
+
+235
+00:13:34,432 --> 00:13:40,551
+Rémy : La prochaine fois qu'Aurélien ouvre une session sur Camp de Base, les premières minutes servent à migrer le domaine Expeditions :
+
+236
+00:13:40,551 --> 00:13:48,519
+Rémy : on rassemble les vieilles mémoires du sujet, on écrit la carte de contexte, on déplace la roadmap dans la base commune, et on coche le domaine dans la roadmap du brain.
+
+237
+00:13:48,519 --> 00:13:52,550
+Rémy : Les domaines qu'il ne touche pas restent tels quels, jusqu'au jour où il y travaille.
+
+238
+00:13:52,900 --> 00:13:55,653
+Rémy : Et une fois le squelette stable, on allume les routines :
+
+239
+00:13:55,653 --> 00:14:00,870
+Rémy : le brief du matin, la maintenance hebdomadaire, les learnings pro tous les quinze jours, et les sauvegardes.
+
+240
+00:14:01,770 --> 00:14:05,060
+Vivienne : Pour conclure, Rémy, les cinq phrases à retenir ?
+
+241
+00:14:05,410 --> 00:14:05,735
+Rémy : Un :
+
+242
+00:14:05,735 --> 00:14:09,390
+Rémy : Notion sait, GitHub sait faire, l'IA exécute.
+
+243
+00:14:09,740 --> 00:14:10,084
+Rémy : Deux :
+
+244
+00:14:10,084 --> 00:14:13,920
+Rémy : une compétence s'écrit une fois, et s'applique à tous les domaines.
+
+245
+00:14:14,270 --> 00:14:14,661
+Rémy : Trois :
+
+246
+00:14:14,661 --> 00:14:18,400
+Rémy : chaque session lit peu au début, et écrit ce qui a changé à la fin.
+
+247
+00:14:18,750 --> 00:14:19,167
+Rémy : Quatre :
+
+248
+00:14:19,167 --> 00:14:23,650
+Rémy : les façons de faire passent par la Brain Inbox, et le brain s'améliore chaque semaine.
+
+249
+00:14:24,000 --> 00:14:24,387
+Rémy : Cinq :
+
+250
+00:14:24,387 --> 00:14:27,740
+Rémy : rien d'important ne vit seulement sur un ordinateur.
+
+251
+00:14:28,090 --> 00:14:28,947
+Vivienne : Merci Rémy.
+
+252
+00:14:28,947 --> 00:14:32,295
+Vivienne : Et Aurélien, la suite, c'est la phase zéro.
+
+253
+00:14:32,295 --> 00:14:33,230
+Vivienne : À très vite.

@@ -43,7 +43,8 @@ Projects. Quick chats and Cowork keep no state: anything worth keeping goes to N
 ## Left panel
 - Only live work: about one session per active project plus the active pro accounts.
 - A session blocked on Aurélien is not left open: its action becomes a Task, then the session is archived.
-- Weekly sweep, every Friday ~01:00 America/New_York (`skills/brain-maintenance`): archives finished and blocked
-  sessions (blocked ones become Tasks first) and opens one empty session per planned piece of work. Keep a session
-  out of the sweep by starting its title with `Keep ·`.
+- Weekly sweep, every Friday night (Saturday ~00:52 America/New_York, `skills/brain-maintenance`), so the panel is
+  clean on Saturday morning: archives finished and blocked sessions (blocked ones become Tasks first) and recreates
+  only what is worth restarting (weekly sessions, long sessions still in use). Keep a session out of the sweep by
+  starting its title with `Keep ·`.
 - Scheduled routines run in their own sessions ([`routines.md`](routines.md)); they don't stay in the panel.

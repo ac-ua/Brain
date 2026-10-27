@@ -151,7 +151,7 @@ Large media is processed in the cloud or on a future personal machine, never on 
 ## Backlog
 Tracked in the Build Roadmap (Project = Brain): "Mac lost" drill · rclone in `perso-general` · multi-account mail test
 (4 mailboxes; candidate: an open-source multi-account Google MCP + an Outlook connector) · Expeditions + Content
-migration · explainer video / podcast skill (kit in `tools/explainer-video/`) · weekly brain-maintenance · pro → perso
+migration · explainer video / podcast skill (`skills/explainer-video/`) · weekly brain-maintenance · pro → perso
 learnings · monthly plugin copy · morning brief · intervals.icu + Strava · Mac mini · Resolve Studio · Finance domain ·
 cockpit app.
 

@@ -74,13 +74,13 @@ Agents are capabilities, the same in every domain (`agents/`). Skills are open `
 |---|---|---|
 | `chief-of-staff` | session protocol, tasks, triage, planning, outreach drafts, the brain's own upkeep | session-start, session-close, brain-inbox, expedition-sponsor-outreach, expedition-research-outreach, expedition-followup-outreach |
 | `builder` | web apps, deploys, roadmaps, config guides, new projects | build-webapp, build-roadmap, config-guide, project-kickoff |
-| `content-studio` | content strategy, scripts, posts, explainers | brain-inbox (more as Content migrates) |
+| `content-studio` | content strategy, scripts, posts, explainers | brain-inbox, explainer-video (more as Content migrates) |
 
 Domain skills, loaded directly in a session (no agent needed):
 | Domain | Skills |
 |---|---|
 | Learning | `spanish-teacher` |
-| Work (local session, work Mac) | `unifyapps-format`, `cep-workbook-filler`, `poc-use-case-filler`, `unifyapps-rfp-rfi-response-template`; the team plugin `Unifyapps-Internal/unifyapps-builder-skills` stays installed separately |
+| Work (local session, work Mac) | `unifyapps-format`, `cep-workbook-filler`, `poc-use-case-filler`, `unifyapps-rfp-rfi-response-template`, `explainer-video` (client and account explainers; outputs stay in the work Drive); the team plugin `Unifyapps-Internal/unifyapps-builder-skills` stays installed separately |
 
 Work in one session that loads skills. Call a sub-agent only for heavy, isolated work (research, video, audits):
 a sub-agent costs much more tokens than a skill.

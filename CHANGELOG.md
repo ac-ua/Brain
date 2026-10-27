@@ -11,6 +11,9 @@ The brain is versioned like any project: `v0.x` while the skeleton settles. Each
 - All 8 domains have a Notion domain page (context card + Projects/Tasks views) and a real `domains/*.md`;
   routing table and `docs/notion-map.md` point to them. 🗄️ Archive page created.
 - App repos (Base-Camp, c_ET, website) point to the brain and the shared Build Roadmap (separate PRs).
+- Skill `explainer-video`: two-voice podcast with progressive-reveal slides (stock voices, pronunciation dictionary,
+  per-clip check; MP4 with subtitles, MP3, SRT, script), generalised from the kit in `tools/explainer-video/`, which
+  stays as the reference episode. Usable from Content and from Work (work Mac, outputs in the work Drive).
 
 ## v0.1.0 — skeleton (2026-10-27)
 - `AGENTS.md` constitution: hard rules (autonomy, confidentiality, secrets, voice), routing table, session protocol,

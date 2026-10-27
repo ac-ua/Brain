@@ -1,18 +1,16 @@
-# explainer-video kit
+# explainer-video: reference episode
 
-Build kit of the "Le Brain" explainer podcast (14:34, French, two voices), kept as raw material for a future
-`explainer-video` skill (Build Roadmap: "Explainer video / podcast skill"). Not a skill yet.
+The skill now lives in [`skills/explainer-video/`](../../skills/explainer-video/SKILL.md) (method, generalised
+scripts, lessons). This folder keeps the source of the "Le Brain" episode (French, 14:33, two voices, 16 slides) as a
+worked example of a full episode.
 
 | File | What |
 |---|---|
 | `episode.py` | slides (HTML with progressive reveal, `data-s` steps) and the two-voice script |
-| `build.py` | frames (headless Chrome), voices (edge-tts), assembly (ffmpeg): `python3 build.py [frames\|audio\|video\|all]` |
+| `build.py` | the original one-off build, with the work Mac's paths hard-coded |
 | `out/script.md`, `out/brain-podcast.srt` | script and subtitles of the published episode (MP4/MP3 not in the repo) |
 
-Paths in `build.py` (ffmpeg, Playwright `chrome-headless-shell`) are the work Mac's; adapt them per machine.
-
-Lessons to keep in the skill:
-- Stock voices (`fr-FR-VivienneMultilingualNeural`, `fr-FR-RemyMultilingualNeural`); the cloned voice only on request.
-- Pronunciation dictionary applied to the voice only (`PRONOUNCE`); subtitles keep the real spelling.
-- Check every clip: characters per second ≈ 20; regenerate empty or truncated clips.
-- On the work Mac, headless Google Chrome hangs: use Playwright's `chrome-headless-shell`.
+To rebuild or adapt it, use the skill's builder, not `build.py` here: copy `episode.py`, add `NAME`, `SPEAKERS`
+(`{"V": ("Vivienne", "fr-FR-VivienneMultilingualNeural"), "R": ("Rémy", "fr-FR-RemyMultilingualNeural")}`) and
+`PRONOUNCE` (see `skills/explainer-video/scripts/episode_template.py`), then run
+`python3 skills/explainer-video/scripts/build.py <episode>.py --out <folder>`.

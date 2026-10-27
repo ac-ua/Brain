@@ -21,7 +21,7 @@ skills/          one SKILL.md folder per skill
 domains/         how each capability applies in a domain
 templates/       project repo skeleton, Notion database schemas
 docs/            blueprint, Notion map, handoffs
-tools/           raw material for future skills (explainer-video kit)
+tools/           reference material (explainer-video: the "Le Brain" episode)
 .claude/         Claude adapter: agents/ and skills/ are symlinks, minimal settings
 .agents/skills   adapter for Codex and other AIs (symlink to skills/)
 ```

@@ -32,6 +32,9 @@ with no working notes. Don't edit a page he has already reviewed without asking.
 Secrets live in Aurélien's password manager, never in Notion, GitHub, a memory or the chat. If you need one, ask him
 to paste it into the right place himself (environment secrets, Cloudflare, Supabase). Publishable identifiers
 (a Supabase anon key, an OAuth client ID) may go in a project repo's docs.
+Exception (Aurélien's call, 2026-10-27): logins to UnifyApps *demo environments* written on his CRM pages (Demo
+Nuggets, opportunity or project pages) stay where he put them; he needs them. Never remove them, never copy them
+anywhere else (repo, memories, chat, briefs).
 
 ### Voice
 Narration, demos and podcasts use the **stock voice**. The cloned voice only when Aurélien explicitly asks for it.

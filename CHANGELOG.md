@@ -3,6 +3,10 @@
 The brain is versioned like any project: `v0.x` while the skeleton settles. Each release is a merged PR on
 `ac-ua/brain` and a row in the Notion Build Roadmap (Project = Brain).
 
+## v0.3.1 — demo logins stay on the CRM pages (2026-10-27)
+- Exception to the secrets rule: demo-environment logins Aurélien wrote on his Notion pages stay there; never
+  removed, never copied elsewhere (`AGENTS.md`, `domains/work.md`, `work-notes`, `session-close`).
+
 ## v0.3.0 — work-notes: AI-native CRM pages (2026-10-27)
 - Skill `work-notes`: transcripts, notes and work-session results → the right Opportunity or Projects page under
   Work › Unify Apps, AI-maintained brief on top, one structured toggle per meeting (raw transcript nested), linked

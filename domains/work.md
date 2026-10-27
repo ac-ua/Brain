@@ -33,8 +33,8 @@ The team plugin is installed separately and never changed directly: learnings go
 ## Rules
 - Nothing personal goes to pro systems. Pro files stay in the work Drive (`ac@unifyapps.com`); never move them to
   personal storage through the cloud.
-- Pro context may be stored in Notion and this repo (Aurélien's call, 2026-10-27). Never secrets: demo-environment
-  logins belong in the password manager, not in Demo Nuggets.
+- Pro context may be stored in Notion and this repo (Aurélien's call, 2026-10-27). Never secrets. Demo-environment
+  logins he wrote on his Notion pages stay there (his call): don't remove them, don't copy them elsewhere.
 
 ## Open
 - Work Drive tidy-up (00_Inbox · 01_Accounts/<Client> · 02_Assets · 03_Demos · 04_Internal · 99_Archive): proposed, not applied.

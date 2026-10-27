@@ -20,7 +20,7 @@ programming", "Migrate to Supabase auth".
 | Priority | `P0 Now` · `P1 Next` · `P2 Later` · `P3 Someday` |
 | Value | `High` · `Medium` · `Low` |
 | Effort | `S` (< ½ day) · `M` (1–2 days) · `L` (more) |
-| Area | `Harness` · `Notion` · `Routines` · `Infra` · `Domains` · `Skills`; add project-specific areas when needed |
+| Area | per-project areas (list in `templates/notion/build-roadmap.md`); add new ones when needed |
 | Detail | what and why, 1–3 sentences; link the PR when shipped |
 | Version | release tag when shipped (`v1.3`, `v0.1.0`) |
 | Shipped on | date it reached production |

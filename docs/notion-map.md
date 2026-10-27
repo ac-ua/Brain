@@ -80,7 +80,7 @@ Nothing was deleted; page ids are unchanged, so old links still work.
 |---|---|---|
 | Unify Apps (CRM, Demo Nuggets, Trainings, Context For Claude…) | workspace root | 💼 Work |
 | ↳ QBR 23/10/2025 | the 401k call toggle | Unify Apps › Work notes (ex "Brain Drop") |
-| Context For Claude | Unify Apps | 🎯 Career |
+| Context For Claude (summary of the UnifyApps CRO's book "The Champion Sell") | Unify Apps | 💼 Work (directly under the domain page) |
 | Tik Tok, Speeches, Communication (ex "Com") | 🧭 Expeditions | 🎬 Content |
 | Camera | Perso | 🎬 Content |
 | Training log 2021 (ex "Prep"), Marathon plan, 🏋️ Element Logbook | Expeditions / Perso | 🏃 Sport |

@@ -47,12 +47,27 @@ URLs are `https://app.notion.com/p/<id>`. Data sources (`collection://…`) are 
 | Sponso | database | `collection://2ae19ca7-9893-80d6-b263-000b7171b431` | never move without a validated plan |
 | Camp de Base — Roadmap & changelog | database | `collection://6aec51dc-a4b4-4f69-be60-341dea003e59` | merges into Build Roadmap at the Expeditions migration |
 
-## Domain context cards
-Created from the Domain template when a domain is migrated; each has linked views of its Projects and open Tasks.
+## Domain pages
+Each domain page is a top-level page that starts with its context card (from the Domain template, < 60 lines) and has
+linked views of its Projects and open Tasks; the domain's existing pages sit under it.
 
-| Domain | Card | ID | Views |
-|---|---|---|---|
-| Expeditions | Expeditions — context card (child of 🧭 Expeditions) | `40619ca7989381628da7f60326404e83` | `view://40619ca7-9893-81f9-879e-000c4a6b6dce` projects · `view://40619ca7-9893-810a-83c2-000cae8a99b5` tasks |
-| Content | 🎬 Content (workspace top level) | `40619ca798938123b03de86d3c1a9f8e` | `view://40619ca7-9893-81f8-b93b-000cc00eb165` projects · `view://40619ca7-9893-81fd-a19b-000ce2ad4798` tasks |
+| Domain | Page | ID |
+|---|---|---|
+| Work | 💼 Work | `40619ca798938177a168dccd513c8e4b` |
+| Expeditions | 🧭 Expeditions (existing root) + Expeditions — context card | `83e58afbe55443f1b234ef36a63a3c1f` · card `40619ca7989381628da7f60326404e83` |
+| Sport | 🏃 Sport | `40619ca7989381abb531ce6f783a94ec` |
+| Content | 🎬 Content | `40619ca798938123b03de86d3c1a9f8e` |
+| Admin & Finance | 🗂️ Admin & Finance | `40619ca7989381c38215c78e47b4d0c3` |
+| Career | 🎯 Career | `40619ca79893810ba6e9f983c1ffdaf6` |
+| Learning | 🗣️ Learning | `40619ca79893816baeb2c5b6b4b22dac` |
+| Life | 🌍 Life | `40619ca798938104ba6ae13e84101780` |
+| — | 🗄️ Archive | `40619ca7989381ea9df7fac97adfd542` |
 
-Other domains: not migrated. Add each new card here and in the routing table of `AGENTS.md`.
+## Pages and databases the skills depend on
+| What | ID | Used by |
+|---|---|---|
+| Sponso (inline in 💰 Sponsoring, under South Pole) | db `2ae19ca7989380408259e428ed7ec36a` · `collection://2ae19ca7-9893-80d6-b263-000b7171b431` | the 3 outreach skills — never move |
+| Idee sponsors · Idee recherche | `37319ca79893804fbd90c46c840c92f4` · `3a419ca7989380c58078d01c44481dcd` | sponsor / research outreach |
+| 🇪🇸 Español hub | `3dc19ca7989381c78132e747f403f832` (Producción, Recomendaciones, Catálogo, Diario: ids in the skill) | spanish-teacher |
+| 🏋️ Element Logbook project page | `3ec19ca7989381e79a04f8cb11087cb1` | builder (Element) |
+| Old roadmaps (copied into Build Roadmap, to archive) | Camp de Base `709d23a467e44037918e3a3da9f99d68` · Element `094a1fd8f76148938cdd569a19fc3f82` · Spanish `3d919ca798938023ac9ff5f3298a5c29` | none after the merge |

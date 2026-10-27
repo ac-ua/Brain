@@ -1,8 +1,14 @@
 # Domain: Career
 
-**Not migrated yet.** This file and the Notion context card get their first real version when a session first works on
-this domain. Until then: use the Projects and Tasks views filtered on Domain = Career, and the domain's section of the
-🧳 Brain — Migration inbox (`40619ca7989381cf9cb4dda8206db206`).
+Job search, interviews, career profile, network. Personal and confidential.
+Notion domain page: **🎯 Career** (`40619ca79893810ba6e9f983c1ffdaf6`).
 
-## Known so far
-- Career mailbox: a separate Gmail (multi-account mail test pending).
+## How each capability applies
+**chief-of-staff.** Interview prep and follow-ups; recruiter threads from the career mailbox (`aureliencayepro@gmail.com`,
+connector not set up yet). Drafts only.
+
+**content-studio.** Prep podcasts and briefs (two-voice explainer kit in `tools/explainer-video/`, stock voices).
+
+## Rules
+- The master profile artifact (https://claude.ai/artifact/DgwrKLFR7H5pdhDLv4cf9v) is the base for every interview; never trim it.
+- Nothing about the job search goes to work systems.

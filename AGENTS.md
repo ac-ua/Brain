@@ -49,19 +49,19 @@ In French TTS, respell "UnifyApps" as "Iou-ni-faï Apps" for the voice only; sub
 The work Mac cannot push to `ac-ua/*` (corporate proxy). Sessions there write to the Brain Inbox instead.
 
 ## Routing: domain → context
-Load only the row you need. A card marked "not migrated" doesn't exist yet: work from the Projects/Tasks views
-and the Migration inbox, and offer to migrate the domain (`docs/BLUEPRINT.md` § Migration).
+Load only the row you need: the domain page starts with its context card (< 60 lines); its sub-pages are loaded
+only when the task needs them.
 
 | Domain | Notion context card | Harness file | Main agent |
 |---|---|---|---|
-| Work | not migrated (pro data stays in the work Drive) | `domains/work.md` | chief-of-staff |
+| Work | 💼 Work (`40619ca798938177a168dccd513c8e4b`) | `domains/work.md` | chief-of-staff |
 | Expeditions | Expeditions — context card (`40619ca7989381628da7f60326404e83`) | `domains/expeditions.md` | builder, chief-of-staff |
-| Sport | not migrated | `domains/sport.md` | builder |
+| Sport | 🏃 Sport (`40619ca7989381abb531ce6f783a94ec`) | `domains/sport.md` | builder |
 | Content | 🎬 Content (`40619ca798938123b03de86d3c1a9f8e`) | `domains/content.md` | content-studio |
-| Admin & Finance | not migrated | `domains/admin-finance.md` | chief-of-staff |
-| Career | not migrated | `domains/career.md` | chief-of-staff |
-| Learning | not migrated | `domains/learning.md` | builder |
-| Life | not migrated | `domains/life.md` | chief-of-staff |
+| Admin & Finance | 🗂️ Admin & Finance (`40619ca7989381c38215c78e47b4d0c3`) | `domains/admin-finance.md` | chief-of-staff |
+| Career | 🎯 Career (`40619ca79893810ba6e9f983c1ffdaf6`) | `domains/career.md` | chief-of-staff |
+| Learning | 🗣️ Learning (`40619ca79893816baeb2c5b6b4b22dac`) | `domains/learning.md` | builder |
+| Life | 🌍 Life (`40619ca798938104ba6ae13e84101780`) | `domains/life.md` | chief-of-staff |
 | Brain | Projects → Brain (`40619ca79893817ba7cbc34ca914eed7`) | this file, `docs/BLUEPRINT.md` | builder |
 
 All Notion IDs: `docs/notion-map.md`. Adding a domain: duplicate the Domain template page, add the option to every

@@ -8,6 +8,9 @@ The brain is versioned like any project: `v0.x` while the skeleton settles. Each
   (`unifyapps-format`, `cep-workbook-filler`, `poc-use-case-filler`, `unifyapps-rfp-rfi-response-template`).
 - Confidentiality rule updated: the brain covers pro and perso; nothing personal goes to pro systems.
 - Skills index per domain in `AGENTS.md`; one-source rule for skills in `README.md`.
+- All 8 domains have a Notion domain page (context card + Projects/Tasks views) and a real `domains/*.md`;
+  routing table and `docs/notion-map.md` point to them. 🗄️ Archive page created.
+- App repos (Base-Camp, c_ET, website) point to the brain and the shared Build Roadmap (separate PRs).
 
 ## v0.1.0 — skeleton (2026-10-27)
 - `AGENTS.md` constitution: hard rules (autonomy, confidentiality, secrets, voice), routing table, session protocol,

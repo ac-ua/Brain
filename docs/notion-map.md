@@ -13,6 +13,7 @@ URLs are `https://app.notion.com/p/<id>`. Data sources (`collection://…`) are 
 | 🧩 Domain template | page | System | `40619ca7989381a08cd7c93c8f4c011e` | |
 | 🖼️ Artifacts index | page | System | `40619ca7989381508cc1d9d9e314e71f` | every claude.ai artifact by domain |
 | Conversation index (claude.ai, 2024–2026) | page | System | `40619ca7989381c2b22feba8a7addb9f` | 312 conversations, one line each, newest first |
+| Sessions playbook | page | System | `40619ca79893812a866ed99e24a6a4fc` | where and how sessions run (copy of docs/sessions.md) |
 | Open questions from the migration | page | System | `40619ca7989381fba24cded0a80ffc51` | to settle in the fact-checking sessions |
 | 🏠 Home | page | workspace | `40619ca79893813b8899c27a533cf076` | |
 | 📋 Tasks | database | workspace | `9ac22ef9618d4645a0741102863e60fc` | `collection://d2dce682-22a5-4e39-b0d3-75b9399b5c47` |

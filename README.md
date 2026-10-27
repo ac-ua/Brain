@@ -10,7 +10,7 @@ Aurélien's AI workspace, independent of any machine and of any AI.
 | Files | Google Drive (personal and work, kept apart) | inputs and outputs |
 
 This repo holds only text we write ourselves (plus the skills copied from the account). It is never a copy of Notion,
-and it holds no secrets. It covers pro and perso; pro skills sit next to the personal ones. Full design: [`docs/BLUEPRINT.md`](docs/BLUEPRINT.md). Notion IDs: [`docs/notion-map.md`](docs/notion-map.md). Routines: [`docs/routines.md`](docs/routines.md).
+and it holds no secrets. It covers pro and perso; pro skills sit next to the personal ones. Full design: [`docs/BLUEPRINT.md`](docs/BLUEPRINT.md). Notion IDs: [`docs/notion-map.md`](docs/notion-map.md). Routines: [`docs/routines.md`](docs/routines.md). Sessions: [`docs/sessions.md`](docs/sessions.md).
 
 ## Layout
 ```
@@ -20,7 +20,7 @@ agents/          one file per capability: chief-of-staff, builder, content-studi
 skills/          one SKILL.md folder per skill
 domains/         how each capability applies in a domain
 templates/       project repo skeleton, Notion database schemas
-docs/            blueprint, Notion map, routines (docs/routines.md), handoffs
+docs/            blueprint, Notion map, routines, sessions playbook, handoffs
 tools/           reference material (explainer-video: the "Le Brain" episode)
 .claude/         Claude adapter: agents/ and skills/ are symlinks, minimal settings
 .agents/skills   adapter for Codex and other AIs (symlink to skills/)
@@ -48,6 +48,6 @@ folder to the account; never edit the account copy alone.
 ## Change it
 - A fact or a state → Notion, right away.
 - A way of working → a row in the Notion **Brain Inbox** (any session, any machine).
-- The harness itself → a PR on this repo from a cloud session; Aurélien reviews and merges. A weekly routine
+- The harness itself → a PR on this repo from a cloud session, merged by the session once re-read. A weekly routine
   (planned) turns accepted Brain Inbox rows into such a PR.
 - Each merged release bumps `CHANGELOG.md` and gets a Build Roadmap row (Project = Brain).

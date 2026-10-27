@@ -3,6 +3,27 @@
 The brain is versioned like any project: `v0.x` while the skeleton settles. Each release is a merged PR on
 `ac-ua/brain` and a row in the Notion Build Roadmap (Project = Brain).
 
+## v0.4.0 — skills from the session audit (2026-10-28)
+From an audit of 55 Claude Code sessions (17 Aug – 27 Oct 2026): repeated tasks became skills, frictions became
+fixes.
+- New skills: `session-handoff` (resume note outside the session, environment inventory, smoke test, prompt to
+  paste), `release-webapp` (feedback triage → paperwork → checks → go → live check → artifacts in place → card;
+  per-project `docs/RELEASE.md`), `cloud-env-preflight` (`scripts/preflight.py`: variables, key types, project match,
+  allowed hosts, tools in one pass; per-project `docs/environment.json`), `demo-prep`, `case-for-change` (with deck
+  lessons), `message-drafting` (with tone rules), `interview-prep`, `video-edit` (with tooling per machine),
+  `gpx-route` (`scripts/route.py`: trail routing or great-circle legs, terrain altitude, stages, Garmin symbols).
+- `explainer-video`: document mode (scrolling doc), `data-pointer` (ring + cursor on the box being discussed),
+  target length and depth in the brief, script checked against Aurélien's questions, web facts cross-checked, real
+  images downloaded, `compress` step (under 29 MB), never the cloned voice for work.
+- Fixes: `build-webapp` (project-prefixed variables, keys, one migration path, production writes need his OK,
+  Pages pitfalls), `build-roadmap` (use the fetched select options, shared database only), `config-guide`
+  ("what you still have to do" checklist, one guide URL), `project-kickoff` (environment, `RELEASE.md`),
+  `session-start` (handoff, preflight, work Mac), `session-close` (handoff, local memories), `work-notes`
+  (recordings, account questions, handoff toggle), `poc-use-case-filler` (scope), `unifyapps-format` (fallback to
+  the team plugin's `unifyapps-brand-deck`).
+- Rule: Aurélien's skills, pro included, live in `ac-ua/brain`; the shared team repo only receives platform
+  learnings through its loop (`AGENTS.md`, `domains/work.md`).
+
 ## v0.3.1 — demo logins stay on the CRM pages (2026-10-27)
 - Exception to the secrets rule: demo-environment logins Aurélien wrote on his Notion pages stay there; never
   removed, never copied elsewhere (`AGENTS.md`, `domains/work.md`, `work-notes`, `session-close`).

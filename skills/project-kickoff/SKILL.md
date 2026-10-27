@@ -25,7 +25,14 @@ existing artifact URL, if any.
 5. **First roadmap items** (`build-roadmap`): `v0.1 — first deploy` (To do) plus the 2–5 items from the brief.
 6. **Hosting** (if web): Cloudflare Pages project with preview branches off, Supabase project if needed. Aurélien
    creates accounts and pastes secrets; you write the steps in the guide's Deploy chapter.
-7. **Close**: Session Log row, and a Brain Inbox row if the template missed something.
+7. **Cloud environment.** One environment per app (`app-<name>`). Write `docs/environment.json` (variables prefixed
+   by project, allowed hosts, tools; `cloud-env-preflight`), the setup script or SessionStart hook for tools and
+   plugins, and give Aurélien the whole settings list in one message. Write `docs/RELEASE.md` from
+   `skills/release-webapp/references/release-template.md`.
+8. **Started outside the repo** (a local session, an artifact, a mock-up): bring everything in through
+   `session-handoff`; nothing stays in a local folder or a session.
+9. **Close**: Session Log row, and a Brain Inbox row if the template missed something.
 
 ## Done when
-Repo with `AGENTS.md`, ledger and guide skeleton · Projects row · roadmap view and first items · PR open.
+Repo with `AGENTS.md`, ledger and guide skeleton, `docs/environment.json`, `docs/RELEASE.md` · Projects row ·
+roadmap view and first items in the shared Build Roadmap · PR open.

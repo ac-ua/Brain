@@ -41,7 +41,8 @@ Kinds: `feature screen data backup deploy integration secret-ref metric artifact
 ## 3. Refresh the guide (after each release)
 `$L check --guide docs/config-guide/guide.html` lists ledger assets the guide doesn't mention yet. Update the
 chapters, bump the guide version in the ledger (`$L guide --version vN --url <artifact url>`), add a line to the
-"What changed" chapter. If the guide is published as an artifact, republish from the repo file.
+"What changed" chapter. If the guide is published as an artifact, republish from the repo file **to the same URL** (one guide artifact per
+project; `release-webapp` does this at each release).
 
 ## Chapters (personal builds)
 1. **What it is** — the project from zero: who it's for, the problems it solves.
@@ -49,7 +50,10 @@ chapters, bump the guide version in the ledger (`$L guide --version vN --url <ar
 3. **Screens** — one section per screen, with a real screenshot.
 4. **Data & backups** — every store and record type, where it lives, how it's backed up and restored.
 5. **Deploy** — hosting, environments, release steps, where each secret lives (names only), free-tier limits.
-6. **Decisions & open items** — from the ledger.
+6. **Decisions & open items** — from the ledger. Open items owned by Aurélien form a **"What you still have to do"**
+   checklist, one line each with its status, the exact screen (Supabase › Project Settings › API Keys, Cloudflare ›
+   Pages › Settings › Builds, Custom domains…) and what to enter (names, never values). He asks "what's left?" often:
+   answer from this list.
 7. **What changed** — guide revisions.
 
 ## Rules

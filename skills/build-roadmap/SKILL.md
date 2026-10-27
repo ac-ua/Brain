@@ -29,6 +29,11 @@ programming", "Migrate to Supabase auth".
 ## Rules
 - Your own ideas go in as `🤖 Claude suggestion`; only Aurélien promotes them to `Idea` or `To do`.
 - Starting work → `In progress`. Shipped → `Done` + `Version` + `Shipped on`. Abandoned → `Dropped` (never delete).
-- Fetch the data source before writing; use the project view to read, not SQL queries.
+- Fetch the data source before writing and **use the select options it returns** (Area, Status, Priority): a value
+  that doesn't exist fails the write (e.g. "Library & exercises" vs the real "Exercise library"). New Area → add it
+  to the schema on purpose, not by accident.
+- Write only to this shared database. The old per-project roadmaps (Camp de Base "Changelog & Roadmap", the old
+  Element roadmap) are archived: a project doc that still points to one is a bug to fix (Brain Inbox).
+- Use the project view to read, not SQL queries.
 - A project shared outside, or with truly specific fields, gets its own database built from the same schema.
 - The old per-project roadmaps (Camp de Base, Element, Spanish) were merged here on 2026-10-27 (385 rows) and archived.

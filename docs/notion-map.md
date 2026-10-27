@@ -12,6 +12,8 @@ URLs are `https://app.notion.com/p/<id>`. Data sources (`collection://…`) are 
 | 🧠 Memories | database | System | `2effbd92c2dc4e5ea2b059cd058b7338` | `collection://5b6902fc-e510-4975-b133-06e9273f602e` |
 | 🧩 Domain template | page | System | `40619ca7989381a08cd7c93c8f4c011e` | |
 | 🖼️ Artifacts index | page | System | `40619ca7989381508cc1d9d9e314e71f` | every claude.ai artifact by domain |
+| Conversation index (claude.ai, 2024–2026) | page | System | `40619ca7989381c2b22feba8a7addb9f` | 312 conversations, one line each, newest first |
+| Open questions from the migration | page | System | `40619ca7989381fba24cded0a80ffc51` | to settle in the fact-checking sessions |
 | 🏠 Home | page | workspace | `40619ca79893813b8899c27a533cf076` | |
 | 📋 Tasks | database | workspace | `9ac22ef9618d4645a0741102863e60fc` | `collection://d2dce682-22a5-4e39-b0d3-75b9399b5c47` |
 | 📁 Projects | database | workspace | `abea83098f1f4534a66b6dc1f180e3e0` | `collection://127dc180-4e2f-4650-b120-0b4ff4cc9eab` |
@@ -95,3 +97,19 @@ Nothing was deleted; page ids are unchanged, so old links still work.
 
 Left in place on purpose: Sponso and its siblings (outreach skills), the 401k/healthcare call (a toggle block inside
 Work notes, not a movable page), the UnifyApps inline Projects database (work data).
+
+## claude.ai Projects migrated (2026-10-27)
+One page per Project, under its domain: instructions, project memory, knowledge files (long files truncated at ~14k
+characters, full text stays in the claude.ai Project).
+
+| Project | Domain | Page ID |
+|---|---|---|
+| GSL write (book) | Content | `40619ca79893813b9b1ee88d44945ed5` |
+| Speech | Content | `40619ca7989381998523da438667e26f` |
+| South Pole sponsoring | Expeditions | `40619ca7989381cfa64cc04c87747a5f` |
+| Sports coach | Sport | `40619ca798938115a660f73916a56ea5` |
+| UnifyApps Solution Architect | Work | `40619ca79893816a89a7c8da4244d0f9` |
+| UnifyApps Lovable builder | Work | `40619ca798938165af41e5da02c92b59` |
+| Startup idea | Career | `40619ca798938156af72ce0eed0e9357` |
+| Spanish v2 | Learning | `40619ca7989381f7982bc5be04e2a08a` |
+| Spanish old | Learning | `40619ca7989381afb121fbd349690a84` |

@@ -46,7 +46,7 @@ URLs are `https://app.notion.com/p/<id>`. Data sources (`collection://…`) are 
 | 📦 Brain — Handoff (2026-10-27) (under System) | page | `40619ca7989381659f0bc60d4591471c` | handoff bundle + full transcript (pro data: stays in Notion) |
 | Expeditions | page | `83e58afbe55443f1b234ef36a63a3c1f` | |
 | Sponso | database | `collection://2ae19ca7-9893-80d6-b263-000b7171b431` | never move without a validated plan |
-| Camp de Base — Roadmap & changelog | database | `collection://6aec51dc-a4b4-4f69-be60-341dea003e59` | merges into Build Roadmap at the Expeditions migration |
+| Camp de Base — Roadmap & changelog | database | `collection://6aec51dc-a4b4-4f69-be60-341dea003e59` | merged into Build Roadmap, now in 🗄️ Archive |
 
 ## Domain pages
 Each domain page is a top-level page that starts with its context card (from the Domain template, < 60 lines) and has

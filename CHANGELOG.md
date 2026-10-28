@@ -3,6 +3,11 @@
 The brain is versioned like any project: `v0.x` while the skeleton settles. Each release is a merged PR on
 `ac-ua/brain` and a row in the Notion Build Roadmap (Project = Brain).
 
+## v0.4.1 — gpx-route: rotated screenshots (2026-10-28)
+- `gpx-route`: reconstructing from a map screenshot fits scale and rotation on two known points, checks on a topo
+  map, confirms the valley with Aurélien's sketch, and refreshes an imported track in place (Brain Inbox, Kyrgyzstan
+  2021: a rotated Google Maps screenshot put the first version in the wrong valley).
+
 ## v0.4.0 — skills from the session audit (2026-10-27)
 From an audit of 55 Claude Code sessions (17 Aug – 27 Oct 2026): repeated tasks became skills, frictions became
 fixes.

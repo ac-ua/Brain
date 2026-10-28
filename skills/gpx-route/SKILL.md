@@ -53,6 +53,14 @@ screenshots of maps. Ask the questions first (dates, where each night was, start
 `reconstructed`, and keep what is estimated in the waypoint notes. Times between known points are spread by effort
 (Naismith), not invented as recorded.
 
+From a map screenshot:
+- A compass button on a Google Maps screenshot means the map is rotated. Fit scale **and** rotation on two known
+  points (the exact start and a named place: a pass, a village, a lake), never one point and "north up".
+- Check the result on a topo map (the stars should sit on the valley, road or trail), then ask Aurélien for a rough
+  sketch on Camp de Base's map to confirm the valley before importing.
+- A corrected track that is already in the app is refreshed in place (update the route, waypoints, days); nothing is
+  deleted without his OK.
+
 ## Rules
 - Safety-critical choices (crevasse zones, sea-ice crossings, river fords) come from his sources and his
   operator, never from routing alone: say so on those legs.

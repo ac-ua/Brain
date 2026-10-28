@@ -56,7 +56,8 @@ Artifacts live on the account, not in a session: a new session finds them only t
   in the Projects row (Artifacts). A new artifact goes into the registry in the same delivery.
 - **Update the existing artifact** (Artifact `read` on its link, then `publish` with `url`): same link, new version.
   Never recreate one; if it is missing from the registry, find it with Artifact `list` and add it.
-- A project's living guide (architecture, model, screens) follows each delivery that changes them.
+- A project's living guide (architecture, model, screens) follows each delivery that changes them. The builder updates
+  it **without asking**, through a background sub-agent right after the merge (same link), then the registry.
 
 ## Where things go
 | What you learned | Where it goes | When |

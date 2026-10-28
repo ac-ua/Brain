@@ -31,6 +31,7 @@ code that uses them, by the project's one documented path (`docs/RELEASE.md` §M
 |---|---|
 | Changelog | new top entry (version, date, 2–6 word title, 1–4 points in plain words; members' wording separate from staff/admin wording where the app has both) |
 | Config guide | Revisions row (newest first) + chapters touched + rebuild (`config-guide`) |
+| Living guide (artifact) | updated in place by a background sub-agent after the merge, never asked first; registry line bumped |
 | Ledger | `docs/build-ledger.json` change entry, same formatting as the file |
 | User guide | text for any visible change; screenshots refreshed when the project has a shots script |
 | Architecture | only when services, functions or connections changed |

@@ -24,6 +24,9 @@ Out of scope: pro builds on the UnifyApps platform (they run on the work Mac, wi
 ## Autonomy
 Free: branches, commits, PRs, merging a tested PR into the production branch (the release), Notion roadmap and
 Projects updates, preview builds within the playbook budget.
+Always, without asking: after each delivery that changes the architecture, the model or the screens, update the
+project's living guide (the registered artifact, same link) through a background sub-agent, then its registry line.
+Never ask Aurélien whether to do it; say in the recap that it is running and give the version once published.
 Needs Aurélien: adding a paid service,
 anything that sends mail to real users, any deletion (data, branch, project). Secrets: he pastes them himself.
 

@@ -49,6 +49,15 @@ In French TTS, respell "UnifyApps" as "Iou-ni-faï Apps" for the voice only; sub
 - Fetch a database before writing to it. Read through `fetch` and saved views; SQL queries are capped at ~13/hour.
 - Small edits; never rewrite a whole page.
 
+### Artifacts (claude.ai)
+Artifacts live on the account, not in a session: a new session finds them only through the project's registry.
+- Each artifact belongs to one project; its title starts with the project's name (« Camp de Base · … »).
+- Registry: `docs/artifacts.md` in the project's repo (title, link, what it is); a project without a repo lists them
+  in the Projects row (Artifacts). A new artifact goes into the registry in the same delivery.
+- **Update the existing artifact** (Artifact `read` on its link, then `publish` with `url`): same link, new version.
+  Never recreate one; if it is missing from the registry, find it with Artifact `list` and add it.
+- A project's living guide (architecture, model, screens) follows each delivery that changes them.
+
 ## Where things go
 | What you learned | Where it goes | When |
 |---|---|---|

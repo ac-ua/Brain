@@ -13,7 +13,8 @@ Goal: the right context in **~8–10k tokens**, nothing more. Load in this order
    top (< 60 lines); the sub-pages listed below it are opened only if the task needs them. Read `domains/<domain>.md`.
    Unsure of the domain → ask once.
 4. **Project state** (only if the session is about a project):
-   - the Projects row (repo, prod URL, artifacts);
+   - the Projects row (repo, prod URL, artifacts) and the artifact registry (`docs/artifacts.md`): work on those
+     links, never recreate an artifact;
    - the Build Roadmap view on the project page (In progress, To do);
    - open Tasks for the project or domain (a saved view, not a SQL query).
 5. **Memories** (`collection://5b6902fc-e510-4975-b133-06e9273f602e`): only if a specific fact is missing, search by keyword or filter by Domain. One fact per row.

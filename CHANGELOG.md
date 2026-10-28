@@ -3,6 +3,12 @@
 The brain is versioned like any project: `v0.x` while the skeleton settles. Each release is a merged PR on
 `ac-ua/brain` and a row in the Notion Build Roadmap (Project = Brain).
 
+## v0.4.3 — the guide follows without asking (2026-10-28)
+- `AGENTS.md` (Artifacts), `agents/builder.md`, `release-webapp`: after each delivery that changes the architecture,
+  the model or the screens, the builder updates the project's living guide through a background sub-agent, without
+  asking Aurélien, then bumps the registry line (Aurélien, Camp de Base session: « tu ne dois pas me demander pour
+  update le guide »).
+
 ## v0.4.2 — artifacts stay with their project (2026-10-28)
 - `AGENTS.md`, new hard rule « Artifacts »: one project per artifact (title starts with the project's name), a
   registry per project (`docs/artifacts.md` or the Projects row), update the existing artifact (same link), never

@@ -3,13 +3,19 @@
 The brain is versioned like any project: `v0.x` while the skeleton settles. Each release is a merged PR on
 `ac-ua/brain` and a row in the Notion Build Roadmap (Project = Brain).
 
-## v0.4.4 — the work Drive has a map (2026-10-29)
+## v0.4.5 — the work Drive has a map (2026-10-29)
 - Work Drive reorganised (no file deleted): 00_Inbox · 01_Accounts/<Account> · 02_Assets · 03_Demos · 04_Events ·
   05_Internal · 99_Archive; ~85 loose files filed, 22 account folders named like the Notion Accounts.
 - New `docs/drive-map.md`: tree, filing rules, folder ids. Linked from `AGENTS.md`, `domains/work.md`, and the skills
   that save pro files (`work-notes`, `session-close`, `demo-prep`, `case-for-change`, `cep-workbook-filler`,
   `explainer-video`).
 - `.claude/settings.json`: Drive read, create, move and copy run without a prompt; trash and sharing still ask.
+
+## v0.4.4 — confidentiality is one way: perso → pro only (2026-10-29)
+- `AGENTS.md`, `domains/work.md`, `docs/BLUEPRINT.md`, `session-close`, `explainer-video`: the rule « never move pro
+  files to personal storage » is removed. Only personal → pro is forbidden; pro files and deliverables may go to the
+  personal Drive, Notion and this repo (Aurélien: « c'est un problème de move du perso vers le pro »).
+- The work Mac brings deliverables back to the personal Drive through the Google Drive app's personal folder in Finder.
 
 ## v0.4.3 — the guide follows without asking (2026-10-28)
 - `AGENTS.md` (Artifacts), `agents/builder.md`, `release-webapp`: after each delivery that changes the architecture,

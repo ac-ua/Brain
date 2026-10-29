@@ -36,8 +36,8 @@ the Solution Architects, installed separately and never changed directly: it onl
 what it already covers, through its twice-weekly loop. None of Aurélien's own skills go there.
 
 ## Rules
-- Nothing personal goes to pro systems. Pro files stay in the work Drive (`ac@unifyapps.com`); never move them to
-  personal storage through the cloud.
+- Nothing personal goes to pro systems. Pro files live in the work Drive (`ac@unifyapps.com`) and may be copied to
+  the personal Drive: from the work Mac, through the Google Drive app's personal folder in Finder (2026-10-29).
 - Work Drive layout (applied 2026-10-29, `docs/drive-map.md`): 00_Inbox · 01_Accounts/<Account> (named like the
   Notion Account) · 02_Assets · 03_Demos · 04_Events · 05_Internal · 99_Archive. Nothing at the root; the deal brief
   links the account folder.

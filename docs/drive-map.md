@@ -24,6 +24,19 @@ My Drive
 └── Google Meet         created by Meet/Gemini (recordings, notes, transcripts). Leave as is
 ```
 
+## Filing at creation (automatic)
+Every pro file an agent creates is saved straight to its place, then linked in Notion, in the same step and without
+asking. Aurélien never uploads or files by hand.
+1. **Place:** pick the folder by the rules below; create the account, event or sub-folder if missing (create, never
+   delete or rename his folders).
+2. **Save:** with the Drive connector (`create_file` with the folder id as `parentId`; Google Docs/Sheets/Slides when
+   the content allows it). On the work Mac, a local output (pptx, mp4, pdf) is written into the Google Drive for
+   desktop folder (`~/Library/CloudStorage/GoogleDrive-ac@unifyapps.com/My Drive/<path>`), never left in a session
+   folder; a file too big for the connector goes this way too.
+3. **Link:** the file's Drive link goes on the Notion page it belongs to: the opportunity brief's Assets (client), the
+   Projects row (cross work), the Work card (internal or event), with one line on what it is and its date.
+4. **Report:** tell Aurélien the path and the link in the recap.
+
 ## Rules
 - **Where a new file goes:** client or partner → `01_Accounts/<Account>`; reusable → `02_Assets`; event → `04_Events`;
   unsure → `00_Inbox`. Never at the root.
@@ -33,7 +46,7 @@ My Drive
   version in the name (`v0.3`) rather than "Copy of". Existing names were left as they were.
 - **Versions:** the current one stays in the account folder; older ones go to `<Account>/Earlier versions` while the
   deal is open, or to `99_Archive/Superseded`.
-- **Nothing personal** in this Drive (rule in `AGENTS.md`). Nothing is ever moved from here to personal storage.
+- **Nothing personal** in this Drive (rule in `AGENTS.md`). Copies of pro files to the personal Drive are allowed.
 - Session close (`session-close`, `work-notes`): files created in the session are filed, `00_Inbox` is empty or its
   rest is listed in the brief.
 - Moving files is free; deleting (even to the trash) needs Aurélien.

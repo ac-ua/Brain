@@ -19,7 +19,7 @@ scripts/
 | Material | Session | Episode source and outputs |
 |---|---|---|
 | Personal topic | cloud session (`perso-general`) or any Mac | personal Drive, Notion, or a project repo |
-| Client or pro material | **local session on the work Mac** | **work Drive only**; never moved to personal storage |
+| Client or pro material | **local session on the work Mac** | work Drive; a copy in the personal Drive is allowed |
 
 Nothing personal goes into a pro episode (no other domains, no personal names or projects). Only generic lessons
 come back to the brain, through the Brain Inbox.

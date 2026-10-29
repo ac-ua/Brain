@@ -20,7 +20,7 @@ My Drive
 ├── 03_Demos            demo recordings and builds not tied to an account (match Notion Demo Nuggets)
 ├── 04_Events           one folder per event: YYYY-MM <Event> (workshops, webinars, dinners, bootcamps)
 ├── 05_Internal         team and company: coverage, pods, enablement, rules of engagement, Admin, SA skills feedback
-├── 99_Archive          superseded or duplicate files (Superseded/). Deleting is Aurélien's call
+├── 99_Archive          dead material with no future use. Deleting is Aurélien's call
 └── Google Meet         created by Meet/Gemini (recordings, notes, transcripts). Leave as is
 ```
 
@@ -30,12 +30,25 @@ asking. Aurélien never uploads or files by hand.
 1. **Place:** pick the folder by the rules below; create the account, event or sub-folder if missing (create, never
    delete or rename his folders).
 2. **Save:** with the Drive connector (`create_file` with the folder id as `parentId`; Google Docs/Sheets/Slides when
-   the content allows it). On the work Mac, a local output (pptx, mp4, pdf) is written into the Google Drive for
-   desktop folder (`~/Library/CloudStorage/GoogleDrive-ac@unifyapps.com/My Drive/<path>`), never left in a session
-   folder; a file too big for the connector goes this way too.
+   the content allows it). The Drive app on the work Mac syncs the **personal** Drive only, so it is no way into
+   this Drive. A local output the connector cannot upload (large pptx, mp4, pdf) goes on the **upload list**: see
+   below.
 3. **Link:** the file's Drive link goes on the Notion page it belongs to: the opportunity brief's Assets (client), the
    Projects row (cross work), the Work card (internal or event), with one line on what it is and its date.
 4. **Report:** tell Aurélien the path and the link in the recap.
+
+## Upload list (what the connector could not upload)
+At session close, every pro file that is still only local is listed, for Aurélien to drag in by hand:
+- one file `TO-UPLOAD.md` in the session's output folder: for each file its local path, its target folder name and
+  the target folder's Drive link (`https://drive.google.com/drive/folders/<id>`), its Notion page;
+- the same list in the recap, as « Couldn't upload through the Drive connector: drag `<file>` into `<link>` ».
+Once he has uploaded them, the next session links the files in Notion (step 3).
+
+## Files shared with Aurélien
+A Drive link he passes on (a deck a colleague made on GeBBS) is never copied. The Drive connector cannot create
+shortcuts yet, so: its link goes on the Notion page (opportunity brief's Assets, « shared by <name> »), and the recap
+reminds him that `Shift+Z` in Drive adds the shortcut in `01_Accounts/<Account>`. `TODO(Aurélien)`: automatic
+shortcut once a tool can create one.
 
 ## Rules
 - **Where a new file goes:** client or partner → `01_Accounts/<Account>`; reusable → `02_Assets`; event → `04_Events`;
@@ -44,8 +57,8 @@ asking. Aurélien never uploads or files by hand.
   folder with the first file of a new opportunity, and link it in the opportunity brief's Assets section.
 - **File names:** `YYYY-MM-DD <Account> - <what>` for dated client material (decks, recaps, transcripts); keep the
   version in the name (`v0.3`) rather than "Copy of". Existing names were left as they were.
-- **Versions:** the current one stays in the account folder; older ones go to `<Account>/Earlier versions` while the
-  deal is open, or to `99_Archive/Superseded`.
+- **Versions:** the current one stays in its folder; older ones are kept (history) in an `Earlier versions` sub-folder
+  next to it, named `YYYY-MM-DD <name> (v1)`, `(v2)`… or `(draft 1)`.
 - **Nothing personal** in this Drive (rule in `AGENTS.md`). Copies of pro files to the personal Drive are allowed.
 - Session close (`session-close`, `work-notes`): files created in the session are filed, `00_Inbox` is empty or its
   rest is listed in the brief.

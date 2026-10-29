@@ -3,6 +3,15 @@
 The brain is versioned like any project: `v0.x` while the skeleton settles. Each release is a merged PR on
 `ac-ua/brain` and a row in the Notion Build Roadmap (Project = Brain).
 
+## v0.4.18 — weekly free-tier check (2026-10-29)
+- New skill `free-tier-watch` (builder): `scripts/quota_report.py` measures GitHub (Actions minutes, artifacts,
+  blocked jobs, repo sizes, Pages builds from merges), Supabase (the backups' `usage.json`) and Cloudflare (read-only
+  token: D1, Workers requests, R2, Pages deployments); « not measured » is listed, never guessed.
+- Scheduled task « Weekly free-tier check », Friday 17:47 New York, email + push (`docs/routines.md`).
+- `AGENTS.md`: `perso-general` may hold read-only measurement tokens (Aurélien's call).
+- First run found GitHub Actions refusing every job on the account (minutes used up or billing): Camp de Base's
+  nightly backup has failed since 27 Oct.
+
 ## v0.4.17 — every app has its builder files (2026-10-29)
 - The personal website (`ac-ua/website#4`) and Camp de Base (`ac-ua/Base-Camp#211`) get the files `builder.md` asks
   for: ledger, configuration guide published as an artifact, `environment.json`, `RELEASE.md`, registry line.

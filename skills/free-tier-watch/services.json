@@ -1,0 +1,26 @@
+{
+  "_doc": "What the weekly free-tier check measures. Limits from skills/build-webapp/free-tier-playbook.md (checked 2026-10-27; re-check quarterly). Add a repo or a resource here when a project starts.",
+  "github": {
+    "owner": "ac-ua",
+    "repos": [
+      {"repo": "c_ET", "app": "Element Logbook", "pages": true, "usage_artifact": "usage-", "backup_artifact": "element-logbook-backup-"},
+      {"repo": "Base-Camp", "app": "Camp de Base", "pages": true, "usage_artifact": "usage-", "backup_artifact": "base-camp-"},
+      {"repo": "sport", "app": "Sport data", "pages": true},
+      {"repo": "website", "app": "Personal website", "pages": true},
+      {"repo": "finance", "app": "Finance", "pages": false},
+      {"repo": "brain", "app": "Brain", "pages": false}
+    ]
+  },
+  "limits": {
+    "actions_minutes_month": 2000,
+    "actions_artifact_bytes": 500000000,
+    "pages_builds_month": 500,
+    "workers_requests_day": 100000,
+    "d1_bytes_total": 5000000000,
+    "r2_bytes": 10000000000,
+    "supabase_db_bytes": 500000000,
+    "supabase_storage_bytes": 1000000000,
+    "repo_soft_bytes": 1000000000
+  },
+  "levels": {"watch": 0.5, "alert": 0.8}
+}

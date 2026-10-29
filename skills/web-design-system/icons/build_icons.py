@@ -168,7 +168,7 @@ def validate(icons, glyphs, emoji):
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--src", action="append", help="icon JSON (repeat; later files add or override). Default: the kit's icons.json")
-    ap.add_argument("--glyphs", default=str(HERE / "glyphs.json"), help="glyph JSON ('' for none)")
+    ap.add_argument("--glyphs", action="append", help="glyph JSON (repeat; later files add or override; '' for none). Default: the kit's glyphs.json")
     ap.add_argument("--emoji", default="", help="optional emoji → icon name JSON map")
     ap.add_argument("--global", dest="glob", default="AppIcons", help="global object name in the page (default AppIcons)")
     ap.add_argument("--prefix", default="ci", help="text token prefix, ':<prefix>-name:' (default ci)")
@@ -188,7 +188,10 @@ def main(argv=None):
     icons = {}
     for src in a.src or [str(HERE / "icons.json")]:
         icons.update(load(src))
-    glyphs = load(a.glyphs) if a.glyphs else {}
+    glyphs = {}
+    for src in a.glyphs if a.glyphs is not None else [str(HERE / "glyphs.json")]:
+        if src:
+            glyphs.update(load(src))
     emoji = load(a.emoji) if a.emoji else {}
     errors, warnings = validate(icons, glyphs, emoji)
     for w in warnings:

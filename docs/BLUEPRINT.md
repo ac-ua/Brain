@@ -151,13 +151,13 @@ Large media is processed in the cloud or on a future personal machine, never on 
 | P1 bis | "Mac lost" drill: resume a real task from the iPad and a cloud session only; measure the start budget | to do |
 | Rolling | Each session migrates the domain it touches: read its old memories, write its card, tick it in the roadmap. Expeditions + Content first, then Sport, Learning, Career, Admin, Work | to do |
 | Routines | morning brief; weekly brain-maintenance; pro learnings every 2 weeks; monthly plugin copy, retro, export reminder, artifact source backup. All routines: [`routines.md`](routines.md) | idea |
-| Later | Mac mini (video, local models), Resolve Studio, Finance domain, cockpit app, publishing tools | idea |
+| Later | Mac mini (video, local models), Resolve Studio, cockpit app, publishing tools (Finance started 2026-10-29: `ac-ua/finance`) | idea |
 
 ## Backlog
 Tracked in the Build Roadmap (Project = Brain): "Mac lost" drill · rclone in `perso-general` · multi-account mail test
 (4 mailboxes; candidate: an open-source multi-account Google MCP + an Outlook connector) · Expeditions + Content
 migration · explainer video / podcast skill (`skills/explainer-video/`) · weekly brain-maintenance · pro → perso
-learnings · monthly plugin copy · morning brief · intervals.icu + Strava · Mac mini · Resolve Studio · Finance domain ·
+learnings · monthly plugin copy · morning brief · intervals.icu + Strava · Mac mini · Resolve Studio ·
 cockpit app (study and design proposals: https://claude.ai/artifact/4xqmHuenUqj4EUZ292uoWF, source
 `docs/cockpit/cockpit-proposals.html`).
 

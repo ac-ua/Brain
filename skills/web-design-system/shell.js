@@ -30,7 +30,7 @@
     if (opener) opener.addEventListener("click", () => drawer(true));
     if (scrim) scrim.addEventListener("click", () => drawer(false));
     document.addEventListener("keydown", (e) => { if (e.key === "Escape" && root.classList.contains("ds-side-open")) drawer(false); });
-    root.querySelectorAll(".ds-side .ds-side-link").forEach((l) => l.addEventListener("click", () => drawer(false)));
+    root.addEventListener("click", (e) => { if (e.target.closest(".ds-side .ds-side-link")) drawer(false); }); // also links rendered later
 
     const buttons = [...root.querySelectorAll("[data-ds-theme]")];
     const theme = (t, keep) => {

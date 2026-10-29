@@ -1,6 +1,6 @@
 ---
 name: expedition-followup-outreach
-description: "Automated follow-up pipeline for Aurélien Caye's South Pole 2026 expedition outreach, covering both brand sponsorship AND research/science partnerships (same Notion database, distinguished by the \"Type\" property). Triggers when the user asks to \"run the follow-up skill\", \"do the follow-ups\", \"check who needs a follow-up\", or any equivalent phrasing. The skill scans the Notion database for entries with status \"Contacté\" or \"relancé\" whose last contact date is 15+ days ago, then creates Gmail draft replies in the correct threads and drafts new emails to secondary contacts, using the tone and rules that match each entry's Type. Updates Notion with full traceability. Never sends emails, only creates drafts."
+description: "Automated follow-up pipeline for Aurélien Caye's South Pole 2027 expedition outreach, covering both brand sponsorship AND research/science partnerships (same Notion database, distinguished by the \"Type\" property). Triggers when the user asks to \"run the follow-up skill\", \"do the follow-ups\", \"check who needs a follow-up\", or any equivalent phrasing. The skill scans the Notion database for entries with status \"Contacté\" or \"relancé\" whose last contact date is 15+ days ago, then creates Gmail draft replies in the correct threads and drafts new emails to secondary contacts, using the tone and rules that match each entry's Type. Updates Notion with full traceability. Never sends emails, only creates drafts."
 ---
 
 # Expedition Follow-up Outreach Skill
@@ -122,16 +122,24 @@ Max 80 words. No "—" anywhere. No bullet points. No signature.
 Good patterns from past follow-ups:
 - Reference something that happened recently at the brand (new product,
   campaign, news) that makes the timing feel relevant now.
-- Reference the expedition timeline: "Avec un départ en novembre, je commence
-  à finaliser mes partenariats clés."
+- Reference the expedition timeline: "Avec un départ en novembre 2027, je
+  commence à finaliser mes partenariats clés."
 - For English: "Wanted to resurface this as I'm locking in key partnerships
-  ahead of my November departure."
+  ahead of my November 2027 departure."
+
+**Postponement (Nov 2026 → Nov 2027, decided around 2026-09-15).** Anyone
+contacted before that date was told November 2026 and Hercules Inlet. Before
+writing, read the entry's Notion page and thread: if they have not been told
+yet, say it once, plainly, in the first sentence (new date, new start at
+Berkner Island, longer route), then the ask. Never write "2026" or "Hercules
+Inlet" as the current plan, and never use "departure approaching" as the
+reason to write while the departure is more than six months away.
 
 **Research entries (Type = Science):** same structure and word count, but the
 "concrete reason to write" and the "core ask" must come from science-context.md,
 never from the brand patterns above. Good reasons to resurface: a new relevant
 publication from the lab, a refinement of the light protocol offered, or the
-November departure as a natural deadline for finalising which samples/measures
+November 2027 departure as a natural deadline for finalising which samples/measures
 to include. Never reference "partenariats clés" in a commercial sense; frame it
 as finalising the season's research collaborations.
 

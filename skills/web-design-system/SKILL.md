@@ -227,7 +227,8 @@ python3 <brain>/skills/web-design-system/icons/build_icons.py \
   --src <brain>/skills/web-design-system/icons/icons.json --src data/icons.app.json \
   --global SportIcons --out web/icons.js --sheet /tmp/icons.html     # then the app's asset stamp, if any
 ```
-`--check` validates only; `--emoji map.json` replaces leftover emojis while migrating. An icon that would be useful
+App glyphs (plain UI controls the kit lacks) go the same way: `--glyphs <kit>/glyphs.json --glyphs data/glyphs.app.json`
+(repeatable, later files add or override). `--check` validates only; `--emoji map.json` replaces leftover emojis while migrating. An icon that would be useful
 to every app (not domain-specific) goes into the kit's `icons.json` through the feedback loop, not only the app's file.
 
 ## Accessibility

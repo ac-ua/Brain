@@ -28,6 +28,11 @@ URLs are `https://app.notion.com/p/<id>`. Data sources (`collection://…`) are 
 | 🏋️ Element Logbook | `40619ca7989381a0a5ead7c140decb3e` |
 | 🇪🇸 Spanish app | `40619ca79893819e920df62835d6f33f` |
 | 🌐 Personal website | `40619ca7989381f5953ddbaf568a16f5` |
+| 🏃 Sport data pipeline | `40619ca7989381ce8a63e61a05771536` |
+| 💶 Finance | `40819ca798938143ad52f2bea239cde4` |
+| 🔌 Connector gateway (mail, drives, tools) | `40619ca7989381acba05d6f11b9eb075` |
+| 💼 AI-native opportunity pages | `40619ca79893814798a4e07c67b5e338` |
+| 🏃 Run club (Harbat NY) | `40619ca7989381f995a2ea355ea74983` |
 
 ### Saved views
 | View | On | Shows | View URL |

@@ -17,8 +17,11 @@
   --bad: #b42318; --bad-soft: #fde4e1; --info: #1f5f99; --info-soft: #e0edf9;
   /* data series (categorical, in this order), the hues of Camp de Base's expedition charts: accent, gear slate,
      food orange, fuel amber (expeditions.js load chart), good-weather green (simulation.js), deadline red; no purple.
-     --c-other for "rest / other" (simulation.js rest grey) */
+     --c-other for "rest / other" (simulation.js rest grey). v1.5: --c7 ocean teal and --c8 desert earth (Camp de Base's
+     ocean and desert palettes), two more series that are not status colours; use them before --c6 when red would read
+     as "bad" (wealth, allocations) */
   --c1: #0a6aa7; --c2: #5b7f95; --c3: #d9480f; --c4: #e8a33d; --c5: #3f9b6b; --c6: #b42318; --c-other: #adb5bd;
+  --c7: #1a8a96; --c8: #8b5e34;
   /* icons (faceted kit): fill roles and the outline, which stays dark in both themes */
   --ci-ink: #0d1117; --ci-a: #5b8fc0; --ci-b: #3e5d75; --ci-c: #ffffff; --ci-d: #9ea2ab;
   /* elevation, overlay */
@@ -46,6 +49,7 @@
   --ok: #6cc795; --ok-soft: #12301f; --warn: #f0b44c; --warn-soft: #33260f;
   --bad: #ff8a7a; --bad-soft: #3a1612; --info: #7db6ef; --info-soft: #11263a;
   --c1: #6fb0e0; --c2: #7fa3ba; --c3: #ff7a3d; --c4: #f0b44c; --c5: #56b07f; --c6: #ff8a7a; --c-other: #6b7a86;
+  --c7: #4fc1c9; --c8: #c49a6c;
   --ci-ink: #05080b;
   --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .35);
   color-scheme: dark; } }
@@ -55,6 +59,7 @@
   --ok: #6cc795; --ok-soft: #12301f; --warn: #f0b44c; --warn-soft: #33260f;
   --bad: #ff8a7a; --bad-soft: #3a1612; --info: #7db6ef; --info-soft: #11263a;
   --c1: #6fb0e0; --c2: #7fa3ba; --c3: #ff7a3d; --c4: #f0b44c; --c5: #56b07f; --c6: #ff8a7a; --c-other: #6b7a86;
+  --c7: #4fc1c9; --c8: #c49a6c;
   --ci-ink: #05080b;
   --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .35);
   color-scheme: dark; }
@@ -194,6 +199,9 @@ h3, .ds-label { font: 600 12px/1.2 var(--body); letter-spacing: .1em; text-trans
 .ds-tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--line); overflow-x: auto; scrollbar-width: none; }
 .ds-tabs button { flex: none; padding: 10px 14px; font: 700 15px/1 var(--display); color: var(--muted); border: 0; background: none; border-bottom: 3px solid transparent; cursor: pointer; }
 .ds-tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+/* v1.5: link tabs (routes), same look; the current one has aria-current="page" */
+.ds-tabs a { flex: none; padding: 10px 14px; font: 700 15px/1 var(--display); color: var(--muted); border-bottom: 3px solid transparent; text-decoration: none; }
+.ds-tabs a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); }
 .ds-tabs button:disabled { opacity: .5; cursor: default; }
 .ds-tabs .ds-soon { font-size: 9px; padding: 2px 5px; margin-left: 6px; vertical-align: 2px; }
 /* Sub-tabs: pills under the tabs */
@@ -230,6 +238,7 @@ h3, .ds-label { font: 600 12px/1.2 var(--body); letter-spacing: .1em; text-trans
 
 /* ---------- Status ---------- */
 .ds-pill { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; padding: 2px 8px; border-radius: var(--r-pill); white-space: nowrap; color: var(--muted); background: var(--sunken); }
+.ds-pill.ds-pill--body { font-family: var(--body); } /* v1.5: opt-in, for pills inside mono cells (td.n, .num); plain pills inherit */
 .ds-pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 .ds-tag { font-size: 11px; padding: 2px 6px; border-radius: var(--r-xs); background: var(--sunken); color: var(--muted); }
 .ds-soon { font: 600 10px/1 var(--body); letter-spacing: .06em; text-transform: uppercase; border: 1px solid var(--line); border-radius: var(--r-pill); padding: 3px 6px; color: var(--muted); }
@@ -256,6 +265,15 @@ h3, .ds-label { font: 600 12px/1.2 var(--body); letter-spacing: .1em; text-trans
 :where(.ds-table) tbody tr[data-href], :where(.ds-table) tbody tr.ds-click { cursor: pointer; }
 :where(.ds-table) tbody tr[data-href]:hover td, :where(.ds-table) tbody tr.ds-click:hover td { background: var(--sunken); }
 :where(.ds-table) tr.ds-grp td { background: var(--sunken); font: 700 15px/1 var(--display); padding: 9px 10px; }
+/* v1.5: subtotal / total row: sunken, bold, numbers stay mono */
+:where(.ds-table) tr.ds-total td, :where(.ds-table) tr.ds-total th { background: var(--sunken); font-weight: 700; color: var(--ink); }
+:where(.ds-table) tr.ds-total td { border-top: 1px solid var(--line); }
+/* v1.5: wide tables become cards under 700 px in the app; .ds-table--matrix opts out (year matrices, comparisons):
+   it stays a table and scrolls sideways in its .ds-table-wrap (figures on one line, labels wrap). Apps write card rules as
+   table.ds-table:not(.ds-table--matrix). The first column stays visible while scrolling. */
+:where(.ds-table.ds-table--matrix) :is(td, th):not(:first-child) { white-space: nowrap; }
+:where(.ds-table.ds-table--matrix) :is(td, th):first-child { position: sticky; left: 0; z-index: 1; background: var(--surface); min-width: 9em; }
+:where(.ds-table.ds-table--matrix) th:first-child, :where(.ds-table.ds-table--matrix) tr:is(.ds-total, .ds-grp) > :first-child { background: var(--sunken); }
 
 /* ---------- Overlays and feedback ---------- */
 dialog.ds-dialog { border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--surface); color: var(--ink); padding: 0; width: min(640px, calc(100vw - 32px)); box-shadow: var(--shadow); }
@@ -271,6 +289,9 @@ dialog.ds-dialog::backdrop { background: var(--scrim); }
 .ds-empty { padding: 28px; text-align: center; color: var(--muted); border: 1px dashed var(--line); border-radius: var(--r-md); }
 .ds-empty strong { display: block; color: var(--ink); font: 600 22px/1.2 var(--display); margin-bottom: 6px; }
 .ds-empty > p { margin: 0 auto 12px; max-width: 60ch; } .ds-empty > p:last-child { margin-bottom: 0; }
+.ds-empty.ds-empty--inline { padding: 12px 14px; margin: 0; text-align: left; font-size: 15px; } /* v1.5: compact, text only, inside panels */
+.ds-empty.ds-empty--inline strong { display: inline; font: inherit; color: var(--ink); margin: 0 6px 0 0; }
+.ds-empty.ds-empty--inline > p { display: inline; margin: 0; max-width: none; }
 .ds-loading { color: var(--muted); }
 
 /* ---------- Charts (SVG drawn by the app) ---------- */

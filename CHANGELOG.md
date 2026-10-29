@@ -31,6 +31,17 @@ The brain is versioned like any project: `v0.x` while the skeleton settles. Each
 - Wired into `build-webapp` (Stack), `project-kickoff` and the project template (new apps start from `tokens.css`
   and the icon kit) and `release-webapp` (UI check before shipping).
 
+## v0.4.15 — cockpit A·B·C and the platform study (2026-10-29)
+- « Brain · Cockpit » rebuilt on the design system (shell, tokens, icons, a faceted compass mark
+  `docs/cockpit/brand/brain-mark.svg`): Aujourd'hui (what waits on Aurélien with decisions, top 3 with pins, inbox
+  triage by keyboard or proposed by Claude), Domaines (one tile per domain), Projets, Sessions, and a Claude panel
+  that answers on the live data and proposes task changes he confirms. Built from `docs/cockpit/src/` by
+  `docs/cockpit/build.py`.
+- « Brain · Plateforme des apps » (https://claude.ai/artifact/R41dRr422fs6kwqKr1Fdcs): how to unify Finance, Camp de
+  Base and Sport as a federation (subdomains, one Cloudflare Access sign-in, an app switcher, a `/api/attention`
+  contract, a hub), with two prototypes and open questions.
+- `docs/artifacts.md`: the Brain's artifact registry.
+
 ## v0.4.14 — sessions are back in the cockpit (2026-10-29)
 - « Brain · Cockpit »: the Claude sessions block is back (Aurélien wants it). When the Claude Code Remote connector
   does not answer in the page, the block shows the last 7 days of the Session Log instead (new view « Cockpit · recent »).

@@ -5,7 +5,7 @@
 - **Route:** Berkner Island → South Pole, solo, unsupported, unassisted (ALE logistics)
 - **Distance:** ~1,350 km (~840 miles)
 - **Duration:** ~60 days
-- **Departure:** November 2027 (postponed from November 2026 around 2026-09-15, funding not closed; the earlier plan was Hercules Inlet, ~1,130 km, ~50 days)
+- **Departure:** November 2027 (internal context, never in an email: postponed from November 2026 around 2026-09-15 because funding was not closed; the earlier plan was Hercules Inlet, ~1,130 km, ~50 days)
 - **Conditions:** -14°C to -50°C, wind, complete isolation
 - **Pulka weight:** likely well over 110 kg (240+ lbs)
 - **Rarity:** TODO(Aurélien): the « ~50 people in history » figure was for Hercules Inlet; give the Berkner Island figure before citing one

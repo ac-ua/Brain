@@ -45,10 +45,13 @@ At session close, every pro file that is still only local is listed, for Auréli
 Once he has uploaded them, the next session links the files in Notion (step 3).
 
 ## Files shared with Aurélien
-A Drive link he passes on (a deck a colleague made on GeBBS) is never copied. The Drive connector cannot create
-shortcuts yet, so: its link goes on the Notion page (opportunity brief's Assets, « shared by <name> »), and the recap
-reminds him that `Shift+Z` in Drive adds the shortcut in `01_Accounts/<Account>`. `TODO(Aurélien)`: automatic
-shortcut once a tool can create one.
+A Drive link he passes on (a deck a colleague made on GeBBS) is never copied: it gets a **shortcut**, without asking.
+The Drive connector cannot create shortcuts, so an Apps Script does (`tools/drive-shortcuts/`):
+1. Append a row to the Sheet **Drive shortcut queue** (`05_Internal`, id `1rwFq1rhc3Zeh0b2RnGIxwDRw6BcG5I5bTt9Yt5j49zw`)
+   with the Sheets connector: date · file link · target (`<Account>` or `<Account>/<sub-folder>` under `01_Accounts`,
+   or a folder link) · optional name. The script creates the shortcut within 5 minutes (and missing folders).
+2. Put the file's link on the Notion page right away (opportunity brief's Assets, « shared by <name> »).
+3. Rows marked `Error` (no access, bad link) are reported to Aurélien by the next session.
 
 ## Rules
 - **Where a new file goes:** client or partner → `01_Accounts/<Account>`; reusable → `02_Assets`; event → `04_Events`;

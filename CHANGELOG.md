@@ -3,15 +3,12 @@
 The brain is versioned like any project: `v0.x` while the skeleton settles. Each release is a merged PR on
 `ac-ua/brain` and a row in the Notion Build Roadmap (Project = Brain).
 
-<<<<<<< HEAD
 ## v0.4.7 — shortcuts for shared files (2026-10-29)
 - `tools/drive-shortcuts/`: Apps Script bound to the Sheet « Drive shortcut queue » (work Drive, `05_Internal`).
   Agents append the shared link and the account; every 5 minutes the script adds the shortcut in
   `01_Accounts/<Account>` (never a copy). `docs/drive-map.md` updated; install once by Aurélien (README).
 - Every opportunity page with a Drive folder now links it in Assets (or at the top when there is no brief yet).
 
-=======
->>>>>>> origin/main
 ## v0.4.6 — upload list, shared links, earlier versions (2026-10-29)
 - `docs/drive-map.md`, `session-close`: the Mac's Drive app syncs the personal Drive only, so a pro file the connector
   can't upload goes on an upload list (`TO-UPLOAD.md` + recap with the target folder link) for Aurélien to drag in.

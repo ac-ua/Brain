@@ -50,6 +50,8 @@ The Drive connector cannot create shortcuts, so an Apps Script does (`tools/driv
 1. Append a row to the Sheet **Drive shortcut queue** (`05_Internal`, id `1rwFq1rhc3Zeh0b2RnGIxwDRw6BcG5I5bTt9Yt5j49zw`)
    with the Sheets connector: date · file link · target (`<Account>` or `<Account>/<sub-folder>` under `01_Accounts`,
    or a folder link) · optional name. The script creates the shortcut within 5 minutes (and missing folders).
+   **Target = where Aurélien will use it, not who it was made for**: a colleague's deck for another client that he
+   reuses as material goes to `02_Assets/<sub-folder>` (e.g. Competitive), not to that client's folder. Unsure: ask.
 2. Put the file's link on the Notion page right away (opportunity brief's Assets, « shared by <name> »).
 3. Rows marked `Error` (no access, bad link) are reported to Aurélien by the next session.
 

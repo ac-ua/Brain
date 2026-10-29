@@ -65,7 +65,7 @@ figure, date and unit. Body 15px/1.5. Scale: h1 `clamp(28px, 4.4vw, 40px)/1.05` 
 
 **Spacing** on a 2/4 px rhythm: 4 8 12 16 24 32 64 (`--s1`…`--s7`), plus 6, 10, 14, 18 inside components. Page gap
 18, grid gaps 10–14, panel padding 16, card padding 14×16, page padding 24 top / 64 bottom.
-**Radii:** 2 the primary button (Camp de Base's `.btn.primary`) · 4 tags · 6 small buttons, thumbs · 8 buttons, inputs,
+**Radii:** 2 the primary button (Camp de Base's `.btn.primary`) · 4 tags · 6 small buttons, thumbs · 7 inputs · 8 buttons,
 menu links · 10 panels, cards, tables · 12 dialogs,
 big tiles · 18 hero · 999 pills, chips, segments. **Borders:** 1 px `--line`; dashed = empty, optional or "drop
 here"; a 3–4 px left border carries a status or category colour. **Motion:** `.15s` hover (border, shadow,
@@ -91,7 +91,7 @@ here"; a 3–4 px left border carries a status or category colour. **Motion:** `
 ## Components (`tokens.css`)
 | Component | Class | Rules |
 |---|---|---|
-| Button | `.ds-btn`, `--primary`, `--sm`, `--danger` | 36 px high, radius 8 (primary 2, as on Camp de Base's app screens), 14 px 500. One primary per view. Icons 16 px glyphs |
+| Button | `.ds-btn`, `--primary`, `--sm`, `--danger` | as Camp de Base's `.btn`: padding 8×13 (no fixed height), radius 8 (primary 2), 14 px regular; `--sm` 4×8, 12.5 px, radius 6. One primary per view. Icons 16 px glyphs |
 | Icon button | `.ds-icon-btn` | 36×36, always with `aria-label` and `title` |
 | Segmented / theme switch | `.ds-seg` + `aria-pressed` | pill; pressed = inverted. Theme: Auto · Light · Dark glyphs |
 | Tabs / sub-tabs | `.ds-tabs` (`aria-selected`), `.ds-subtabs` | tabs in Syne 15 with a 3 px accent underline; sub-tabs as pills, scroll sideways on phones |
@@ -100,7 +100,7 @@ here"; a 3–4 px left border carries a status or category colour. **Motion:** `
 | Tag, Soon badge | `.ds-tag`, `.ds-soon` | 11 px; source tags in info, gaps in warn |
 | Panel, card, KPI | `.ds-panel`, `.ds-card`, `.ds-kpis > .ds-kpi (.k .v .s)` | radius 10; a whole clickable card is a `button` or `a` with `.ds-card` |
 | Note | `.ds-note` (+ `.ds-warn` …) | inline explanation or warning with a left bar |
-| Meter, track | `.ds-meter > i`, `.ds-track > i` | 6 px progress (accent, ok, `.ds-over` = bad); 14 px stacked bar |
+| Meter, track | `.ds-meter > i`, `.ds-track > i` | 6 px progress (ok green as on Camp de Base, `.ds-over` = bad); 14 px stacked bar |
 | Table | `.ds-table-wrap > table.ds-table` | sticky sunken head, 11 px uppercase; numbers right-aligned in mono (`.n`); group rows in Syne; clickable rows `tr[data-href]` |
 | Form | `.ds-form` (labels wrap inputs), `.ds-input`, `.ds-switch`, `.ds-search` | label 13 px muted above the field; `.missing` = warn; inputs 16 px on phones (no zoom) |
 | Dialog, sheet | `dialog.ds-dialog > .ds-dialog-body + .ds-dialog-foot`, `.ds-sheet` | dialog ≤ 640 px; detail views open as a right sheet (≤ 760 px), full screen on phones |
@@ -196,7 +196,7 @@ to every app (not domain-specific) goes into the kit's `icons.json` through the 
 - Focus: `:focus-visible` 2 px `--focus` ring, offset 2; never `outline: none` without a replacement.
 - Real elements: buttons for actions, links for navigation; state in `aria-pressed`, `aria-selected`,
   `aria-current`, `aria-expanded`; icon-only buttons have `aria-label`.
-- Controls 36 px high (44 px on field screens); chips and small buttons only in dense toolbars; inputs 16 px on
+- Controls about 36–40 px high as on Camp de Base (44 px on field screens); chips and small buttons only in dense toolbars; inputs 16 px on
   phones (no zoom on focus); safe-area insets on fixed bars.
 - Status and series never by colour alone; `prefers-reduced-motion` honoured.
 

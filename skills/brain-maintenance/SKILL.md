@@ -76,6 +76,8 @@ Recreate it in the same place. Call `list_environments`, then `create_session`:
 |---|---|---|
 | Element Logbook | `app-element` | `ac-ua/c_ET` |
 | Camp de Base | `app-base-camp` | `ac-ua/Base-Camp` |
+| Sport data | `app-sport` | `ac-ua/sport` |
+| Finance | `perso-general` | `ac-ua/finance` |
 | Personal website | `perso-general` | `ac-ua/website` |
 | Brain, and any perso topic without code | `perso-general` | `ac-ua/brain` |
 
@@ -87,6 +89,7 @@ The environments have other display names. Pick by id; fall back to the display 
 | `perso-general` | Default | `env_019TW5YFcoCLXFd8PNyjobYe` |
 | `app-element` | Logbook (created 2026-10-27) | `env_01TBxwoTQ3zoTd4n8L9NQHRg` |
 | `app-base-camp` | Base Camp | `env_01HhuNJ5ge9FDJSfCxTWBiXH` |
+| `app-sport` | app-sport | `env_01VkM6bzeHXYr4pq7KpHmPK2` |
 
 - Title `Area · subject`, as in [`docs/sessions.md`](../../docs/sessions.md).
 - **No initial prompt**: nothing runs until Aurélien writes in it.

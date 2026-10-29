@@ -1,7 +1,7 @@
 ---
 name: expedition-sponsor-outreach
 description: >
-  Automated sponsorship outreach pipeline for Aurélien Caye's South Pole 2026 
+  Automated sponsorship outreach pipeline for Aurélien Caye's South Pole 2027 
   solo expedition. Triggers automatically when the user asks to "run the skill", 
   "process the next sponsor", "do the outreach", or any equivalent. Also triggers 
   when a specific brand is named as a target. The skill reads the Notion sponsor 
@@ -103,7 +103,7 @@ Research process:
 2. Search "[Brand] sports marketing manager explorer ambassador"
 3. Search "[Brand] press contact partnership email"
 4. Check known patterns in expedition-context.md
-5. Search "[Contact Name] [Brand] 2025 2026" to confirm they still work there
+5. Search "[Contact Name] [Brand] [current year]" to confirm they still work there
 
 Identify and document up to 3 contacts in total, ranked by relevance:
 
@@ -164,8 +164,8 @@ or any other filler phrase. If you cannot find a specific hook, use the expediti
 angle directly.
 
 **Paragraph 2 — The expedition**
-Two to three sentences. Facts only. Include: solo, unsupported, Hercules Inlet
-to South Pole, over 1,000 km, roughly 50 days, alone in Antarctica, November 2026,
+Two to three sentences. Facts only. Include: solo, unsupported, Berkner Island
+to South Pole, about 1,350 km, roughly 60 days, alone in Antarctica, November 2027,
 no resupply, no assistance, no backup equipment. Then one sentence on why it is
 relevant to this specific brand.
 

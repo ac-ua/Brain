@@ -3,6 +3,19 @@
 The brain is versioned like any project: `v0.x` while the skeleton settles. Each release is a merged PR on
 `ac-ua/brain` and a row in the Notion Build Roadmap (Project = Brain).
 
+## v0.4.16 — audit: outreach facts, maps, design system v1.3.1 (2026-10-29)
+- Outreach skills (sponsor, research, follow-up) and their context files: South Pole **November 2027 from Berkner
+  Island** (~1,350 km, ~60 days, sled over 110 kg, ALE), as on the Expeditions card; they still said November 2026
+  from Hercules Inlet. Track record as stated on the card (Greenland 2023 was a team crossing, not solo; Finse 2026
+  added). The « ~50 people in history » rarity line is now `TODO(Aurélien)` (it was the Hercules figure). Follow-ups
+  handle contacts told the old date. `expedition-research-outreach` had two frontmatter blocks; one is left.
+- `web-design-system` v1.3.1 (no visual change): `shell.js` closes the drawer from side links rendered later;
+  `build_icons.py` takes `--glyphs` more than once.
+- `docs/notion-map.md`: the five Projects rows it lacked (Sport data pipeline, Finance, Connector gateway, AI-native
+  opportunity pages, Run club). `docs/sessions.md` and `brain-maintenance`: `app-sport` (id) and Finance.
+  `domains/admin-finance.md`: Finance is built (`ac-ua/finance`). `AGENTS.md`: `interview-prep` listed under
+  chief-of-staff, as in its agent file. `BLUEPRINT.md`: Finance is no longer a later idea.
+
 ## v0.4.15 — one design system for every app (2026-10-29)
 - New builder skill `web-design-system`, extracted from Camp de Base: tokens (light, dark, context palettes), shell
   and `ds-` components in `tokens.css`, data-viz rules, the faceted icon kit (73 icons, 16 glyphs, a generic

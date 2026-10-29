@@ -1,24 +1,26 @@
-# Science Outreach Context — South Pole 2026
+# Science Outreach Context — South Pole 2027
 
 This file is the single source of truth for the research-partnership outreach run.
 It is the science counterpart of the sponsor skill's `expedition-context.md`.
 
 ## The Expedition (core facts)
 
-- **Route:** Hercules Inlet → South Pole, solo, unsupported, unassisted
-- **Distance:** ~1,130 km (~702 miles)
-- **Duration:** ~50 days
-- **Departure:** November 2026
+- **Route:** Berkner Island → South Pole, solo, unsupported, unassisted (ALE logistics)
+- **Distance:** ~1,350 km (~840 miles)
+- **Duration:** ~60 days
+- **Departure:** November 2027 (internal context, never in an email: postponed from November 2026 around 2026-09-15 because funding was not closed; the earlier plan was Hercules Inlet, ~1,130 km, ~50 days)
 - **Conditions:** -14°C to -50°C, wind, complete isolation, altitude up to ~2,800 m at the Pole
-- **Pulka weight:** ~100 kg (220 lbs)
-- **Rarity:** ~50 people in history have ever achieved this
+- **Pulka weight:** likely well over 110 kg (240+ lbs)
+- **Rarity:** TODO(Aurélien): the « ~50 people in history » figure was for Hercules Inlet; give the Berkner Island figure before citing one
 - **Connectivity:** satellite device only (GPS + short daily audio dispatches)
 
 ## About Aurélien
 
 - French explorer based in New York
-- Prior expeditions: solo Greenland ski crossing (39 days, Nansen route),
-  solo Iceland traverse, solo ski crossing of a frozen lake in northern Canada
+- Prior expeditions (Notion Expeditions card; never call Greenland a solo crossing): Iceland solo 2020
+  (460 km in 11 days); Greenland 2023 on Nansen's route (~700 km in 39 days, in a team, finishing alone
+  through the fjords); Great Slave Lake solo, March 2025 (~300 km at −35 °C); Finse, Norway, Feb–Mar 2026
+  (22 days, 15 of them solo)
 - Email: aurelien.exploration@gmail.com
 - Website: aureliencaye.com
 
@@ -45,7 +47,7 @@ collaboration makes sense.
 
 ### Axe 1 — Environnement : prélèvements de neige (PRIORITY)
 
-- **Fit:** the Hercules Inlet → South Pole transect is a ground sampling line that labs
+- **Fit:** the Berkner Island → South Pole transect is a ground sampling line that labs
   almost never get to traverse. Two analyses fit in one gesture (scoop surface snow into a
   clean bottle at GPS points): microplastics, and black carbon / impurities.
 - **Light protocol (what Aurélien brings):** pre-cleaned bottles provided by the lab,

@@ -1,13 +1,8 @@
 ---
-name: "expedition-research-outreach"
-description: "Automated research-partnership outreach pipeline for Aurélien Caye's South Pole 2026 solo expedition. Triggers when the user asks to \"run the research skill\", \"process the next lab\", \"do the science outreach\", \"contacte le prochain labo\", or any equivalent. Also triggers when a specific lab or researcher is named as a target. The skill reads the \"Idee recherche\" Notion page, picks the next contact using the 2-1-1 axis rotation, then runs the full pipeline: lab research, contact discovery, email draft creation in Gmail, and Notion database update with Type = \"Science\". Fully autonomous end-to-end. One contact per run."
----
-
----
 name: expedition-research-outreach
 description: >
   Automated research-partnership outreach pipeline for Aurélien Caye's South Pole
-  2026 solo expedition. Triggers when the user asks to "run the research skill",
+  2027 solo expedition. Triggers when the user asks to "run the research skill",
   "process the next lab", "do the science outreach", "contacte le prochain labo",
   or any equivalent. Also triggers when a specific lab or researcher is named as a
   target. The skill reads the "Idee recherche" Notion page, picks the next contact
@@ -120,7 +115,7 @@ Research process:
 1. Search "[Lab] [researcher] site:linkedin.com" and the lab's own site
 2. Search "[researcher name] email [institution]" and check recent papers for a corresponding
    author address (academic emails are often public in publications)
-3. Confirm the researcher's current role: "[researcher] [institution] 2025 2026"
+3. Confirm the researcher's current role: "[researcher] [institution] [current year]"
 4. Check the seed patterns in science-context.md
 
 Document up to 3 contacts, ranked:
@@ -156,8 +151,8 @@ observation that shows homework was done (a named study, a programme, a research
 lab has published on).
 
 **Paragraph 2 — The expedition**
-Two to three sentences, facts only: solo, unsupported, unassisted, Hercules Inlet to South
-Pole, over 1,000 km, roughly 50 days, alone, November 2026, satellite-only connectivity.
+Two to three sentences, facts only: solo, unsupported, unassisted, Berkner Island to South
+Pole, about 1,350 km, roughly 60 days, alone, November 2027, satellite-only connectivity.
 
 **Paragraph 3 — What Aurélien can bring (the light protocol)**
 Two to three sentences, concrete and specific to this lab's method: the exact light protocol

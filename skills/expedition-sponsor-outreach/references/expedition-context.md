@@ -1,21 +1,23 @@
-# Expedition Context — South Pole 2026
+# Expedition Context — South Pole 2027
 
 ## The Expedition (core facts)
 
-- **Route:** Hercules Inlet → South Pole, solo, unsupported, unassisted
-- **Distance:** ~1,130 km (~702 miles)
-- **Duration:** ~50 days
-- **Departure:** November 2026
+- **Route:** Berkner Island → South Pole, solo, unsupported, unassisted (ALE logistics)
+- **Distance:** ~1,350 km (~840 miles)
+- **Duration:** ~60 days
+- **Departure:** November 2027 (internal context, never in an email: postponed from November 2026 around 2026-09-15 because funding was not closed; the earlier plan was Hercules Inlet, ~1,130 km, ~50 days)
 - **Conditions:** -14°C to -50°C, wind, complete isolation
-- **Pulka weight:** ~100 kg (220 lbs)
-- **Rarity:** ~50 people in history have ever achieved this
+- **Pulka weight:** likely well over 110 kg (240+ lbs)
+- **Rarity:** TODO(Aurélien): the « ~50 people in history » figure was for Hercules Inlet; give the Berkner Island figure before citing one
 
 ## About Aurélien
 
 - French explorer based in New York
 - BBA emlyon Business School 2019
-- Prior expeditions: solo Greenland ski crossing (39 days, Nansen route), 
-  solo Iceland traverse, solo ski crossing of a frozen lake in northern Canada
+- Prior expeditions (Notion Expeditions card; never call Greenland a solo crossing): Iceland solo 2020
+  (460 km in 11 days); Greenland 2023 on Nansen's route (~700 km in 39 days, in a team, finishing alone
+  through the fjords); Great Slave Lake solo, March 2025 (~300 km at −35 °C); Finse, Norway, Feb–Mar 2026
+  (22 days, 15 of them solo)
 - Email: aurelien.exploration@gmail.com
 - Website: aureliencaye.com
 - Instagram: @aureliencaye (~2,000 followers — proactively reframe as content rights, 
@@ -131,7 +133,7 @@ Lead with "product validation in extreme conditions" — -50°C is the ultimate
 stress test. Frame as a technical challenge, not an adventure story.
 
 **Nutrition (Chomps, Naak, Lyophilisé & Co, Feastables):**
-Lead with consumption context — 50 days alone, 6,000+ kcal/day, -50°C palatability.
+Lead with consumption context — about 60 days alone, 6,000+ kcal/day, -50°C palatability.
 
 **Tech/content (GoPro, DJI, Insta360):**
 Lead with content creation angle — the footage is the product validation and 

@@ -7,7 +7,10 @@ Notion domain page: **🗂️ Admin & Finance** (`40619ca7989381c38215c78e47b4d0
 **chief-of-staff.** Deadlines (tax returns, visa steps, renewals) in Tasks with Domain = Admin & Finance, Context = Perso.
 Drafts letters and checklists; never submits or pays.
 
-**builder.** A finance tool (flats, budget) is a later idea in the Build Roadmap ("Finance domain").
+**builder — Finance.** Repo `ac-ua/finance` (Projects row « Finance »), the personal finance and property cockpit that
+replaces Finary: prototype as a claude.ai artifact with a private db (« Finance · Cockpit »), Supabase + Pages later.
+The repo's `AGENTS.md` wins on conventions (real figures never in git, pure engine tested in node); plan in
+`docs/ROADMAP.md`, registry in `docs/artifacts.md`, roadmap = Build Roadmap, Project = Finance.
 
 ## Rules
 - Identifiers, account numbers and passwords never go in Notion or here: password manager only.

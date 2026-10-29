@@ -54,5 +54,8 @@ on the session's results; it does what follows.
 - Distil: decisions and facts, not transcripts. Never secrets; demo-environment logins already on a page stay there, never copied elsewhere.
 - Pro *files* live in the work Drive, filed by `docs/drive-map.md` (nothing at the root, `00_Inbox` emptied or
   its rest listed in the brief); copies in the personal Drive are allowed; Notion holds the context and the links.
+- A pro file the Drive connector could not upload (too large, local only) goes on the **upload list**
+  (`docs/drive-map.md`): a `TO-UPLOAD.md` in the output folder and, in the recap, « drag `<file>` into `<folder link>` ».
+- Drive links shared with Aurélien during the session are on the Notion page; the recap reminds the `Shift+Z` shortcut.
 - Lessons written to a local session memory (deck lessons, client preferences) are not saved: copy them to
   Memories or, for a way of working, to the Brain Inbox.

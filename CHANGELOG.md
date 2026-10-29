@@ -3,6 +3,14 @@
 The brain is versioned like any project: `v0.x` while the skeleton settles. Each release is a merged PR on
 `ac-ua/brain` and a row in the Notion Build Roadmap (Project = Brain).
 
+## v0.4.10 — every build runs as builder (2026-10-29)
+- `AGENTS.md`: any build in any domain (Sport, Finance, data pipelines, BI apps) runs as `builder` from the first
+  commit: kickoff, Projects row, Build Roadmap, ledger, configuration guide published as « <Project> · Configuration
+  guide », registry; a build already under way gets the missing pieces before its next release. `app-sport` listed.
+- `agents/builder.md`: Sport data in scope, any domain; « A project is set up when » checklist.
+- `project-kickoff`: the guide is published at kickoff and linked in the ledger, the registry and the Projects row.
+- `session-start`: a build session reads `agents/builder.md` first. `domains/sport.md`: Sport data project.
+
 ## v0.4.9 — shared files go where Aurélien uses them (2026-10-29)
 - `docs/drive-map.md`: a shared file's shortcut target is where Aurélien will use it (a colleague's Medtronic deck
   reused for competitive benchmarking → `02_Assets/Competitive`), not the client it was made for.

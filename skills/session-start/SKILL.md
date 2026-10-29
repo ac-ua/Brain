@@ -12,7 +12,8 @@ Goal: the right context in **~8–10k tokens**, nothing more. Load in this order
 3. **Domain**: find the domain in the routing table, `fetch` its Notion domain page and read the context card at the
    top (< 60 lines); the sub-pages listed below it are opened only if the task needs them. Read `domains/<domain>.md`.
    Unsure of the domain → ask once.
-4. **Project state** (only if the session is about a project):
+4. **Project state** (only if the session is about a project). A session that builds (code, app, data pipeline, BI)
+   runs as `builder`: read `agents/builder.md` and check its « A project is set up when » list first.
    - the Projects row (repo, prod URL, artifacts) and the artifact registry (`docs/artifacts.md`): work on those
      links, never recreate an artifact;
    - the Build Roadmap view on the project page (In progress, To do);

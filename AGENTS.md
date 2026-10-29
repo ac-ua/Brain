@@ -18,6 +18,14 @@ with no working notes. Don't edit a page he has already reviewed without asking.
 - **Needs Aurélien, every time:** any deletion (Notion page or row, file, branch, repo, cloud resource). Prefer an
   archive flag, or tell him exactly what to remove.
 
+### Builds and deploys: builder first
+- Before the first build, deploy or cloud-setup step of a session (code, Pages, Workers, D1, Supabase, a setup or
+  release doc to run), read `agents/builder.md` and `skills/build-webapp` (plus `skills/release-webapp` for a
+  release), even when the request only says "follow docs/X.md" in a project repo.
+- The brain's stack and release model wins over a project doc: a Pages app is **connected to its GitHub repo** and
+  ships by merging into `main`; never `wrangler pages deploy` (a direct-upload project can never be connected
+  afterwards). A project doc that disagrees is a bug: fix it in the same session, don't follow it.
+
 ### Confidentiality (one way)
 - Nothing personal ever goes to pro systems (work Drive, work Slack, `Unifyapps-Internal/*`, work Notion pages).
 - The brain covers both pro and perso (Aurélien's call, 2026-10-27): pro context, pro skills and client names may be

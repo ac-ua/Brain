@@ -40,6 +40,12 @@ missing one of them gets it in the current session, before anything else ships.
 
 ## Per project, follow the repo first
 A project's own `AGENTS.md` / `CLAUDE.md` wins over this file on conventions (commit markers, branch names, language).
+It never wins on the stack and the release model (`skills/build-webapp`): Pages connected to the repo, release =
+merge into `main`. A project doc (setup, RELEASE, handoff) that says otherwise is wrong: fix it, don't follow it.
+
+## Before any build, deploy or cloud setup
+Read this file and `skills/build-webapp` first, also when the task is "run docs/setup.md" or a single deploy step;
+`skills/release-webapp` for a release. Then check the step against them before running it.
 
 ## Notion
 | Reads | Writes |

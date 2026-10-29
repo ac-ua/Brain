@@ -47,6 +47,10 @@ Reference: [`free-tier-playbook.md`](free-tier-playbook.md), copied from `ac-ua/
 - Seeds and imports are idempotent (re-runnable: skip what exists) and have a dry run by default (`--apply` to write).
 
 ## Cloudflare Pages pitfalls
+- **Create every Pages project connected to its GitHub repo** (dashboard › Connect to Git, or the API:
+  `POST /pages/projects` with `source.type = github`, preview deployments `none`). **Never `wrangler pages deploy`**
+  for an app: it makes a *direct-upload* project, which Cloudflare can never connect to Git afterwards (it has to be
+  deleted and recreated). Sport data lost a setup round to this on 2026-10-29.
 - **The build output directory is relative to the root directory**: with root `web`, write `dist`, not `web/dist`.
 - Build fails on `npm ci` with a lockfile made by a newer npm: regenerate it with the npm version Pages runs (10).
 - Custom domain: the DNS lives where the domain's nameservers point (registrar or another host); keep the MX

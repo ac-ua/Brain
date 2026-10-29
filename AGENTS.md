@@ -123,7 +123,8 @@ a sub-agent costs much more tokens than a skill.
 ## Session protocol
 **Start** (`skills/session-start`): this file → About me → the domain card → the project state (Projects row,
 roadmap view, open tasks). Nothing else by default. **Budget: ~8–10k tokens** before real work starts.
-**Close** (`skills/session-close`): write the deltas (Memories, Tasks, Build Roadmap, Brain Inbox), then one
+**Close** (`skills/session-close`): write the deltas (Memories, Tasks, Build Roadmap, Brain Inbox), the project's
+state on its Projects row (Where we are, Next step, State updated: the project cockpit reads them), then one
 Session Log row. Do it before ending any session that changed something. Work that continues in another session
 gets a handoff note outside the session and a prompt to paste (`skills/session-handoff`).
 

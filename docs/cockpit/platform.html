@@ -1,0 +1,723 @@
+<title>Brain · Plateforme des apps</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=Questrial&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Aurélien's web design system · tokens, base styles and core components (skills/web-design-system).
+   Source: Camp de Base (ac-ua/Base-Camp, web/camp.css + web/index.html), made generic; Camp de Base is the only
+   reference (v1.1), never the website. Copy this file into an app as
+   web/ds.css, load it before the app's own CSS, and never edit the token values locally: a change goes back to the
+   brain (FEEDBACK.md). Fonts: Syne 700, Questrial, IBM Plex Mono 400/500 (Google Fonts link in SKILL.md).
+   Theme: follows the device; <html data-theme="light|dark"> forces one. Context palette: <html data-palette="…">
+   (see the end of the tokens). Classes are prefixed `ds-`; the mapping to Camp de Base's names is in SKILL.md. */
+
+/* ---------- Tokens: light ---------- */
+:root {
+  /* surfaces and text */
+  --bg: #f6f9fd; --surface: #ffffff; --sunken: #ebf4ff; --ink: #000000; --muted: #5b6b7a; --line: #d6e1ec;
+  /* brand and interaction */
+  --accent: #0a6aa7; --accent-ink: #ffffff; --accent-soft: #e2eef8; --focus: #1b68f6;
+  /* status: text colour + soft background, always as a pair */
+  --ok: #2b7a4b; --ok-soft: #dff2e6; --warn: #9a5b00; --warn-soft: #fff1d6;
+  --bad: #b42318; --bad-soft: #fde4e1; --info: #1f5f99; --info-soft: #e0edf9;
+  /* data series (categorical, in this order), the hues of Camp de Base's expedition charts: accent, gear slate,
+     food orange, fuel amber (expeditions.js load chart), good-weather green (simulation.js), deadline red; no purple.
+     --c-other for "rest / other" (simulation.js rest grey). v1.5: --c7 ocean teal and --c8 desert earth (Camp de Base's
+     ocean and desert palettes), two more series that are not status colours; use them before --c6 when red would read
+     as "bad" (wealth, allocations) */
+  --c1: #0a6aa7; --c2: #5b7f95; --c3: #d9480f; --c4: #e8a33d; --c5: #3f9b6b; --c6: #b42318; --c-other: #adb5bd;
+  --c7: #1a8a96; --c8: #8b5e34;
+  /* icons (faceted kit): fill roles and the outline, which stays dark in both themes */
+  --ci-ink: #0d1117; --ci-a: #5b8fc0; --ci-b: #3e5d75; --ci-c: #ffffff; --ci-d: #9ea2ab;
+  /* elevation, overlay */
+  --shadow: 0 1px 2px rgba(15, 30, 39, .06), 0 8px 24px rgba(15, 30, 39, .08);
+  --scrim: rgba(5, 12, 16, .45);
+  /* type */
+  --display: "Syne", "Arial Narrow", sans-serif;
+  --body: "Questrial", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  /* radii */
+  --r-xs: 4px; --r-sm: 6px; --r: 8px; --r-md: 10px; --r-lg: 12px; --r-xl: 18px; --r-pill: 999px;
+  /* spacing scale (px): 2 4 6 8 10 12 14 16 18 24 32 64 */
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 64px;
+  /* layout */
+  --side-w: 232px; --side-mini: 64px; --page-max: 1320px; --control-h: 36px;
+  /* motion */
+  --t-fast: .15s; --t-panel: .18s; --t-fold: .35s; --ease: ease; --ease-out: ease-out;
+  color-scheme: light;
+}
+
+/* ---------- Tokens: dark (device setting, unless data-theme="light"; or forced with data-theme="dark") ---------- */
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0b1218; --surface: #121c24; --sunken: #0e1820; --ink: #eef4f9; --muted: #92a5b4; --line: #22323e;
+  --accent: #6fb0e0; --accent-ink: #04121c; --accent-soft: #10283a; --focus: #8cc0ff;
+  --ok: #6cc795; --ok-soft: #12301f; --warn: #f0b44c; --warn-soft: #33260f;
+  --bad: #ff8a7a; --bad-soft: #3a1612; --info: #7db6ef; --info-soft: #11263a;
+  --c1: #6fb0e0; --c2: #7fa3ba; --c3: #ff7a3d; --c4: #f0b44c; --c5: #56b07f; --c6: #ff8a7a; --c-other: #6b7a86;
+  --c7: #4fc1c9; --c8: #c49a6c;
+  --ci-ink: #05080b;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .35);
+  color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #0b1218; --surface: #121c24; --sunken: #0e1820; --ink: #eef4f9; --muted: #92a5b4; --line: #22323e;
+  --accent: #6fb0e0; --accent-ink: #04121c; --accent-soft: #10283a; --focus: #8cc0ff;
+  --ok: #6cc795; --ok-soft: #12301f; --warn: #f0b44c; --warn-soft: #33260f;
+  --bad: #ff8a7a; --bad-soft: #3a1612; --info: #7db6ef; --info-soft: #11263a;
+  --c1: #6fb0e0; --c2: #7fa3ba; --c3: #ff7a3d; --c4: #f0b44c; --c5: #56b07f; --c6: #ff8a7a; --c-other: #6b7a86;
+  --c7: #4fc1c9; --c8: #c49a6c;
+  --ci-ink: #05080b;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .35);
+  color-scheme: dark; }
+
+/* Context palette (Camp de Base's biomes): a page about one context may retint the accent family and the icon roles.
+   An app declares its own in its CSS, same shape:
+   html[data-palette="forest"] { --accent: #2f7a35; --accent-soft: #e3f1e0; --sunken: #ecf5e9; --bg: #f6faf4;
+     --line: #d3e5cd; --muted: #56695a; --focus: #2f7a35; --info: #2f7a35; --info-soft: #e3f1e0;
+     --ci-a: #6da36d; --ci-b: #1a4f1c; --ci-d: #a8c9a0; }  + its dark values. The side menu never takes it: */
+html[data-palette] .ds-side {
+  --accent: #0a6aa7; --accent-soft: #e2eef8; --sunken: #ebf4ff; --line: #d6e1ec; --muted: #5b6b7a; --focus: #1b68f6;
+  --ci-a: #5b8fc0; --ci-b: #3e5d75; --ci-d: #9ea2ab; }
+@media (prefers-color-scheme: dark) { html[data-palette]:not([data-theme="light"]) .ds-side {
+  --accent: #6fb0e0; --accent-soft: #10283a; --sunken: #0e1820; --line: #22323e; --muted: #92a5b4; --focus: #8cc0ff; } }
+html[data-palette][data-theme="dark"] .ds-side {
+  --accent: #6fb0e0; --accent-soft: #10283a; --sunken: #0e1820; --line: #22323e; --muted: #92a5b4; --focus: #8cc0ff; }
+
+/* ---------- Base ---------- */
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font: 15px/1.5 var(--body); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+a { color: var(--accent); text-underline-offset: 2px; }
+h1 { font: 700 clamp(28px, 4.4vw, 40px)/1.05 var(--display); margin: 0; text-wrap: balance; }
+h2 { font: 700 22px/1.2 var(--display); margin: 0; }
+h3, .ds-label { font: 600 12px/1.2 var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; }
+.ds-num, .num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.ds-muted { color: var(--muted); }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0s !important; animation: none !important; } }
+
+/* ---------- App shell: side menu (desktop), top bar + drawer (phone) ---------- */
+.ds-side { position: fixed; z-index: 25; left: 0; top: 0; bottom: 0; width: var(--side-w); background: var(--sunken); border-right: 1px solid var(--line);
+  display: flex; flex-direction: column; gap: 18px; overflow-y: auto;
+  padding: calc(18px + env(safe-area-inset-top, 0px)) 12px calc(14px + env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-left, 0px)); }
+.ds-side-brand { display: flex; gap: 10px; align-items: center; padding: 0 8px; }
+.ds-side-brand img { width: 34px; height: auto; flex: none; }
+.ds-side-brand b { display: block; font: 700 20px/1 var(--display); white-space: nowrap; }
+.ds-side-brand small { display: block; font-size: 12px; color: var(--muted); margin-top: 2px; }
+.ds-side-group { display: grid; gap: 2px; }
+.ds-side-h { font: 600 11px/1 var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); padding: 0 10px 6px; }
+.ds-side-link { display: flex; align-items: center; gap: 9px; padding: 7px 10px; border-radius: var(--r); color: var(--ink); text-decoration: none; font-size: 14px;
+  border: 0; background: none; font-family: inherit; width: 100%; text-align: left; cursor: pointer; } /* links or buttons */
+.ds-side-link .ico { width: 1.3em; text-align: center; }
+.ds-side-link[aria-current="page"] { background: var(--surface); box-shadow: inset 3px 0 0 var(--accent); }
+.ds-side-link[aria-disabled="true"] { color: var(--muted); cursor: default; }
+.ds-side-link .ds-soon, .ds-side-link .ds-count { margin-left: auto; }
+.ds-side-link .ds-count { font-size: 12px; color: var(--muted); }
+.ds-side-foot { margin-top: auto; padding: 0 8px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.ds-app { margin-left: var(--side-w); }
+.ds-mtop { display: none; }
+.ds-scrim { position: fixed; inset: 0; z-index: 24; background: var(--scrim); }
+@media (max-width: 859px) {
+  .ds-app { margin-left: 0; }
+  .ds-side { translate: -100% 0; transition: translate var(--t-panel) var(--ease-out); box-shadow: var(--shadow); }
+  .ds-side-open .ds-side { translate: 0 0; }
+  .ds-mtop { display: flex; align-items: center; gap: 10px; position: sticky; top: env(safe-area-inset-top, 0px); z-index: 6; background: var(--sunken);
+    border-bottom: 1px solid var(--line); padding: 8px max(16px, env(safe-area-inset-right, 0px)) 8px max(16px, env(safe-area-inset-left, 0px)); font-size: 14px; color: var(--muted); }
+  .ds-mtop b { color: var(--ink); font-family: var(--display); font-size: 17px; }
+}
+@media (min-width: 860px) { .ds-scrim { display: none !important; } }
+/* Fold (Camp de Base's side.js): icons only at 64 px, the choice kept per app (shell.js); folded, the menu opens over
+   the page on hover or keyboard focus without moving it. The state class sits on <body> or the [data-ds-shell] root. */
+.ds-side-fold { margin-left: auto; flex: none; width: 28px; height: 28px; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface);
+  color: var(--muted); cursor: pointer; display: grid; place-items: center; font: 600 15px/1 var(--body); padding: 0; }
+.ds-side-fold:hover { color: var(--ink); }
+.ds-side-fold .ds-unfold, .ds-side-mini .ds-side-fold .ds-fold { display: none; }
+.ds-side-mini .ds-side-fold .ds-unfold { display: inline; }
+@media (min-width: 860px) {
+  .ds-side, .ds-app { transition: width var(--t-panel) ease, margin-left var(--t-panel) ease, box-shadow var(--t-panel) ease; }
+  .ds-side-mini { --side-w: var(--side-mini); }
+  .ds-side-mini .ds-side { width: var(--side-mini); overflow-x: hidden; padding-left: 8px; padding-right: 8px; }
+  .ds-side-mini .ds-side:hover, .ds-side-mini .ds-side:focus-within { width: 232px; box-shadow: var(--shadow); }
+  .ds-side-mini .ds-side-link, .ds-side-mini .ds-side-brand { white-space: nowrap; }
+  .ds-side-mini .ds-side-link, .ds-side-mini .ds-side-h { overflow: hidden; min-width: 0; }
+  .ds-side-mini .ds-side-group { grid-template-columns: minmax(0, 1fr); }
+  .ds-side-mini .ds-side:not(:hover):not(:focus-within) :is(.ds-side-h, .ds-side-foot > *, .ds-side-brand > span) { opacity: 0; }
+  .ds-side-mini .ds-side:not(:hover):not(:focus-within) :is(.ds-soon, .ds-count, .ds-side-fold) { display: none; }
+  .ds-side-mini .ds-side:not(:hover):not(:focus-within) .ds-side-link { font-size: 0; gap: 0; justify-content: center; }
+  .ds-side-mini .ds-side:not(:hover):not(:focus-within) .ds-side-link .ico { font-size: 14px; width: 20px; flex: none; }
+}
+@media (max-width: 859px) { .ds-side-fold { display: none; } }
+/* Sign out: bottom left, under the theme switch, full width (Camp de Base's .signout) */
+.ds-signout { flex-basis: 100%; border: 1px solid var(--line); background: var(--surface); color: var(--muted); border-radius: var(--r-sm); padding: 6px 10px;
+  font-size: 12px; cursor: pointer; text-align: left; text-decoration: none; }
+.ds-signout:hover { color: var(--ink); }
+
+/* ---------- Page ---------- */
+.ds-wrap { max-width: var(--page-max); margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.ds-main { padding-block: 24px 64px; display: grid; gap: 18px; }
+.ds-main > * { min-width: 0; }
+.ds-head { display: flex; flex-wrap: wrap; gap: 14px 32px; align-items: end; justify-content: space-between; }
+.ds-eyebrow { font: 600 12px/1 var(--body); letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+.ds-facts { display: flex; flex-wrap: wrap; gap: 8px 26px; margin: 0; }
+.ds-facts div { display: grid; gap: 2px; }
+.ds-facts dt { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.ds-facts dd { margin: 0; font: 500 20px/1.1 var(--mono); font-variant-numeric: tabular-nums; }
+.ds-toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.ds-sticky { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); padding-block: 12px; }
+.ds-cols { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); }
+.ds-cards { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr)); }
+
+/* ---------- Containers ---------- */
+.ds-panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); padding: 16px; min-width: 0; }
+.ds-card { all: unset; box-sizing: border-box; cursor: pointer; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md);
+  padding: 14px 16px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.ds-card:hover { box-shadow: var(--shadow); border-color: transparent; }
+.ds-card:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.ds-card .t { font: 700 19px/1.2 var(--display); }
+.ds-card .d { font-size: 13px; color: var(--muted); }
+.ds-kpis { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr)); }
+.ds-kpi { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); padding: 12px 14px; display: grid; gap: 4px; }
+.ds-kpi .k { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.ds-kpi .v { font: 500 22px/1.1 var(--mono); font-variant-numeric: tabular-nums; }
+.ds-kpi .s { font-size: 12px; color: var(--muted); }
+
+/* ---------- Controls ---------- */
+.ds-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 13px; border-radius: var(--r); border: 1px solid var(--line);
+  background: var(--surface); color: var(--ink); cursor: pointer; font-size: 14px; white-space: nowrap; text-decoration: none; } /* camp.css .btn */
+.ds-btn:hover { border-color: var(--muted); }
+.ds-btn.ds-btn--primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); border-radius: 2px; } /* Camp de Base's app screens (camp.css .btn.primary) */
+.ds-btn.ds-btn--primary:hover { border-color: var(--accent); filter: brightness(1.05); }
+.ds-btn.ds-btn--danger { color: var(--bad); }
+.ds-btn.ds-btn--sm { padding: 4px 8px; font-size: 12.5px; border-radius: var(--r-sm); }
+.ds-btn:disabled { opacity: .5; cursor: not-allowed; }
+.ds-icon-btn { border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: var(--r); width: var(--control-h); height: var(--control-h);
+  display: grid; place-items: center; cursor: pointer; }
+.ds-icon-btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; }
+/* Segmented control (theme switch, view switch): one pressed button, inverted */
+.ds-seg { display: inline-flex; border: 1px solid var(--line); border-radius: var(--r-pill); overflow: hidden; background: var(--surface); }
+.ds-seg button { border: 0; background: transparent; padding: 6px 10px; cursor: pointer; color: var(--muted); display: grid; place-items: center; }
+.ds-seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.ds-seg svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
+/* Tabs: display font, underline in accent */
+.ds-tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--line); overflow-x: auto; scrollbar-width: none; }
+.ds-tabs button { flex: none; padding: 10px 14px; font: 700 15px/1 var(--display); color: var(--muted); border: 0; background: none; border-bottom: 3px solid transparent; cursor: pointer; }
+.ds-tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+/* v1.5: link tabs (routes), same look; the current one has aria-current="page" */
+.ds-tabs a { flex: none; padding: 10px 14px; font: 700 15px/1 var(--display); color: var(--muted); border-bottom: 3px solid transparent; text-decoration: none; }
+.ds-tabs a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); }
+.ds-tabs button:disabled { opacity: .5; cursor: default; }
+.ds-tabs .ds-soon { font-size: 9px; padding: 2px 5px; margin-left: 6px; vertical-align: 2px; }
+/* Sub-tabs: pills under the tabs */
+.ds-subtabs { display: flex; gap: 6px; flex-wrap: wrap; margin: 12px 0 2px; }
+.ds-subtabs button { font: 14px var(--body); padding: 5px 12px; border-radius: var(--r-pill); border: 1px solid var(--line); background: var(--surface); color: var(--muted); cursor: pointer; }
+.ds-subtabs button[aria-selected="true"] { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+/* Filter chips: toggles with an optional count */
+.ds-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.ds-chip { padding: 5px 11px; border-radius: var(--r-pill); border: 1px solid var(--line); background: var(--surface); cursor: pointer; font-size: 13px; }
+.ds-chip .num { color: var(--muted); font-size: 12px; margin-left: 4px; }
+.ds-chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.ds-chip[aria-pressed="true"] .num { color: inherit; opacity: .7; }
+
+/* ---------- Forms ---------- */
+.ds-input, .ds-form input:not([type=checkbox]):not([type=radio]), .ds-form select, .ds-form textarea {
+  padding: 7px 9px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface); min-width: 0; } /* camp.css inputs */
+.ds-form { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); }
+.ds-form label { display: grid; gap: 4px; font-size: 13px; color: var(--muted); }
+.ds-form label.full { grid-column: 1 / -1; }
+.ds-form label.chk { display: flex; gap: 8px; align-items: center; }
+.ds-form textarea { min-height: 90px; resize: vertical; }
+/* v1.5.1: a visible file input matches the height of the other fields (its button made it taller) */
+.ds-form input[type=file]:not([type=checkbox]):not([type=radio]) { padding-block: 4px; }
+.ds-form input[type=file]::file-selector-button { font: inherit; font-size: 13px; padding: 2px 9px; margin-right: 9px; border: 1px solid var(--line); border-radius: 6px; background: var(--sunken); color: var(--ink); line-height: 1.2; cursor: pointer; }
+.ds-form .missing { border-color: var(--warn); background: var(--warn-soft); }
+.ds-form fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: 10px; }
+.ds-form legend { font: 600 12px/1 var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); padding: 0; margin-bottom: 10px; }
+.ds-search { width: min(320px, 100%); }
+.ds-switch { position: relative; display: inline-block; width: 34px; height: 20px; cursor: pointer; }
+.ds-switch input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: inherit; z-index: 1; }
+.ds-switch span { position: absolute; inset: 0; border-radius: var(--r-pill); background: var(--line); transition: background var(--t-fast); }
+.ds-switch span::after { content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: var(--surface); box-shadow: 0 1px 2px rgba(0,0,0,.25); transition: transform var(--t-fast); }
+.ds-switch input:checked + span { background: var(--accent); }
+.ds-switch input:checked + span::after { transform: translateX(14px); }
+.ds-switch input:focus-visible + span { outline: 2px solid var(--focus); outline-offset: 2px; }
+.ds-switch input:disabled + span { opacity: .4; } .ds-switch:has(input:disabled) { cursor: not-allowed; }
+
+/* ---------- Status ---------- */
+.ds-pill { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; padding: 2px 8px; border-radius: var(--r-pill); white-space: nowrap; color: var(--muted); background: var(--sunken); }
+.ds-pill.ds-pill--body { font-family: var(--body); } /* v1.5: opt-in, for pills inside mono cells (td.n, .num); plain pills inherit */
+.ds-pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.ds-tag { font-size: 11px; padding: 2px 6px; border-radius: var(--r-xs); background: var(--sunken); color: var(--muted); }
+.ds-soon { font: 600 10px/1 var(--body); letter-spacing: .06em; text-transform: uppercase; border: 1px solid var(--line); border-radius: var(--r-pill); padding: 3px 6px; color: var(--muted); }
+.ds-note { font-size: 14px; padding: 10px 14px; border-radius: var(--r); border: 1px solid var(--line); border-left: 3px solid var(--accent); background: var(--sunken); margin: 0 0 12px; }
+.ds-ok { color: var(--ok); background: var(--ok-soft); }
+.ds-warn { color: var(--warn); background: var(--warn-soft); }
+.ds-bad { color: var(--bad); background: var(--bad-soft); }
+.ds-info { color: var(--info); background: var(--info-soft); }
+.ds-note.ds-warn, .ds-note.ds-bad, .ds-note.ds-ok, .ds-note.ds-info { border: 0; padding: 10px 12px; margin: 0; }
+.ds-meter { height: 6px; border-radius: 3px; background: var(--sunken); overflow: hidden; }
+.ds-meter i { display: block; height: 100%; background: var(--ok); } /* camp.css .meter */
+.ds-meter.ds-over i { background: var(--bad); }
+
+/* ---------- Tables ---------- */
+/* :where() keeps Camp de Base's specificity (it styled bare table/th/td): an app's own table rules still win. */
+.ds-table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface); }
+:where(.ds-table) { border-collapse: collapse; width: 100%; font-size: 14px; }
+:where(.ds-table) th { text-align: left; font: 600 11px/1.2 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding: 10px;
+  border-bottom: 1px solid var(--line); background: var(--sunken); white-space: nowrap; }
+:where(.ds-table) td { padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+:where(.ds-table) tr:last-child td { border-bottom: 0; }
+:where(.ds-table) td.n, :where(.ds-table) th.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+:where(.ds-table) td.n { font-family: var(--mono); }
+:where(.ds-table) tbody tr[data-href], :where(.ds-table) tbody tr.ds-click { cursor: pointer; }
+:where(.ds-table) tbody tr[data-href]:hover td, :where(.ds-table) tbody tr.ds-click:hover td { background: var(--sunken); }
+:where(.ds-table) tr.ds-grp td { background: var(--sunken); font: 700 15px/1 var(--display); padding: 9px 10px; }
+/* v1.5: subtotal / total row: sunken, bold, numbers stay mono */
+:where(.ds-table) tr.ds-total { --total-bg: var(--sunken); }
+/* v1.5.1: in dark, --sunken is darker than --surface and barely shows; the total row is lifted towards ink instead */
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) :where(.ds-table) tr.ds-total { --total-bg: color-mix(in srgb, var(--ink) 8%, var(--surface)); } }
+:root[data-theme="dark"] :where(.ds-table) tr.ds-total { --total-bg: color-mix(in srgb, var(--ink) 8%, var(--surface)); }
+:where(.ds-table) tr.ds-total td, :where(.ds-table) tr.ds-total th { background: var(--total-bg); font-weight: 700; color: var(--ink); }
+:where(.ds-table) tr.ds-total td { border-top: 1px solid var(--line); }
+/* v1.5: wide tables become cards under 700 px in the app; .ds-table--matrix opts out (year matrices, comparisons):
+   it stays a table and scrolls sideways in its .ds-table-wrap (figures on one line, labels wrap). Apps write card rules as
+   table.ds-table:not(.ds-table--matrix). The first column stays visible while scrolling. */
+:where(.ds-table.ds-table--matrix) :is(td, th):not(:first-child) { white-space: nowrap; }
+:where(.ds-table.ds-table--matrix) :is(td, th):first-child { position: sticky; left: 0; z-index: 1; background: var(--surface); min-width: 9em; }
+:where(.ds-table.ds-table--matrix) th:first-child, :where(.ds-table.ds-table--matrix) tr.ds-grp > :first-child { background: var(--sunken); }
+:where(.ds-table.ds-table--matrix) tr.ds-total > :first-child { background: var(--total-bg); }
+
+/* ---------- Overlays and feedback ---------- */
+dialog.ds-dialog { border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--surface); color: var(--ink); padding: 0; width: min(640px, calc(100vw - 32px)); box-shadow: var(--shadow); }
+dialog.ds-dialog::backdrop { background: var(--scrim); }
+.ds-dialog-body { display: grid; gap: 14px; padding: 18px; max-height: min(80vh, 760px); overflow-y: auto; }
+.ds-dialog-foot { display: flex; justify-content: flex-end; gap: 8px; }
+.ds-sheet { position: fixed; z-index: 21; top: 0; right: 0; bottom: 0; width: min(760px, 100%); background: var(--surface); box-shadow: var(--shadow); display: flex; flex-direction: column;
+  padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+.ds-toast { position: fixed; z-index: 70; left: 50%; translate: -50% 0; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); background: var(--ink); color: var(--bg);
+  padding: 10px 14px; border-radius: var(--r); font-size: 14px; max-width: calc(100vw - 32px); }
+.ds-toast.ds-err { background: var(--bad); color: #fff; } /* camp.css .toast.err */
+.ds-tip { position: absolute; transform: translateX(-50%); background: var(--ink); color: var(--bg); font: 12px var(--mono); padding: 3px 8px; border-radius: var(--r-sm); pointer-events: none; white-space: nowrap; }
+.ds-empty { padding: 28px; text-align: center; color: var(--muted); border: 1px dashed var(--line); border-radius: var(--r-md); }
+.ds-empty strong { display: block; color: var(--ink); font: 600 22px/1.2 var(--display); margin-bottom: 6px; }
+.ds-empty > p { margin: 0 auto 12px; max-width: 60ch; } .ds-empty > p:last-child { margin-bottom: 0; }
+.ds-empty.ds-empty--inline { padding: 12px 14px; margin: 0; text-align: left; font-size: 15px; } /* v1.5: compact, text only, inside panels */
+.ds-empty.ds-empty--inline strong { display: inline; font: inherit; color: var(--ink); margin: 0 6px 0 0; }
+.ds-empty.ds-empty--inline > p { display: inline; margin: 0; max-width: none; }
+.ds-loading { color: var(--muted); }
+
+/* ---------- Charts (SVG drawn by the app) ---------- */
+.ds-chart { overflow-x: auto; }
+.ds-chart svg { display: block; width: 100%; height: auto; }
+.ds-chart text { fill: var(--muted); font: 11px var(--mono); }
+.ds-chart .ax, .ds-chart .grid { stroke: var(--line); }
+.ds-chart .plan { fill: none; stroke: var(--muted); stroke-dasharray: 5 4; }
+.ds-chart .line { fill: none; stroke: var(--c1); stroke-width: 2; stroke-linejoin: round; }
+.ds-chart .area { fill: var(--accent-soft); }
+.ds-chart .cur { stroke: var(--ink); stroke-width: 1.5; }
+.ds-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--muted); margin-top: 10px; }
+.ds-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; }
+.ds-track { height: 14px; background: var(--sunken); border-radius: 3px; display: flex; overflow: hidden; }
+.ds-track i { display: block; height: 100%; }
+
+/* ---------- Login screen ---------- */
+.ds-login { position: fixed; inset: 0; z-index: 60; background: var(--surface); display: grid; place-items: center; padding: 24px; }
+.ds-login > div { display: grid; gap: 18px; justify-items: center; text-align: center; max-width: 360px; }
+.ds-login img { width: 84px; height: auto; }
+.ds-login h1 { margin: 0; font-size: 34px; }
+.ds-login p { margin: 0; color: var(--muted); }
+.ds-login .ds-err { color: #b42318; min-height: 1.2em; }
+
+</style>
+<style>
+/* Study page (prefix pf-): a document column (70ch) that opens out to the full width for the prototypes.
+   The prototypes are a scaled-down app shell drawn with the design-system tokens (pf-shell), not the fixed ds-side. */
+body { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.pf { max-width: 1240px; margin: 0 auto; padding-block: 32px 72px; display: grid; gap: 18px; }
+.pf-col { max-width: 74ch; }
+.pf p { margin: 8px 0; }
+.pf h2 { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--line); }
+.pf h3 { margin-top: 18px; }
+.pf ul, .pf ol { padding-left: 1.2em; margin: 8px 0; } .pf li { margin: 4px 0; }
+.pf-lede { font-size: 17px; color: var(--muted); max-width: 66ch; }
+.pf-verdict { border-left: 3px solid var(--accent); }
+.pf-verdict ol li { margin: 8px 0; }
+.pf-3 { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+.pf-opt { display: grid; gap: 8px; align-content: start; }
+.pf-opt.pick { border: 2px solid var(--accent); }
+.pf-opt h3 { margin: 0; color: var(--ink); font: 700 19px/1.2 var(--display); letter-spacing: 0; text-transform: none; }
+.pf-opt .pro, .pf-opt .con { font-size: 14px; margin: 0; padding-left: 1.1em; }
+.pf-opt .pro li::marker { content: "+  "; color: var(--ok); } .pf-opt .con li::marker { content: "−  "; color: var(--bad); }
+.pf-layers { display: grid; gap: 10px; }
+.pf-layer { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 16px; padding: 14px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); }
+.pf-layer > b { font: 700 16px/1.2 var(--display); }
+@media (max-width: 640px) { .pf-layer { grid-template-columns: minmax(0, 1fr); gap: 6px; } }
+pre.mermaid { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); padding: 16px; overflow-x: auto; }
+code, .pf-code { font: 13px var(--mono); background: var(--sunken); padding: 1px 5px; border-radius: 4px; }
+pre.pf-code { display: block; padding: 12px 14px; overflow-x: auto; line-height: 1.5; border: 1px solid var(--line); }
+
+/* ---------- prototype shell ---------- */
+.pf-proto { border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden; background: var(--bg); box-shadow: var(--shadow); }
+.pf-bar { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: var(--sunken); border-bottom: 1px solid var(--line); font: 12px var(--mono); color: var(--muted); }
+.pf-bar i { width: 9px; height: 9px; border-radius: 50%; background: var(--line); display: inline-block; }
+.pf-url { flex: 1; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-pill); padding: 2px 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pf-url b { color: var(--ink); font-weight: 500; }
+.pf-shell { display: grid; grid-template-columns: 220px minmax(0, 1fr); min-height: 620px; }
+.pf-side { background: var(--sunken); border-right: 1px solid var(--line); padding: 14px 10px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.pf-brand { display: flex; gap: 9px; align-items: center; padding: 0 6px; }
+.pf-brand img { width: 30px; height: 30px; }
+.pf-brand b { display: block; font: 700 18px/1 var(--display); }
+.pf-brand small { font-size: 11px; color: var(--muted); }
+.pf-switch { position: relative; }
+.pf-switch > button { width: 100%; display: flex; align-items: center; gap: 9px; padding: 7px 9px; border: 1px solid var(--line); background: var(--surface); border-radius: var(--r); cursor: pointer; text-align: left; }
+.pf-switch > button .ci { width: 22px; height: 22px; }
+.pf-switch > button #sw-icon { flex: none; display: grid; }
+.pf-switch > button #sw-name { flex: 1; min-width: 0; font: 700 15px var(--display); text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pf-menu { position: absolute; left: 0; right: 0; top: calc(100% + 4px); z-index: 4; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); box-shadow: var(--shadow); padding: 6px; display: grid; gap: 2px; }
+.pf-menu button { display: flex; align-items: center; gap: 9px; padding: 7px 9px; border: 0; background: none; border-radius: var(--r); cursor: pointer; text-align: left; width: 100%; }
+.pf-menu button:hover, .pf-menu button[aria-current="true"] { background: var(--sunken); }
+.pf-menu button .ci { width: 20px; height: 20px; }
+.pf-menu small { color: var(--muted); margin-left: auto; font-size: 11px; }
+.pf-menu hr { border: 0; border-top: 1px solid var(--line); margin: 4px 0; }
+.pf-grp { display: grid; gap: 2px; }
+.pf-grp > span { font: 600 10.5px/1 var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); padding: 0 9px 5px; }
+.pf-link { display: flex; align-items: center; gap: 8px; padding: 6px 9px; border-radius: var(--r); font-size: 13.5px; border: 0; background: none; cursor: pointer; text-align: left; color: var(--ink); width: 100%; }
+.pf-link .ci { width: 18px; height: 18px; }
+.pf-link[aria-current="true"] { background: var(--surface); box-shadow: inset 3px 0 0 var(--accent); }
+.pf-link .n { margin-left: auto; font: 11px var(--mono); color: var(--muted); }
+.pf-link .n.hot { color: var(--warn); }
+.pf-foot { margin-top: auto; font-size: 11.5px; color: var(--muted); padding: 0 9px; }
+.pf-main { padding: 18px 20px 24px; display: grid; gap: 14px; align-content: start; min-width: 0; }
+.pf-main h1 { font-size: 30px; }
+.pf-feed { display: grid; gap: 8px; }
+.pf-alert { display: grid; grid-template-columns: 26px minmax(0, 1fr) auto; gap: 10px; align-items: start; padding: 9px 12px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); border-left: 3px solid var(--line); }
+.pf-alert.warn { border-left-color: var(--warn); } .pf-alert.bad { border-left-color: var(--bad); } .pf-alert.info { border-left-color: var(--info); }
+.pf-alert .ci { width: 22px; height: 22px; }
+.pf-alert .src { font: 600 10.5px/1.2 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.pf-alert .go { font-size: 12.5px; white-space: nowrap; }
+.pf-apps { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); }
+.pf-app { all: unset; box-sizing: border-box; cursor: pointer; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); padding: 12px 14px; display: grid; gap: 6px; }
+.pf-app:hover { box-shadow: var(--shadow); }
+.pf-app:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.pf-app .h { display: flex; align-items: center; gap: 8px; font: 700 16px var(--display); }
+.pf-app .h .ci { width: 24px; height: 24px; }
+.pf-app .v { font: 500 20px var(--mono); }
+.pf-app .s { font-size: 12px; color: var(--muted); }
+.pf-filters { display: flex; flex-wrap: wrap; gap: 6px; }
+.pf-mock { border: 1px dashed var(--line); border-radius: var(--r-md); padding: 14px; background: var(--surface); display: grid; gap: 10px; }
+.pf-mock .row { display: flex; gap: 10px; flex-wrap: wrap; }
+.pf-mock .bar { height: 10px; border-radius: 3px; background: var(--sunken); flex: 1; min-width: 80px; overflow: hidden; }
+.pf-mock .bar i { display: block; height: 100%; background: var(--c1); }
+@media (max-width: 760px) {
+  .pf-shell { grid-template-columns: minmax(0, 1fr); }
+  .pf-side { border-right: 0; border-bottom: 1px solid var(--line); }
+  .pf-side .pf-grp, .pf-side .pf-foot { display: none; }
+}
+.pf-q { counter-reset: q; list-style: none; padding: 0; display: grid; gap: 10px; }
+.pf-q li { counter-increment: q; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); padding: 12px 14px 12px 48px; position: relative; }
+.pf-q li::before { content: counter(q); position: absolute; left: 14px; top: 11px; font: 500 18px var(--mono); color: var(--accent); }
+</style>
+
+<div class="pf">
+  <header class="ds-head">
+    <div><div class="ds-eyebrow">Brain · étude · 29 octobre 2026</div><h1>Plateforme des apps</h1></div>
+    <dl class="ds-facts"><div><dt>Apps</dt><dd>3 + 1</dd></div><div><dt>Domaine</dt><dd>aureliencaye.com</dd></div><div><dt>Coût en plus</dt><dd>0 €</dd></div></dl>
+  </header>
+  <p class="pf-lede pf-col">Finance, Camp de Base et Sport partagent déjà le même design system, mais chacune vit seule : son adresse, sa connexion, sa base, son menu. Cette page propose comment en faire une seule plateforme sans les fusionner, avec un hub qui fait remonter ce que chaque app attend de toi. Deux prototypes cliquables en bas.</p>
+
+  <div class="ds-panel pf-verdict pf-col">
+    <h3>En bref</h3>
+    <ol>
+      <li><strong>Garder des apps séparées</strong> : un dépôt, une base et un déploiement par app. Une app qui casse ne casse pas les autres, la finance reste isolée, et chaque session cloud garde son environnement.</li>
+      <li><strong>Les unir par quatre choses partagées</strong> : des sous-domaines de <code>aureliencaye.com</code>, une seule connexion (Cloudflare Access pour toutes), le même menu avec un sélecteur d'apps, et un petit contrat <code>/api/attention</code> que chaque app expose.</li>
+      <li><strong>Le hub</strong> est une app de plus, <code>hub.aureliencaye.com</code>, qui reprend le cockpit Brain. Il lit tes tâches dans Notion et les alertes en direct de chaque app.</li>
+      <li><strong>Ne rien fusionner</strong> : pas de monorepo, pas de base unique, pas de micro-frontends. Le gain serait faible et le risque fort.</li>
+    </ol>
+  </div>
+
+  <section class="pf-col">
+    <h2>Où en sont tes apps</h2>
+    <p>Lu dans les trois dépôts le 29 octobre.</p>
+  </section>
+  <div class="ds-table-wrap">
+    <table class="ds-table">
+      <thead><tr><th></th><th>Camp de Base</th><th>Sport</th><th>Finance</th><th>Element Logbook</th></tr></thead>
+      <tbody>
+        <tr><td><b>Hébergement</b></td><td>Pages <code>base-camp.pages.dev</code></td><td>Pages <code>sport-cw7.pages.dev</code> + Worker de synchro</td><td>Artifact claude.ai (Pages prévu)</td><td>Pages, <code>logbook.element-training.com</code></td></tr>
+        <tr><td><b>Connexion</b></td><td>Supabase Google + liste d'e-mails</td><td>Cloudflare Access</td><td>Propriétaire de l'artifact (Access + passkey prévus)</td><td>Supabase, plusieurs rôles (club)</td></tr>
+        <tr><td><b>Données</b></td><td>Supabase (32 migrations)</td><td>D1 + R2</td><td>Base privée de l'artifact (Supabase ou D1 à choisir)</td><td>Supabase</td></tr>
+        <tr><td><b>Design system</b></td><td>L'origine (<code>camp.css</code>, sous-ensemble)</td><td>v1.5.1 (jetons recopiés)</td><td>v1.5.1 (copie exacte)</td><td>Le sien (Lexend, marine)</td></tr>
+        <tr><td><b>Ce qui t'attend</b></td><td><code>GET /api/tower</code> : échéances, achats, réparations, conflits</td><td><code>data_health</code> : décisions de fusion, synchro en retard</td><td><code>insights.js</code> : constats, remboursements, échéances (côté navigateur)</td><td>Retours et erreurs (pour le club)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="pf-col">
+    <p><strong>Element Logbook reste à part.</strong> C'est l'app du club, avec ses membres, son domaine et sa marque. Le hub peut afficher ses retours à traiter, mais elle n'entre pas dans ta plateforme personnelle.</p>
+    <p><strong>Ce qui manque aujourd'hui pour une plateforme</strong> : aucune connexion commune (Access pour Sport, Google pour Camp de Base), aucune adresse commune (des <code>pages.dev</code>), aucun lien d'une app vers les autres, et aucun format commun pour « ce qui t'attend ».</p>
+  </div>
+
+  <section class="pf-col">
+    <h2>Trois façons de faire</h2>
+  </section>
+  <div class="pf-3">
+    <div class="ds-panel pf-opt pick">
+      <span class="ds-pill ds-ok" style="justify-self:start">Recommandée</span>
+      <h3>A · Fédération</h3>
+      <p class="ds-muted" style="margin:0">Apps séparées, réunies par les sous-domaines, la connexion, le menu et le contrat d'attention.</p>
+      <ul class="pro"><li>Rien à réécrire : chaque app ajoute un domaine, Access et un endpoint</li><li>Pannes, données et déploiements isolés</li><li>Une app de plus = une ligne dans le registre des apps</li></ul>
+      <ul class="con"><li>Changer d'app recharge une page (≈ 300 ms)</li><li>Une installation sur l'écran d'accueil par app (ou le hub seul)</li></ul>
+    </div>
+    <div class="ds-panel pf-opt">
+      <h3>B · Coquille unique</h3>
+      <p class="ds-muted" style="margin:0">Une adresse, <code>app.aureliencaye.com/finance</code>, <code>/expe</code>, <code>/sport</code>, avec un Worker qui aiguille chaque chemin vers son projet Pages.</p>
+      <ul class="pro"><li>Une seule app installée, un seul cookie, un seul thème</li><li>Le menu ne change jamais d'adresse</li></ul>
+      <ul class="con"><li>Chaque app doit vivre sous un sous-chemin : Camp de Base appelle <code>/api/…</code> en absolu partout</li><li>Le Worker devient un point de panne commun et double les requêtes comptées</li></ul>
+    </div>
+    <div class="ds-panel pf-opt">
+      <h3>C · Fusion</h3>
+      <p class="ds-muted" style="margin:0">Un monorepo, une base avec un schéma par domaine, un seul déploiement.</p>
+      <ul class="pro"><li>Requêtes croisées faciles (une sortie terrain qui coûte, un entraînement lié à l'expé)</li></ul>
+      <ul class="con"><li>Une release de Sport redéploie la finance</li><li>Données financières dans la même base que le reste</li><li>Trois environnements cloud et leurs secrets à réunir</li><li>Des semaines de migration pour un gain que l'option A donne déjà</li></ul>
+    </div>
+  </div>
+  <div class="pf-col">
+    <p>A peut évoluer vers B plus tard, sans rien jeter. Il suffit de mettre un Worker devant les sous-domaines le jour où l'installation unique compte vraiment. C, en revanche, se défait difficilement.</p>
+  </div>
+
+  <section class="pf-col">
+    <h2>Ce que la fédération partage</h2>
+  </section>
+  <div class="pf-layers">
+    <div class="pf-layer"><b>Adresses</b><div><code>hub.</code>, <code>expe.</code>, <code>sport.</code>, <code>finance.aureliencaye.com</code>, chacune en domaine personnalisé de son projet Pages. La zone est déjà chez Cloudflare (le site perso). Les <code>pages.dev</code> restent en secours. Pas de redirection à écrire : un sous-domaine, c'est un enregistrement DNS que Pages crée tout seul.</div></div>
+    <div class="pf-layer"><b>Connexion</b><div>Une seule application Cloudflare Access sur <code>*.aureliencaye.com</code> (gratuit jusqu'à 50 utilisateurs), avec ton e-mail et une session d'un mois. Tu te connectes une fois et passes d'une app à l'autre sans redemander. Chaque app vérifie le jeton Access, comme Sport le fait déjà. Camp de Base garde Supabase pour ses données, et sa connexion Google devient inutile.</div></div>
+    <div class="pf-layer"><b>Menu</b><div>Un sélecteur d'apps en haut du menu latéral, dans le design system (v1.6). Il lit un registre unique, <code>apps.json</code> dans le brain : nom, adresse, marque, ordre. Le même menu partout donne l'impression d'un seul produit. Le cockpit Brain l'a déjà, dans son groupe « Apps ».</div></div>
+    <div class="pf-layer"><b>Attention</b><div>Chaque app expose <code>GET /api/attention</code> dans un format commun. Le hub les agrège, avec un jeton de service Access, et les montre à côté de tes tâches Notion. Ce sont des alertes en direct, pas des copies : elles disparaissent quand le problème est réglé dans l'app. Une alerte qui demande une vraie décision devient une tâche Notion, comme aujourd'hui.</div></div>
+    <div class="pf-layer"><b>Ce qui ne bouge pas</b><div>Un dépôt, une base, un environnement cloud et un cycle de release par app. Le design system reste copié dans chaque app, mais chaque app vérifie sa version au moment de la release.</div></div>
+  </div>
+  <div class="pf-col">
+    <h3>Le contrat d'attention</h3>
+    <p>Petit, pour que chaque app l'implémente en une heure à partir de ce qu'elle calcule déjà (la tour de contrôle de Camp de Base, <code>data_health</code> de Sport, <code>insights</code> de Finance).</p>
+  </div>
+  <pre class="pf-code">GET /api/attention        (jeton Cloudflare Access de l'utilisateur ou d'un service)
+{
+  "app": "expe",
+  "generated_at": "2026-10-29T07:00:00Z",
+  "items": [
+    { "id": "tower:deadline:42", "title": "Échéance dépassée · réserver le vol Punta Arenas",
+      "severity": "bad",                       // info | warn | bad
+      "kind": "deadline",                      // alert | deadline | decision | review
+      "due": "2026-11-02", "url": "https://expe.aureliencaye.com/tower.html#e42" }
+  ]
+}</pre>
+  <pre class="mermaid">
+flowchart LR
+  subgraph ACCESS["Cloudflare Access · *.aureliencaye.com · une connexion"]
+    HUB["hub.<br/>cockpit Brain"]
+    EXP["expe.<br/>Camp de Base"]
+    SPO["sport.<br/>Sport"]
+    FIN["finance.<br/>Finance"]
+    COS["cos.<br/>Chief of staff (plus tard)"]
+  end
+  EXP --- DB1[("Supabase")]
+  SPO --- DB2[("D1 + R2")]
+  FIN --- DB3[("D1 ou Supabase")]
+  HUB -->|/api/attention| EXP
+  HUB -->|/api/attention| SPO
+  HUB -->|/api/attention| FIN
+  HUB -->|tâches, projets| N[("Notion")]
+  REG["apps.json + design system<br/>(ac-ua/brain)"] -. copiés à chaque release .-> HUB & EXP & SPO & FIN
+  </pre>
+
+  <section class="pf-col">
+    <h2>Prototype 1 · Le hub</h2>
+    <p>Clique dans le menu : le sélecteur d'apps en haut à gauche, les apps, les filtres du fil. Les alertes sont des <strong>exemples</strong> construits à partir de ce que chaque app sait déjà calculer, pas tes vraies données.</p>
+  </section>
+  <div class="pf-proto" id="proto">
+    <div class="pf-bar"><i></i><i></i><i></i><span class="pf-url" id="url"></span></div>
+    <div class="pf-shell">
+      <nav class="pf-side" aria-label="Plateforme">
+        <div class="pf-brand"><img id="side-mark" alt=""><span><b id="side-name">Hub</b><small>Aurélien Caye</small></span></div>
+        <div class="pf-switch"><button type="button" id="sw-btn" aria-haspopup="true" aria-expanded="false"><span id="sw-icon"></span><span id="sw-name">Hub</span><span class="ds-muted" aria-hidden="true">⌄</span></button><div class="pf-menu" id="sw-menu" hidden></div></div>
+        <div class="pf-grp" id="side-links"></div>
+        <div class="pf-foot">Une seule connexion<br>Cloudflare Access</div>
+      </nav>
+      <main class="pf-main" id="pmain"></main>
+    </div>
+  </div>
+
+  <section class="pf-col">
+    <h2>Prototype 2 · Le même sélecteur dans chaque app</h2>
+    <p>Ouvre une app depuis le prototype 1. Son menu garde le sélecteur et la pastille de ce qui t'attend dans les autres apps, sans quitter l'app. Le passage d'une app à l'autre se fait sans reconnexion, grâce à Access. Sur téléphone, le sélecteur vit dans le tiroir du menu, comme aujourd'hui.</p>
+  </section>
+
+  <section class="pf-col">
+    <h2>Plan par étapes</h2>
+    <ol>
+      <li><strong>Adresses et connexion (1 session, sans code).</strong> Domaines <code>expe.</code> et <code>sport.</code> sur leurs projets Pages, une application Access sur <code>*.aureliencaye.com</code>. Tu cliques dans Cloudflare ; j'écris le pas-à-pas.</li>
+      <li><strong>Registre et sélecteur (design system v1.6).</strong> <code>apps.json</code> dans le brain, le sélecteur dans <code>shell.js</code>, adopté par chaque app à sa prochaine release.</li>
+      <li><strong>Contrat d'attention.</strong> Camp de Base enveloppe <code>/api/tower</code>, Sport enveloppe <code>data_health</code>. Finance suit à son déploiement sur Pages (D1 conseillé : tes deux projets Supabase gratuits sont déjà pris).</li>
+      <li><strong>Hub.</strong> Le cockpit Brain passe d'artifact à app Pages (<code>hub.</code>), lit Notion par une intégration et les apps par <code>/api/attention</code>. L'artifact reste en secours.</li>
+      <li><strong>Plus tard.</strong> Chief of staff comme section du hub ou comme app à part (question ci-dessous). Coquille unique (B) seulement si l'installation unique sur le téléphone devient un vrai besoin.</li>
+    </ol>
+  </section>
+
+  <section class="pf-col">
+    <h2>Mes questions</h2>
+    <ol class="pf-q">
+      <li><b>Adresses</b> : des sous-domaines (<code>expe.</code>, <code>sport.</code>, <code>finance.</code>, <code>hub.</code>), ou une seule adresse avec des chemins (<code>app.aureliencaye.com/expe</code>) ? Et sous quel domaine : <code>aureliencaye.com</code> ou un autre ? Dans ton message, « redirection sur SAFIPI » : tu voulais dire Cloudflare ?</li>
+      <li><strong>Connexion</strong> : on passe Camp de Base sur Cloudflare Access comme Sport, et on abandonne sa connexion Google ?</li>
+      <li><strong>Chief of staff</strong> : une section du hub (tâches, revue, Claude), ou une app à part ? Je recommande une section du hub : c'est le même sujet, ce qui t'attend.</li>
+      <li><strong>Finance</strong> : elle passe de l'artifact à une app Pages sur D1 ? C'est le préalable pour qu'elle remonte dans le hub.</li>
+      <li><strong>Alertes des apps</strong> : elles restent en direct dans le hub (ma recommandation), ou tu les veux aussi en tâches Notion ?</li>
+    </ol>
+  </section>
+</div>
+
+<script>
+// AppIcons · icons (generated by build_icons.py from the design-system kit: do not edit by hand).
+// Faceted icons: AppIcons.svg(name), AppIcons.svgAt(name, x, y, size) inside an SVG drawing; text tokens
+// ":ci-name:" are replaced by the icon as the page renders (stripped in <option>, <title> and attributes).
+// UI glyphs: AppIcons.glyph(name). Colours come from the design-system tokens (--ci-ink, --ci-a … --ci-d).
+(() => {
+  const D = {"home":{"p":[["M5 11.5H19V21H5Z","c"],["M2.5 12.5L12 3.5V12.5Z","a"],["M12 3.5L21.5 12.5H12Z","d"],["M10 21V15.5H14V21Z","b"]],"l":[]},"tower":{"p":[["M9.5 11H14.5L16 21H8Z","c"],["M12 11H14.5L16 21H12Z","d"],["M4.5 5H19.5L17.5 11.5H6.5Z","c"],["M7 7H17L16.3 9.5H7.7Z","a"],["M7 5L9 2.5H15L17 5Z","b"]],"l":[["M5 21.3H19",0]]},"calendar":{"p":[["M4 6H20V20H4Z","c"],["M4 6H20V10H4Z","a"],["M9.5 17.5L12 13L14.5 17.5Z","b"]],"l":[["M8 3.5V7.5",0],["M16 3.5V7.5",0]]},"map":{"p":[["M3 6L9 3.5V18L3 20.5Z","a"],["M9 3.5L15 6V20.5L9 18Z","c"],["M15 6L21 3.5V18L15 20.5Z","d"]],"l":[["M10.8 8.5L13.2 11.5L11.3 15.5",1]]},"document":{"p":[["M5 2.5H14.5L19 7V21.5H5Z","c"],["M14.5 2.5V7H19Z","a"],["M8 7H12V9.5H8Z","b"]],"l":[["M8 12.5H16",1],["M8 15.5H16",1],["M8 18.5H13",1]]},"folder":{"p":[["M2.5 6.5Q2.5 5 4 5H9L11 7.5H20Q21.5 7.5 21.5 9V18.5Q21.5 20 20 20H4Q2.5 20 2.5 18.5Z","a"],["M2.5 10.5H21.5V18.5Q21.5 20 20 20H4Q2.5 20 2.5 18.5Z","c"],["M14 10.5H21.5V18.5Q21.5 20 20 20H14Z","d"]],"l":[]},"book":{"p":[["M2 6L12 8.5L22 6V19.5L12 21.5L2 19.5Z","a"],["M12 6.5L3.5 4V18L12 20Z","c"],["M12 6.5L20.5 4V18L12 20Z","d"]],"l":[["M6 8.5L9.5 9.5M6 11.5L9.5 12.5M6 14.5L9.5 15.5",1]]},"team":{"p":[["M10 19L11 13.3L13.2 11.8H18.3L20.5 13.3L21.5 19Z","d"],["M12.8 7a3 3 0 1 0 6 0a3 3 0 1 0-6 0Z","d"],["M2.5 21L3.6 15.3L6 13.6H11.6L14 15.3L15.1 21Z","c"],["M6 13.6H8.8L7.2 21H2.5L3.6 15.3Z","a"],["M5.5 9a3.3 3.3 0 1 0 6.6 0a3.3 3.3 0 1 0-6.6 0Z","c"]],"l":[]},"partners":{"p":[["M2 18L5.5 21.5L12.5 14.5L9 11Z","a"],["M22 18L18.5 21.5L11.5 14.5L15 11Z","c"],["M6.5 11.5L9.5 6.5L14 5.5L17.5 10.5L13.5 16H10Z","c"],["M14 5.5L17.5 10.5L13.5 16L13 9.5Z","d"]],"l":[["M9.5 6.5L9.8 10.2L13 9.5",1],["M10.3 13.3L12.6 11.6",1]]},"budget":{"p":[["M2.5 5H19V16H2.5Z","c"],["M10.7 7.5L13.2 10.5L10.7 13.5L8.2 10.5Z","a"],["M12.6 16.6a4.6 4.6 0 1 0 9.2 0a4.6 4.6 0 1 0-9.2 0Z","d"]],"l":[["M14.9 16.6a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0-4.6 0",1],["M5 7.5V8",1]]},"accounts":{"p":[["M5 2.5H19V21L16.7 19.5L14.3 21L12 19.5L9.7 21L7.3 19.5L5 21Z","c"],["M5 2.5H19V6.5H5Z","a"]],"l":[["M8 10H16",1],["M8 13H16",1],["M8 16H12.5",1]]},"content":{"p":[["M3 10H21V21H3Z","c"],["M3 10H21V13.5H3Z","d"],["M3 9.6L2.4 6L20 2.8L20.6 6.4Z","a"]],"l":[["M7.6 4.9L9.1 8.3",1],["M12.6 4L14.1 7.4",1],["M9 10L7.2 13.5",1],["M15 10L13.2 13.5",1]]},"cart":{"p":[["M6 7H21L19 15H8Z","c"],["M6 7H21L20.5 9H6.5Z","a"],["M15 9H20.5L19 15H15Z","d"],["M7.6 19.6a1.7 1.7 0 1 0 3.4 0a1.7 1.7 0 1 0-3.4 0Z","b"],["M15.6 19.6a1.7 1.7 0 1 0 3.4 0a1.7 1.7 0 1 0-3.4 0Z","b"]],"l":[["M2.5 4H5L6 7",0],["M8 15L7.6 17.2H19",0],["M11 9V15",1]]},"kit":{"p":[["M3 11H21V20.5H3Z","c"],["M17 11H21V20.5H17Z","d"],["M4.5 7.5H19.5L21 11H3Z","a"],["M10.3 10H13.7V13H10.3Z","b"]],"l":[["M9 7.5V4.5H15V7.5",0]]},"weight":{"p":[["M11 6.5H13V19H11Z","c"],["M6.5 21.5L8.5 18.5H15.5L17.5 21.5Z","d"],["M3.5 5H20.5V7H3.5Z","c"],["M10.4 4a1.6 1.6 0 1 0 3.2 0a1.6 1.6 0 1 0-3.2 0Z","b"],["M2 13.5H9L7.8 16.5H3.2Z","a"],["M15 13.5H22L20.8 16.5H16.2Z","d"]],"l":[["M5.5 7L2.8 13.5M5.5 7L8.2 13.5",0],["M18.5 7L15.8 13.5M18.5 7L21.2 13.5",0]]},"other":{"p":[["M7.5 4H16.5L20.5 9.5L12 20.5L3.5 9.5Z","c"],["M7.5 4H12L9.6 9.5H3.5Z","a"],["M12 20.5L20.5 9.5H14.4Z","d"]],"l":[["M3.5 9.5H20.5",1]]},"link":{"p":[["M4 15.4L9.2 10.2L11.9 10.2L13.8 12.1L13.8 14.8L8.6 20L5.9 20L4 18.1Z M6.4 17.2L6.8 17.6L8.3 17.6L11.4 14.5L11.4 13L11 12.6L9.5 12.6L6.4 15.7Z","a"],["M10.2 9.2L15.4 4L18.1 4L20 5.9L20 8.6L14.8 13.8L12.1 13.8L10.2 11.9Z M12.6 11L13 11.4L14.5 11.4L17.6 8.3L17.6 6.8L17.2 6.4L15.7 6.4L12.6 9.5Z","c"]],"l":[]},"photo":{"p":[["M8 8L9.5 5H14.5L16 8Z","d"],["M2.5 8H21.5V20H2.5Z","c"],["M7.7 14a4.3 4.3 0 1 0 8.6 0a4.3 4.3 0 1 0-8.6 0Z","a"],["M10.3 14a1.7 1.7 0 1 0 3.4 0a1.7 1.7 0 1 0-3.4 0Z","b"],["M17.6 9.8H19.6V11.6H17.6Z","b"]],"l":[]},"repair":{"p":[["M18.3 3.4L15.7 6L18 8.3L20.6 5.7L21.4 8L20.2 10.6L16.8 11.8L14.8 11.3L6.4 19.7L5.1 20L4 18.9L4.3 17.6L12.7 9.2L12.2 7.2L13.4 3.8L16 2.6Z","c"],["M18.3 3.4L15.7 6L16.8 7.2L14.1 9.9L12.7 9.2L12.2 7.2L13.4 3.8L16 2.6Z","a"],["M13.8 10.2L14.8 11.3L6.4 19.7L5.1 20L4.5 19.5Z","d"]],"l":[]},"visible":{"p":[["M2.5 12Q12 1.5 21.5 12Q12 22.5 2.5 12Z","c"],["M12 7.8L15.6 9.9L15.6 14.1L12 16.2L8.4 14.1L8.4 9.9Z","a"],["M15.6 9.9L15.6 14.1L12 16.2L12 12Z","d"],["M10.3 12a1.7 1.7 0 1 0 3.4 0a1.7 1.7 0 1 0-3.4 0Z","b"]],"l":[]},"review":{"p":[["M12 2.5L17 4.5L19 9L17 13.5L15 15.5H9L7 13.5L5 9L7 4.5Z","c"],["M12 2.5L7 4.5L5 9L12 9Z","a"],["M19 9L17 13.5L15 15.5L12 9Z","d"],["M9 15.5H15L14.5 19H9.5Z","c"],["M10.5 19H13.5L12.8 21.3H11.2Z","b"]],"l":[["M9.3 17.3H14.7",1]]},"location":{"p":[["M12 21.5L6.5 12.7A6.6 6.6 0 1 1 17.5 12.7Z","c"],["M12 9H5.4A6.6 6.6 0 0 1 12 2.4Z","a"],["M12 9H18.6A6.6 6.6 0 0 1 17.5 12.7L12 21.5Z","d"],["M9.7 9a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0-4.6 0Z","b"]],"l":[]},"position":{"p":[["M5.5 12a6.5 6.5 0 1 0 13 0a6.5 6.5 0 1 0-13 0Z","c"],["M12 5.5A6.5 6.5 0 0 0 5.5 12H12Z","a"],["M9.4 12a2.6 2.6 0 1 0 5.2 0a2.6 2.6 0 1 0-5.2 0Z","b"]],"l":[["M12 2.5V5.5M12 18.5V21.5",0],["M2.5 12H5.5M18.5 12H21.5",0]]},"gps":{"p":[["M7.5 2.5H10V6.5H7.5Z","b"],["M6.5 6H17.5V21H6.5Z","c"],["M15 6H17.5V21H15Z","d"],["M8.5 8H15.5V14H8.5Z","a"]],"l":[["M10 12.5L12 10L14 11.5",1],["M9.5 17H13M9.5 19H13",1]]},"checkpoint":{"p":[["M3.5 21.5L5 17L9 15.5H15.5L19.5 17L20.5 21.5Z","c"],["M14 15.5H15.5L19.5 17L20.5 21.5H13Z","d"],["M6.5 15.5L7.5 12L10.5 10.5H14.5L16.5 12L17 15.5Z","c"],["M9 10.5L10 6.5L12.5 5.5L15 7L15 10.5Z","a"],["M10.8 5.8L11.5 2.5L13.5 2.8L13.8 6.2Z","c"]],"l":[]},"start":{"p":[["M2.8 12a9.2 9.2 0 1 0 18.4 0a9.2 9.2 0 1 0 -18.4 0Z","c"],["M9.5 7L17.5 12H9.5Z","a"],["M9.5 12H17.5L9.5 17Z","d"]],"l":[]},"finish":{"p":[["M6 3.5H20V13.5H6Z","c"],["M6 3.5H10.7V8.5H6Z","b"],["M15.3 3.5H20V8.5H15.3Z","b"],["M10.7 8.5H15.3V13.5H10.7Z","b"]],"l":[["M6 3V21.5",0],["M3.5 21.5H8.5",0]]},"milestone":{"p":[["M6 3.8H19.5L16.5 8.3H6Z","a"],["M6 8.3H16.5L19.5 12.8H6Z","c"],["M11 8.3H16.5L19.5 12.8H11Z","d"],["M4.7 3H6.5V21H4.7Z","b"]],"l":[["M2.5 21H9",0]]},"deadline":{"p":[["M7 5H17L12.9 12L17 19H7L11.1 12Z","c"],["M8.9 7.4H15.1L12 11.3Z","a"],["M8.2 19L12 15.2L15.8 19Z","d"],["M5.5 2.8H18.5V5H5.5Z","b"],["M5.5 19H18.5V21.2H5.5Z","b"]],"l":[]},"hazard":{"p":[["M12 2.5L22 20.5H2Z","c"],["M12 2.5L22 20.5H17.5Z","d"],["M10.9 8.5H13.1L12.6 14.8H11.4Z","b"],["M10.9 16.3H13.1V18.5H10.9Z","b"]],"l":[]},"star":{"p":[["M12 2.9L14.4 9.6L21.5 9.8L15.9 14.2L17.9 21L12 17L6.1 21L8.1 14.2L2.5 9.8L9.6 9.6Z","c"],["M12 12.9L2.5 9.8L9.6 9.6L12 2.9Z","a"],["M12 12.9L21.5 9.8L15.9 14.2L17.9 21L12 17Z","d"]],"l":[]},"wx_fine":{"p":[["M17.2 14.1L14.1 17.2L9.9 17.2L6.8 14.1L6.8 9.9L9.9 6.8L14.1 6.8L17.2 9.9Z","c"],["M17.2 9.9L17.2 14.1L14.1 17.2L9.9 17.2L6.8 14.1Z","a"]],"l":[["M12 1.8V4 M12 20V22.2 M1.8 12H4 M20 12H22.2 M4.8 4.8L6.3 6.3 M17.7 17.7L19.2 19.2 M4.8 19.2L6.3 17.7 M17.7 6.3L19.2 4.8",0]]},"wx_good":{"p":[["M19.0 9.1L16.6 11.5L13.4 11.5L11.0 9.1L11.0 5.9L13.4 3.5L16.6 3.5L19.0 5.9Z","c"],["M19.0 5.9L19.0 9.1L16.6 11.5L13.4 11.5L11.0 9.1Z","a"],["M2.5 17.6L3.4 14.9L5.7 14L7.1 11.5L10.3 10.8L12.4 12.9L14.6 13.6L15.7 16.5L14.6 17.6Z","c"],["M12.4 12.9L14.6 13.6L15.7 16.5L14.6 17.6L11 17.6L13 13.6Z","d"]],"l":[["M20.6 7.5H22.4 M15 1.4V3 M19.3 3.2L20.5 2 M19.3 11.8L20.5 13",0],["M5 21H17.2A2 2 0 1 0 15.2 19",0]]},"wx_windy":{"p":[["M5 4L9.5 4.9V11.1L5 12Z","a"],["M9.5 4.9L14 5.8V10.2L9.5 11.1Z","c"],["M14 5.8L19.5 6.9V9.1L14 10.2Z","a"]],"l":[["M4.3 2.8V21.5",0],["M8 15.5H18.5A2.3 2.3 0 1 1 16.2 17.8",0],["M7 20H13.5",0]]},"wx_storm":{"p":[["M1.8 10.6L3 7.2L6 6L7.8 2.9L11.8 2L14.5 4.7L17.2 5.6L18.6 9.2L17.2 10.6Z","b"],["M14.5 4.7L17.2 5.6L18.6 9.2L17.2 10.6L12.8 10.6L15.4 5.4Z","d"]],"l":[["M2.5 14H17.5A2.4 2.4 0 1 0 15.1 11.6",0],["M5 18H20A2.4 2.4 0 1 1 17.6 20.4",0],["M2.5 21.5H9",0],["M20.5 13.2L21.9 14.6M21.9 13.2L20.5 14.6",0],["M11.2 20.3L12.4 21.5M12.4 20.3L11.2 21.5",0]]},"cloudy":{"p":[["M19.2 10.3L16.8 12.7L13.2 12.7L10.8 10.3L10.8 6.7L13.2 4.3L16.8 4.3L19.2 6.7Z","c"],["M15 8.5L10.8 6.7L13.2 4.3L16.8 4.3Z","a"],["M1.8 17.8L3 14.2L6.1 13L8 9.7L12.3 8.8L15.1 11.6L18 12.6L19.4 16.4L18 17.8Z","c"],["M15.1 11.6L18 12.6L19.4 16.4L18 17.8L13 17.8L16 12.6Z","d"]],"l":[["M15 2.1L15 0.3 M19.5 4L20.8 2.7 M21.4 8.5L23.2 8.5",0]]},"snowcloud":{"p":[["M3 13.5L4.2 9.7L7.5 8.5L9.5 5L14 4L17 7L20 8L21.5 12L20 13.5Z","c"],["M7.5 8.5L9.5 5L14 4L12 9Z","a"],["M20 8L21.5 12L20 13.5L13 13.5L17 8.5Z","d"]],"l":[["M6.5 16.8L8.5 18.8M8.5 16.8L6.5 18.8",0],["M11 18.8L13 20.8M13 18.8L11 20.8",0],["M15.5 16.8L17.5 18.8M17.5 16.8L15.5 18.8",0]]},"storm":{"p":[["M1.5 9.9L2.6 6.7L5.4 5.6L7.1 2.7L10.9 1.8L13.4 4.4L16 5.2L17.3 8.6L16 9.9Z","c"],["M5.4 5.6L7.1 2.7L10.9 1.8L11 6Z","a"],["M16 5.2L17.3 8.6L16 9.9L12 9.9L14.5 5Z","d"]],"l":[["M3 14.5H16.5A2.3 2.3 0 1 0 14.2 12.2",0],["M5 18H19A2.3 2.3 0 1 1 16.7 20.3",0],["M2.5 21.5H10",0]]},"cold":{"p":[["M12 9.4L14.3 10.7V13.3L12 14.6L9.7 13.3V10.7Z","a"]],"l":[["M12 2.5V9.4M12 14.6V21.5",0],["M3.8 7.3L9.7 10.7M14.3 13.3L20.2 16.7",0],["M3.8 16.7L9.7 13.3M14.3 10.7L20.2 7.3",0],["M9.8 4.3L12 6.3L14.2 4.3M9.8 19.7L12 17.7L14.2 19.7",0],["M4.2 10.4L6.9 9.3L6.4 6.5M17.6 17.5L17.1 14.7L19.8 13.6",0],["M4.2 13.6L6.9 14.7L6.4 17.5M17.6 6.5L17.1 9.3L19.8 10.4",0]]},"hot":{"p":[["M17.2 14.1L14.1 17.2L9.9 17.2L6.8 14.1L6.8 9.9L9.9 6.8L14.1 6.8L17.2 9.9Z","c"],["M17.2 9.9L17.2 14.1L14.1 17.2L9.9 17.2L6.8 14.1Z","d"]],"l":[["M19.8 12L22.3 12 M12 19.8L12 22.3 M4.2 12L1.7 12 M12 4.2L12 1.7 M17.5 17.5L18.6 18.6 M6.5 17.5L5.4 18.6 M6.5 6.5L5.4 5.4 M17.5 6.5L18.6 5.4",0]]},"temperate":{"p":[["M12 2L17 8.5L14.8 8.5L18.5 14L16 14L20 19.5L4 19.5L8 14L5.5 14L9.2 8.5L7 8.5Z","c"],["M12 2L17 8.5L14.8 8.5L18.5 14L16 14L20 19.5L12 19.5Z","d"],["M12 2L7 8.5H12Z","a"],["M10.8 19.5H13.2V22H10.8Z","b"]],"l":[]},"night":{"p":[["M10.5 3.4L4.6 6.4L2.3 12.5L4.7 18.7L10.5 21.6L16.9 20L20.5 14.5L15.4 15.5L10.9 13.1L8.9 8.3Z","c"],["M10.5 3.4L4.6 6.4L2.3 12.5L8.9 8.3Z","a"],["M10.5 21.6L16.9 20L20.5 14.5L15.4 15.5Z","d"],["M18.5 2.5L19.3 4.2L21 5L19.3 5.8L18.5 7.5L17.7 5.8L16 5L17.7 4.2Z","b"]],"l":[]},"seasons":{"p":[["M2.8 12a9.2 9.2 0 1 0 18.4 0a9.2 9.2 0 1 0 -18.4 0Z","c"],["M12 12H2.8A9.2 9.2 0 0 1 12 2.8Z","a"],["M12 12H21.2A9.2 9.2 0 0 1 12 21.2Z","d"],["M12 12V21.2A9.2 9.2 0 0 1 2.8 12Z","b"]],"l":[]},"travel":{"p":[["M5.5 7H18.5V19.5H5.5Z","c"],["M15 7H18.5V19.5H15Z","d"],["M17 10L21.5 11.5L20.5 15L16 13.5Z","a"],["M6.9 20.5a1.1 1.1 0 1 0 2.2 0a1.1 1.1 0 1 0-2.2 0Z","b"],["M14.9 20.5a1.1 1.1 0 1 0 2.2 0a1.1 1.1 0 1 0-2.2 0Z","b"]],"l":[["M9.5 7V3H14.5V7",0],["M9.5 9V17.5",1]]},"flight":{"p":[["M12 2L13.5 9.2L21 13.2V15.2L13.5 12.8L13.1 18L15.5 19.9V21.5L12 20.5L8.5 21.5V19.9L10.9 18L10.5 12.8L3 15.2V13.2L10.5 9.2Z","c"],["M13.5 9.2L21 13.2V15.2L13.5 12.8Z","a"],["M10.5 9.2L3 13.2V15.2L10.5 12.8Z","d"]],"l":[]},"train":{"p":[["M7.5 2.8H16.5L19 6V18H5V6Z","c"],["M6.8 6.3H17.2V11H6.8Z","a"],["M5 15.5H19V18H5Z","d"],["M7 13a1.2 1.2 0 1 0 2.4 0a1.2 1.2 0 1 0-2.4 0Z","b"],["M14.6 13a1.2 1.2 0 1 0 2.4 0a1.2 1.2 0 1 0-2.4 0Z","b"]],"l":[["M12 6.3V11",1],["M8 18L5.8 21.2M16 18L18.2 21.2",0]]},"bus":{"p":[["M5.5 18.5H8.8V21.3H5.5Z","b"],["M15.2 18.5H18.5V21.3H15.2Z","b"],["M5 3.5H19V19H5Z","c"],["M6.5 7H17.5V12.5H6.5Z","a"],["M5 3.5H19V5.5H5Z","d"]],"l":[["M7 15.8H9M15 15.8H17",1],["M5 8H3V11M19 8H21V11",0]]},"car":{"p":[["M2.5 17V13L5.5 11.8L8.5 6.5H15.5L19 11.8L21.5 12.8V17Z","c"],["M9.2 8H11.8V11.8H7Z","a"],["M13.2 8H14.8L17.3 11.8H13.2Z","a"],["M2.5 15H21.5V17H2.5Z","d"],["M4.4 17.5a2.6 2.6 0 1 0 5.2 0a2.6 2.6 0 1 0-5.2 0Z","b"],["M14.4 17.5a2.6 2.6 0 1 0 5.2 0a2.6 2.6 0 1 0-5.2 0Z","b"]],"l":[]},"taxi":{"p":[["M5 16.5H8.3V20H5Z","b"],["M15.7 16.5H19V20H15.7Z","b"],["M7 9.5L8.8 6H15.2L17 9.5Z","a"],["M3.5 9.5H20.5V17H3.5Z","c"],["M9.8 2.8H14.2V6H9.8Z","b"],["M5.3 12.6a1.4 1.4 0 1 0 2.8 0a1.4 1.4 0 1 0-2.8 0Z","d"],["M15.9 12.6a1.4 1.4 0 1 0 2.8 0a1.4 1.4 0 1 0-2.8 0Z","d"]],"l":[["M10 14.5H14",1]]},"boat":{"p":[["M6 9H18V14H6Z","c"],["M8.5 5.5H14V9H8.5Z","a"],["M15 4.5H17.5L17.2 9H14.8Z","b"],["M2.5 13.5H21.5L19 19H5Z","d"]],"l":[["M8.5 11.5H9.5M11.5 11.5H12.5M14.5 11.5H15.5",1],["M2.5 21.3Q4.9 20.3 7.3 21.3T12 21.3T16.7 21.3T21.5 21.3",0]]},"lodging":{"p":[["M4 7H15V21H4Z","c"],["M15 7L20 5V19L15 21Z","d"],["M4 7L9 4.5H20L15 7Z","a"],["M8 21V17H11V21Z","b"]],"l":[["M6.8 10.5H8.3M10.7 10.5H12.2M6.8 13.8H8.3M10.7 13.8H12.2",1]]},"bed":{"p":[["M2.5 6.5H6V19.5H2.5Z","d"],["M6 12H21.5V16.5H6Z","c"],["M11.5 10.5H21.5V14H11.5Z","a"],["M6.8 9.3H10.8L11.5 12H6.3Z","c"]],"l":[["M6 16.5H21.5V19.5",0]]},"training":{"p":[["M8 10.8H16V13.2H8Z","c"],["M2.5 8.5H5V15.5H2.5Z","c"],["M19 8.5H21.5V15.5H19Z","c"],["M5 6H8.3V18H5Z","a"],["M15.7 6H19V18H15.7Z","d"]],"l":[]},"bike":{"p":[["M6 16L9.4 10L11.6 16Z","a"],["M9.4 10H16.2L11.6 16Z","c"]],"l":[["M2 16a4 4 0 1 0 8 0a4 4 0 1 0-8 0M14 16a4 4 0 1 0 8 0a4 4 0 1 0-8 0",0],["M16.2 10L18 16M16.2 10L15.6 7H18",0],["M8 8H11M9.4 10L9 8",0]]},"cycling":{"p":[["M1.8 16a4.2 4.2 0 1 0 8.4 0a4.2 4.2 0 1 0-8.4 0Z","c"],["M13.8 16a4.2 4.2 0 1 0 8.4 0a4.2 4.2 0 1 0-8.4 0Z","c"],["M6 16L10.5 9.5L12 16Z","d"],["M10.5 9.5H17L12 16Z","a"]],"l":[["M10.5 9.5L10 7.5M8.5 7.5H11.5",0],["M17 9.5L18 16M17 9.5L16.5 7.5H19",0]]},"foot":{"p":[["M6 3H13L13.5 10.5L19.3 12.8C20.9 13.4 21.5 14.6 21.5 16.2V18H5.5Z","c"],["M15.5 11.6L19.3 12.8C20.9 13.4 21.5 14.6 21.5 16.2V18H16.2Z","d"],["M6 3H13V5.6H6Z","a"],["M5.5 18H21.5V20.8H5Z","b"]],"l":[["M10 8H13.2M11 10.7H14.4",1]]},"trek":{"p":[["M10.5 4a2 2 0 1 0 4 0a2 2 0 1 0-4 0Z","b"],["M7.5 7.5L10.5 7L11 13L8 13.5Z","a"],["M10.5 7L14 7.5L14 13.5L11 13Z","c"]],"l":[["M12 13.5L10 17.5L8.5 21.5M13.5 13.5L15 17L17 21.5",0],["M14 8.5L16.5 11.5",0],["M17.5 7.5L19 21.5",0]]},"water":{"p":[["M12 2.5L17.2 10.5C18.1 12 18.6 13.3 18.6 14.8A6.6 6.6 0 0 1 5.4 14.8C5.4 13.3 5.9 12 6.8 10.5Z","c"],["M12 2.5L12 9L7.5 15L6.8 10.5Z","a"],["M18.6 14.8A6.6 6.6 0 0 1 12 21.4L13.5 16.5Z","d"]],"l":[]},"drink":{"p":[["M4.5 7H11.5V21H4.5Z","c"],["M9 7H11.5V21H9Z","d"],["M4 3H12L11.5 7H4.5Z","b"],["M13 12.5H20.5L19.5 20.5H14Z","a"]],"l":[["M15.5 6.5L16.5 8L15.5 9.5M18 6.5L19 8L18 9.5",0]]},"meal":{"p":[["M6 12a6 6 0 1 0 12 0a6 6 0 1 0-12 0Z","c"],["M8.2 12a3.8 3.8 0 1 0 7.6 0a3.8 3.8 0 1 0-7.6 0Z","a"],["M19.5 2.5L22 5.5V12H19.5Z","d"]],"l":[["M3 3V7.5Q3 9.5 4.5 9.5Q6 9.5 6 7.5V3M4.5 3V21.5",0],["M20.7 12V21.5",0]]},"breakfast":{"p":[["M10.5 8H18.5V18Q18.5 20 16.5 20H12.5Q10.5 20 10.5 18Z","c"],["M10.5 8H18.5V10H10.5Z","b"],["M2 19L3 14.5L5.5 12.5L7 17Z","d"],["M5.5 12.5L8 11.5L10.5 12.5L9.5 17L7 17Z","a"],["M10.5 12.5L13 14.5L13.5 19L9.5 17Z","d"]],"l":[["M18.5 11H20.5V15.5H18.5",0],["M13 3.5V6M16 3.5V6",0]]},"lunch":{"p":[["M3 11.5L16.5 4L21 11.5Z","c"],["M3 11.5H21V14.5H3Z","a"],["M3 14.5H21V19H3Z","d"]],"l":[["M3 13H21",1],["M3 16.5H21",1]]},"dinner":{"p":[["M5 11H19V18.5Q19 20.5 17 20.5H7Q5 20.5 5 18.5Z","c"],["M15 11H19V18.5Q19 20.5 17 20.5H15Z","d"],["M3.5 11L5.5 8H18.5L20.5 11Z","a"],["M10.5 6.5H13.5V8H10.5Z","b"]],"l":[["M5 13.5H3M19 13.5H21",0],["M8.5 2.5L9.5 4L8.5 5.5M15.5 2.5L16.5 4L15.5 5.5",0]]},"snack":{"p":[["M4.6 12.2L15.9 5.7L19.4 11.8L8.1 18.3Z","c"],["M1.8 13.3L4.6 12.2L8.1 18.3L5.8 20.2L4.6 16.2Z","d"],["M18.2 3.8L15.9 5.7L19.4 11.8L22.2 10.7L19.4 7.8Z","d"],["M8.1 10.2L12.4 7.7L15.9 13.8L11.6 16.3Z","a"]],"l":[]},"nutrition":{"p":[["M6 11L9 7L12 9L15 6L18 11Z","a"],["M3 11H21C21 16 17 19 12 19C7 19 3 16 3 11Z","c"],["M9.5 19H14.5L14 21H10Z","d"]],"l":[]},"rest":{"p":[["M4 10H16V17.5C16 19.4 14.9 20.5 13 20.5H7C5.1 20.5 4 19.4 4 17.5Z","c"],["M12.5 10H16V17.5C16 19.4 14.9 20.5 13 20.5H12.5Z","d"],["M4 10H16V12.3H4Z","a"]],"l":[["M16 12.2H17.6C19.2 12.2 20 13.1 20 14.6C20 16.1 19.2 17 17.6 17H16",0],["M7.8 7.8C6.8 6.8 8.8 5.2 7.8 3.6M12 7.8C11 6.8 13 5.2 12 3.6",0]]},"sleep":{"p":[["M9 2.5H15L17.5 7L16 21.5H8L6.5 7Z","c"],["M12 9L17.5 7L16 21.5H12Z","d"],["M9 2.5H15L17.5 7L15 7.5L14 4.5H10L9 7.5L6.5 7Z","a"],["M10 4.5H14L15 7.5L12 9L9 7.5Z","b"]],"l":[["M7.5 14L12 15L16.6 14",1],["M7.9 18L12 19L16.2 18",1]]},"first_aid":{"p":[["M3 7.5H21V20.5H3Z","c"],["M17.5 7.5H21V20.5H17.5Z","d"],["M3 7.5H21V10H3Z","a"],["M10.5 11.5H13.5V13.5H15.5V16.5H13.5V18.5H10.5V16.5H8.5V13.5H10.5Z","b"]],"l":[["M9 7.5V4.5H15V7.5",0]]},"morale1":{"p":[["M2.8 12a9.2 9.2 0 1 0 18.4 0a9.2 9.2 0 1 0 -18.4 0Z","c"],["M3.3 9.5A9.2 9.2 0 0 1 9.5 3.3L7.6 7.6Z","a"]],"l":[["M8 8.2L10.2 9.6L8 11M16 8.2L13.8 9.6L16 11",1],["M8.5 17.5A4.5 4.5 0 0 1 15.5 17.5",1]]},"morale2":{"p":[["M2.8 12a9.2 9.2 0 1 0 18.4 0a9.2 9.2 0 1 0 -18.4 0Z","c"],["M3.3 9.5A9.2 9.2 0 0 1 9.5 3.3L7.6 7.6Z","a"]],"l":[["M9 8.5V10.5M15 8.5V10.5",1],["M9 16.5Q12 14.6 15 16.5",1]]},"morale3":{"p":[["M2.8 12a9.2 9.2 0 1 0 18.4 0a9.2 9.2 0 1 0 -18.4 0Z","c"],["M3.3 9.5A9.2 9.2 0 0 1 9.5 3.3L7.6 7.6Z","a"]],"l":[["M9 8.5V10.5M15 8.5V10.5",1],["M9 15.5H15",1]]},"morale4":{"p":[["M2.8 12a9.2 9.2 0 1 0 18.4 0a9.2 9.2 0 1 0 -18.4 0Z","c"],["M3.3 9.5A9.2 9.2 0 0 1 9.5 3.3L7.6 7.6Z","a"]],"l":[["M9 8.5V10.5M15 8.5V10.5",1],["M8.5 14.5Q12 18.5 15.5 14.5",1]]},"morale5":{"p":[["M2.8 12a9.2 9.2 0 1 0 18.4 0a9.2 9.2 0 1 0 -18.4 0Z","c"],["M3.3 9.5A9.2 9.2 0 0 1 9.5 3.3L7.6 7.6Z","a"],["M7.5 13.2H16.5A4.5 4.5 0 0 1 7.5 13.2Z","b"]],"l":[["M8 9.8Q9.5 7.6 11 9.8M13 9.8Q14.5 7.6 16 9.8",1]]}};
+  const G = {"menu":"<path d=\"M4 7h16M4 12h16M4 17h16\"/>","close":"<path d=\"M6 6l12 12M18 6 6 18\"/>","search":"<circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"m20 20-3.5-3.5\"/>","filter":"<path d=\"M4 6h16M7 12h10M10 18h4\"/>","edit":"<path d=\"M4 20h4L19 9l-4-4L4 16z\"/><path d=\"m13.5 6.5 4 4\"/>","external":"<path d=\"M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5\"/>","prev":"<path d=\"m15 6-6 6 6 6\"/>","next":"<path d=\"m9 6 6 6-6 6\"/>","grid":"<rect x=\"4\" y=\"4\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"13\" y=\"4\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"4\" y=\"13\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"13\" y=\"13\" width=\"7\" height=\"7\" rx=\"1\"/>","list":"<path d=\"M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01\"/>","fullscreen":"<path d=\"M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5\"/>","exit_fullscreen":"<path d=\"M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5\"/>","theme_auto":"<circle cx=\"12\" cy=\"12\" r=\"8\"/><path d=\"M12 4v16\"/><path d=\"M12 4a8 8 0 0 1 0 16z\" fill=\"currentColor\"/>","theme_light":"<circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4\"/>","theme_dark":"<path d=\"M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z\"/>","target":"<circle cx=\"12\" cy=\"12\" r=\"7\"/><circle cx=\"12\" cy=\"12\" r=\"2\"/><path d=\"M12 2v3M12 19v3M2 12h3M19 12h3\"/>"};
+  const EMOJI = {};
+  const F = { a: "var(--ci-a, #5b8fc0)", b: "var(--ci-b, #3e5d75)", c: "var(--ci-c, #ffffff)", d: "var(--ci-d, #9ea2ab)" };
+  const INK = "var(--ci-ink, #0d1117)";
+  const css = document.createElement("style");
+  css.textContent = `svg.ci { display: inline-block; width: 1.25em; height: 1.25em; vertical-align: -.28em; overflow: visible; flex: none; }
+.ico > svg.ci, .ic > svg.ci { width: 20px; height: 20px; vertical-align: middle; }
+svg.ds-glyph { width: 18px; height: 18px; fill: none; stroke: currentColor; flex: none; }`;
+  document.head.appendChild(css);
+  const body = (ic) => ic.p.map(([d, r]) => r && r[0] === "!" ? `<path d="${d}" fill="${r.slice(1)}"/>`
+    : `<path d="${d}" fill="${F[r] || (r && r[0] === "#" ? r : "none")}" stroke="${INK}" stroke-width="1.3" stroke-linejoin="round"/>`).join("")
+    + ic.l.map(([d, o]) => `<path d="${d}" fill="none" stroke="${o ? INK : "currentColor"}" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>`).join("");
+  const svg = (name, cls = "") => { const ic = D[name]; return ic ? `<svg class="ci ${cls}" viewBox="0 0 24 24" aria-hidden="true">${body(ic)}</svg>` : ""; };
+  const svgAt = (name, x, y, size = 16) => { const ic = D[name]; return ic ? `<svg class="ci-at" x="${x - size / 2}" y="${y - size / 2}" width="${size}" height="${size}" viewBox="0 0 24 24">${body(ic)}</svg>` : ""; };
+  const glyph = (name, cls = "") => { const g = G[name]; return g ? `<svg class="ds-glyph ${cls}" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${g}</svg>` : ""; };
+  const TOK = ":ci-";
+  const nameOf = (s) => (s.startsWith(TOK) ? s.slice(TOK.length, -1) : EMOJI[s.replace(/️/g, "")]);
+  const keys = Object.keys(EMOJI).sort((a, b) => b.length - a.length).map((k) => k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+  const RE = new RegExp(`:ci-[a-z0-9_]+:${keys.length ? `|(?:${keys.join("|")})\\uFE0F?` : ""}`, "gu");
+  const has = (s) => { RE.lastIndex = 0; return RE.test(s); };
+  const SKIP = new Set(["SCRIPT", "STYLE", "TEXTAREA", "INPUT", "CODE", "PRE"]);
+  const STRIP = new Set(["OPTION", "TITLE"]);
+  function fixText(t) {
+    const p = t.parentNode;
+    if (!p || SKIP.has(p.nodeName) || p.closest?.("[data-noicons]")) return;
+    const s = t.nodeValue;
+    if (!has(s)) return;
+    if (STRIP.has(p.nodeName) || p.namespaceURI === "http://www.w3.org/2000/svg") { t.nodeValue = s.replace(RE, "").replace(/^\s+/, ""); return; }
+    const frag = document.createDocumentFragment(); let last = 0;
+    s.replace(RE, (m, i) => {
+      if (i > last) frag.appendChild(document.createTextNode(s.slice(last, i)));
+      const n = nameOf(m);
+      if (n && D[n]) { const tpl = document.createElement("template"); tpl.innerHTML = svg(n); frag.appendChild(tpl.content.firstChild); }
+      last = i + m.length; return m;
+    });
+    if (last < s.length) frag.appendChild(document.createTextNode(s.slice(last)));
+    p.replaceChild(frag, t);
+  }
+  const ATTRS = ["title", "aria-label", "label", "placeholder"];
+  function fixAttrs(el) { for (const a of ATTRS) { const v = el.getAttribute?.(a); if (v && has(v)) el.setAttribute(a, v.replace(RE, "").replace(/^\s+/, "")); } }
+  function fix(root) {
+    if (root.nodeType === 3) return fixText(root);
+    if (root.nodeType !== 1 || SKIP.has(root.nodeName)) return;
+    fixAttrs(root);
+    root.querySelectorAll?.("[title],[aria-label],[label],[placeholder]").forEach(fixAttrs);
+    const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT), list = [];
+    while (w.nextNode()) list.push(w.currentNode);
+    list.forEach(fixText);
+  }
+  let busy = false;
+  const obs = new MutationObserver((ms) => {
+    if (busy) return; busy = true;
+    try { for (const m of ms) { if (m.type === "characterData") fixText(m.target); else m.addedNodes.forEach(fix); if (m.type === "attributes") fixAttrs(m.target); } } finally { busy = false; }
+  });
+  const start = () => { fix(document.body); if (has(document.title)) document.title = document.title.replace(RE, "").trim();
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ATTRS }); };
+  if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
+  window.AppIcons = { svg, svgAt, glyph, names: Object.keys(D), glyphs: Object.keys(G), emoji: EMOJI };
+})();
+
+</script>
+<script>
+(function(){
+  "use strict";
+  const MARKS = {"brain": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHBvbHlnb24gcG9pbnRzPSI1MCw3IDUwLDUwIDcsNTAgMzksMzkiIGZpbGw9IiM3Mzk3YjMiIHN0cm9rZT0iIzEzMTMxMyIgc3Ryb2tlLXdpZHRoPSI1LjIiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cG9seWdvbiBwb2ludHM9IjUwLDcgNjEsMzkgOTMsNTAgNTAsNTAiIGZpbGw9IiNmM2YzZjAiIHN0cm9rZT0iIzEzMTMxMyIgc3Ryb2tlLXdpZHRoPSI1LjIiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cG9seWdvbiBwb2ludHM9IjcsNTAgNTAsNTAgNTAsOTMgMzksNjEiIGZpbGw9IiNhOWFhYWQiIHN0cm9rZT0iIzEzMTMxMyIgc3Ryb2tlLXdpZHRoPSI1LjIiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cG9seWdvbiBwb2ludHM9IjkzLDUwIDYxLDYxIDUwLDkzIDUwLDUwIiBmaWxsPSIjNWE3NjhiIiBzdHJva2U9IiMxMzEzMTMiIHN0cm9rZS13aWR0aD0iNS4yIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+Cg==", "camp": "data:image/png;base64,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", "sport": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHBvbHlnb24gcG9pbnRzPSI0NC4wLDguMCA1Ni4wLDguMCA1Ni4wLDIwLjAgNDQuMCwyMC4wIiBmaWxsPSIjNWE3NjhiIiBzdHJva2U9IiMxMzEzMTMiIHN0cm9rZS13aWR0aD0iNS4yIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PHBvbHlnb24gcG9pbnRzPSI3MC4wLDE4LjAgNzguMCwyNC4wIDc0LjAsMzAuMCA2Ni4wLDI0LjAiIGZpbGw9IiM1YTc2OGIiIHN0cm9rZT0iIzEzMTMxMyIgc3Ryb2tlLXdpZHRoPSI1LjIiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cG9seWdvbiBwb2ludHM9IjUwLjAsNTYuMCA1MC4wLDIyLjYgMzcuMCwyNC42IDE4LjYsNDMuMCAxOC42LDY5LjAiIGZpbGw9IiM3Mzk3YjMiIHN0cm9rZT0iIzEzMTMxMyIgc3Ryb2tlLXdpZHRoPSI1LjIiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cG9seWdvbiBwb2ludHM9IjUwLjAsNTYuMCA1MC4wLDIyLjYgNjMuMCwyNC42IDgxLjQsNDMuMCIgZmlsbD0iI2YzZjNmMCIgc3Ryb2tlPSIjMTMxMzEzIiBzdHJva2Utd2lkdGg9IjUuMiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwb2x5Z29uIHBvaW50cz0iNTAuMCw1Ni4wIDgxLjQsNDMuMCA4MS40LDY5LjAgNjMuMCw4Ny40IDM3LjAsODcuNCAxOC42LDY5LjAiIGZpbGw9IiNhOWFhYWQiIHN0cm9rZT0iIzEzMTMxMyIgc3Ryb2tlLXdpZHRoPSI1LjIiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4=", "finance": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHBvbHlnb24gcG9pbnRzPSIxMi4wLDcwLjAgMzAuMCw3OS4wIDcwLjAsNzkuMCA4OC4wLDcwLjAgODguMCw4MS4wIDcwLjAsOTAuMCAzMC4wLDkwLjAgMTIuMCw4MS4wIiBmaWxsPSIjNWE3NjhiIiBzdHJva2U9IiMxMzEzMTMiIHN0cm9rZS13aWR0aD0iNS4yIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PHBvbHlnb24gcG9pbnRzPSIxMi4wLDUyLjAgMzAuMCw2MS4wIDcwLjAsNjEuMCA4OC4wLDUyLjAgODguMCw2My4wIDcwLjAsNzIuMCAzMC4wLDcyLjAgMTIuMCw2My4wIiBmaWxsPSIjYTlhYWFkIiBzdHJva2U9IiMxMzEzMTMiIHN0cm9rZS13aWR0aD0iNS4yIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PHBvbHlnb24gcG9pbnRzPSIxMi4wLDM0LjAgMzAuMCw0My4wIDcwLjAsNDMuMCA4OC4wLDM0LjAgODguMCw0NS4wIDcwLjAsNTQuMCAzMC4wLDU0LjAgMTIuMCw0NS4wIiBmaWxsPSIjYTlhYWFkIiBzdHJva2U9IiMxMzEzMTMiIHN0cm9rZS13aWR0aD0iNS4yIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PHBvbHlnb24gcG9pbnRzPSIxMi4wLDM0LjAgMzAuMCwyNS4wIDUwLjAsMjUuMCA1MC4wLDQzLjAgMzAuMCw0My4wIiBmaWxsPSIjNzM5N2IzIiBzdHJva2U9IiMxMzEzMTMiIHN0cm9rZS13aWR0aD0iNS4yIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PHBvbHlnb24gcG9pbnRzPSI1MC4wLDI1LjAgNzAuMCwyNS4wIDg4LjAsMzQuMCA3MC4wLDQzLjAgNTAuMCw0My4wIiBmaWxsPSIjZjNmM2YwIiBzdHJva2U9IiMxMzEzMTMiIHN0cm9rZS13aWR0aD0iNS4yIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+Cg=="};
+  // EXAMPLES ONLY: alert kinds each app already computes, with invented wording; not Aurélien's data.
+  const APPS = [
+    {key:"hub", name:"Hub", host:"hub.aureliencaye.com", icon:"home", mark:"brain", desc:"Ce qui t'attend partout"},
+    {key:"expe", name:"Camp de Base", host:"expe.aureliencaye.com", icon:"map", mark:"camp", desc:"Expéditions, inventaire, terrain",
+      links:["Tour de contrôle","Inventaire","Expéditions","Terrain","Nutrition"], kpi:["D-422","départ prévu (exemple)"]},
+    {key:"sport", name:"Sport", host:"sport.aureliencaye.com", icon:"training", mark:"sport", desc:"Entraînement, charge, récupération",
+      links:["Vue d'ensemble","Charge","Course","Force","Données"], kpi:["7 h 40","cette semaine (exemple)"]},
+    {key:"finance", name:"Finance", host:"finance.aureliencaye.com", icon:"budget", mark:"finance", desc:"Patrimoine, flux, impôts",
+      links:["Vue d'ensemble","À faire","Patrimoine","Flux","Impôts"], kpi:["3","constats à revoir (exemple)"]},
+    {key:"cos", name:"Chief of staff", host:"hub.aureliencaye.com/#cos", icon:"team", mark:"brain", desc:"Plus tard : revue, planning, Claude", soon:true}
+  ];
+  const FEED = [
+    {app:"expe", sev:"bad", kind:"Échéance", title:"Échéance dépassée : confirmer le point de dépose (exemple)", due:"il y a 2 j"},
+    {app:"finance", sev:"warn", kind:"Constat", title:"Accès bancaire à renouveler dans 12 jours (exemple)", due:"12 nov."},
+    {app:"notion", sev:"warn", kind:"Décision", title:"Choisir la plateforme de suivi pour 2027 (exemple)", due:""},
+    {app:"sport", sev:"info", kind:"Revue", title:"2 séances à fusionner ou garder séparées (exemple)", due:""},
+    {app:"expe", sev:"warn", kind:"Achat", title:"4 lignes de la liste à acheter, 380 € (exemple)", due:"avant le départ"},
+    {app:"sport", sev:"warn", kind:"Synchro", title:"Pas de nouvelle activité depuis 3 jours (exemple)", due:""},
+    {app:"finance", sev:"info", kind:"Remboursement", title:"1 remboursement en attente (exemple)", due:""},
+    {app:"notion", sev:"info", kind:"Tâche", title:"Préparer le rendez-vous avec l'avocat (exemple)", due:""}
+  ];
+  const SRC = {expe:"Camp de Base", sport:"Sport", finance:"Finance", notion:"Notion · tâches"};
+  const SRC_ICON = {expe:"map", sport:"training", finance:"budget", notion:"document"};
+  let cur = "hub", filter = "all";
+  const $ = s => document.querySelector(s);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const icon = n => window.AppIcons ? window.AppIcons.svg(n) : "";
+  const count = k => FEED.filter(f => f.app === k).length;
+
+  function side(){
+    const a = APPS.find(x => x.key === cur);
+    $("#side-name").textContent = a.name;
+    $("#side-mark").src = MARKS[a.mark] || MARKS.brain;
+    $("#sw-icon").innerHTML = icon(a.icon);
+    $("#sw-name").textContent = a.name;
+    $("#url").innerHTML = "https://<b>" + esc(a.host.split("/")[0]) + "</b>" + esc(a.host.includes("/") ? a.host.slice(a.host.indexOf("/")) : "/");
+    $("#sw-menu").innerHTML = APPS.filter(x => !x.soon).map(x => '<button type="button" data-app="' + x.key + '" aria-current="' + (x.key === cur) + '">' + icon(x.icon) + '<span>' + esc(x.name) + '</span>' + (x.key !== "hub" && count(x.key) ? '<small>' + count(x.key) + '</small>' : '') + '</button>').join("") +
+      '<hr><button type="button" disabled style="opacity:.6">' + icon("team") + '<span>Chief of staff</span><small>plus tard</small></button>';
+    let links;
+    if (cur === "hub") links = '<span>Hub</span><button class="pf-link" aria-current="true">' + icon("home") + 'Aujourd\'hui<span class="n hot">' + FEED.length + '</span></button><button class="pf-link">' + icon("map") + 'Domaines</button><button class="pf-link">' + icon("tower") + 'Projets</button><button class="pf-link">' + icon("star") + 'Claude</button>' +
+      '<span style="margin-top:10px">Apps</span>' + APPS.filter(x => !["hub","cos"].includes(x.key)).map(x => '<button class="pf-link" data-app="' + x.key + '">' + icon(x.icon) + esc(x.name) + '<span class="n' + (count(x.key) ? ' hot' : '') + '">' + (count(x.key) || "") + '</span></button>').join("");
+    else links = '<span>' + esc(a.name) + '</span>' + a.links.map((l, i) => '<button class="pf-link" aria-current="' + (i === 0) + '">' + icon(i === 0 ? "tower" : a.icon) + esc(l) + (i === 0 && count(a.key) ? '<span class="n hot">' + count(a.key) + '</span>' : '') + '</button>').join("") +
+      '<span style="margin-top:10px">Ailleurs</span><button class="pf-link" data-app="hub">' + icon("home") + 'Hub<span class="n hot">' + (FEED.length - count(a.key)) + '</span></button>';
+    $("#side-links").innerHTML = links;
+  }
+  function main(){
+    const m = $("#pmain");
+    if (cur === "hub") {
+      const items = FEED.filter(f => filter === "all" || f.app === filter);
+      m.innerHTML = '<div class="ds-head"><div><div class="ds-eyebrow">Hub · jeudi 29 octobre</div><h1>Ce qui t\'attend</h1></div><dl class="ds-facts"><div><dt>Partout</dt><dd>' + FEED.length + '</dd></div><div><dt>Urgent</dt><dd>' + FEED.filter(f => f.sev === "bad").length + '</dd></div></dl></div>' +
+        '<div class="pf-filters">' + ["all","expe","sport","finance","notion"].map(k => '<button type="button" class="ds-chip" data-filter="' + k + '" aria-pressed="' + (filter === k) + '">' + (k === "all" ? "Tout" : esc(SRC[k])) + '<span class="num">' + (k === "all" ? FEED.length : count(k)) + '</span></button>').join("") + '</div>' +
+        '<div class="pf-feed">' + items.map(f => '<div class="pf-alert ' + f.sev + '">' + icon(SRC_ICON[f.app]) + '<div style="min-width:0"><div class="src">' + esc(SRC[f.app]) + ' · ' + esc(f.kind) + '</div><div>' + esc(f.title) + '</div></div><span class="go">' + (f.due ? '<span class="ds-muted">' + esc(f.due) + '</span><br>' : '') + (f.app === "notion" ? '<a href="#" data-noop>Notion ↗</a>' : '<a href="#" data-app="' + f.app + '">Ouvrir ›</a>') + '</span></div>').join("") + '</div>' +
+        '<h3 style="margin-top:6px">Tes apps</h3><div class="pf-apps">' + APPS.filter(x => !["hub"].includes(x.key)).map(x => '<button type="button" class="pf-app" data-app="' + (x.soon ? "" : x.key) + '"' + (x.soon ? ' aria-disabled="true" style="opacity:.6;cursor:default"' : '') + '><span class="h">' + icon(x.icon) + esc(x.name) + '</span>' + (x.kpi ? '<span class="v">' + esc(x.kpi[0]) + '</span><span class="s">' + esc(x.kpi[1]) + '</span>' : '<span class="s">' + esc(x.desc) + '</span>') + (count(x.key) ? '<span class="ds-pill ds-warn" style="justify-self:start">' + count(x.key) + ' pour toi</span>' : '') + '</button>').join("") + '</div>';
+    } else {
+      const a = APPS.find(x => x.key === cur), mine = FEED.filter(f => f.app === cur);
+      m.innerHTML = '<div class="ds-head"><div><div class="ds-eyebrow">' + esc(a.name) + '</div><h1>' + esc(a.links[0]) + '</h1></div><dl class="ds-facts"><div><dt>' + esc(a.kpi[1].replace(" (exemple)", "")) + '</dt><dd>' + esc(a.kpi[0]) + '</dd></div></dl></div>' +
+        '<div class="ds-note">C\'est l\'app ' + esc(a.name) + ' elle-même, à son adresse, avec son menu habituel. Seul ajout : le sélecteur en haut du menu, et le lien vers le hub avec ce qui t\'attend ailleurs.</div>' +
+        (mine.length ? '<div class="pf-feed">' + mine.map(f => '<div class="pf-alert ' + f.sev + '">' + icon(a.icon) + '<div><div class="src">' + esc(f.kind) + '</div><div>' + esc(f.title) + '</div></div><span class="go ds-muted">' + esc(f.due || "") + '</span></div>').join("") + '</div>' : '') +
+        '<div class="pf-mock"><div class="ds-label" style="margin:0">Écran de l\'app (schéma)</div><div class="row"><div class="ds-kpi" style="flex:1;min-width:140px"><span class="k">Indicateur</span><span class="v">—</span></div><div class="ds-kpi" style="flex:1;min-width:140px"><span class="k">Indicateur</span><span class="v">—</span></div><div class="ds-kpi" style="flex:1;min-width:140px"><span class="k">Indicateur</span><span class="v">—</span></div></div>' +
+        '<div class="row"><div class="bar"><i style="width:62%"></i></div></div><div class="row"><div class="bar"><i style="width:38%;background:var(--c3)"></i></div></div><div class="row"><div class="bar"><i style="width:80%;background:var(--c5)"></i></div></div></div>';
+    }
+  }
+  function render(){ side(); main(); }
+  document.addEventListener("click", e => {
+    const b = e.target.closest("[data-app],[data-filter],[data-noop],#sw-btn"); if (!b) { if (!e.target.closest("#sw-menu")) close(); return; }
+    if (b.id === "sw-btn") { const m = $("#sw-menu"); m.hidden = !m.hidden; b.setAttribute("aria-expanded", String(!m.hidden)); return; }
+    e.preventDefault();
+    if (b.dataset.filter) { filter = b.dataset.filter; main(); return; }
+    if (b.dataset.app) { cur = b.dataset.app; filter = "all"; close(); render(); $("#proto").scrollIntoView({block:"nearest", behavior:"smooth"}); }
+  });
+  function close(){ $("#sw-menu").hidden = true; $("#sw-btn").setAttribute("aria-expanded", "false"); }
+  document.addEventListener("keydown", e => { if (e.key === "Escape") close(); });
+  render();
+})();
+</script>

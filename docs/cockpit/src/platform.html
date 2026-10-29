@@ -1,0 +1,333 @@
+<title>Brain · Plateforme des apps</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=Questrial&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/*@DS_TOKENS@*/
+</style>
+<style>
+/* Study page (prefix pf-): a document column (70ch) that opens out to the full width for the prototypes.
+   The prototypes are a scaled-down app shell drawn with the design-system tokens (pf-shell), not the fixed ds-side. */
+body { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.pf { max-width: 1240px; margin: 0 auto; padding-block: 32px 72px; display: grid; gap: 18px; }
+.pf-col { max-width: 74ch; }
+.pf p { margin: 8px 0; }
+.pf h2 { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--line); }
+.pf h3 { margin-top: 18px; }
+.pf ul, .pf ol { padding-left: 1.2em; margin: 8px 0; } .pf li { margin: 4px 0; }
+.pf-lede { font-size: 17px; color: var(--muted); max-width: 66ch; }
+.pf-verdict { border-left: 3px solid var(--accent); }
+.pf-verdict ol li { margin: 8px 0; }
+.pf-3 { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+.pf-opt { display: grid; gap: 8px; align-content: start; }
+.pf-opt.pick { border: 2px solid var(--accent); }
+.pf-opt h3 { margin: 0; color: var(--ink); font: 700 19px/1.2 var(--display); letter-spacing: 0; text-transform: none; }
+.pf-opt .pro, .pf-opt .con { font-size: 14px; margin: 0; padding-left: 1.1em; }
+.pf-opt .pro li::marker { content: "+  "; color: var(--ok); } .pf-opt .con li::marker { content: "−  "; color: var(--bad); }
+.pf-layers { display: grid; gap: 10px; }
+.pf-layer { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 16px; padding: 14px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); }
+.pf-layer > b { font: 700 16px/1.2 var(--display); }
+@media (max-width: 640px) { .pf-layer { grid-template-columns: minmax(0, 1fr); gap: 6px; } }
+pre.mermaid { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); padding: 16px; overflow-x: auto; }
+code, .pf-code { font: 13px var(--mono); background: var(--sunken); padding: 1px 5px; border-radius: 4px; }
+pre.pf-code { display: block; padding: 12px 14px; overflow-x: auto; line-height: 1.5; border: 1px solid var(--line); }
+
+/* ---------- prototype shell ---------- */
+.pf-proto { border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden; background: var(--bg); box-shadow: var(--shadow); }
+.pf-bar { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: var(--sunken); border-bottom: 1px solid var(--line); font: 12px var(--mono); color: var(--muted); }
+.pf-bar i { width: 9px; height: 9px; border-radius: 50%; background: var(--line); display: inline-block; }
+.pf-url { flex: 1; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-pill); padding: 2px 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pf-url b { color: var(--ink); font-weight: 500; }
+.pf-shell { display: grid; grid-template-columns: 220px minmax(0, 1fr); min-height: 620px; }
+.pf-side { background: var(--sunken); border-right: 1px solid var(--line); padding: 14px 10px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.pf-brand { display: flex; gap: 9px; align-items: center; padding: 0 6px; }
+.pf-brand img { width: 30px; height: 30px; }
+.pf-brand b { display: block; font: 700 18px/1 var(--display); }
+.pf-brand small { font-size: 11px; color: var(--muted); }
+.pf-switch { position: relative; }
+.pf-switch > button { width: 100%; display: flex; align-items: center; gap: 9px; padding: 7px 9px; border: 1px solid var(--line); background: var(--surface); border-radius: var(--r); cursor: pointer; text-align: left; }
+.pf-switch > button .ci { width: 22px; height: 22px; }
+.pf-switch > button #sw-icon { flex: none; display: grid; }
+.pf-switch > button #sw-name { flex: 1; min-width: 0; font: 700 15px var(--display); text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pf-menu { position: absolute; left: 0; right: 0; top: calc(100% + 4px); z-index: 4; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); box-shadow: var(--shadow); padding: 6px; display: grid; gap: 2px; }
+.pf-menu button { display: flex; align-items: center; gap: 9px; padding: 7px 9px; border: 0; background: none; border-radius: var(--r); cursor: pointer; text-align: left; width: 100%; }
+.pf-menu button:hover, .pf-menu button[aria-current="true"] { background: var(--sunken); }
+.pf-menu button .ci { width: 20px; height: 20px; }
+.pf-menu small { color: var(--muted); margin-left: auto; font-size: 11px; }
+.pf-menu hr { border: 0; border-top: 1px solid var(--line); margin: 4px 0; }
+.pf-grp { display: grid; gap: 2px; }
+.pf-grp > span { font: 600 10.5px/1 var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); padding: 0 9px 5px; }
+.pf-link { display: flex; align-items: center; gap: 8px; padding: 6px 9px; border-radius: var(--r); font-size: 13.5px; border: 0; background: none; cursor: pointer; text-align: left; color: var(--ink); width: 100%; }
+.pf-link .ci { width: 18px; height: 18px; }
+.pf-link[aria-current="true"] { background: var(--surface); box-shadow: inset 3px 0 0 var(--accent); }
+.pf-link .n { margin-left: auto; font: 11px var(--mono); color: var(--muted); }
+.pf-link .n.hot { color: var(--warn); }
+.pf-foot { margin-top: auto; font-size: 11.5px; color: var(--muted); padding: 0 9px; }
+.pf-main { padding: 18px 20px 24px; display: grid; gap: 14px; align-content: start; min-width: 0; }
+.pf-main h1 { font-size: 30px; }
+.pf-feed { display: grid; gap: 8px; }
+.pf-alert { display: grid; grid-template-columns: 26px minmax(0, 1fr) auto; gap: 10px; align-items: start; padding: 9px 12px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); border-left: 3px solid var(--line); }
+.pf-alert.warn { border-left-color: var(--warn); } .pf-alert.bad { border-left-color: var(--bad); } .pf-alert.info { border-left-color: var(--info); }
+.pf-alert .ci { width: 22px; height: 22px; }
+.pf-alert .src { font: 600 10.5px/1.2 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.pf-alert .go { font-size: 12.5px; white-space: nowrap; }
+.pf-apps { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); }
+.pf-app { all: unset; box-sizing: border-box; cursor: pointer; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); padding: 12px 14px; display: grid; gap: 6px; }
+.pf-app:hover { box-shadow: var(--shadow); }
+.pf-app:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.pf-app .h { display: flex; align-items: center; gap: 8px; font: 700 16px var(--display); }
+.pf-app .h .ci { width: 24px; height: 24px; }
+.pf-app .v { font: 500 20px var(--mono); }
+.pf-app .s { font-size: 12px; color: var(--muted); }
+.pf-filters { display: flex; flex-wrap: wrap; gap: 6px; }
+.pf-mock { border: 1px dashed var(--line); border-radius: var(--r-md); padding: 14px; background: var(--surface); display: grid; gap: 10px; }
+.pf-mock .row { display: flex; gap: 10px; flex-wrap: wrap; }
+.pf-mock .bar { height: 10px; border-radius: 3px; background: var(--sunken); flex: 1; min-width: 80px; overflow: hidden; }
+.pf-mock .bar i { display: block; height: 100%; background: var(--c1); }
+@media (max-width: 760px) {
+  .pf-shell { grid-template-columns: minmax(0, 1fr); }
+  .pf-side { border-right: 0; border-bottom: 1px solid var(--line); }
+  .pf-side .pf-grp, .pf-side .pf-foot { display: none; }
+}
+.pf-q { counter-reset: q; list-style: none; padding: 0; display: grid; gap: 10px; }
+.pf-q li { counter-increment: q; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); padding: 12px 14px 12px 48px; position: relative; }
+.pf-q li::before { content: counter(q); position: absolute; left: 14px; top: 11px; font: 500 18px var(--mono); color: var(--accent); }
+</style>
+
+<div class="pf">
+  <header class="ds-head">
+    <div><div class="ds-eyebrow">Brain · étude · 29 octobre 2026</div><h1>Plateforme des apps</h1></div>
+    <dl class="ds-facts"><div><dt>Apps</dt><dd>3 + 1</dd></div><div><dt>Domaine</dt><dd>aureliencaye.com</dd></div><div><dt>Coût en plus</dt><dd>0 €</dd></div></dl>
+  </header>
+  <p class="pf-lede pf-col">Finance, Camp de Base et Sport partagent déjà le même design system, mais chacune vit seule : son adresse, sa connexion, sa base, son menu. Cette page propose comment en faire une seule plateforme sans les fusionner, avec un hub qui fait remonter ce que chaque app attend de toi. Deux prototypes cliquables en bas.</p>
+
+  <div class="ds-panel pf-verdict pf-col">
+    <h3>En bref</h3>
+    <ol>
+      <li><strong>Garder des apps séparées</strong> : un dépôt, une base et un déploiement par app. Une app qui casse ne casse pas les autres, la finance reste isolée, et chaque session cloud garde son environnement.</li>
+      <li><strong>Les unir par quatre choses partagées</strong> : des sous-domaines de <code>aureliencaye.com</code>, une seule connexion (Cloudflare Access pour toutes), le même menu avec un sélecteur d'apps, et un petit contrat <code>/api/attention</code> que chaque app expose.</li>
+      <li><strong>Le hub</strong> est une app de plus, <code>hub.aureliencaye.com</code>, qui reprend le cockpit Brain. Il lit tes tâches dans Notion et les alertes en direct de chaque app.</li>
+      <li><strong>Ne rien fusionner</strong> : pas de monorepo, pas de base unique, pas de micro-frontends. Le gain serait faible et le risque fort.</li>
+    </ol>
+  </div>
+
+  <section class="pf-col">
+    <h2>Où en sont tes apps</h2>
+    <p>Lu dans les trois dépôts le 29 octobre.</p>
+  </section>
+  <div class="ds-table-wrap">
+    <table class="ds-table">
+      <thead><tr><th></th><th>Camp de Base</th><th>Sport</th><th>Finance</th><th>Element Logbook</th></tr></thead>
+      <tbody>
+        <tr><td><b>Hébergement</b></td><td>Pages <code>base-camp.pages.dev</code></td><td>Pages <code>sport-cw7.pages.dev</code> + Worker de synchro</td><td>Artifact claude.ai (Pages prévu)</td><td>Pages, <code>logbook.element-training.com</code></td></tr>
+        <tr><td><b>Connexion</b></td><td>Supabase Google + liste d'e-mails</td><td>Cloudflare Access</td><td>Propriétaire de l'artifact (Access + passkey prévus)</td><td>Supabase, plusieurs rôles (club)</td></tr>
+        <tr><td><b>Données</b></td><td>Supabase (32 migrations)</td><td>D1 + R2</td><td>Base privée de l'artifact (Supabase ou D1 à choisir)</td><td>Supabase</td></tr>
+        <tr><td><b>Design system</b></td><td>L'origine (<code>camp.css</code>, sous-ensemble)</td><td>v1.5.1 (jetons recopiés)</td><td>v1.5.1 (copie exacte)</td><td>Le sien (Lexend, marine)</td></tr>
+        <tr><td><b>Ce qui t'attend</b></td><td><code>GET /api/tower</code> : échéances, achats, réparations, conflits</td><td><code>data_health</code> : décisions de fusion, synchro en retard</td><td><code>insights.js</code> : constats, remboursements, échéances (côté navigateur)</td><td>Retours et erreurs (pour le club)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="pf-col">
+    <p><strong>Element Logbook reste à part.</strong> C'est l'app du club, avec ses membres, son domaine et sa marque. Le hub peut afficher ses retours à traiter, mais elle n'entre pas dans ta plateforme personnelle.</p>
+    <p><strong>Ce qui manque aujourd'hui pour une plateforme</strong> : aucune connexion commune (Access pour Sport, Google pour Camp de Base), aucune adresse commune (des <code>pages.dev</code>), aucun lien d'une app vers les autres, et aucun format commun pour « ce qui t'attend ».</p>
+  </div>
+
+  <section class="pf-col">
+    <h2>Trois façons de faire</h2>
+  </section>
+  <div class="pf-3">
+    <div class="ds-panel pf-opt pick">
+      <span class="ds-pill ds-ok" style="justify-self:start">Recommandée</span>
+      <h3>A · Fédération</h3>
+      <p class="ds-muted" style="margin:0">Apps séparées, réunies par les sous-domaines, la connexion, le menu et le contrat d'attention.</p>
+      <ul class="pro"><li>Rien à réécrire : chaque app ajoute un domaine, Access et un endpoint</li><li>Pannes, données et déploiements isolés</li><li>Une app de plus = une ligne dans le registre des apps</li></ul>
+      <ul class="con"><li>Changer d'app recharge une page (≈ 300 ms)</li><li>Une installation sur l'écran d'accueil par app (ou le hub seul)</li></ul>
+    </div>
+    <div class="ds-panel pf-opt">
+      <h3>B · Coquille unique</h3>
+      <p class="ds-muted" style="margin:0">Une adresse, <code>app.aureliencaye.com/finance</code>, <code>/expe</code>, <code>/sport</code>, avec un Worker qui aiguille chaque chemin vers son projet Pages.</p>
+      <ul class="pro"><li>Une seule app installée, un seul cookie, un seul thème</li><li>Le menu ne change jamais d'adresse</li></ul>
+      <ul class="con"><li>Chaque app doit vivre sous un sous-chemin : Camp de Base appelle <code>/api/…</code> en absolu partout</li><li>Le Worker devient un point de panne commun et double les requêtes comptées</li></ul>
+    </div>
+    <div class="ds-panel pf-opt">
+      <h3>C · Fusion</h3>
+      <p class="ds-muted" style="margin:0">Un monorepo, une base avec un schéma par domaine, un seul déploiement.</p>
+      <ul class="pro"><li>Requêtes croisées faciles (une sortie terrain qui coûte, un entraînement lié à l'expé)</li></ul>
+      <ul class="con"><li>Une release de Sport redéploie la finance</li><li>Données financières dans la même base que le reste</li><li>Trois environnements cloud et leurs secrets à réunir</li><li>Des semaines de migration pour un gain que l'option A donne déjà</li></ul>
+    </div>
+  </div>
+  <div class="pf-col">
+    <p>A peut évoluer vers B plus tard, sans rien jeter. Il suffit de mettre un Worker devant les sous-domaines le jour où l'installation unique compte vraiment. C, en revanche, se défait difficilement.</p>
+  </div>
+
+  <section class="pf-col">
+    <h2>Ce que la fédération partage</h2>
+  </section>
+  <div class="pf-layers">
+    <div class="pf-layer"><b>Adresses</b><div><code>hub.</code>, <code>expe.</code>, <code>sport.</code>, <code>finance.aureliencaye.com</code>, chacune en domaine personnalisé de son projet Pages. La zone est déjà chez Cloudflare (le site perso). Les <code>pages.dev</code> restent en secours. Pas de redirection à écrire : un sous-domaine, c'est un enregistrement DNS que Pages crée tout seul.</div></div>
+    <div class="pf-layer"><b>Connexion</b><div>Une seule application Cloudflare Access sur <code>*.aureliencaye.com</code> (gratuit jusqu'à 50 utilisateurs), avec ton e-mail et une session d'un mois. Tu te connectes une fois et passes d'une app à l'autre sans redemander. Chaque app vérifie le jeton Access, comme Sport le fait déjà. Camp de Base garde Supabase pour ses données, et sa connexion Google devient inutile.</div></div>
+    <div class="pf-layer"><b>Menu</b><div>Un sélecteur d'apps en haut du menu latéral, dans le design system (v1.6). Il lit un registre unique, <code>apps.json</code> dans le brain : nom, adresse, marque, ordre. Le même menu partout donne l'impression d'un seul produit. Le cockpit Brain l'a déjà, dans son groupe « Apps ».</div></div>
+    <div class="pf-layer"><b>Attention</b><div>Chaque app expose <code>GET /api/attention</code> dans un format commun. Le hub les agrège, avec un jeton de service Access, et les montre à côté de tes tâches Notion. Ce sont des alertes en direct, pas des copies : elles disparaissent quand le problème est réglé dans l'app. Une alerte qui demande une vraie décision devient une tâche Notion, comme aujourd'hui.</div></div>
+    <div class="pf-layer"><b>Ce qui ne bouge pas</b><div>Un dépôt, une base, un environnement cloud et un cycle de release par app. Le design system reste copié dans chaque app, mais chaque app vérifie sa version au moment de la release.</div></div>
+  </div>
+  <div class="pf-col">
+    <h3>Le contrat d'attention</h3>
+    <p>Petit, pour que chaque app l'implémente en une heure à partir de ce qu'elle calcule déjà (la tour de contrôle de Camp de Base, <code>data_health</code> de Sport, <code>insights</code> de Finance).</p>
+  </div>
+  <pre class="pf-code">GET /api/attention        (jeton Cloudflare Access de l'utilisateur ou d'un service)
+{
+  "app": "expe",
+  "generated_at": "2026-10-29T07:00:00Z",
+  "items": [
+    { "id": "tower:deadline:42", "title": "Échéance dépassée · réserver le vol Punta Arenas",
+      "severity": "bad",                       // info | warn | bad
+      "kind": "deadline",                      // alert | deadline | decision | review
+      "due": "2026-11-02", "url": "https://expe.aureliencaye.com/tower.html#e42" }
+  ]
+}</pre>
+  <pre class="mermaid">
+flowchart LR
+  subgraph ACCESS["Cloudflare Access · *.aureliencaye.com · une connexion"]
+    HUB["hub.<br/>cockpit Brain"]
+    EXP["expe.<br/>Camp de Base"]
+    SPO["sport.<br/>Sport"]
+    FIN["finance.<br/>Finance"]
+    COS["cos.<br/>Chief of staff (plus tard)"]
+  end
+  EXP --- DB1[("Supabase")]
+  SPO --- DB2[("D1 + R2")]
+  FIN --- DB3[("D1 ou Supabase")]
+  HUB -->|/api/attention| EXP
+  HUB -->|/api/attention| SPO
+  HUB -->|/api/attention| FIN
+  HUB -->|tâches, projets| N[("Notion")]
+  REG["apps.json + design system<br/>(ac-ua/brain)"] -. copiés à chaque release .-> HUB & EXP & SPO & FIN
+  </pre>
+
+  <section class="pf-col">
+    <h2>Prototype 1 · Le hub</h2>
+    <p>Clique dans le menu : le sélecteur d'apps en haut à gauche, les apps, les filtres du fil. Les alertes sont des <strong>exemples</strong> construits à partir de ce que chaque app sait déjà calculer, pas tes vraies données.</p>
+  </section>
+  <div class="pf-proto" id="proto">
+    <div class="pf-bar"><i></i><i></i><i></i><span class="pf-url" id="url"></span></div>
+    <div class="pf-shell">
+      <nav class="pf-side" aria-label="Plateforme">
+        <div class="pf-brand"><img id="side-mark" alt=""><span><b id="side-name">Hub</b><small>Aurélien Caye</small></span></div>
+        <div class="pf-switch"><button type="button" id="sw-btn" aria-haspopup="true" aria-expanded="false"><span id="sw-icon"></span><span id="sw-name">Hub</span><span class="ds-muted" aria-hidden="true">⌄</span></button><div class="pf-menu" id="sw-menu" hidden></div></div>
+        <div class="pf-grp" id="side-links"></div>
+        <div class="pf-foot">Une seule connexion<br>Cloudflare Access</div>
+      </nav>
+      <main class="pf-main" id="pmain"></main>
+    </div>
+  </div>
+
+  <section class="pf-col">
+    <h2>Prototype 2 · Le même sélecteur dans chaque app</h2>
+    <p>Ouvre une app depuis le prototype 1. Son menu garde le sélecteur et la pastille de ce qui t'attend dans les autres apps, sans quitter l'app. Le passage d'une app à l'autre se fait sans reconnexion, grâce à Access. Sur téléphone, le sélecteur vit dans le tiroir du menu, comme aujourd'hui.</p>
+  </section>
+
+  <section class="pf-col">
+    <h2>Plan par étapes</h2>
+    <ol>
+      <li><strong>Adresses et connexion (1 session, sans code).</strong> Domaines <code>expe.</code> et <code>sport.</code> sur leurs projets Pages, une application Access sur <code>*.aureliencaye.com</code>. Tu cliques dans Cloudflare ; j'écris le pas-à-pas.</li>
+      <li><strong>Registre et sélecteur (design system v1.6).</strong> <code>apps.json</code> dans le brain, le sélecteur dans <code>shell.js</code>, adopté par chaque app à sa prochaine release.</li>
+      <li><strong>Contrat d'attention.</strong> Camp de Base enveloppe <code>/api/tower</code>, Sport enveloppe <code>data_health</code>. Finance suit à son déploiement sur Pages (D1 conseillé : tes deux projets Supabase gratuits sont déjà pris).</li>
+      <li><strong>Hub.</strong> Le cockpit Brain passe d'artifact à app Pages (<code>hub.</code>), lit Notion par une intégration et les apps par <code>/api/attention</code>. L'artifact reste en secours.</li>
+      <li><strong>Plus tard.</strong> Chief of staff comme section du hub ou comme app à part (question ci-dessous). Coquille unique (B) seulement si l'installation unique sur le téléphone devient un vrai besoin.</li>
+    </ol>
+  </section>
+
+  <section class="pf-col">
+    <h2>Mes questions</h2>
+    <ol class="pf-q">
+      <li><b>Adresses</b> : des sous-domaines (<code>expe.</code>, <code>sport.</code>, <code>finance.</code>, <code>hub.</code>), ou une seule adresse avec des chemins (<code>app.aureliencaye.com/expe</code>) ? Et sous quel domaine : <code>aureliencaye.com</code> ou un autre ? Dans ton message, « redirection sur SAFIPI » : tu voulais dire Cloudflare ?</li>
+      <li><strong>Connexion</strong> : on passe Camp de Base sur Cloudflare Access comme Sport, et on abandonne sa connexion Google ?</li>
+      <li><strong>Chief of staff</strong> : une section du hub (tâches, revue, Claude), ou une app à part ? Je recommande une section du hub : c'est le même sujet, ce qui t'attend.</li>
+      <li><strong>Finance</strong> : elle passe de l'artifact à une app Pages sur D1 ? C'est le préalable pour qu'elle remonte dans le hub.</li>
+      <li><strong>Alertes des apps</strong> : elles restent en direct dans le hub (ma recommandation), ou tu les veux aussi en tâches Notion ?</li>
+    </ol>
+  </section>
+</div>
+
+<script>
+/*@DS_ICONS@*/
+</script>
+<script>
+(function(){
+  "use strict";
+  const MARKS = /*@MARKS@*/{};
+  // EXAMPLES ONLY: alert kinds each app already computes, with invented wording; not Aurélien's data.
+  const APPS = [
+    {key:"hub", name:"Hub", host:"hub.aureliencaye.com", icon:"home", mark:"brain", desc:"Ce qui t'attend partout"},
+    {key:"expe", name:"Camp de Base", host:"expe.aureliencaye.com", icon:"map", mark:"camp", desc:"Expéditions, inventaire, terrain",
+      links:["Tour de contrôle","Inventaire","Expéditions","Terrain","Nutrition"], kpi:["D-422","départ prévu (exemple)"]},
+    {key:"sport", name:"Sport", host:"sport.aureliencaye.com", icon:"training", mark:"sport", desc:"Entraînement, charge, récupération",
+      links:["Vue d'ensemble","Charge","Course","Force","Données"], kpi:["7 h 40","cette semaine (exemple)"]},
+    {key:"finance", name:"Finance", host:"finance.aureliencaye.com", icon:"budget", mark:"finance", desc:"Patrimoine, flux, impôts",
+      links:["Vue d'ensemble","À faire","Patrimoine","Flux","Impôts"], kpi:["3","constats à revoir (exemple)"]},
+    {key:"cos", name:"Chief of staff", host:"hub.aureliencaye.com/#cos", icon:"team", mark:"brain", desc:"Plus tard : revue, planning, Claude", soon:true}
+  ];
+  const FEED = [
+    {app:"expe", sev:"bad", kind:"Échéance", title:"Échéance dépassée : confirmer le point de dépose (exemple)", due:"il y a 2 j"},
+    {app:"finance", sev:"warn", kind:"Constat", title:"Accès bancaire à renouveler dans 12 jours (exemple)", due:"12 nov."},
+    {app:"notion", sev:"warn", kind:"Décision", title:"Choisir la plateforme de suivi pour 2027 (exemple)", due:""},
+    {app:"sport", sev:"info", kind:"Revue", title:"2 séances à fusionner ou garder séparées (exemple)", due:""},
+    {app:"expe", sev:"warn", kind:"Achat", title:"4 lignes de la liste à acheter, 380 € (exemple)", due:"avant le départ"},
+    {app:"sport", sev:"warn", kind:"Synchro", title:"Pas de nouvelle activité depuis 3 jours (exemple)", due:""},
+    {app:"finance", sev:"info", kind:"Remboursement", title:"1 remboursement en attente (exemple)", due:""},
+    {app:"notion", sev:"info", kind:"Tâche", title:"Préparer le rendez-vous avec l'avocat (exemple)", due:""}
+  ];
+  const SRC = {expe:"Camp de Base", sport:"Sport", finance:"Finance", notion:"Notion · tâches"};
+  const SRC_ICON = {expe:"map", sport:"training", finance:"budget", notion:"document"};
+  let cur = "hub", filter = "all";
+  const $ = s => document.querySelector(s);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const icon = n => window.AppIcons ? window.AppIcons.svg(n) : "";
+  const count = k => FEED.filter(f => f.app === k).length;
+
+  function side(){
+    const a = APPS.find(x => x.key === cur);
+    $("#side-name").textContent = a.name;
+    $("#side-mark").src = MARKS[a.mark] || MARKS.brain;
+    $("#sw-icon").innerHTML = icon(a.icon);
+    $("#sw-name").textContent = a.name;
+    $("#url").innerHTML = "https://<b>" + esc(a.host.split("/")[0]) + "</b>" + esc(a.host.includes("/") ? a.host.slice(a.host.indexOf("/")) : "/");
+    $("#sw-menu").innerHTML = APPS.filter(x => !x.soon).map(x => '<button type="button" data-app="' + x.key + '" aria-current="' + (x.key === cur) + '">' + icon(x.icon) + '<span>' + esc(x.name) + '</span>' + (x.key !== "hub" && count(x.key) ? '<small>' + count(x.key) + '</small>' : '') + '</button>').join("") +
+      '<hr><button type="button" disabled style="opacity:.6">' + icon("team") + '<span>Chief of staff</span><small>plus tard</small></button>';
+    let links;
+    if (cur === "hub") links = '<span>Hub</span><button class="pf-link" aria-current="true">' + icon("home") + 'Aujourd\'hui<span class="n hot">' + FEED.length + '</span></button><button class="pf-link">' + icon("map") + 'Domaines</button><button class="pf-link">' + icon("tower") + 'Projets</button><button class="pf-link">' + icon("star") + 'Claude</button>' +
+      '<span style="margin-top:10px">Apps</span>' + APPS.filter(x => !["hub","cos"].includes(x.key)).map(x => '<button class="pf-link" data-app="' + x.key + '">' + icon(x.icon) + esc(x.name) + '<span class="n' + (count(x.key) ? ' hot' : '') + '">' + (count(x.key) || "") + '</span></button>').join("");
+    else links = '<span>' + esc(a.name) + '</span>' + a.links.map((l, i) => '<button class="pf-link" aria-current="' + (i === 0) + '">' + icon(i === 0 ? "tower" : a.icon) + esc(l) + (i === 0 && count(a.key) ? '<span class="n hot">' + count(a.key) + '</span>' : '') + '</button>').join("") +
+      '<span style="margin-top:10px">Ailleurs</span><button class="pf-link" data-app="hub">' + icon("home") + 'Hub<span class="n hot">' + (FEED.length - count(a.key)) + '</span></button>';
+    $("#side-links").innerHTML = links;
+  }
+  function main(){
+    const m = $("#pmain");
+    if (cur === "hub") {
+      const items = FEED.filter(f => filter === "all" || f.app === filter);
+      m.innerHTML = '<div class="ds-head"><div><div class="ds-eyebrow">Hub · jeudi 29 octobre</div><h1>Ce qui t\'attend</h1></div><dl class="ds-facts"><div><dt>Partout</dt><dd>' + FEED.length + '</dd></div><div><dt>Urgent</dt><dd>' + FEED.filter(f => f.sev === "bad").length + '</dd></div></dl></div>' +
+        '<div class="pf-filters">' + ["all","expe","sport","finance","notion"].map(k => '<button type="button" class="ds-chip" data-filter="' + k + '" aria-pressed="' + (filter === k) + '">' + (k === "all" ? "Tout" : esc(SRC[k])) + '<span class="num">' + (k === "all" ? FEED.length : count(k)) + '</span></button>').join("") + '</div>' +
+        '<div class="pf-feed">' + items.map(f => '<div class="pf-alert ' + f.sev + '">' + icon(SRC_ICON[f.app]) + '<div style="min-width:0"><div class="src">' + esc(SRC[f.app]) + ' · ' + esc(f.kind) + '</div><div>' + esc(f.title) + '</div></div><span class="go">' + (f.due ? '<span class="ds-muted">' + esc(f.due) + '</span><br>' : '') + (f.app === "notion" ? '<a href="#" data-noop>Notion ↗</a>' : '<a href="#" data-app="' + f.app + '">Ouvrir ›</a>') + '</span></div>').join("") + '</div>' +
+        '<h3 style="margin-top:6px">Tes apps</h3><div class="pf-apps">' + APPS.filter(x => !["hub"].includes(x.key)).map(x => '<button type="button" class="pf-app" data-app="' + (x.soon ? "" : x.key) + '"' + (x.soon ? ' aria-disabled="true" style="opacity:.6;cursor:default"' : '') + '><span class="h">' + icon(x.icon) + esc(x.name) + '</span>' + (x.kpi ? '<span class="v">' + esc(x.kpi[0]) + '</span><span class="s">' + esc(x.kpi[1]) + '</span>' : '<span class="s">' + esc(x.desc) + '</span>') + (count(x.key) ? '<span class="ds-pill ds-warn" style="justify-self:start">' + count(x.key) + ' pour toi</span>' : '') + '</button>').join("") + '</div>';
+    } else {
+      const a = APPS.find(x => x.key === cur), mine = FEED.filter(f => f.app === cur);
+      m.innerHTML = '<div class="ds-head"><div><div class="ds-eyebrow">' + esc(a.name) + '</div><h1>' + esc(a.links[0]) + '</h1></div><dl class="ds-facts"><div><dt>' + esc(a.kpi[1].replace(" (exemple)", "")) + '</dt><dd>' + esc(a.kpi[0]) + '</dd></div></dl></div>' +
+        '<div class="ds-note">C\'est l\'app ' + esc(a.name) + ' elle-même, à son adresse, avec son menu habituel. Seul ajout : le sélecteur en haut du menu, et le lien vers le hub avec ce qui t\'attend ailleurs.</div>' +
+        (mine.length ? '<div class="pf-feed">' + mine.map(f => '<div class="pf-alert ' + f.sev + '">' + icon(a.icon) + '<div><div class="src">' + esc(f.kind) + '</div><div>' + esc(f.title) + '</div></div><span class="go ds-muted">' + esc(f.due || "") + '</span></div>').join("") + '</div>' : '') +
+        '<div class="pf-mock"><div class="ds-label" style="margin:0">Écran de l\'app (schéma)</div><div class="row"><div class="ds-kpi" style="flex:1;min-width:140px"><span class="k">Indicateur</span><span class="v">—</span></div><div class="ds-kpi" style="flex:1;min-width:140px"><span class="k">Indicateur</span><span class="v">—</span></div><div class="ds-kpi" style="flex:1;min-width:140px"><span class="k">Indicateur</span><span class="v">—</span></div></div>' +
+        '<div class="row"><div class="bar"><i style="width:62%"></i></div></div><div class="row"><div class="bar"><i style="width:38%;background:var(--c3)"></i></div></div><div class="row"><div class="bar"><i style="width:80%;background:var(--c5)"></i></div></div></div>';
+    }
+  }
+  function render(){ side(); main(); }
+  document.addEventListener("click", e => {
+    const b = e.target.closest("[data-app],[data-filter],[data-noop],#sw-btn"); if (!b) { if (!e.target.closest("#sw-menu")) close(); return; }
+    if (b.id === "sw-btn") { const m = $("#sw-menu"); m.hidden = !m.hidden; b.setAttribute("aria-expanded", String(!m.hidden)); return; }
+    e.preventDefault();
+    if (b.dataset.filter) { filter = b.dataset.filter; main(); return; }
+    if (b.dataset.app) { cur = b.dataset.app; filter = "all"; close(); render(); $("#proto").scrollIntoView({block:"nearest", behavior:"smooth"}); }
+  });
+  function close(){ $("#sw-menu").hidden = true; $("#sw-btn").setAttribute("aria-expanded", "false"); }
+  document.addEventListener("keydown", e => { if (e.key === "Escape") close(); });
+  render();
+})();
+</script>

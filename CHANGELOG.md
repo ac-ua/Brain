@@ -3,6 +3,12 @@
 The brain is versioned like any project: `v0.x` while the skeleton settles. Each release is a merged PR on
 `ac-ua/brain` and a row in the Notion Build Roadmap (Project = Brain).
 
+## v0.4.4 — confidentiality is one way: perso → pro only (2026-10-29)
+- `AGENTS.md`, `domains/work.md`, `docs/BLUEPRINT.md`, `session-close`, `explainer-video`: the rule « never move pro
+  files to personal storage » is removed. Only personal → pro is forbidden; pro files and deliverables may go to the
+  personal Drive, Notion and this repo (Aurélien: « c'est un problème de move du perso vers le pro »).
+- The work Mac brings deliverables back to the personal Drive through the Google Drive app's personal folder in Finder.
+
 ## v0.4.3 — the guide follows without asking (2026-10-28)
 - `AGENTS.md` (Artifacts), `agents/builder.md`, `release-webapp`: after each delivery that changes the architecture,
   the model or the screens, the builder updates the project's living guide through a background sub-agent, without

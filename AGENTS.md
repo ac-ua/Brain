@@ -25,7 +25,10 @@ with no working notes. Don't edit a page he has already reviewed without asking.
 - **Notion is also the system of record for work.** Every work session writes its context back to Notion before it
   ends: the deal brief on the CRM opportunity page, durable learnings to Memories (Domain Work). Distilled, never raw
   dumps; nothing pro may live only on the work Mac or in a session.
-- Never move pro *files* to personal storage through the cloud. Pro work runs in a local session on the work Mac.
+- Pro → perso is allowed (Aurélien's call, 2026-10-29): pro files and deliverables may go to his personal storage
+  (personal Drive, his Notion, this repo). The work Mac reaches the personal Drive through the Google Drive app's
+  personal folder in Finder: use it to bring deliverables back from work sessions. Pro work still runs in a local
+  session on the work Mac.
 - **Two skill repos, never mixed.** Aurélien's own skills, pro ones included (demos, decks, messages, account work),
   live in `ac-ua/brain`. The shared team repo `Unifyapps-Internal/unifyapps-builder-skills` is common to all the
   Solution Architects: it only receives learnings about what it already covers (building and configuring on the

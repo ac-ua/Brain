@@ -52,6 +52,6 @@ on the session's results; it does what follows.
   Drive files), one line in the meeting log. Create the opportunity (and account) if missing.
 - Durable learnings (platform facts, practices, pitfalls) → Memories, Domain Work.
 - Distil: decisions and facts, not transcripts. Never secrets; demo-environment logins already on a page stay there, never copied elsewhere.
-- Pro *files* stay in the work Drive; Notion holds the context and the links.
+- Pro *files* live in the work Drive (copies in the personal Drive are allowed); Notion holds the context and the links.
 - Lessons written to a local session memory (deck lessons, client preferences) are not saved: copy them to
   Memories or, for a way of working, to the Brain Inbox.

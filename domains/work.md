@@ -36,8 +36,8 @@ the Solution Architects, installed separately and never changed directly: it onl
 what it already covers, through its twice-weekly loop. None of Aurélien's own skills go there.
 
 ## Rules
-- Nothing personal goes to pro systems. Pro files stay in the work Drive (`ac@unifyapps.com`); never move them to
-  personal storage through the cloud.
+- Nothing personal goes to pro systems. Pro files live in the work Drive (`ac@unifyapps.com`) and may be copied to
+  the personal Drive: from the work Mac, through the Google Drive app's personal folder in Finder (2026-10-29).
 - Pro context may be stored in Notion and this repo (Aurélien's call, 2026-10-27). Never secrets. Demo-environment
   logins he wrote on his Notion pages stay there (his call): don't remove them, don't copy them elsewhere.
 

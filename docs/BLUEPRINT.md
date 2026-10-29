@@ -110,8 +110,8 @@ iPad. Cloud environments: `perso-general` (default), `app-element`, `app-base-ca
 
 ## Files
 The Drive is the source of files; local disks are a throwaway cache. Work and personal Drives stay apart.
-Pro context and learnings go to Aurélien's Notion (his work system of record too). Forbidden: personal → pro systems,
-and pro *files* to personal storage.
+Pro context and learnings go to Aurélien's Notion (his work system of record too). Forbidden: personal → pro systems.
+Pro → personal is allowed (2026-10-29): the work Mac writes to the personal Drive through the Google Drive app.
 Large media is processed in the cloud or on a future personal machine, never on the work Mac.
 
 ## Decisions (2026-10-27)
@@ -130,9 +130,11 @@ Large media is processed in the cloud or on a future personal machine, never on 
 10. Autonomy: no external send, publishing or payment without Aurélien; every deletion needs his approval; drafts,
     Notion and commits are free. Can be relaxed later, domain by domain.
 11. Notion is the system of record for work too (revised 2026-10-27): every work session writes its deal brief and
-    learnings to Notion; pro files stay in the work Drive.
+    learnings to Notion; pro files live in the work Drive.
     Monthly copy of the work plugin: decided, with a flagged IP risk (rewriting generic methods is the safer path).
 12. Voice clone: only on explicit request; nothing about it in this repo. Stock voice by default.
+13. Confidentiality is one way (2026-10-29): personal → pro is forbidden; pro → personal is allowed. Deliverables
+    come back from the work Mac to the personal Drive through the Google Drive app.
 13. Content: short-form first (TikTok, Instagram), published by hand at first; strategy is content-studio's first job.
 14. Secrets: the password manager is the single source. Never in Notion, GitHub or a memory.
 15. Strava only via its official connector; intervals.icu is the AI-agnostic path. OpenClaw set aside (security,

@@ -223,6 +223,9 @@ h3, .ds-label { font: 600 12px/1.2 var(--body); letter-spacing: .1em; text-trans
 .ds-form label.full { grid-column: 1 / -1; }
 .ds-form label.chk { display: flex; gap: 8px; align-items: center; }
 .ds-form textarea { min-height: 90px; resize: vertical; }
+/* v1.5.1: a visible file input matches the height of the other fields (its button made it taller) */
+.ds-form input[type=file]:not([type=checkbox]):not([type=radio]) { padding-block: 4px; }
+.ds-form input[type=file]::file-selector-button { font: inherit; font-size: 13px; padding: 2px 9px; margin-right: 9px; border: 1px solid var(--line); border-radius: 6px; background: var(--sunken); color: var(--ink); line-height: 1.2; cursor: pointer; }
 .ds-form .missing { border-color: var(--warn); background: var(--warn-soft); }
 .ds-form fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: 10px; }
 .ds-form legend { font: 600 12px/1 var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); padding: 0; margin-bottom: 10px; }
@@ -266,14 +269,19 @@ h3, .ds-label { font: 600 12px/1.2 var(--body); letter-spacing: .1em; text-trans
 :where(.ds-table) tbody tr[data-href]:hover td, :where(.ds-table) tbody tr.ds-click:hover td { background: var(--sunken); }
 :where(.ds-table) tr.ds-grp td { background: var(--sunken); font: 700 15px/1 var(--display); padding: 9px 10px; }
 /* v1.5: subtotal / total row: sunken, bold, numbers stay mono */
-:where(.ds-table) tr.ds-total td, :where(.ds-table) tr.ds-total th { background: var(--sunken); font-weight: 700; color: var(--ink); }
+:where(.ds-table) tr.ds-total { --total-bg: var(--sunken); }
+/* v1.5.1: in dark, --sunken is darker than --surface and barely shows; the total row is lifted towards ink instead */
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) :where(.ds-table) tr.ds-total { --total-bg: color-mix(in srgb, var(--ink) 8%, var(--surface)); } }
+:root[data-theme="dark"] :where(.ds-table) tr.ds-total { --total-bg: color-mix(in srgb, var(--ink) 8%, var(--surface)); }
+:where(.ds-table) tr.ds-total td, :where(.ds-table) tr.ds-total th { background: var(--total-bg); font-weight: 700; color: var(--ink); }
 :where(.ds-table) tr.ds-total td { border-top: 1px solid var(--line); }
 /* v1.5: wide tables become cards under 700 px in the app; .ds-table--matrix opts out (year matrices, comparisons):
    it stays a table and scrolls sideways in its .ds-table-wrap (figures on one line, labels wrap). Apps write card rules as
    table.ds-table:not(.ds-table--matrix). The first column stays visible while scrolling. */
 :where(.ds-table.ds-table--matrix) :is(td, th):not(:first-child) { white-space: nowrap; }
 :where(.ds-table.ds-table--matrix) :is(td, th):first-child { position: sticky; left: 0; z-index: 1; background: var(--surface); min-width: 9em; }
-:where(.ds-table.ds-table--matrix) th:first-child, :where(.ds-table.ds-table--matrix) tr:is(.ds-total, .ds-grp) > :first-child { background: var(--sunken); }
+:where(.ds-table.ds-table--matrix) th:first-child, :where(.ds-table.ds-table--matrix) tr.ds-grp > :first-child { background: var(--sunken); }
+:where(.ds-table.ds-table--matrix) tr.ds-total > :first-child { background: var(--total-bg); }
 
 /* ---------- Overlays and feedback ---------- */
 dialog.ds-dialog { border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--surface); color: var(--ink); padding: 0; width: min(640px, calc(100vw - 32px)); box-shadow: var(--shadow); }

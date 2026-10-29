@@ -14,7 +14,8 @@ reference is **Camp de Base** (`ac-ua/Base-Camp`) and only Camp de Base (Auréli
 |---|---|
 | [`tokens.css`](tokens.css) | tokens (light, dark, context palettes), base styles and the core `ds-` components; copy it as `web/ds.css` |
 | [`icons/`](icons/) | `icons.json` (73 generic faceted icons), `glyphs.json` (16 UI glyphs), `build_icons.py` → `icons.js` |
-| [`brand/`](brand/) | `mark.png` (the faceted mountain), `favicon.png` |
+| [`shell.js`](shell.js) | the app shell's behaviour (fold the side menu, phone drawer, theme switch); copy it next to the pages |
+| [`brand/`](brand/) | `mark.png` (Camp de Base's faceted mountain), `favicon.png`; every other app has its own mark (Brand marks) |
 | [`FEEDBACK.md`](FEEDBACK.md) | change log of the system and which apps still have to adopt each change |
 
 ## Principles
@@ -73,12 +74,36 @@ here"; a 3–4 px left border carries a status or category colour. **Motion:** `
 `prefers-reduced-motion`.
 
 ## Layout
-- **Shell:** fixed left menu `.ds-side` (232 px, `--sunken`, foldable to 64 px icons-only with the choice kept in
-  `localStorage`): brand (mark 34 px + app name in Syne 20 + owner in 12 px muted), groups with an uppercase label,
-  links with an icon, a count or a "Soon" badge, the theme switch at the bottom. Content in `.ds-app > main.ds-wrap.ds-main`
-  (max 1320 px, 16 px gutters plus safe areas). Under 860 px: sticky top bar `.ds-mtop` (menu button + « App · Page »)
-  and the menu as a drawer over a scrim (`body.ds-side-open`).
-- **Page:** `.ds-head` = eyebrow (12 px uppercase accent) + h1 on the left, `.ds-facts` (label over mono value) on the
+- **Shell (required in every app):** exactly Camp de Base's. A fixed left menu `.ds-side` (232 px, `--sunken`):
+  brand at the top (the app's mark 34 px + app name in Syne 20 + owner in 12 px muted, then the fold button `«`),
+  groups with an uppercase label, one link per section with its faceted icon (`.ico`, 20 px), a count or a "Soon"
+  badge; current link `aria-current="page"` (surface + 3 px accent bar). At the bottom left (`.ds-side-foot`) the
+  theme switch, then **Sign out** under it, full width (`.ds-signout`). Folded (`«` / `»`): icons only at 64 px,
+  opening over the page on hover or keyboard focus, the choice kept per app (`<app>.side.mini`). Content in
+  `.ds-app > main.ds-wrap.ds-main` (max 1320 px, 16 px gutters plus safe areas), starting with the page title row.
+  Under 860 px: sticky top bar `.ds-mtop` (menu button + « **App** · Page ») and the menu as a drawer over a scrim;
+  a link, the scrim or Escape closes it. Behaviour: `shell.js` (classes `ds-side-mini` / `ds-side-open` on `<body>`,
+  or on a `[data-ds-shell]` root when the page lives inside another host, like a claude.ai dashboard):
+  ```html
+  <body data-ds-app="sport">            <!-- or <div data-ds-shell data-ds-app="sport"> inside a host -->
+  <div class="ds-mtop"><button class="ds-icon-btn" data-ds-side-open aria-controls="side" aria-expanded="false"
+    aria-label="Open the menu">(menu glyph)</button><span><b>App</b> · Page</span></div>
+  <div class="ds-scrim" data-ds-scrim hidden></div>
+  <nav class="ds-side" id="side" aria-label="App">
+    <div class="ds-side-brand"><img src="mark.svg" alt=""><span><b>App</b><small>Aurélien Caye</small></span>
+      <button class="ds-side-fold" data-ds-side-fold title="Fold or open the menu" aria-label="Fold or open the menu">
+        <span class="ds-fold">«</span><span class="ds-unfold">»</span></button></div>
+    <div class="ds-side-group"><span class="ds-side-h">Group</span>
+      <a class="ds-side-link" aria-current="page" href="#"><span class="ico">(icon)</span>Section</a></div>
+    <div class="ds-side-foot">
+      <div class="ds-seg" role="group" aria-label="Theme"><button data-ds-theme="auto" aria-label="Automatic theme">…</button>
+        <button data-ds-theme="light" aria-label="Light theme">…</button><button data-ds-theme="dark" aria-label="Dark theme">…</button></div>
+      <a class="ds-signout" href="/logout">Sign out</a></div>
+  </nav>
+  <div class="ds-app"><main class="ds-wrap ds-main"><header class="ds-head">…</header>…</main></div>
+  <script src="shell.js"></script>
+  ```
+- **Page:** `.ds-head` = eyebrow (12 px uppercase accent: the app or the context) + h1 (the page's title) on the left, `.ds-facts` (label over mono value) on the
   right; then tabs or a sticky toolbar (`.ds-sticky`: search, filters, chips, view switch); then content.
 - **Grids:** `repeat(auto-fit|auto-fill, minmax(min(100%, N), 1fr))` with N = 170 (KPIs), 210–230 (tiles, forms),
   290 (cards), 320 (columns). Overview + side column: `minmax(0, 1fr) 300px`, one column under 900 px.
@@ -87,6 +112,21 @@ here"; a 3–4 px left border carries a status or category colour. **Motion:** `
 - **Context palette:** a page about one context may retint the accent family and the icon fills with
   `<html data-palette="…">` (Camp de Base: polar, forest, mountain, desert, ocean). The side menu keeps the neutral
   palette. A palette defines light and dark values and passes the contrast check below.
+
+## What every app must have
+- [ ] The shell above: side menu with the app's mark and name, its sections with their icons, fold button (state kept),
+      phone top bar and drawer.
+- [ ] The theme switch (Auto · Light · Dark) at the bottom left of the side menu, set before the first paint.
+- [ ] Sign out at the bottom left, under the theme switch (the app's own sign-out: Supabase, Cloudflare Access
+      `/cdn-cgi/access/logout`…); hidden only where there is nothing to sign out of.
+- [ ] Its own brand mark (below) in the side menu, the phone top bar's place and the favicon (32 and 180 px PNG + SVG).
+- [ ] Empty, loading and error states on every screen (`.ds-empty`, `.ds-loading`, `.ds-note.ds-bad` + retry).
+
+## Brand marks
+Each app has its own mark, drawn in Camp de Base's faceted style: 100 × 100, 3 to 5 facets in the icon palette (sky
+`#7397b3`, slate `#5a768b`, snow `#f3f3f0`, stone `#a9aaad`), a 5.2 dark outline (`#131313`), light from the
+top-left. Camp de Base keeps the mountain (`brand/mark.png`), Sport data has the stopwatch, Finance a coin stack. The
+mark lives in the app's repo (`web/brand/<app>-mark.svg`) and is also the favicon.
 
 ## Components (`tokens.css`)
 | Component | Class | Rules |
@@ -216,10 +256,11 @@ at its next release (`release-webapp` UI check).
 
 ## How an app adopts it
 - [ ] Copy `tokens.css` to `web/ds.css` (keep the header; note the system version from `FEEDBACK.md` in the app's
-      `docs/`), load it first; load the three fonts; favicon and mark from `brand/` unless the app has its own mark.
+      `docs/`), load it first; load the three fonts; the app's own mark and favicon (Brand marks).
 - [ ] Build `icons.js` from the kit (plus `data/icons.app.json` for domain icons) with the app's global name; load it
       on every page; no emojis left in the UI.
-- [ ] Use the shell (side menu, top bar on phones, theme switch with the pre-paint script) and the `ds-` components;
+- [ ] Use the shell (side menu with fold, top bar and drawer on phones, theme switch with the pre-paint script, sign
+      out; copy `shell.js`) and the `ds-` components;
       the app's CSS adds only what is specific, with its own prefix, and uses tokens only (no hex outside icons).
 - [ ] Charts follow the data-viz rules; empty, loading and error states exist on every screen.
 - [ ] Check both themes, 375 px and 1280 px wide, keyboard focus, contrast; record the adoption (version) in the

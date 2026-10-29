@@ -28,7 +28,7 @@ reference is **Camp de Base** (`ac-ua/Base-Camp`) and only Camp de Base (Auréli
 4. **Same in dark.** Every colour is a token; nothing hard-coded except inside icons and photos. Both themes are
    checked before shipping.
 5. **Phone first for field screens, desktop first for analysis**, but every page works on both (side menu becomes a
-   drawer under 860 px; tables scroll in their frame; wide tables become cards under 700 px).
+   drawer under 860 px; tables scroll in their frame; wide tables become cards under 700 px, except matrices).
 6. **No emojis in the UI.** Icons come from the kit; controls use the plain glyphs.
 
 ## Tokens
@@ -54,6 +54,7 @@ Load the fonts once per page:
 | `--bad` / `--bad-soft` | `#b42318` / `#fde4e1` | `#ff8a7a` / `#3a1612` | errors, over budget, destructive |
 | `--info` / `--info-soft` | `#1f5f99` / `#e0edf9` | `#7db6ef` / `#11263a` | in progress, ordered, sources |
 | `--c1`…`--c6`, `--c-other` | `#0a6aa7 #5b7f95 #d9480f #e8a33d #3f9b6b #b42318`, `#adb5bd` | `#6fb0e0 #7fa3ba #ff7a3d #f0b44c #56b07f #ff8a7a`, `#6b7a86` | data series, in this order (Data viz) |
+| `--c7`, `--c8` (v1.5) | `#1a8a96 #8b5e34` | `#4fc1c9 #c49a6c` | two more series, not status colours: ocean teal, desert earth (Data viz) |
 | `--ci-ink`, `--ci-a`…`--ci-d` | `#0d1117`; `#5b8fc0 #3e5d75 #ffffff #9ea2ab` | `#05080b`; same fills | icon outline; sky, slate, snow, stone |
 | `--shadow` | `0 1px 2px rgba(15,30,39,.06), 0 8px 24px rgba(15,30,39,.08)` | stronger black | hover, menus, dialogs |
 | `--scrim` | `rgba(5,12,16,.45)` | same | behind drawers and dialogs |
@@ -126,7 +127,8 @@ here"; a 3–4 px left border carries a status or category colour. **Motion:** `
 Each app has its own mark, drawn in Camp de Base's faceted style: 100 × 100, 3 to 5 facets in the icon palette (sky
 `#7397b3`, slate `#5a768b`, snow `#f3f3f0`, stone `#a9aaad`), a 5.2 dark outline (`#131313`), light from the
 top-left. Camp de Base keeps the mountain (`brand/mark.png`), Sport data has the stopwatch, Finance a coin stack. The
-mark lives in the app's repo (`web/brand/<app>-mark.svg`) and is also the favicon.
+mark lives in the app's repo, as `brand/<app>-mark.svg` or `brand/mark.svg` under the app's web root (`web/brand/…`,
+`app/brand/…`; both names are fine, v1.5), and is also the favicon.
 
 ## Components (`tokens.css`)
 | Component | Class | Rules |
@@ -134,19 +136,19 @@ mark lives in the app's repo (`web/brand/<app>-mark.svg`) and is also the favico
 | Button | `.ds-btn`, `.ds-btn.ds-btn--primary`, `--sm`, `--danger` | as Camp de Base's `.btn`: padding 8×13 (no fixed height), radius 8 (primary 2), 14 px regular; `--sm` 4×8, 12.5 px, radius 6. Modifiers are written with the base class (`.ds-btn.ds-btn--sm`), the weight of Camp de Base's `.btn.sm`. No rule on icons inside: a glyph in a button gets its size and stroke from the app. One primary per view |
 | Icon button | `.ds-icon-btn` | 36×36, always with `aria-label` and `title` |
 | Segmented / theme switch | `.ds-seg` + `aria-pressed` | pill; pressed = inverted. Theme: Auto · Light · Dark glyphs |
-| Tabs / sub-tabs | `.ds-tabs` (`aria-selected`), `.ds-subtabs` | tabs in Syne 15 with a 3 px accent underline; sub-tabs as pills, scroll sideways on phones |
+| Tabs / sub-tabs | `.ds-tabs` (buttons with `aria-selected`, or links with `aria-current="page"`, v1.5), `.ds-subtabs` | tabs in Syne 15 with a 3 px accent underline; link tabs for routes (same look); sub-tabs as pills, scroll sideways on phones |
 | Filter chips | `.ds-chips > .ds-chip` (`aria-pressed`, optional `.num`) | 999 radius, 13 px; pressed = inverted |
-| Status pill | `.ds-pill.ds-ok|warn|bad|info` | dot + word; never colour alone; no tone = neutral (muted on sunken) |
+| Status pill | `.ds-pill.ds-ok|warn|bad|info` | dot + word; never colour alone; no tone = neutral (muted on sunken). A pill inherits the font (Camp de Base's `.pill`); inside a mono cell add `.ds-pill--body` (v1.5) |
 | Tag, Soon badge | `.ds-tag`, `.ds-soon` | 11 px; source tags in info, gaps in warn |
 | Panel, card, KPI | `.ds-panel`, `.ds-card`, `.ds-kpis > .ds-kpi (.k .v .s)` | radius 10; a whole clickable card is a `button` or `a` with `.ds-card` |
 | Note | `.ds-note` (+ `.ds-warn`, `.ds-bad`) | explanation with a 3 px accent bar, 12 px below (Camp de Base's `.infobox`); a warning or error is a tinted box without border (`.warnbox`) |
 | Meter, track | `.ds-meter > i`, `.ds-track > i` | 6 px progress (ok green as on Camp de Base, `.ds-over` = bad); 14 px stacked bar |
-| Table | `.ds-table-wrap > table.ds-table` | sunken head (not sticky), 11 px uppercase; numbers right-aligned in mono (`.n`, tabular figures in the head too); group rows `tr.ds-grp` in Syne; clickable rows `tr[data-href]`. Rules sit under `:where(.ds-table)`: they weigh what Camp de Base's bare `table`/`th`/`td` did, so an app's own table rules still win |
+| Table | `.ds-table-wrap > table.ds-table` | sunken head (not sticky), 11 px uppercase; numbers right-aligned in mono (`.n`, tabular figures in the head too); group rows `tr.ds-grp` in Syne; subtotal and total rows `tr.ds-total` (sunken, bold, numbers stay mono, v1.5); clickable rows `tr[data-href]`; `table.ds-table.ds-table--matrix` for year matrices and comparisons (v1.5): never turned into cards, scrolls sideways in its frame with the first column kept in view (an app's card rules target `table.ds-table:not(.ds-table--matrix)`). Rules sit under `:where(.ds-table)`: they weigh what Camp de Base's bare `table`/`th`/`td` did, so an app's own table rules still win |
 | Form | `.ds-form` (labels wrap inputs), `.ds-input`, `.ds-switch`, `.ds-search` | label 13 px muted above the field; fields 7×9, radius 7; switch 34×20 (14 px travel, whole switch clickable, disabled at .4); `.missing` = warn |
 | Dialog, sheet | `dialog.ds-dialog > .ds-dialog-body + .ds-dialog-foot`, `.ds-sheet` | dialog ≤ 640 px; detail views open as a right sheet (≤ 760 px), full screen on phones |
 | Toast | `.ds-toast` (`.ds-err`) | bottom centre, inverted; errors in bad |
 | Tooltip | `.ds-tip` for charts; native `title` elsewhere | inverted, mono 12 px |
-| Empty, loading, error | `.ds-empty` (dashed, title + one line + the action), `.ds-loading` ("Loading expeditions…" in place), `.ds-note.ds-bad` + retry | never a blank page; say what to do next |
+| Empty, loading, error | `.ds-empty` (dashed, title + one line + the action; inside a panel `.ds-empty.ds-empty--inline`: text only, body size, `strong` + `p` on one line, v1.5), `.ds-loading` ("Loading expeditions…" in place), `.ds-note.ds-bad` + retry | never a blank page; say what to do next |
 | Login | `.ds-login` | full-screen surface: mark 84 px, app name, one line, one primary button, `.ds-err` line |
 
 **Decided (v1.1):** Camp de Base renames its classes to the `ds-` names below and loads `ds.css`; no alias layer.
@@ -182,7 +184,10 @@ dark background).
   amber (`--c-fuel`) from the expedition load chart (`expeditions.js`, `camp.css`), `--c5` green (good weather,
   `simulation.js`), `--c6` red (deadlines on the expedition calendar), `--c-other` the rest grey (`simulation.js`).
   Dark variants are the same hues lightened just enough for contrast on `--surface`. **No purple**, and no hue Camp de
-  Base doesn't use: an app that needs more series reuses these with a dash pattern or a label. Status bars use the
+  Base doesn't use. **Seven or eight series** (v1.5): add `--c7` ocean teal and `--c8` desert earth (the hues of Camp
+  de Base's ocean and desert palettes), each ≥ 3:1 on `--bg`, `--surface` and `--sunken` in both themes (light 3.7–5.6,
+  dark 6.7–8.8). Where red would read as "bad" (wealth, allocations, budgets that are not over), skip `--c6` and use
+  `--c7`, `--c8` instead; beyond eight, reuse with a dash pattern or a label. Never red, never purple. Status bars use the
   status tokens (ok, info, warn, bad). The same thing has the same colour on every chart of an app; an app may map
   its own things onto the tokens by meaning (Sport: run `--c1`, swim `--c2`, ride `--c3`, strength `--c4`, hike `--c5`).
 - Plan vs actual: plan = muted dashed (`5 4`); actual = solid 2–2.5 px accent line with an `--accent-soft` area;

@@ -2,7 +2,7 @@
 name: builder
 description: Builds and ships Aurélien's personal apps, sites and data tools (GitHub + Cloudflare Pages/Workers/D1 + Supabase, free tiers), keeps their roadmap and configuration guide current, and kicks off new projects. Use for any code, deploy, data pipeline, roadmap or config-guide work on a personal project, in any domain (Sport, Finance, Expeditions…).
 tools: Read, Grep, Glob, Bash, Edit, Write
-skills: [build-webapp, web-design-system, cloud-env-preflight, release-webapp, build-roadmap, config-guide, project-kickoff, session-handoff]
+skills: [build-webapp, web-design-system, cloud-env-preflight, release-webapp, build-roadmap, config-guide, project-kickoff, session-handoff, free-tier-watch]
 ---
 
 # builder

@@ -66,5 +66,8 @@ official pages once a quarter.
 
 ## 4. When something fails in seconds with no log
 
+The weekly `skills/free-tier-watch` check flags it on its own (« Actions BLOCKED », with GitHub's message).
+
+
 GitHub jobs that fail in ~4 s with no runner and no log = quota or billing block, not your code. Check Billing & Licensing ›
 Usage; minutes return on the 1st (UTC). Meanwhile stop scheduled/CI runs from piling up and run the suite locally.

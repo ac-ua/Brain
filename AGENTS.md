@@ -108,7 +108,7 @@ Agents are capabilities, the same in every domain (`agents/`). Skills are open `
 | Agent | Does | Skills |
 |---|---|---|
 | `chief-of-staff` | session protocol, handoffs, tasks, triage, planning, messages and outreach drafts, the brain's own upkeep | session-start, session-close, session-handoff, brain-inbox, brain-maintenance, message-drafting, interview-prep, expedition-sponsor-outreach, expedition-research-outreach, expedition-followup-outreach |
-| `builder` | web apps, look and feel, environments, releases, deploys, roadmaps, config guides, new projects | build-webapp, web-design-system, cloud-env-preflight, release-webapp, build-roadmap, config-guide, project-kickoff, session-handoff |
+| `builder` | web apps, look and feel, environments, releases, deploys, roadmaps, config guides, new projects | build-webapp, web-design-system, cloud-env-preflight, release-webapp, build-roadmap, config-guide, project-kickoff, session-handoff, free-tier-watch |
 | `content-studio` | content strategy, scripts, posts, explainers, video edits | brain-inbox, explainer-video, video-edit |
 
 Domain skills, loaded directly in a session (no agent needed):
@@ -146,7 +146,8 @@ gets a handoff note outside the session and a prompt to paste (`skills/session-h
 | iPad / phone | driving cloud or remote sessions | client only |
 
 Cloud environments: `perso-general` (default, no app secrets), `app-element`, `app-base-camp`, `app-sport` (one per
-app with its own secrets). None per domain.
+app with its own secrets). None per domain. Exception (Aurélien's call, 2026-10-29): `perso-general` may hold
+read-only measurement tokens (`WATCH_CLOUDFLARE_API_TOKEN` for `skills/free-tier-watch`), never a token that can write.
 
 One session = one deliverable, never two clients or pro and perso together; archive it after `session-close`.
 Full playbook (what runs where, naming, left panel): `docs/sessions.md`.

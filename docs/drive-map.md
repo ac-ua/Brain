@@ -81,7 +81,7 @@ The Drive connector cannot create shortcuts, so an Apps Script does (`tools/driv
 
 Templates: CEP workbook master `1Kr61vmC8Ji3VldN1nAWbEDaMvoB76xCTallEWc3iJ-s` (used by `cep-workbook-filler`).
 
-Account folders on 2026-10-29: Altria, Belcorp, Citi, Corning, CRST, Credit Agricole (Sofinco), Daikin, Dechert, EFE,
-GeBBS, Global Payments, Hofstra, Infinite Electronics, Iron Mountain, Ivoclar, MHW Bev Co, Pernod Ricard, Prime
+Account folders on 2026-10-29: Altria, Citi, Corning, CRST, Credit Agricole (Sofinco), Daikin, Dechert, EFE,
+GeBBS, Global Payments, Hofstra, Infinite Electronics, Iron Mountain, Ivoclar, Pernod Ricard, Prime
 Technical Services (holds `PTS POC – Source files`, read by the POC by folder id), Think Artha, Trane, UPS, Webster.
 Find one with Drive search `title = '<Account>'` and parent `01_Accounts`.

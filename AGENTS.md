@@ -108,6 +108,14 @@ Domain skills, loaded directly in a session (no agent needed):
 | Career | `interview-prep` (from the master profile; also career and visa forms), `message-drafting` |
 | Work (local session, work Mac) | `work-notes` (transcripts and session results → CRM pages, briefs, tasks, learnings), `demo-prep` (brief → approach → build → demo pack → write-back), `case-for-change` (storyline, exec recap, discovery questions, competitive angle), `message-drafting` (client recaps, Slack, replies), `cep-workbook-filler`, `poc-use-case-filler`, `unifyapps-rfp-rfi-response-template`, `explainer-video` (outputs stay in the work Drive); slides with the team plugin's `unifyapps-brand-deck` (`unifyapps-format` as fallback). The team plugin `Unifyapps-Internal/unifyapps-builder-skills` stays installed separately |
 
+**Every build runs as `builder`** (Aurélien's call, 2026-10-29), whatever the domain: an app, a site, a data
+pipeline, a BI app, a Sport or Finance tool. Read `agents/builder.md` and follow it from the first commit:
+`project-kickoff` (repo `ac-ua/<project>`, Projects row, Build Roadmap rows, ledger, configuration guide published as
+the project's artifact « <Project> · Configuration guide » and listed in `docs/artifacts.md`), then at every release
+the roadmap, the ledger and the guide republished in place. Analysis work on top (coaching, reading the BI, a
+financial review) can use other agents or skills; the build itself stays with `builder`. A build already under way
+without these pieces gets them before its next release.
+
 Work in one session that loads skills. Call a sub-agent only for heavy, isolated work (research, video, audits):
 a sub-agent costs much more tokens than a skill.
 
@@ -125,8 +133,8 @@ gets a handoff note outside the session and a prompt to paste (`skills/session-h
 | Cloud session | personal code, this harness, routines | no browser; `~/.claude` absent, so the harness lives here |
 | iPad / phone | driving cloud or remote sessions | client only |
 
-Cloud environments: `perso-general` (default, no app secrets), `app-element`, `app-base-camp` (one per app with
-its own secrets). None per domain.
+Cloud environments: `perso-general` (default, no app secrets), `app-element`, `app-base-camp`, `app-sport` (one per
+app with its own secrets). None per domain.
 
 One session = one deliverable, never two clients or pro and perso together; archive it after `session-close`.
 Full playbook (what runs where, naming, left panel): `docs/sessions.md`.

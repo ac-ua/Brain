@@ -11,9 +11,15 @@ in-app changelog + Build Roadmap card on every change).
 **chief-of-staff.** Race dates and training blocks in Tasks (Domain = Sport). Runna's calendar is in his personal
 Google Calendar.
 
-**Data (project "Sport data pipeline", not set up yet).** Garmin watch is the source; intervals.icu (free, API key,
-community MCP) is the AI-agnostic hub; Strava (tracking) through its official connector; Element Logbook for strength and
-HYROX; home-trainer power once it arrives. No power meter today.
+**builder — Sport data.** Repo `ac-ua/sport` (Projects row « Sport data pipeline »), cloud environment `app-sport`.
+One database of every session since 2018 (Garmin, Strava, Hercule, Element Logbook, Strava workout notes), nightly
+Worker sync (intervals.icu, Strava, Element) into Cloudflare D1, BI dashboard and app. Registry, setup and release
+sheet in the repo (`docs/artifacts.md`, `docs/setup.md`, `docs/RELEASE.md`). Session and note rules exist in Python
+and JavaScript; `scripts/check.sh` checks they agree. Garmin watch is the source; home-trainer power once it
+arrives, no power meter today.
+
+**Coaching (later).** A `sport-coach` skill reads the database (sessions, load, recovery) and the goals on the Sport
+card. Proposals are never stored as facts.
 
 **Facts.** Only store what Aurélien stated or confirmed, with a date; never a plan Claude suggested.
 

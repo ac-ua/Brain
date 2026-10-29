@@ -17,7 +17,10 @@ existing artifact URL, if any.
    session. Then copy `templates/project-repo/` into it, fill the placeholders in `AGENTS.md`, and commit on a branch
    (`[CF-Pages-Skip]` marker if it will deploy to Cloudflare Pages). Open a PR.
 2. **Ledger + guide.** In the repo: `python3 <brain>/skills/config-guide/scripts/ledger.py --ledger docs/build-ledger.json init …`
-   (see `config-guide`), then fill chapter 1 of `docs/config-guide/guide.html` from the inputs.
+   (see `config-guide`), then fill chapter 1 of `docs/config-guide/guide.html` from the inputs, with the planned
+   architecture. **Publish it now** as an artifact titled « <Project> · Configuration guide », write its link in the
+   ledger (`ledger.py guide --url …`), in `docs/artifacts.md` (the registry) and in the Projects row (Artifacts).
+   Every later release republishes it in place (same link).
 3. **Projects row** (`collection://127dc180-4e2f-4650-b120-0b4ff4cc9eab`): Name, Domain, Status `Active`, Repo,
    Artifacts, Prod URL (when known), Drive folder (`TODO(Aurélien)` if unknown).
 4. **Roadmap view.** On the project's page, add a linked Build Roadmap view filtered on Project = this project,
@@ -34,5 +37,6 @@ existing artifact URL, if any.
 9. **Close**: Session Log row, and a Brain Inbox row if the template missed something.
 
 ## Done when
-Repo with `AGENTS.md`, ledger and guide skeleton, `docs/environment.json`, `docs/RELEASE.md` · Projects row ·
+Repo with `AGENTS.md`, ledger, guide published (link in `docs/artifacts.md` and the Projects row),
+`docs/environment.json`, `docs/RELEASE.md` · Projects row ·
 roadmap view and first items in the shared Build Roadmap · PR open.

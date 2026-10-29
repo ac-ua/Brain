@@ -3,6 +3,10 @@
 The brain is versioned like any project: `v0.x` while the skeleton settles. Each release is a merged PR on
 `ac-ua/brain` and a row in the Notion Build Roadmap (Project = Brain).
 
+## v0.4.13 — the cockpit reads Notion only (2026-10-29)
+- « Brain · Cockpit »: the Claude sessions block is removed (the Claude Code Remote connector does not load in
+  artifacts); the page reads Notion only.
+
 ## v0.4.12 — the project cockpit (2026-10-29)
 - « Brain · Cockpit » artifact (https://claude.ai/artifact/UqbtEKheEFwqs7P61d6zdi, `docs/cockpit/projects-cockpit.html`):
   reads Notion and the Claude Code session list live through the claude.ai connectors; shows what waits on Aurélien,

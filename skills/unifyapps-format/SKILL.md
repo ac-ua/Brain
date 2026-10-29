@@ -1,9 +1,14 @@
 ---
 name: unifyapps-format
-description: "Use this skill whenever the user wants to create, edit, or build any PowerPoint presentation, slide deck, or .pptx file. This skill produces presentations that follow the UnifyApps brand design system — using the official Sand-Gold-Green earth-tone palette, Spectral serif typography, and the luxury 'quiet intelligence' aesthetic — so any request for slides, a deck, a pitch, a status update, a QBR, a product brief, or any kind of presentation should use this skill. Also triggers for requests like 'make me a deck', 'put together some slides', 'build a presentation', or 'create a PowerPoint'. If the user mentions anything about slides or decks, use this skill even if they don't say PowerPoint explicitly."
+description: "Fallback for UnifyApps-branded decks when the team plugin's unifyapps-brand-deck is not installed. Use this skill whenever the user wants to create, edit, or build any PowerPoint presentation, slide deck, or .pptx file. This skill produces presentations that follow the UnifyApps brand design system — using the official Sand-Gold-Green earth-tone palette, Spectral serif typography, and the luxury 'quiet intelligence' aesthetic — so any request for slides, a deck, a pitch, a status update, a QBR, a product brief, or any kind of presentation should use this skill. Also triggers for requests like 'make me a deck', 'put together some slides', 'build a presentation', or 'create a PowerPoint'. If the user mentions anything about slides or decks, use this skill even if they don't say PowerPoint explicitly."
 ---
 
 # UnifyApps Branded PowerPoint Skill
+
+> **Fallback.** When the team plugin is installed (`unifyapps`, skill `unifyapps-brand-deck`, Playbook v4), use that
+> skill for slides: it is the team's current brand system and wins over this one. Use this skill only where the
+> plugin isn't installed (claude.ai chats, Cowork, another machine). Either way, write the storyline first with
+> `case-for-change` and follow its deck lessons.
 
 This skill produces on-brand presentations using UnifyApps' official design system. The base PowerPoint mechanics (PptxGenJS API, editing XML, QA workflow) all come from the core `pptx` skill — read it first:
 

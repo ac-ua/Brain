@@ -2,7 +2,7 @@
 """Build a narrated slide explainer: frames (headless Chromium) + voices (edge-tts) + assembly (ffmpeg).
 
 Usage:
-  python3 build.py EPISODE.py [--out DIR] [frames|audio|check|video|all]
+  python3 build.py EPISODE.py [--out DIR] [--max-mb N] [frames|audio|check|video|compress|all]
 
   EPISODE.py   episode module (copy episode_template.py): TITLE, NAME, SPEAKERS, SLIDES, optional PRONOUNCE,
                RATE, LANG, FOOTER, EXTRA_CSS.
@@ -14,7 +14,8 @@ Steps are idempotent: existing frames and clips are reused; delete a file to red
   audio   one MP3 per script line (stock voices, pronunciation dictionary applied to the voice only)
   check   characters-per-second check on every clip; bad clips are deleted and regenerated (up to 3 rounds)
   video   NAME.mp4 (with soft subtitles), NAME.mp3, NAME.srt, script.md
-  all     frames, audio, check, video
+  compress  NAME-small.mp4 under --max-mb (default 29 MB: chat and mail attachment limits), two-pass H.264
+  all     frames, audio, check, video (and compress when the MP4 is over --max-mb)
 
 Environment (all optional):
   FFMPEG   ffmpeg binary (default: ffmpeg on PATH)
@@ -105,8 +106,17 @@ class Build:
     def max_step(self, si):
         return max([l[1] for l in self.ep.SLIDES[si]["lines"]] + [0])
 
-    def step_css(self, k, top):
+    def step_css(self, k, top, scroll=None):
         rules = ['[data-s="%d"]{visibility:hidden}' % n for n in range(k + 1, top + 2)]
+        # pointer: ring + cursor on the element(s) under discussion, at that step only (data-pointer="2 3")
+        rules.append('[data-pointer~="%d"]{outline:6px solid #e0a526;outline-offset:8px;border-radius:10px;position:relative}'
+                     '[data-pointer~="%d"]::after{content:"";position:absolute;right:-34px;bottom:-34px;width:44px;height:44px;'
+                     'background:url("data:image/svg+xml;utf8,<svg xmlns=%%27http://www.w3.org/2000/svg%%27 viewBox=%%270 0 24 24%%27>'
+                     '<path d=%%27M3 2l7 19 2.6-7.4L20 11z%%27 fill=%%27%%23111%%27 stroke=%%27white%%27 stroke-width=%%271.5%%27/></svg>")'
+                     ' no-repeat center/contain}' % (k, k))
+        # document scroll: the slide's .doc moves to the offset of the current step (slide key "scroll": [px per step])
+        if scroll:
+            rules.append(".doc{transform:translateY(-%dpx)}" % scroll[min(k, len(scroll) - 1)])
         on = ",".join('[data-on="%d"]' % n for n in range(1, k + 1))
         if on:
             rules.append(on + "{background:#2b5a53 !important;color:#ffffff !important;font-weight:600}")
@@ -122,7 +132,7 @@ class Build:
         foot = ('<div class="foot"><span>%s</span><span>%d / %d</span></div>' % (self.ep.FOOTER, si, total - 1)) if si else ""
         return ('<!doctype html><html lang="%s"><head><meta charset="utf-8">%s<style>%s\n%s</style></head><body>'
                 '<div class="frame">%s%s</div>%s%s</body></html>') % (
-            self.ep.LANG, FONTS, self.css, self.step_css(k, self.max_step(si)), head, s["body"], foot, prog)
+            self.ep.LANG, FONTS, self.css, self.step_css(k, self.max_step(si), s.get("scroll")), head, s["body"], foot, prog)
 
     def frames(self):
         chrome, prof = find_chrome(), self.build / "chrome-profile"
@@ -241,11 +251,28 @@ class Build:
         print("%s: %d:%02d, %d lines, %d cues → %s" % (ep.NAME, t // 60, t % 60, len(lines), len(cues), self.out))
 
 
+    # ── compress ──
+    def compress(self, max_mb):
+        ff, src = find_ffmpeg(), self.out / (self.ep.NAME + ".mp4")
+        dst, d = self.out / (self.ep.NAME + "-small.mp4"), self.duration(src)
+        if not d:
+            sys.exit("compress: %s missing; run video first" % src.name)
+        kbps = max(150, int(max_mb * 8192 * 0.95 / d) - 96)   # 5% margin, 96 kb/s for the audio
+        log = str(self.build / "x264pass")
+        for n in (1, 2):
+            subprocess.run([ff, "-y", "-loglevel", "error", "-i", str(src), "-map", "0", "-c:v", "libx264", "-b:v", "%dk" % kbps,
+                            "-pass", str(n), "-passlogfile", log, "-preset", "medium", "-vf", "scale=1280:-2",
+                            "-c:a", "aac", "-b:a", "96k", "-c:s", "copy", "-movflags", "+faststart"]
+                           + (["-f", "mp4", os.devnull] if n == 1 else [str(dst)]), check=True)
+        print("compress: %s %.1f MB (%d kb/s video)" % (dst.name, dst.stat().st_size / 1048576, kbps))
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("episode", type=Path)
-    ap.add_argument("step", nargs="?", default="all", choices=["frames", "audio", "check", "video", "all"])
+    ap.add_argument("step", nargs="?", default="all", choices=["frames", "audio", "check", "video", "compress", "all"])
     ap.add_argument("--out", type=Path)
+    ap.add_argument("--max-mb", type=float, default=29.0)
     a = ap.parse_args()
     ep = load_episode(a.episode.resolve())
     b = Build(ep, (a.out or a.episode.resolve().parent / "out").resolve())
@@ -253,6 +280,8 @@ def main():
     if a.step in ("audio", "all"): b.audio()
     if a.step in ("check", "all"): b.check()
     if a.step in ("video", "all"): b.video()
+    if a.step == "compress" or (a.step == "all" and (b.out / (ep.NAME + ".mp4")).stat().st_size > a.max_mb * 1048576):
+        b.compress(a.max_mb)
 
 
 if __name__ == "__main__":

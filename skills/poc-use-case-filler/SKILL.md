@@ -25,6 +25,17 @@ every placeholder (e.g. `[KOCH TO CONFIRM]` → `[CUSTOMER_NAME TO CONFIRM]`).
 
 ---
 
+## Scope
+
+This skill fills **one** template: the Enterprise AI Use Case Definition & Prioritization doc. It does not cover:
+- **A POC scoping document** written after a workshop: build it from the example scoping doc Aurélien attaches
+  (follow its sections), the workshop readout and the opportunity brief in Notion (`work-notes`).
+- **A client's intake form** (e.g. a Gen AI intake form): prefill field by field from the same sources; give
+  paste-ready text per field (`message-drafting`) or fill the `.docx` they sent.
+- **A revision from a recorded call**: transcribe the recording first (`work-notes`, recordings), then revise the
+  doc and list each change with the passage it came from.
+In all three, add nothing the client didn't say (no invented success metric); unclear → `[TO CONFIRM]`.
+
 ## Writing Style (Critical)
 
 These documents go directly to enterprise customers. The writing must:

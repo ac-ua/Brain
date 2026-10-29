@@ -48,3 +48,15 @@ From the episodes made so far: "Le Brain" (French, 14:33, 16 slides, the referen
 - Deliver all four: MP4 (with subtitles), MP3 (to listen on the move), SRT, `script.md` (to read or quote).
 - Personal episodes: outputs to the personal Drive or a Notion page; the episode source can live in a project repo.
   Pro episodes: everything stays in the work Drive, built on the work Mac.
+
+## From the October 2026 audit (12+ episodes, pro and personal)
+- **Say which box you mean.** On diagrams and app screens, listeners lose track without a pointer: `data-pointer`.
+- **Length is a brief item, not an outcome.** A 3:35 episode on a solution change felt too shallow; ask the target
+  and the depth up front.
+- **Answer his questions.** An episode about a plan missed a point Aurélien had raised (cloud environments): list his
+  questions and map each to a chapter before audio.
+- **Real visuals win.** A game-strategy episode had to be re-rendered with real card and board images; download
+  them into the episode folder, never link.
+- **Check rules and facts from the web twice.** A wrong game rule slipped in from a single source.
+- **Files over 30 MiB can't be sent in chat** (47 and 37.6 MB failures): `compress`.
+- **Never the cloned voice for work**, even when the clone skill is on the machine.

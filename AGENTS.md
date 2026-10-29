@@ -25,7 +25,14 @@ with no working notes. Don't edit a page he has already reviewed without asking.
 - **Notion is also the system of record for work.** Every work session writes its context back to Notion before it
   ends: the deal brief on the CRM opportunity page, durable learnings to Memories (Domain Work). Distilled, never raw
   dumps; nothing pro may live only on the work Mac or in a session.
-- Never move pro *files* to personal storage through the cloud. Pro work runs in a local session on the work Mac.
+- Pro → perso is allowed (Aurélien's call, 2026-10-29): pro files and deliverables may go to his personal storage
+  (personal Drive, his Notion, this repo). The work Mac reaches the personal Drive through the Google Drive app's
+  personal folder in Finder: use it to bring deliverables back from work sessions. Pro work still runs in a local
+  session on the work Mac.
+- **Two skill repos, never mixed.** Aurélien's own skills, pro ones included (demos, decks, messages, account work),
+  live in `ac-ua/brain`. The shared team repo `Unifyapps-Internal/unifyapps-builder-skills` is common to all the
+  Solution Architects: it only receives learnings about what it already covers (building and configuring on the
+  platform), through its own loop. Never add his skills or anything unrelated to it.
 - Never secrets, anywhere.
 
 ### Secrets
@@ -45,12 +52,24 @@ In French TTS, respell "UnifyApps" as "Iou-ni-faï Apps" for the voice only; sub
 - Fetch a database before writing to it. Read through `fetch` and saved views; SQL queries are capped at ~13/hour.
 - Small edits; never rewrite a whole page.
 
+### Artifacts (claude.ai)
+Artifacts live on the account, not in a session: a new session finds them only through the project's registry.
+- Each artifact belongs to one project; its title starts with the project's name (« Camp de Base · … »).
+- Registry: `docs/artifacts.md` in the project's repo (title, link, what it is); a project without a repo lists them
+  in the Projects row (Artifacts). A new artifact goes into the registry in the same delivery.
+- **Update the existing artifact** (Artifact `read` on its link, then `publish` with `url`): same link, new version.
+  Never recreate one; if it is missing from the registry, find it with Artifact `list` and add it.
+- A project's living guide (architecture, model, screens) follows each delivery that changes them. The builder updates
+  it **without asking**, through a background sub-agent right after the merge (same link), then the registry.
+
 ## Where things go
 | What you learned | Where it goes | When |
 |---|---|---|
 | A fact or a state (a date, a decision, a status, a preference) | Notion: Memories, Tasks, Projects, Build Roadmap, domain card | right away |
 | A way of working (a procedure, a friction, a skill improvement) | Notion: **Brain Inbox** (see `skills/brain-inbox`) | right away |
 | A change to rules, agents or skills | a PR on `ac-ua/brain` | from a cloud session, or by the weekly routine |
+| A pro file an agent creates (deck, doc, sheet, video, guide) | the work Drive at its place (`docs/drive-map.md`), its link on the Notion page | at creation, without asking |
+| A personal file an agent creates or receives (finance, admin, expedition, project) | the personal Drive at its place (`docs/personal-drive-map.md`), its link on the Notion page | at creation, without asking |
 
 The work Mac cannot push to `ac-ua/*` (corporate proxy). Sessions there write to the Brain Inbox instead.
 
@@ -70,7 +89,7 @@ only when the task needs them.
 | Life | 🌍 Life (`40619ca798938104ba6ae13e84101780`) | `domains/life.md` | chief-of-staff |
 | Brain | Projects → Brain (`40619ca79893817ba7cbc34ca914eed7`) | this file, `docs/BLUEPRINT.md` | builder |
 
-All Notion IDs: `docs/notion-map.md`. Adding a domain: duplicate the Domain template page, add the option to every
+All Notion IDs: `docs/notion-map.md`. Work Drive layout and folder ids: `docs/drive-map.md`; personal Drive: `docs/personal-drive-map.md`. Adding a domain: duplicate the Domain template page, add the option to every
 `Domain` select, add a row here and a `domains/<domain>.md`.
 
 ## Agents and skills
@@ -78,15 +97,25 @@ Agents are capabilities, the same in every domain (`agents/`). Skills are open `
 
 | Agent | Does | Skills |
 |---|---|---|
-| `chief-of-staff` | session protocol, tasks, triage, planning, outreach drafts, the brain's own upkeep | session-start, session-close, brain-inbox, brain-maintenance, expedition-sponsor-outreach, expedition-research-outreach, expedition-followup-outreach |
-| `builder` | web apps, deploys, roadmaps, config guides, new projects | build-webapp, build-roadmap, config-guide, project-kickoff |
-| `content-studio` | content strategy, scripts, posts, explainers | brain-inbox, explainer-video (more as Content migrates) |
+| `chief-of-staff` | session protocol, handoffs, tasks, triage, planning, messages and outreach drafts, the brain's own upkeep | session-start, session-close, session-handoff, brain-inbox, brain-maintenance, message-drafting, expedition-sponsor-outreach, expedition-research-outreach, expedition-followup-outreach |
+| `builder` | web apps, environments, releases, deploys, roadmaps, config guides, new projects | build-webapp, cloud-env-preflight, release-webapp, build-roadmap, config-guide, project-kickoff, session-handoff |
+| `content-studio` | content strategy, scripts, posts, explainers, video edits | brain-inbox, explainer-video, video-edit |
 
 Domain skills, loaded directly in a session (no agent needed):
 | Domain | Skills |
 |---|---|
 | Learning | `spanish-teacher` |
-| Work (local session, work Mac) | `work-notes` (transcripts and session results → CRM pages, briefs, tasks, learnings), `unifyapps-format`, `cep-workbook-filler`, `poc-use-case-filler`, `unifyapps-rfp-rfi-response-template`, `explainer-video` (client and account explainers; outputs stay in the work Drive); the team plugin `Unifyapps-Internal/unifyapps-builder-skills` stays installed separately |
+| Expeditions | `gpx-route` (planned GPX tracks, stages, variants, reconstructions → Camp de Base) |
+| Career | `interview-prep` (from the master profile; also career and visa forms), `message-drafting` |
+| Work (local session, work Mac) | `work-notes` (transcripts and session results → CRM pages, briefs, tasks, learnings), `demo-prep` (brief → approach → build → demo pack → write-back), `case-for-change` (storyline, exec recap, discovery questions, competitive angle), `message-drafting` (client recaps, Slack, replies), `cep-workbook-filler`, `poc-use-case-filler`, `unifyapps-rfp-rfi-response-template`, `explainer-video` (outputs stay in the work Drive); slides with the team plugin's `unifyapps-brand-deck` (`unifyapps-format` as fallback). The team plugin `Unifyapps-Internal/unifyapps-builder-skills` stays installed separately |
+
+**Every build runs as `builder`** (Aurélien's call, 2026-10-29), whatever the domain: an app, a site, a data
+pipeline, a BI app, a Sport or Finance tool. Read `agents/builder.md` and follow it from the first commit:
+`project-kickoff` (repo `ac-ua/<project>`, Projects row, Build Roadmap rows, ledger, configuration guide published as
+the project's artifact « <Project> · Configuration guide » and listed in `docs/artifacts.md`), then at every release
+the roadmap, the ledger and the guide republished in place. Analysis work on top (coaching, reading the BI, a
+financial review) can use other agents or skills; the build itself stays with `builder`. A build already under way
+without these pieces gets them before its next release.
 
 Work in one session that loads skills. Call a sub-agent only for heavy, isolated work (research, video, audits):
 a sub-agent costs much more tokens than a skill.
@@ -95,7 +124,8 @@ a sub-agent costs much more tokens than a skill.
 **Start** (`skills/session-start`): this file → About me → the domain card → the project state (Projects row,
 roadmap view, open tasks). Nothing else by default. **Budget: ~8–10k tokens** before real work starts.
 **Close** (`skills/session-close`): write the deltas (Memories, Tasks, Build Roadmap, Brain Inbox), then one
-Session Log row. Do it before ending any session that changed something.
+Session Log row. Do it before ending any session that changed something. Work that continues in another session
+gets a handoff note outside the session and a prompt to paste (`skills/session-handoff`).
 
 ## Where work runs
 | Surface | Use for | Limits |
@@ -104,8 +134,8 @@ Session Log row. Do it before ending any session that changed something.
 | Cloud session | personal code, this harness, routines | no browser; `~/.claude` absent, so the harness lives here |
 | iPad / phone | driving cloud or remote sessions | client only |
 
-Cloud environments: `perso-general` (default, no app secrets), `app-element`, `app-base-camp` (one per app with
-its own secrets). None per domain.
+Cloud environments: `perso-general` (default, no app secrets), `app-element`, `app-base-camp`, `app-sport` (one per
+app with its own secrets). None per domain.
 
 One session = one deliverable, never two clients or pro and perso together; archive it after `session-close`.
 Full playbook (what runs where, naming, left panel): `docs/sessions.md`.

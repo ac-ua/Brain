@@ -22,6 +22,8 @@ Facts never go to the Brain Inbox, ways of working never go to Memories.
 ## 2. Write the deltas
 - Update existing rows rather than adding duplicates (search by title first).
 - Close finished tasks (Status = Done). Move roadmap items you shipped to Done with `Shipped on`.
+- Artifacts: every artifact made or updated is in the project's registry (`docs/artifacts.md` or the Projects row),
+  and the project's guide is up to date when the architecture or screens changed.
 - Code: commit, push the session branch and merge the PR once tested (on an app repo, it is the release; the same
   on `ac-ua/brain`).
 
@@ -35,7 +37,11 @@ Facts never go to the Brain Inbox, ways of working never go to Memories.
 | Summary | 1–3 sentences, outcome first |
 | Changes | what was created or changed, with links (PRs, pages, rows); what is left open |
 
-## 4. Tell Aurélien
+## 4. Work continues elsewhere?
+If the next step needs another session (a restart, another environment, the work Mac, later), write the handoff
+with `session-handoff` (note outside the session + prompt to paste) before archiving.
+
+## 5. Tell Aurélien
 Three lines max: what changed, what's waiting on him, where to look.
 
 ## Work sessions
@@ -46,4 +52,10 @@ on the session's results; it does what follows.
   Drive files), one line in the meeting log. Create the opportunity (and account) if missing.
 - Durable learnings (platform facts, practices, pitfalls) → Memories, Domain Work.
 - Distil: decisions and facts, not transcripts. Never secrets; demo-environment logins already on a page stay there, never copied elsewhere.
-- Pro *files* stay in the work Drive; Notion holds the context and the links.
+- Pro *files* live in the work Drive, filed by `docs/drive-map.md` (nothing at the root, `00_Inbox` emptied or
+  its rest listed in the brief); copies in the personal Drive are allowed; Notion holds the context and the links.
+- A pro file the Drive connector could not upload (too large, local only) goes on the **upload list**
+  (`docs/drive-map.md`): a `TO-UPLOAD.md` in the output folder and, in the recap, « drag `<file>` into `<folder link>` ».
+- Drive links shared with Aurélien during the session are on the Notion page; the recap reminds the `Shift+Z` shortcut.
+- Lessons written to a local session memory (deck lessons, client preferences) are not saved: copy them to
+  Memories or, for a way of working, to the Brain Inbox.

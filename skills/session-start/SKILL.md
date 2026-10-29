@@ -12,12 +12,22 @@ Goal: the right context in **~8–10k tokens**, nothing more. Load in this order
 3. **Domain**: find the domain in the routing table, `fetch` its Notion domain page and read the context card at the
    top (< 60 lines); the sub-pages listed below it are opened only if the task needs them. Read `domains/<domain>.md`.
    Unsure of the domain → ask once.
-4. **Project state** (only if the session is about a project):
-   - the Projects row (repo, prod URL, artifacts);
+4. **Project state** (only if the session is about a project). A session that builds (code, app, data pipeline, BI)
+   runs as `builder`: read `agents/builder.md` and check its « A project is set up when » list first.
+   - the Projects row (repo, prod URL, artifacts) and the artifact registry (`docs/artifacts.md`): work on those
+     links, never recreate an artifact;
    - the Build Roadmap view on the project page (In progress, To do);
    - open Tasks for the project or domain (a saved view, not a SQL query).
 5. **Memories** (`collection://5b6902fc-e510-4975-b133-06e9273f602e`): only if a specific fact is missing, search by keyword or filter by Domain. One fact per row.
-6. Say in two or three lines what you loaded and what you're about to do.
+6. **Handoff:** if the project or opportunity has a handoff note (`docs/HANDOFF.md`, `docs/MOVE.md`, or a `Handoff`
+   toggle on the Notion page), read it and run its smoke test first.
+7. **App session in a cloud environment:** run `cloud-env-preflight` when the repo has `docs/environment.json` and
+   the environment is new or changed; give Aurélien the whole list of fixes at once.
+8. Say in two or three lines what you loaded and what you're about to do.
+
+## On the work Mac
+Local sessions run this too: the account's opportunity brief (`work-notes`) is the "project state". Without it,
+learnings stay in a local session memory and never reach Notion.
 
 ## Don't
 - Load other domains, the Migration inbox, old transcripts or whole databases "just in case".

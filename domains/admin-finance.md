@@ -11,3 +11,6 @@ Drafts letters and checklists; never submits or pays.
 
 ## Rules
 - Identifiers, account numbers and passwords never go in Notion or here: password manager only.
+- Files: personal Drive `10_Admin` and `20_Finance` (`docs/personal-drive-map.md`): one folder per bank, per tax year
+  (FR/US), per flat. The finance app (`ac-ua/finance`) reads `20_Finance` by folder id. Notion pages Taxes,
+  Investments, 🏠 Real Estate, Healthcare and US Visas carry their folder link on the first line.

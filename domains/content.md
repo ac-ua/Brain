@@ -7,9 +7,10 @@ this file only says how each capability works here. Old TikTok strategy notes: N
 ## Where things live
 | What | Where |
 |---|---|
-| Footage | personal Google Drive, ~200 GB. Target layout: `40_Content/Rushes/<year>-<event>`, `Projects`, `Exports` |
+| Footage | personal Google Drive, ~200 GB (`docs/personal-drive-map.md`): `50_Content` (Speeches, Koh Lanta); trip footage stays in One Life. Target for edits: `50_Content/Rushes/<year>-<event>`, `Projects`, `Exports` |
 | Personal website | repo `ac-ua/website` (Astro, Cloudflare Pages), `aureliencaye.com` |
 | Explainer / podcast | skill `skills/explainer-video/`; reference episode in `tools/explainer-video/` |
+| Edits from footage | skill `skills/video-edit/` (reels, recaps; tooling per machine in its references) |
 | Content databases (planned) | Rushes catalog, Editorial calendar, Published posts — created at migration |
 
 ## How each capability applies

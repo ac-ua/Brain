@@ -90,3 +90,7 @@ h2{font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:66px;margin:10
 .recap{display:flex;flex-direction:column;gap:26px}
 .recap>div{font-family:"Fraunces",Georgia,serif;font-size:46px;display:flex;gap:30px;align-items:baseline}
 .recap b{font-family:"JetBrains Mono",Menlo,monospace;color:var(--acc);font-size:40px;width:50px}
+/* document scroll: <div class="doc-wrap"><div class="doc">…page or <img>…</div></div>, slide key "scroll": [px per step] */
+.doc-wrap{position:absolute;left:110px;right:110px;top:200px;bottom:110px;overflow:hidden;border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,.18);background:#fff}
+.doc{padding:40px 56px;color:#1d1d1b;font-size:26px;line-height:1.5}
+.doc img{display:block;width:100%}

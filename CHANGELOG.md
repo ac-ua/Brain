@@ -3,6 +3,99 @@
 The brain is versioned like any project: `v0.x` while the skeleton settles. Each release is a merged PR on
 `ac-ua/brain` and a row in the Notion Build Roadmap (Project = Brain).
 
+## v0.4.11 — the personal Drive has a map (2026-10-29)
+- `docs/personal-drive-map.md`: personal Drive sorted and mapped (00_Inbox, 10_Admin, 20_Finance, 30_Expeditions,
+  40_Projects, 50_Content, 60_Library, 70_Work, 99_Archive, One Life), rules, Notion links and folder ids. Finance is
+  split by bank, tax year and flat so the finance app can read it by folder id.
+- `AGENTS.md`: personal files are filed in the personal Drive and linked in Notion, like pro files in the work Drive.
+- `domains/expeditions.md`, `domains/admin-finance.md`, `domains/content.md`: where their files live.
+
+## v0.4.10 — every build runs as builder (2026-10-29)
+- `AGENTS.md`: any build in any domain (Sport, Finance, data pipelines, BI apps) runs as `builder` from the first
+  commit: kickoff, Projects row, Build Roadmap, ledger, configuration guide published as « <Project> · Configuration
+  guide », registry; a build already under way gets the missing pieces before its next release. `app-sport` listed.
+- `agents/builder.md`: Sport data in scope, any domain; « A project is set up when » checklist.
+- `project-kickoff`: the guide is published at kickoff and linked in the ledger, the registry and the Projects row.
+- `session-start`: a build session reads `agents/builder.md` first. `domains/sport.md`: Sport data project.
+
+## v0.4.9 — shared files go where Aurélien uses them (2026-10-29)
+- `docs/drive-map.md`: a shared file's shortcut target is where Aurélien will use it (a colleague's Medtronic deck
+  reused for competitive benchmarking → `02_Assets/Competitive`), not the client it was made for.
+
+## v0.4.8 — Demo Catalog (2026-10-29)
+- Notion: Demo Nuggets page restructured (sections, table of contents; synced callouts and logins untouched) and a
+  **Demo Catalog** database under it, seeded with 15 demos (use case, type, environment, health, audience, shown to,
+  lessons). Belcorp and MHW Bev Co pages moved there as references.
+- `demo-prep`: recommends from the catalog before proposing a build, and updates it at write-back.
+
+## v0.4.7 — shortcuts for shared files (2026-10-29)
+- `tools/drive-shortcuts/`: Apps Script bound to the Sheet « Drive shortcut queue » (work Drive, `05_Internal`).
+  Agents append the shared link and the account; every 5 minutes the script adds the shortcut in
+  `01_Accounts/<Account>` (never a copy). `docs/drive-map.md` updated; install once by Aurélien (README).
+- Every opportunity page with a Drive folder now links it in Assets (or at the top when there is no brief yet).
+
+## v0.4.6 — upload list, shared links, earlier versions (2026-10-29)
+- `docs/drive-map.md`, `session-close`: the Mac's Drive app syncs the personal Drive only, so a pro file the connector
+  can't upload goes on an upload list (`TO-UPLOAD.md` + recap with the target folder link) for Aurélien to drag in.
+- Files shared with Aurélien: never copied; link in Notion, `Shift+Z` reminder until a tool can create shortcuts.
+- Older versions are kept in `Earlier versions` sub-folders (renamed with date and v1/v2); `99_Archive/Superseded`
+  and the empty `05_Internal/Backup` removed (Aurélien's go), with the personal Ironman guide.
+
+## v0.4.5 — the work Drive has a map (2026-10-29)
+- Work Drive reorganised (no file deleted): 00_Inbox · 01_Accounts/<Account> · 02_Assets · 03_Demos · 04_Events ·
+  05_Internal · 99_Archive; ~85 loose files filed, 22 account folders named like the Notion Accounts.
+- New `docs/drive-map.md`: tree, filing rules, folder ids. Linked from `AGENTS.md`, `domains/work.md`, and the skills
+  that save pro files (`work-notes`, `session-close`, `demo-prep`, `case-for-change`, `cep-workbook-filler`,
+  `explainer-video`).
+- Rule: every pro file an agent creates is saved straight to its place in the work Drive (sub-folders created as
+  needed) and its link written on the Notion page, without asking (`AGENTS.md` « Where things go », drive-map).
+- `.claude/settings.json`: Drive read, create, move and copy run without a prompt; trash and sharing still ask.
+
+## v0.4.4 — confidentiality is one way: perso → pro only (2026-10-29)
+- `AGENTS.md`, `domains/work.md`, `docs/BLUEPRINT.md`, `session-close`, `explainer-video`: the rule « never move pro
+  files to personal storage » is removed. Only personal → pro is forbidden; pro files and deliverables may go to the
+  personal Drive, Notion and this repo (Aurélien: « c'est un problème de move du perso vers le pro »).
+- The work Mac brings deliverables back to the personal Drive through the Google Drive app's personal folder in Finder.
+
+## v0.4.3 — the guide follows without asking (2026-10-28)
+- `AGENTS.md` (Artifacts), `agents/builder.md`, `release-webapp`: after each delivery that changes the architecture,
+  the model or the screens, the builder updates the project's living guide through a background sub-agent, without
+  asking Aurélien, then bumps the registry line (Aurélien, Camp de Base session: « tu ne dois pas me demander pour
+  update le guide »).
+
+## v0.4.2 — artifacts stay with their project (2026-10-28)
+- `AGENTS.md`, new hard rule « Artifacts »: one project per artifact (title starts with the project's name), a
+  registry per project (`docs/artifacts.md` or the Projects row), update the existing artifact (same link), never
+  recreate; the project's guide follows each delivery that changes the architecture or screens.
+- `session-start` reads the registry; `session-close` checks it and the guide (Camp de Base: the Expeditions Guide
+  had stayed at v5 for two days because no session knew where it was).
+
+## v0.4.1 — gpx-route: rotated screenshots (2026-10-28)
+- `gpx-route`: reconstructing from a map screenshot fits scale and rotation on two known points, checks on a topo
+  map, confirms the valley with Aurélien's sketch, and refreshes an imported track in place (Brain Inbox, Kyrgyzstan
+  2021: a rotated Google Maps screenshot put the first version in the wrong valley).
+
+## v0.4.0 — skills from the session audit (2026-10-27)
+From an audit of 55 Claude Code sessions (17 Aug – 27 Oct 2026): repeated tasks became skills, frictions became
+fixes.
+- New skills: `session-handoff` (resume note outside the session, environment inventory, smoke test, prompt to
+  paste), `release-webapp` (feedback triage → paperwork → checks → go → live check → artifacts in place → card;
+  per-project `docs/RELEASE.md`), `cloud-env-preflight` (`scripts/preflight.py`: variables, key types, project match,
+  allowed hosts, tools in one pass; per-project `docs/environment.json`), `demo-prep`, `case-for-change` (with deck
+  lessons), `message-drafting` (with tone rules), `interview-prep`, `video-edit` (with tooling per machine),
+  `gpx-route` (`scripts/route.py`: trail routing or great-circle legs, terrain altitude, stages, Garmin symbols).
+- `explainer-video`: document mode (scrolling doc), `data-pointer` (ring + cursor on the box being discussed),
+  target length and depth in the brief, script checked against Aurélien's questions, web facts cross-checked, real
+  images downloaded, `compress` step (under 29 MB), never the cloned voice for work.
+- Fixes: `build-webapp` (project-prefixed variables, keys, one migration path, production writes need his OK,
+  Pages pitfalls), `build-roadmap` (use the fetched select options, shared database only), `config-guide`
+  ("what you still have to do" checklist, one guide URL), `project-kickoff` (environment, `RELEASE.md`),
+  `session-start` (handoff, preflight, work Mac), `session-close` (handoff, local memories), `work-notes`
+  (recordings, account questions, handoff toggle), `poc-use-case-filler` (scope), `unifyapps-format` (fallback to
+  the team plugin's `unifyapps-brand-deck`).
+- Rule: Aurélien's skills, pro included, live in `ac-ua/brain`; the shared team repo only receives platform
+  learnings through its loop (`AGENTS.md`, `domains/work.md`).
+
 ## v0.3.1 — demo logins stay on the CRM pages (2026-10-27)
 - Exception to the secrets rule: demo-environment logins Aurélien wrote on his Notion pages stay there; never
   removed, never copied elsewhere (`AGENTS.md`, `domains/work.md`, `work-notes`, `session-close`).

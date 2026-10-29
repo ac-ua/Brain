@@ -5,10 +5,13 @@ Slides are HTML bodies styled by theme.css. Reveal steps, synced to the script:
   data-s="n"    element appears at step n (hidden before)
   data-on="n"   element is highlighted from step n
   data-dim="n"  element is dimmed from step n
+  data-pointer="n m"  ring + cursor on the element at steps n and m only: "this box here"
+Document mode: body = <div class="doc-wrap"><div class="doc">…the document's HTML or an <img>…</div></div> and
+slide(..., scroll=[0, 0, 420, 900]): the document scrolls to that offset (px) at each step.
 Each script line is (speaker key, step, text): the slide shows step `step` while that line is spoken.
 Step 0 is the slide with nothing revealed. Lines are spoken in order; one MP3 clip per line.
 
-Build: python3 build.py <this file> [--out DIR] [frames|audio|check|video|all]
+Build: python3 build.py <this file> [--out DIR] [frames|audio|check|video|compress|all]
 """
 
 NAME = "my-explainer"                      # output file names: NAME.mp4, NAME.mp3, NAME.srt
@@ -36,8 +39,8 @@ EXTRA_CSS = ""                             # optional rules added after theme.cs
 SLIDES = []
 
 
-def slide(kicker, title, body, lines):
-    SLIDES.append({"kicker": kicker, "title": title, "body": body, "lines": lines})
+def slide(kicker, title, body, lines, scroll=None):
+    SLIDES.append({"kicker": kicker, "title": title, "body": body, "lines": lines, "scroll": scroll})
 
 
 # 0 ─ Cover (empty title → no header, no footer)

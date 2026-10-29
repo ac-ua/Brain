@@ -23,18 +23,23 @@ Drive, Slack). Drafts only; Aurélien sends.
 with the team plugin `Unifyapps-Internal/unifyapps-builder-skills` — not with `build-webapp`. Every build ends with a
 Configuration Guide; every POC asset carries the customer tag; the platform fetches external data, not Claude.
 
-**content-studio.** Decks follow `skills/unifyapps-format` and the deck conventions in Memories (section arc, ~30%
-shorter, audit content kept out of client decks, yellow `[to be confirmed]` placeholders).
+**content-studio.** The story comes from `case-for-change` (storyline, deck lessons); slides are built with the
+team plugin's `unifyapps-brand-deck` (Playbook v4), `unifyapps-format` only where the plugin isn't installed. Deck
+conventions also in Memories (section arc, ~30% shorter, audit content kept out of client decks, yellow
+`[to be confirmed]` placeholders). Demos: `demo-prep`. Messages: `message-drafting`.
 
 ## Skills
-`unifyapps-format` (decks) · `cep-workbook-filler` (account plans) · `poc-use-case-filler` · `unifyapps-rfp-rfi-response-template`.
-The team plugin is installed separately and never changed directly: learnings go through its weekly loop.
+`work-notes` · `demo-prep` · `case-for-change` · `message-drafting` · `cep-workbook-filler` (account plans) ·
+`poc-use-case-filler` · `unifyapps-rfp-rfi-response-template` · `unifyapps-format` (decks, fallback) · `explainer-video`.
+All of them live in `ac-ua/brain`. The team plugin (`Unifyapps-Internal/unifyapps-builder-skills`) is shared by all
+the Solution Architects, installed separately and never changed directly: it only receives platform learnings about
+what it already covers, through its twice-weekly loop. None of Aurélien's own skills go there.
 
 ## Rules
-- Nothing personal goes to pro systems. Pro files stay in the work Drive (`ac@unifyapps.com`); never move them to
-  personal storage through the cloud.
+- Nothing personal goes to pro systems. Pro files live in the work Drive (`ac@unifyapps.com`) and may be copied to
+  the personal Drive: from the work Mac, through the Google Drive app's personal folder in Finder (2026-10-29).
+- Work Drive layout (applied 2026-10-29, `docs/drive-map.md`): 00_Inbox · 01_Accounts/<Account> (named like the
+  Notion Account) · 02_Assets · 03_Demos · 04_Events · 05_Internal · 99_Archive. Nothing at the root; the deal brief
+  links the account folder.
 - Pro context may be stored in Notion and this repo (Aurélien's call, 2026-10-27). Never secrets. Demo-environment
   logins he wrote on his Notion pages stay there (his call): don't remove them, don't copy them elsewhere.
-
-## Open
-- Work Drive tidy-up (00_Inbox · 01_Accounts/<Client> · 02_Assets · 03_Demos · 04_Internal · 99_Archive): proposed, not applied.

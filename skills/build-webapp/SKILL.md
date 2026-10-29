@@ -13,6 +13,7 @@ Reference: [`free-tier-playbook.md`](free-tier-playbook.md), copied from `ac-ua/
 |---|---|---|
 | Code | private repo on `ac-ua` | one repo per app; `AGENTS.md` from `templates/project-repo/` |
 | Front | static files on **Cloudflare Pages** | plain HTML/JS/CSS or a static build (Astro); cache-busting stamps on assets |
+| Look and feel | `skills/web-design-system` | `tokens.css` + the icon kit; one design system for every app |
 | API | **Pages Functions** under `/api/*` only (`_routes.json`) | everything else static |
 | Data | **Supabase** (Postgres, auth, realtime) | RLS on every table; anon key is publishable, service-role key never leaves the server |
 | Mail | Resend (100/day) | only when needed |

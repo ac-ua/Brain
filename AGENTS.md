@@ -25,6 +25,8 @@ with no working notes. Don't edit a page he has already reviewed without asking.
 - The brain's stack and release model wins over a project doc: a Pages app is **connected to its GitHub repo** and
   ships by merging into `main`; never `wrangler pages deploy` (a direct-upload project can never be connected
   afterwards). A project doc that disagrees is a bug: fix it in the same session, don't follow it.
+- UI work loads `skills/web-design-system` (one design system for every app); design feedback updates it: general
+  feedback becomes a PR on the system and a `FEEDBACK.md` line, app-specific feedback a fix in the app.
 
 ### Confidentiality (one way)
 - Nothing personal ever goes to pro systems (work Drive, work Slack, `Unifyapps-Internal/*`, work Notion pages).
@@ -106,7 +108,7 @@ Agents are capabilities, the same in every domain (`agents/`). Skills are open `
 | Agent | Does | Skills |
 |---|---|---|
 | `chief-of-staff` | session protocol, handoffs, tasks, triage, planning, messages and outreach drafts, the brain's own upkeep | session-start, session-close, session-handoff, brain-inbox, brain-maintenance, message-drafting, expedition-sponsor-outreach, expedition-research-outreach, expedition-followup-outreach |
-| `builder` | web apps, environments, releases, deploys, roadmaps, config guides, new projects | build-webapp, cloud-env-preflight, release-webapp, build-roadmap, config-guide, project-kickoff, session-handoff |
+| `builder` | web apps, look and feel, environments, releases, deploys, roadmaps, config guides, new projects | build-webapp, web-design-system, cloud-env-preflight, release-webapp, build-roadmap, config-guide, project-kickoff, session-handoff |
 | `content-studio` | content strategy, scripts, posts, explainers, video edits | brain-inbox, explainer-video, video-edit |
 
 Domain skills, loaded directly in a session (no agent needed):

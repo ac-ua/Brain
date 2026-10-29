@@ -114,7 +114,7 @@ In the output folder: `<name>.mp4` (H.264, subtitles as a soft track), `<name>.m
 The `build/` folder is disposable. Say the real length and how it compares with the target.
 - Personal: link or upload to the personal Drive or the relevant Notion page; record the episode in Notion
   (Memories or the project page) if it matters later.
-- Pro: leave it in the work Drive folder; tell Aurélien where it is.
+- Pro: put it in the account's work Drive folder (`01_Accounts/<Account>`, `docs/drive-map.md`); tell Aurélien where it is.
 - A way of working learned on the way → Brain Inbox (`brain-inbox`).
 
 ## Done when

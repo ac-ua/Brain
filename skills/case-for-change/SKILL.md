@@ -44,5 +44,5 @@ edit their file: give the changes as text to paste.
 ## 6. Build, check, deliver
 Slides via `unifyapps-brand-deck` (or `unifyapps-format`); render and look at every slide; `[to be validated]`
 footnotes on unconfirmed figures; nothing invented (no success metric or claim nobody asked for). Save in the
-account's work Drive folder, link it in the opportunity's Assets (`work-notes`), and log new lessons in
+account's work Drive folder (`01_Accounts/<Account>`, `docs/drive-map.md`), link it in the opportunity's Assets (`work-notes`), and log new lessons in
 `references/deck-lessons.md` through the Brain Inbox.

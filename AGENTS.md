@@ -68,6 +68,7 @@ Artifacts live on the account, not in a session: a new session finds them only t
 | A fact or a state (a date, a decision, a status, a preference) | Notion: Memories, Tasks, Projects, Build Roadmap, domain card | right away |
 | A way of working (a procedure, a friction, a skill improvement) | Notion: **Brain Inbox** (see `skills/brain-inbox`) | right away |
 | A change to rules, agents or skills | a PR on `ac-ua/brain` | from a cloud session, or by the weekly routine |
+| A pro file an agent creates (deck, doc, sheet, video, guide) | the work Drive at its place (`docs/drive-map.md`), its link on the Notion page | at creation, without asking |
 
 The work Mac cannot push to `ac-ua/*` (corporate proxy). Sessions there write to the Brain Inbox instead.
 
@@ -87,7 +88,7 @@ only when the task needs them.
 | Life | 🌍 Life (`40619ca798938104ba6ae13e84101780`) | `domains/life.md` | chief-of-staff |
 | Brain | Projects → Brain (`40619ca79893817ba7cbc34ca914eed7`) | this file, `docs/BLUEPRINT.md` | builder |
 
-All Notion IDs: `docs/notion-map.md`. Adding a domain: duplicate the Domain template page, add the option to every
+All Notion IDs: `docs/notion-map.md`. Work Drive layout and folder ids: `docs/drive-map.md`. Adding a domain: duplicate the Domain template page, add the option to every
 `Domain` select, add a row here and a `domains/<domain>.md`.
 
 ## Agents and skills

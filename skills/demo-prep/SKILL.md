@@ -7,7 +7,7 @@ description: Prepare a UnifyApps pre-sales demo end to end — read the opportun
 
 Chains what already exists; it doesn't replace it. The **team plugin** (`unifyapps`, installed separately) does the
 platform work; this skill is Aurélien's own way of running a demo from brief to write-back. Runs in a **local session
-on the work Mac**, in the account's folder; outputs go to the work Drive, context to Notion. Never in a cloud session,
+on the work Mac**, in the account's folder; outputs go to the work Drive (`01_Accounts/<Account>`, `docs/drive-map.md`), context to Notion. Never in a cloud session,
 never pushed to `ac-ua/*` or to `Unifyapps-Internal/*` (the team repo only takes platform learnings, through its loop).
 
 ## 1. Brief (from Notion, not from memory)

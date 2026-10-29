@@ -1,0 +1,18 @@
+{
+ "menu": {"label": "Menu", "svg": "<path d=\"M4 7h16M4 12h16M4 17h16\"/>"},
+ "close": {"label": "Close", "svg": "<path d=\"M6 6l12 12M18 6 6 18\"/>"},
+ "search": {"label": "Search", "svg": "<circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"m20 20-3.5-3.5\"/>"},
+ "filter": {"label": "Filter", "svg": "<path d=\"M4 6h16M7 12h10M10 18h4\"/>"},
+ "edit": {"label": "Edit", "svg": "<path d=\"M4 20h4L19 9l-4-4L4 16z\"/><path d=\"m13.5 6.5 4 4\"/>"},
+ "external": {"label": "Open in a new tab", "svg": "<path d=\"M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5\"/>"},
+ "prev": {"label": "Previous", "svg": "<path d=\"m15 6-6 6 6 6\"/>"},
+ "next": {"label": "Next", "svg": "<path d=\"m9 6 6 6-6 6\"/>"},
+ "grid": {"label": "Grid view", "svg": "<rect x=\"4\" y=\"4\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"13\" y=\"4\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"4\" y=\"13\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"13\" y=\"13\" width=\"7\" height=\"7\" rx=\"1\"/>"},
+ "list": {"label": "List view", "svg": "<path d=\"M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01\"/>"},
+ "fullscreen": {"label": "Full screen", "svg": "<path d=\"M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5\"/>"},
+ "exit_fullscreen": {"label": "Exit full screen", "svg": "<path d=\"M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5\"/>"},
+ "theme_auto": {"label": "Automatic theme", "svg": "<circle cx=\"12\" cy=\"12\" r=\"8\"/><path d=\"M12 4v16\"/><path d=\"M12 4a8 8 0 0 1 0 16z\" fill=\"currentColor\"/>"},
+ "theme_light": {"label": "Light theme", "svg": "<circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4\"/>"},
+ "theme_dark": {"label": "Dark theme", "svg": "<path d=\"M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z\"/>"},
+ "target": {"label": "Center", "svg": "<circle cx=\"12\" cy=\"12\" r=\"7\"/><circle cx=\"12\" cy=\"12\" r=\"2\"/><path d=\"M12 2v3M12 19v3M2 12h3M19 12h3\"/>"}
+}

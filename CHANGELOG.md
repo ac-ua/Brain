@@ -3,6 +3,15 @@
 The brain is versioned like any project: `v0.x` while the skeleton settles. Each release is a merged PR on
 `ac-ua/brain` and a row in the Notion Build Roadmap (Project = Brain).
 
+## v0.4.15 — one design system for every app (2026-10-29)
+- New builder skill `web-design-system`, extracted from Camp de Base: tokens (light, dark, context palettes), shell
+  and `ds-` components in `tokens.css`, data-viz rules, the faceted icon kit (73 icons, 16 glyphs, a generic
+  `build_icons.py`), the brand mark, and `FEEDBACK.md`.
+- Feedback loop: design feedback in any app session updates the shared system (PR + `FEEDBACK.md` line) or, if
+  app-specific, the app; from the work Mac, a Brain Inbox row. Rule in `AGENTS.md` and `agents/builder.md`.
+- Wired into `build-webapp` (Stack), `project-kickoff` and the project template (new apps start from `tokens.css`
+  and the icon kit) and `release-webapp` (UI check before shipping).
+
 ## v0.4.14 — sessions are back in the cockpit (2026-10-29)
 - « Brain · Cockpit »: the Claude sessions block is back (Aurélien wants it). When the Claude Code Remote connector
   does not answer in the page, the block shows the last 7 days of the Session Log instead (new view « Cockpit · recent »).

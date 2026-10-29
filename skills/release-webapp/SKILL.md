@@ -42,6 +42,8 @@ hosted-build checks (CSP, XSS, PWA…). Where the project has a coverage map, us
 check` (README › Tests). The full suite (`npm run check -- --all`) only when the plan says so (start-up code, build,
 harness) or when the map is refreshed (`npm run impact`, at least monthly). Paste the plan and the pass/fail counts. A red
 test is fixed or the release waits; never skip or disable a test.
+**UI check** when screens changed: against `web-design-system` (tokens only, no stray hex; `ds-` components; icons from
+the kit; both themes, 375 px and desktop; focus and contrast), and the app adopts any pending `FEEDBACK.md` line for it.
 
 ## 4. Show, then go
 Show what changes for the user (screenshots or the rebuilt artifact) in two or three lines. **Deploy only on

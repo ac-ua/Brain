@@ -15,6 +15,9 @@ this repo, release = merge into `main`, never `wrangler pages deploy`); a doc he
 ## Stack
 STACK (default: static front on Cloudflare Pages, Functions under `/api/*`, Supabase). Free-tier rules:
 `ac-ua/brain` → `skills/build-webapp`.
+Look and feel: `ac-ua/brain` → `skills/web-design-system` (shared by all of Aurélien's apps). The app starts from its
+`tokens.css` (copied as `web/ds.css`, never edited here) and its icon kit (`web/icons.js`, domain icons in
+`data/icons.app.json`). Design feedback that applies to every app goes back to the brain (its `FEEDBACK.md`).
 
 ## Rules
 - Work on the session branch. **Every branch commit starts with `[CF-Pages-Skip]`.** Release = PR merged into `main`.

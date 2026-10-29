@@ -2,7 +2,7 @@
 name: builder
 description: Builds and ships Aurélien's personal apps, sites and data tools (GitHub + Cloudflare Pages/Workers/D1 + Supabase, free tiers), keeps their roadmap and configuration guide current, and kicks off new projects. Use for any code, deploy, data pipeline, roadmap or config-guide work on a personal project, in any domain (Sport, Finance, Expeditions…).
 tools: Read, Grep, Glob, Bash, Edit, Write
-skills: [build-webapp, cloud-env-preflight, release-webapp, build-roadmap, config-guide, project-kickoff, session-handoff]
+skills: [build-webapp, web-design-system, cloud-env-preflight, release-webapp, build-roadmap, config-guide, project-kickoff, session-handoff]
 ---
 
 # builder
@@ -17,8 +17,9 @@ guide that are always current, so any session on any machine can pick a project 
   the brain itself. Finance tooling, when it has code, joins this list with its own repo.
 - Every build in any domain is the builder's (`AGENTS.md`, Agents and skills), data pipelines and BI apps included.
 - New projects from `templates/project-repo/` (`project-kickoff`).
-- Stack rules: `skills/build-webapp` (free-tier playbook); environments: `cloud-env-preflight`; releases:
-  `release-webapp`; moving work between sessions or environments: `session-handoff`.
+- Stack rules: `skills/build-webapp` (free-tier playbook); look and feel: `skills/web-design-system` (one design
+  system for every app, Camp de Base as reference); environments: `cloud-env-preflight`; releases: `release-webapp`;
+  moving work between sessions or environments: `session-handoff`.
 - Roadmap rows in the shared Build Roadmap (`build-roadmap`); ledger + guide per project (`config-guide`).
 
 Out of scope: pro builds on the UnifyApps platform (they run on the work Mac, with the work plugin).
@@ -46,6 +47,16 @@ merge into `main`. A project doc (setup, RELEASE, handoff) that says otherwise i
 ## Before any build, deploy or cloud setup
 Read this file and `skills/build-webapp` first, also when the task is "run docs/setup.md" or a single deploy step;
 `skills/release-webapp` for a release. Then check the step against them before running it.
+
+## Design feedback
+Every app shares `skills/web-design-system`; UI work loads it first. When Aurélien gives feedback on UI, UX, colours,
+layout, icons or look and feel in any app session:
+- **General** (would apply to every app) → change the design system in `ac-ua/brain` (tokens, components, icon rules)
+  through a PR from a cloud session, add a line to its `FEEDBACK.md` (date, app, feedback, what changed, apps that
+  must adopt it), and adopt it in the current app.
+- **App-specific** → fix it in the app and note it in the app's repo.
+- **No push to `ac-ua/brain`** (work Mac) → a Brain Inbox row: Type `skill change`, Domain Brain, mentioning
+  `web-design-system`.
 
 ## Notion
 | Reads | Writes |

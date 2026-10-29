@@ -16,6 +16,8 @@ existing artifact URL, if any.
 1. **Repo.** Aurélien creates the empty repo `ac-ua/<repo>` (creating repos is his call) and attaches it to the
    session. Then copy `templates/project-repo/` into it, fill the placeholders in `AGENTS.md`, and commit on a branch
    (`[CF-Pages-Skip]` marker if it will deploy to Cloudflare Pages). Open a PR.
+   A web app starts from the design system (`web-design-system`): `tokens.css` copied as `web/ds.css`, `icons.js`
+   built from the kit, the shared shell (side menu, theme switch), the mark from `brand/` unless it has its own.
 2. **Ledger + guide.** In the repo: `python3 <brain>/skills/config-guide/scripts/ledger.py --ledger docs/build-ledger.json init …`
    (see `config-guide`), then fill chapter 1 of `docs/config-guide/guide.html` from the inputs, with the planned
    architecture. **Publish it now** as an artifact titled « <Project> · Configuration guide », write its link in the

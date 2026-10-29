@@ -22,6 +22,11 @@ The brain is versioned like any project: `v0.x` while the skeleton settles. Each
 - « Brain · Étude du cockpit » (https://claude.ai/artifact/4xqmHuenUqj4EUZ292uoWF, `docs/cockpit/cockpit-proposals.html`):
   research and design directions for the full cockpit.
 
+## v0.4.12 — work and backups out of Admin (2026-10-29)
+- `docs/personal-drive-map.md`: `70_Work & Career` (CV & Job Search, one folder per employer, pro deliverables);
+  `80_Backups` (Phone Backup, Claude Backup; an app's backups stay with the app); Famileo US, Old Projects and Travel
+  moved from 10_Admin to 40_Projects.
+
 ## v0.4.11 — the personal Drive has a map (2026-10-29)
 - `docs/personal-drive-map.md`: personal Drive sorted and mapped (00_Inbox, 10_Admin, 20_Finance, 30_Expeditions,
   40_Projects, 50_Content, 60_Library, 70_Work, 99_Archive, One Life), rules, Notion links and folder ids. Finance is

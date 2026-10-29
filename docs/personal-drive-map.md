@@ -8,8 +8,8 @@ links and the finance app keep working. The work Drive has its own map: `docs/dr
 ```
 My Drive
 ├── 00_Inbox            drop zone: anything not yet filed. Emptied at session close
-├── 10_Admin            ID · Visas · Health & Insurance · Housing · Permits & Licences · Career · Education
-│                       · Trip Planner · Famileo US · Old Projects · Phone Backup · Jucy Stuff (private, never opened)
+├── 10_Admin            ID · Visas · Health & Insurance · Housing · Permits & Licences · Education (Baraja backups)
+│                       · Jucy Stuff (private, never opened)
 ├── 20_Finance          read by the finance app (ac-ua/finance) by folder id
 │   ├── Banks           one sub-folder per bank (Chase, N26, Revolut, Emirates NBD, Boursorama, La Banque Postale, Amex)
 │   ├── Income          payslips per employer + Payslip - Finance.xlsx
@@ -25,14 +25,19 @@ My Drive
 │   ├── South Pole 2027 · Greenland Kite 2027
 │   └── Ideas           North West Passage · Morocco - Mhamid · Vatnajökull · Rhône kayak · Plan Laponie
 ├── 40_Projects         Harbat (run club, SHARED with the club) · Harbat - private (not shared) · Sport data (raw
-│                       exports for the sport pipeline) · Places (Mapstr → Google Maps)
+│                       exports for the sport pipeline) · Places (Mapstr → Google Maps) · Travel (trip planning)
+│                       · Famileo US · Old Projects
 ├── 50_Content          Speeches · Koh Lanta (castings)
 ├── 60_Library          media, not sorted: Movies · Games · Books · Software · Musique · Musiques pour videos
 │                       · Expedition mp3 · Audio to sort
-├── 70_Work             copies of pro deliverables brought back from the work Mac (pro → perso is allowed)
+├── 70_Work & Career    CV & Job Search · one folder per employer (UnifyApps, Sprinklr): contracts, career admin and
+│                       copies of pro deliverables brought back from the work Mac (pro → perso is allowed). Payslips
+│                       stay in 20_Finance/Income
+├── 80_Backups          Phone Backup · Claude Backup (claude-home, voice-clone, Notion exports). An app's own backups
+│                       stay with the app (Baraja → 10_Admin/Education)
 ├── 99_Archive          dead material and emptied folders. Deleting is Aurélien's call
 ├── One Life            the photo archive, one folder per trip `YYYY.MM.DD Country - Place`. Leave as is
-├── Claude Backup · Saved from Chrome   created by tools. Leave as is
+├── Saved from Chrome   created by Chrome. Leave as is
 ```
 
 ## Rules
@@ -66,7 +71,6 @@ My Drive
 | 10_Admin/Visas | `1zujBt4nHT_WvSnT4zXVJdfcLVpmFL5qn` |
 | 10_Admin/Health & Insurance | `1LYgkp6CiESZ4FbCD1f5FyRZOlDfWJKCl` |
 | 10_Admin/Housing | `1_owRrv1DnfXmTaL0oH1Jn0kQQKhLRSPq` |
-| 10_Admin/Career | `1u8bcrJh2u9nKSJwxfCy-UpT_KN1oCAnU` |
 | 20_Finance | `1L_q5BYjEYx-lVZoTMP76hup1cN2aS4Rd` |
 | 20_Finance/Banks | `1zGWC7OOeAPL8vtLSnSiEHnng6dVsLexh` |
 | 20_Finance/Income | `1w04bK0C-fzIhwF1JdEjv0Tpx1jiqqKAn` |
@@ -86,8 +90,11 @@ My Drive
 | 40_Projects | `15_BPbVpOxCPodFzXZa9rVLC7Yi14j5Tj` |
 | 40_Projects/Harbat (shared) | `1xbDH3ShB8u9LyNkZKBXjjVSBloYMVLg1` |
 | 40_Projects/Sport data | `1de-_Zel-62hwwtTP67uSUy3mTnvmtSSS` |
+| 40_Projects/Travel | `1o6qMKMa-1DLUDAocHCiOfce-rH91yGhC` |
 | 50_Content | `1KVXirMj8N8YrVt_7CtFOQekkIi1XW4EI` |
 | 60_Library | `12w5Pdwz_H0-R13nilvr15SgbbsfxzZEt` |
-| 70_Work | `1XDNgnaYnmJDTNApADzUm3kifskQ9XLG3` |
+| 70_Work & Career | `1u8bcrJh2u9nKSJwxfCy-UpT_KN1oCAnU` |
+| 70_Work & Career/UnifyApps | `1IvkKPIcO8xSpNmGA7_2J4OcGZqSiFhTg` |
+| 80_Backups | `1HyC16jJ2lfM7wXWhjIWx5y4hESVTaH31` |
 | 99_Archive | `1o6mVvFjtSAo3oeo4YSE6P0KaWsR54smB` |
 | One Life | `1KQ2yTx-lMEvlulatcmVtSAIcR900kQdY` |

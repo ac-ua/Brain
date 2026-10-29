@@ -4,7 +4,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: one column of decisions on top ("À toi"), then a responsive grid of project cards, then loose tasks. */
+/* Layout: one column of decisions on top ("À toi"), then a responsive grid of project cards, then loose tasks and Claude sessions. */
 :root{
   --paper:#f2f4f5; --sheet:#ffffff; --ink:#14202b; --ink-2:#4a5866; --ink-3:#7b8894;
   --line:#d9dfe3; --line-2:#e8ecee;
@@ -108,12 +108,19 @@ summary::marker{color:var(--ink-3)}
 .b-working{background:var(--ice)} .b-blocked{background:var(--signal)} .b-review{background:var(--warn)} .b-completed{background:var(--ok)} .b-failed{background:var(--bad)}
 .links{display:flex;flex-wrap:wrap;gap:10px;font-size:.8rem}
 
-/* loose tasks */
+/* loose tasks + sessions */
 .cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;margin-top:10px}
 @media (max-width:860px){.cols{grid-template-columns:minmax(0,1fr)}}
 .panel{background:var(--sheet);border:1px solid var(--line);border-radius:8px;padding:12px 16px;min-width:0}
 .dom-h{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin:10px 0 2px}
 .dom-h:first-child{margin-top:0}
+.sess{display:grid;grid-template-columns:10px minmax(0,1fr) auto;gap:10px;padding:8px 0;border-bottom:1px solid var(--line-2);align-items:start}
+.sess:last-child{border-bottom:0}
+.sess .dot{margin-top:6px}
+.sess .ti{font-weight:500;overflow-wrap:anywhere}
+.sess .ra{font-size:.84rem;color:var(--ink-2);overflow-wrap:anywhere}
+.sess .when{font-family:var(--f-mono);font-size:.7rem;color:var(--ink-3);white-space:nowrap;text-align:right}
+.unread{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--signal);margin-left:6px;vertical-align:middle}
 
 .notice{background:var(--warn-soft);color:var(--ink);border-radius:6px;padding:10px 14px;font-size:.9rem;margin-top:10px}
 .notice.err{background:var(--bad-soft)}
@@ -129,7 +136,7 @@ summary::marker{color:var(--ink-3)}
   <header>
     <div>
       <h1>Cockpit Projets</h1>
-      <div class="sub">Où en est chaque projet et ce qui t'attend. Lu en direct dans Notion.</div>
+      <div class="sub">Où en est chaque projet, ce qui t'attend, ce que font les sessions Claude. Lu en direct dans Notion et Claude Code.</div>
     </div>
     <div class="controls">
       <div class="seg" role="group" aria-label="Contexte">
@@ -144,6 +151,7 @@ summary::marker{color:var(--ink-3)}
     <span class="wait" data-src="projects">Projets…</span>
     <span class="wait" data-src="tasks">Tâches…</span>
     <span class="wait" data-src="roadmap">Roadmap…</span>
+    <span class="wait" data-src="sessions">Sessions…</span>
   </div>
   <div id="page-notice"></div>
 
@@ -152,6 +160,7 @@ summary::marker{color:var(--ink-3)}
     <div><b id="s-tasks">–</b><span>tâches pour toi (P0–P1)</span></div>
     <div><b id="s-inbox">–</b><span>tâches à trier</span></div>
     <div><b id="s-proj">–</b><span>projets actifs</span></div>
+    <div><b id="s-sess">–</b><span>sessions en cours</span></div>
   </div>
 
   <section>
@@ -164,15 +173,21 @@ summary::marker{color:var(--ink-3)}
     <div id="projects"><div class="skeleton">Chargement…</div></div>
   </section>
 
-  <section>
-    <h2>Hors projet <span class="n" id="loose-n"></span></h2>
-    <div class="panel" id="loose" style="margin-top:10px"><div class="skeleton">Chargement…</div></div>
+  <section class="cols">
+    <div>
+      <h2>Hors projet <span class="n" id="loose-n"></span></h2>
+      <div class="panel" id="loose" style="margin-top:10px"><div class="skeleton">Chargement…</div></div>
+    </div>
+    <div>
+      <h2>Sessions Claude <span class="n" id="sess-n"></span></h2>
+      <div class="panel" id="sessions" style="margin-top:10px"><div class="skeleton">Chargement…</div></div>
+    </div>
   </section>
 
   <div class="how">
-    <b>Comment ça se met à jour.</b> Cette page ne stocke rien : elle relit Notion toutes les 5 minutes, et quand tu cliques sur Actualiser.
+    <b>Comment ça se met à jour.</b> Cette page ne stocke rien : elle relit Notion et la liste de tes sessions Claude Code toutes les 5 minutes, et quand tu cliques sur Actualiser.
     Chaque session qui travaille sur un projet écrit, avant de finir, trois champs de sa ligne <i>Projects</i> (Where we are, Next step, State updated) et crée dans <i>Tasks</i> ce qui t'attend, avec Owner = Aurélien et le projet lié (règle du skill <span class="mono">session-close</span>).
-    Cocher une tâche la passe à Done dans Notion. Vues lues : Projects « Cockpit · projects », Tasks « Cockpit · open », Build Roadmap « Cockpit · in progress ».
+    Cocher une tâche la passe à Done dans Notion. Vues lues : Projects « Cockpit · projects », Tasks « Cockpit · open », Build Roadmap « Cockpit · in progress », et Session Log « Cockpit · recent » si le connecteur Claude Code ne répond pas.
   </div>
 </div>
 <div id="toast-host"></div>
@@ -182,16 +197,21 @@ summary::marker{color:var(--ink-3)}
   const VIEWS = {
     projects: "view://40819ca7-9893-81a8-ab3b-000c6d5d2e58",
     tasks: "view://40819ca7-9893-81bd-a18b-000c3fb411c6",
-    roadmap: "view://40819ca7-9893-8114-9b31-000cf8a5a634"
+    roadmap: "view://40819ca7-9893-8114-9b31-000cf8a5a634",
+    log: "view://40819ca7-9893-8120-a2ab-000c937d58aa"
   };
-  const NOTION = "Notion";
+  const NOTION = "Notion", CCR = "Claude Code Remote";
   const POLL = 5 * 60 * 1000;
-  const LABELS = {projects:"Projets", tasks:"Tâches", roadmap:"Roadmap"};
+  const LABELS = {projects:"Projets", tasks:"Tâches", roadmap:"Roadmap", sessions:"Sessions"};
   const PRIO = {"P0 Now":0,"P1 Next":1,"P2 Later":2,"P3 Someday":3};
   const STATUS_ORDER = {"Doing":0,"Next":1,"Waiting":2,"Inbox":3};
   const STATUS_FR = {"Doing":"en cours","Next":"à faire","Waiting":"en attente","Inbox":"à trier"};
+  const BUCKET = {
+    WORKING:["working","en cours"], BLOCKED:["blocked","bloquée"], REVIEW_READY:["review","à relire"],
+    COMPLETED:["completed","terminée"], FAILED:["failed","en échec"]
+  };
 
-  const state = {projects:null, tasks:null, roadmap:null, errors:{}, at:{}, done:new Set(), ctx:"all"};
+  const state = {projects:null, tasks:null, roadmap:null, log:null, sessions:null, errors:{}, at:{}, done:new Set(), ctx:"all"};
   let mcp = null;
   const unsubs = [];
 
@@ -242,6 +262,15 @@ summary::marker{color:var(--ink-3)}
     }
     return p;
   }
+  function findSessions(p){
+    if (!p || typeof p !== "object") return [];
+    if (Array.isArray(p)) return p.filter(x => x && typeof x.id === "string" && x.id.startsWith("session_"));
+    for (const k of ["ccr","data","sessions","items","results"]) {
+      if (p[k]) { const r = findSessions(p[k]); if (r.length) return r; }
+    }
+    return [];
+  }
+
   function errorText(err, server){
     const code = err && err.code;
     if (code === "needs_reauth") return "La connexion " + server + " a expiré. Reconnecte " + server + " dans claude.ai, Réglages, Connecteurs, puis actualise.";
@@ -261,8 +290,9 @@ summary::marker{color:var(--ink-3)}
         const p = parsePayload(ev.result);
         state.at[key] = (ev.result.cache && ev.result.cache.storedAt) || Date.now();
         delete state.errors[key];
-        state[key] = (p && Array.isArray(p.results)) ? p.results : [];
-        if (p && p.has_more) state.errors[key + "_more"] = true;
+        if (key === "sessions") state.sessions = findSessions(p);
+        else state[key] = (p && Array.isArray(p.results)) ? p.results : [];
+        if (!["sessions","log"].includes(key) && p && p.has_more) state.errors[key + "_more"] = true;
       } else {
         const code = ev.error && ev.error.code;
         state.errors[key] = errorText(ev.error, server);
@@ -279,16 +309,25 @@ summary::marker{color:var(--ink-3)}
         {data:{mode:"view", view_url:VIEWS[k], page_size:100}}, onData(k, NOTION),
         {cache:{staleTime:60000, gcTime:86400000}, refetchInterval:POLL}));
     }
+    unsubs.push(mcp.watchTool(NOTION, "notion-query-data-sources",
+      {data:{mode:"view", view_url:VIEWS.log, page_size:30}}, onData("log", NOTION),
+      {cache:{staleTime:60000, gcTime:86400000}, refetchInterval:POLL}));
+    unsubs.push(mcp.watchTool(CCR, "list_sessions", {limit:30}, onData("sessions", CCR),
+      {cache:{staleTime:60000, gcTime:86400000}, refetchInterval:POLL}));
   }
 
   async function refreshAll(){
     if (!mcp) return;
     const btn = $("#refresh"); btn.disabled = true; btn.textContent = "Actualisation…";
     const calls = [];
+    calls.push(mcp.callTool(NOTION, "notion-query-data-sources", {data:{mode:"view", view_url:VIEWS.log, page_size:30}}, {cache:{refresh:true, staleTime:60000, gcTime:86400000}})
+      .then(r => onData("log", NOTION)({type:"data", result:r}), e => onData("log", NOTION)({type:"error", error:e})));
     for (const k of ["projects","tasks","roadmap"]) {
       calls.push(mcp.callTool(NOTION, "notion-query-data-sources", {data:{mode:"view", view_url:VIEWS[k], page_size:100}}, {cache:{refresh:true, staleTime:60000, gcTime:86400000}})
         .then(r => onData(k, NOTION)({type:"data", result:r}), e => onData(k, NOTION)({type:"error", error:e})));
     }
+    calls.push(mcp.callTool(CCR, "list_sessions", {limit:30}, {cache:{refresh:true, staleTime:60000, gcTime:86400000}})
+      .then(r => onData("sessions", CCR)({type:"data", result:r}), e => onData("sessions", CCR)({type:"error", error:e})));
     await Promise.allSettled(calls);
     btn.disabled = false; btn.textContent = "Actualiser";
   }
@@ -327,6 +366,31 @@ summary::marker{color:var(--ink-3)}
   function taskSort(a, b){
     return (STATUS_ORDER[a.Status] ?? 9) - (STATUS_ORDER[b.Status] ?? 9) || (PRIO[a.Priority] ?? 9) - (PRIO[b.Priority] ?? 9);
   }
+  function aliasesFor(p){
+    const out = new Set();
+    const n = norm(p.Name);
+    if (n.length >= 4) out.add(n);
+    const first = norm(String(p.Name||"").split(/[\s(]/)[0]);
+    if (first.length >= 5) out.add(first);
+    const repo = String(p.Repo||"").split("/").filter(Boolean).pop();
+    const r = norm(repo);
+    if (r.length >= 4 && r !== "website") out.add(r);
+    if (n === "campdebase") out.add("basecamp");
+    return [...out];
+  }
+  function sessionsFor(p){
+    const al = aliasesFor(p);
+    return activeSessions().filter(s => { const t = norm(s.title); return al.some(a => t.includes(a)); });
+  }
+  function activeSessions(){
+    const weekAgo = Date.now() - 7 * 86400000;
+    return (state.sessions || []).filter(s => !/ARCHIVED/.test(s.session_status || "") && new Date(s.updated_at || s.created_at || 0).getTime() > weekAgo);
+  }
+  function bucketOf(s){
+    const b = String(s.status_bucket || "").replace("SESSION_STATUS_BUCKET_","");
+    return BUCKET[b] || ["", b.toLowerCase() || "?"];
+  }
+
   // ---------- render ----------
   function taskLi(t, showProject){
     const id = idOf(t.url);
@@ -345,10 +409,10 @@ summary::marker{color:var(--ink-3)}
       if (state.errors[k]) { el.className = "err"; el.textContent = LABELS[k] + " : erreur"; }
       else if (state.at[k]) { el.className = "ok"; el.textContent = LABELS[k] + " " + ago(state.at[k]); }
     }
-    const errs = ["projects","tasks","roadmap"].filter(k => state.errors[k]);
+    const errs = ["projects","tasks","roadmap","sessions"].filter(k => state.errors[k]);
     const notice = $("#page-notice");
-    if (errs.length === 3 && errs.every(k => !state[k])) {
-      notice.innerHTML = '<div class="notice err">' + esc(state.errors.projects) + '</div>';
+    if (errs.length === 4 && new Set(errs.map(k => state.errors[k].split(" ")[0])).size >= 1 && errs.every(k => !state[k])) {
+      notice.innerHTML = '<div class="notice err">' + esc(state.errors.projects) + (state.errors.sessions !== state.errors.projects ? '<br>' + esc(state.errors.sessions) : '') + '</div>';
     } else notice.innerHTML = "";
     if (["projects","tasks","roadmap"].some(k => state.errors[k + "_more"])) {
       notice.innerHTML += '<div class="notice">Plus de 100 lignes dans une vue : seules les 100 premières sont affichées. Ouvre Notion pour le reste.</div>';
@@ -401,6 +465,7 @@ summary::marker{color:var(--ink-3)}
     $("#s-tasks").textContent = state.tasks ? tasks.filter(t => t.Owner === "Aurélien" && (PRIO[t.Priority] ?? 9) <= 1).length : "–";
     $("#s-inbox").textContent = state.tasks ? tasks.filter(t => t.Status === "Inbox").length : "–";
     $("#s-proj").textContent = state.projects ? active.length : "–";
+    $("#s-sess").textContent = state.sessions ? activeSessions().filter(s => /WORKING|BLOCKED/.test(s.status_bucket || "")).length : "–";
 
     // projects
     const pEl = $("#projects");
@@ -441,6 +506,31 @@ summary::marker{color:var(--ink-3)}
       lEl.innerHTML = html;
     }
 
+    // sessions
+    const sEl = $("#sessions");
+    if (!state.sessions) {
+      if (state.errors.sessions && state.log) {
+        $("#sess-n").textContent = "Session Log · 7 jours";
+        sEl.innerHTML = '<div class="notice" style="margin:0 0 8px">Le connecteur Claude Code ne répond pas dans cette page : voici les sessions consignées dans le Session Log de Notion.</div>' +
+          (state.log.length ? state.log.map(r => {
+            const d = r["date:Date:start"] || "";
+            return '<div class="sess"><span class="dot b-completed"></span><div style="min-width:0"><div class="ti"><a href="' + esc(r.url) + '" target="_blank" rel="noopener">' + md(r.Title || "Session") + '</a></div>' +
+              (r.Summary ? '<div class="ra">' + md(r.Summary) + '</div>' : '') + '</div><div class="when">' + esc(r.Domain || "") + '<br>' + esc(dayLabel(daysAgo(d))) + '</div></div>';
+          }).join("") : '<p class="empty-note">Aucune session consignée ces 7 derniers jours.</p>');
+      } else if (state.errors.sessions) sEl.innerHTML = '<div class="notice err">' + esc(state.errors.sessions) + '</div>';
+    } else {
+      const list = activeSessions().sort((a, b) => {
+        const rank = s => /BLOCKED/.test(s.status_bucket) ? 0 : /REVIEW/.test(s.status_bucket) ? 1 : /WORKING/.test(s.status_bucket) ? 2 : /FAILED/.test(s.status_bucket) ? 3 : 4;
+        return rank(a) - rank(b) || new Date(b.updated_at) - new Date(a.updated_at);
+      });
+      $("#sess-n").textContent = list.length + " sur 7 jours";
+      sEl.innerHTML = list.length ? list.map(s => {
+        const [cls, label] = bucketOf(s);
+        const sum = (s.post_turn_summary && s.post_turn_summary.recent_action) || s.task_summary || "";
+        return '<div class="sess"><span class="dot b-' + cls + '" title="' + esc(label) + '"></span><div style="min-width:0"><div class="ti"><a href="https://claude.ai/code/' + esc(s.id) + '" target="_blank" rel="noopener">' + esc(s.title || "Session sans titre") + '</a>' + (s.unread ? '<span class="unread" title="Non lue"></span>' : '') + '</div>' +
+          (sum ? '<div class="ra">' + esc(sum) + '</div>' : '') + '</div><div class="when">' + esc(label) + '<br>' + esc(ago(new Date(s.updated_at || s.created_at).getTime())) + '</div></div>';
+      }).join("") : '<p class="empty-note">Aucune session active ces 7 derniers jours.</p>';
+    }
   }
 
   function projectCard(p, tasks, roadmap){
@@ -451,6 +541,7 @@ summary::marker{color:var(--ink-3)}
     const statusCls = String(p.Status||"").toLowerCase();
     const forMe = tasks.filter(t => t.Owner === "Aurélien" || !t.Owner).sort(taskSort);
     const forAgents = tasks.filter(t => t.Owner && t.Owner !== "Aurélien").sort(taskSort);
+    const sess = sessionsFor(p);
     const links = [];
     if (p.Repo) links.push('<a href="' + esc(/^https?:/.test(p.Repo) ? p.Repo : "https://github.com/" + p.Repo) + '" target="_blank" rel="noopener">Repo ↗</a>');
     if (p["Prod URL"]) links.push('<a href="' + esc(p["Prod URL"]) + '" target="_blank" rel="noopener">Prod ↗</a>');
@@ -463,6 +554,7 @@ summary::marker{color:var(--ink-3)}
     if (forMe.length) h += '<div><div class="lbl">Tes tâches · ' + forMe.length + '</div><ul class="tasks">' + forMe.slice(0, 6).map(t => taskLi(t)).join("") + '</ul>' + (forMe.length > 6 ? '<details><summary>' + (forMe.length - 6) + ' de plus</summary><ul class="tasks">' + forMe.slice(6).map(t => taskLi(t)).join("") + '</ul></details>' : '') + '</div>';
     if (roadmap.length) h += '<details><summary>En cours dans la roadmap (' + roadmap.length + ')</summary>' + roadmap.map(r => '<div class="rm"><div>' + md(r.Name) + (r.Priority ? ' <span class="pill ' + String(r.Priority).slice(0,2).toLowerCase() + '">' + esc(String(r.Priority).slice(0,2)) + '</span>' : '') + '</div>' + (r.Detail ? '<div class="d">' + md(r.Detail) + '</div>' : '') + '</div>').join("") + '</details>';
     if (forAgents.length) h += '<details><summary>Confiées aux agents (' + forAgents.length + ')</summary><ul class="tasks">' + forAgents.map(t => taskLi(t, t.Owner)).join("") + '</ul></details>';
+    if (sess.length) h += '<div class="chips">' + sess.slice(0, 4).map(s => { const [cls, label] = bucketOf(s); return '<a class="chip" href="https://claude.ai/code/' + esc(s.id) + '" target="_blank" rel="noopener" title="' + esc(label) + '"><span class="dot b-' + cls + '"></span><span>' + esc(s.title) + '</span></a>'; }).join("") + '</div>';
     h += '<div class="links">' + links.join("") + '</div>';
     return h + '</article>';
   }
@@ -488,8 +580,8 @@ summary::marker{color:var(--ink-3)}
   (async () => {
     const c = window.claude && window.claude.use ? await window.claude.use("mcp") : null;
     if (!c) {
-      $("#page-notice").innerHTML = '<div class="notice">Cette page lit Notion et Claude Code à travers ton connecteur Notion de claude.ai. Ouvre-la depuis claude.ai, connecté à ton compte, pour voir tes projets.</div>';
-      for (const id of ["#mine","#projects","#loose"]) $(id).innerHTML = '<p class="empty-note">Données disponibles seulement dans claude.ai.</p>';
+      $("#page-notice").innerHTML = '<div class="notice">Cette page lit Notion et Claude Code à travers tes connecteurs claude.ai. Ouvre-la depuis claude.ai, connecté à ton compte, pour voir tes projets.</div>';
+      for (const id of ["#mine","#projects","#loose","#sessions"]) $(id).innerHTML = '<p class="empty-note">Données disponibles seulement dans claude.ai.</p>';
       return;
     }
     mcp = c;

@@ -42,8 +42,9 @@ URLs are `https://app.notion.com/p/<id>`. Data sources (`collection://…`) are 
 | Cockpit · projects | Projects (tab) | Projects not Done, with Where we are / Next step / State updated | `view://40819ca7-9893-81a8-ab3b-000c6d5d2e58` |
 | Cockpit · open | Tasks (tab) | Tasks not Done, by Priority | `view://40819ca7-9893-81bd-a18b-000c3fb411c6` |
 | Cockpit · in progress | Build Roadmap (tab) | Build Roadmap Status = In progress | `view://40819ca7-9893-8114-9b31-000cf8a5a634` |
+| Cockpit · recent | Session Log (tab) | Session Log rows of the last 7 days, newest first | `view://40819ca7-9893-8120-a2ab-000c937d58aa` |
 
-The three Cockpit views feed the « Brain · Cockpit » artifact (https://claude.ai/artifact/UqbtEKheEFwqs7P61d6zdi,
+The four Cockpit views feed the « Brain · Cockpit » artifact (https://claude.ai/artifact/UqbtEKheEFwqs7P61d6zdi,
 source `docs/cockpit/projects-cockpit.html`); don't rename or delete them. Projects has three state properties written
 by `session-close`: `Where we are`, `Next step`, `State updated` (2026-10-29).
 

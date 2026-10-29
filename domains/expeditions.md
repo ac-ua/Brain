@@ -11,6 +11,7 @@ It holds the goals and facts; this file only says how each capability works here
 | **Sponso** database (brands + science partners) | `collection://2ae19ca7-9893-80d6-b263-000b7171b431` — **never move or rename its statuses without a validated plan**: the outreach skills read and write it |
 | Camp de Base app | repo `ac-ua/Base-Camp`, cloud environment `app-base-camp` |
 | Camp de Base roadmap (Notion) | **Build Roadmap** `collection://8ce17531-538f-4186-9f58-8a8c17c14a14`, `Project` = Camp de Base (`40619ca7989381f49820cc52a06b094a`). The old « Changelog & Roadmap » (`collection://6aec51dc-…`) is archived: don't write there |
+| Files (personal Drive) | `30_Expeditions` (planned and ideas; `docs/personal-drive-map.md`); past expeditions in One Life, linked from the Expeditions card |
 | Old memories for this domain | 🧳 Brain — Migration inbox (`40619ca7989381cf9cb4dda8206db206`) |
 
 ## How each capability applies

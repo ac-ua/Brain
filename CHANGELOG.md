@@ -3,6 +3,13 @@
 The brain is versioned like any project: `v0.x` while the skeleton settles. Each release is a merged PR on
 `ac-ua/brain` and a row in the Notion Build Roadmap (Project = Brain).
 
+## v0.4.11 — the personal Drive has a map (2026-10-29)
+- `docs/personal-drive-map.md`: personal Drive sorted and mapped (00_Inbox, 10_Admin, 20_Finance, 30_Expeditions,
+  40_Projects, 50_Content, 60_Library, 70_Work, 99_Archive, One Life), rules, Notion links and folder ids. Finance is
+  split by bank, tax year and flat so the finance app can read it by folder id.
+- `AGENTS.md`: personal files are filed in the personal Drive and linked in Notion, like pro files in the work Drive.
+- `domains/expeditions.md`, `domains/admin-finance.md`, `domains/content.md`: where their files live.
+
 ## v0.4.10 — every build runs as builder (2026-10-29)
 - `AGENTS.md`: any build in any domain (Sport, Finance, data pipelines, BI apps) runs as `builder` from the first
   commit: kickoff, Projects row, Build Roadmap, ledger, configuration guide published as « <Project> · Configuration

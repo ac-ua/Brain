@@ -84,7 +84,7 @@ only when the task needs them.
 | Life | 🌍 Life (`40619ca798938104ba6ae13e84101780`) | `domains/life.md` | chief-of-staff |
 | Brain | Projects → Brain (`40619ca79893817ba7cbc34ca914eed7`) | this file, `docs/BLUEPRINT.md` | builder |
 
-All Notion IDs: `docs/notion-map.md`. Adding a domain: duplicate the Domain template page, add the option to every
+All Notion IDs: `docs/notion-map.md`. Work Drive layout and folder ids: `docs/drive-map.md`. Adding a domain: duplicate the Domain template page, add the option to every
 `Domain` select, add a row here and a `domains/<domain>.md`.
 
 ## Agents and skills

@@ -3,6 +3,14 @@
 The brain is versioned like any project: `v0.x` while the skeleton settles. Each release is a merged PR on
 `ac-ua/brain` and a row in the Notion Build Roadmap (Project = Brain).
 
+## v0.4.4 — the work Drive has a map (2026-10-29)
+- Work Drive reorganised (no file deleted): 00_Inbox · 01_Accounts/<Account> · 02_Assets · 03_Demos · 04_Events ·
+  05_Internal · 99_Archive; ~85 loose files filed, 22 account folders named like the Notion Accounts.
+- New `docs/drive-map.md`: tree, filing rules, folder ids. Linked from `AGENTS.md`, `domains/work.md`, and the skills
+  that save pro files (`work-notes`, `session-close`, `demo-prep`, `case-for-change`, `cep-workbook-filler`,
+  `explainer-video`).
+- `.claude/settings.json`: Drive read, create, move and copy run without a prompt; trash and sharing still ask.
+
 ## v0.4.3 — the guide follows without asking (2026-10-28)
 - `AGENTS.md` (Artifacts), `agents/builder.md`, `release-webapp`: after each delivery that changes the architecture,
   the model or the screens, the builder updates the project's living guide through a background sub-agent, without

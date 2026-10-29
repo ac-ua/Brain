@@ -13,7 +13,7 @@ There is no API for writing into a specific Google Docs tab, so filling happens 
 ## Two modes
 
 **New account** - no existing workbook, or the user wants to start fresh.
-Copy the master template (Drive file id `1Kr61vmC8Ji3VldN1nAWbEDaMvoB76xCTallEWc3iJ-s`) with the Drive `copy_file` tool, title the copy "{Account Name} Workbook", then fill it tab by tab as described below. Every tab starts empty except for its italic instruction text.
+Copy the master template (Drive file id `1Kr61vmC8Ji3VldN1nAWbEDaMvoB76xCTallEWc3iJ-s`) with the Drive `copy_file` tool, title the copy "{Account Name} Workbook", put it in the account's work Drive folder (`01_Accounts/<Account>`, see `docs/drive-map.md`; the template itself sits in `02_Assets/Templates`), then fill it tab by tab as described below. Every tab starts empty except for its italic instruction text.
 
 **Existing account** - the user gives a link to an already-started workbook plus new source material (a follow-up call, a new deck, updated notes).
 Open that doc directly and add to it. Never delete or rewrite what's already there - see "Updating vs. overwriting" below.

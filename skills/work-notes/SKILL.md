@@ -60,7 +60,8 @@ Client contacts are not rows in People: they go in the brief's People section (n
   a page stay where they are (his call); don't remove them and don't copy them into the brief or anywhere else.
 - Existing content written by Aurélien stays untouched: add the brief above it and new entries in the log; don't
   rewrite or reorder his notes.
-- Files stay in the work Drive; the page holds links and names.
+- Files stay in the work Drive, filed by `docs/drive-map.md` (client files in `01_Accounts/<Account>`, named like the
+  Notion Account); the page holds links and names, including the account folder's link in Assets.
 - Builds happen in the UnifyApps platform; link their Configuration Guide in Assets.
 - Notion free plan: fetch and search, no SQL loops. Fetch before `update_content`; copy `old_str` exactly.
 - Big pages (over ~100k characters): read the brief and the latest log entries first; read old transcripts only if

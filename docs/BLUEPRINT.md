@@ -110,6 +110,7 @@ iPad. Cloud environments: `perso-general` (default), `app-element`, `app-base-ca
 
 ## Files
 The Drive is the source of files; local disks are a throwaway cache. Work and personal Drives stay apart.
+Work Drive layout and filing rules: `docs/drive-map.md`.
 Pro context and learnings go to Aurélien's Notion (his work system of record too). Forbidden: personal → pro systems,
 and pro *files* to personal storage.
 Large media is processed in the cloud or on a future personal machine, never on the work Mac.

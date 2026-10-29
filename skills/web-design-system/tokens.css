@@ -98,7 +98,8 @@ h3, .ds-label { font: 600 12px/1.2 var(--body); letter-spacing: .1em; text-trans
 .ds-side-brand small { display: block; font-size: 12px; color: var(--muted); margin-top: 2px; }
 .ds-side-group { display: grid; gap: 2px; }
 .ds-side-h { font: 600 11px/1 var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); padding: 0 10px 6px; }
-.ds-side-link { display: flex; align-items: center; gap: 9px; padding: 7px 10px; border-radius: var(--r); color: var(--ink); text-decoration: none; font-size: 14px; }
+.ds-side-link { display: flex; align-items: center; gap: 9px; padding: 7px 10px; border-radius: var(--r); color: var(--ink); text-decoration: none; font-size: 14px;
+  border: 0; background: none; font-family: inherit; width: 100%; text-align: left; cursor: pointer; } /* links or buttons */
 .ds-side-link:hover { background: color-mix(in srgb, var(--surface) 60%, transparent); }
 .ds-side-link .ico { width: 1.3em; text-align: center; }
 .ds-side-link[aria-current="page"] { background: var(--surface); box-shadow: inset 3px 0 0 var(--accent); }
@@ -112,12 +113,37 @@ h3, .ds-label { font: 600 12px/1.2 var(--body); letter-spacing: .1em; text-trans
 @media (max-width: 859px) {
   .ds-app { margin-left: 0; }
   .ds-side { translate: -100% 0; transition: translate var(--t-panel) var(--ease-out); box-shadow: var(--shadow); }
-  body.ds-side-open .ds-side { translate: 0 0; }
+  .ds-side-open .ds-side { translate: 0 0; }
   .ds-mtop { display: flex; align-items: center; gap: 10px; position: sticky; top: env(safe-area-inset-top, 0px); z-index: 6; background: var(--sunken);
     border-bottom: 1px solid var(--line); padding: 8px max(16px, env(safe-area-inset-right, 0px)) 8px max(16px, env(safe-area-inset-left, 0px)); font-size: 14px; color: var(--muted); }
   .ds-mtop b { color: var(--ink); font: 700 17px var(--display); }
 }
 @media (min-width: 860px) { .ds-scrim { display: none !important; } }
+/* Fold (Camp de Base's side.js): icons only at 64 px, the choice kept per app (shell.js); folded, the menu opens over
+   the page on hover or keyboard focus without moving it. The state class sits on <body> or the [data-ds-shell] root. */
+.ds-side-fold { margin-left: auto; flex: none; width: 28px; height: 28px; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface);
+  color: var(--muted); cursor: pointer; display: grid; place-items: center; font: 600 15px/1 var(--body); padding: 0; }
+.ds-side-fold:hover { color: var(--ink); }
+.ds-side-fold .ds-unfold, .ds-side-mini .ds-side-fold .ds-fold { display: none; }
+.ds-side-mini .ds-side-fold .ds-unfold { display: inline; }
+@media (min-width: 860px) {
+  .ds-side, .ds-app { transition: width var(--t-panel) ease, margin-left var(--t-panel) ease, box-shadow var(--t-panel) ease; }
+  .ds-side-mini { --side-w: var(--side-mini); }
+  .ds-side-mini .ds-side { width: var(--side-mini); overflow-x: hidden; padding-left: 8px; padding-right: 8px; }
+  .ds-side-mini .ds-side:hover, .ds-side-mini .ds-side:focus-within { width: 232px; box-shadow: var(--shadow); }
+  .ds-side-mini .ds-side-link, .ds-side-mini .ds-side-brand { white-space: nowrap; }
+  .ds-side-mini .ds-side-link, .ds-side-mini .ds-side-h { overflow: hidden; min-width: 0; }
+  .ds-side-mini .ds-side-group { grid-template-columns: minmax(0, 1fr); }
+  .ds-side-mini .ds-side:not(:hover):not(:focus-within) :is(.ds-side-h, .ds-side-foot > *, .ds-side-brand > span) { opacity: 0; }
+  .ds-side-mini .ds-side:not(:hover):not(:focus-within) :is(.ds-soon, .ds-count, .ds-side-fold) { display: none; }
+  .ds-side-mini .ds-side:not(:hover):not(:focus-within) .ds-side-link { font-size: 0; gap: 0; justify-content: center; }
+  .ds-side-mini .ds-side:not(:hover):not(:focus-within) .ds-side-link .ico { font-size: 14px; width: 20px; flex: none; }
+}
+@media (max-width: 859px) { .ds-side-fold { display: none; } }
+/* Sign out: bottom left, under the theme switch, full width (Camp de Base's .signout) */
+.ds-signout { flex-basis: 100%; border: 1px solid var(--line); background: var(--surface); color: var(--muted); border-radius: var(--r-sm); padding: 6px 10px;
+  font-size: 12px; cursor: pointer; text-align: left; text-decoration: none; }
+.ds-signout:hover { color: var(--ink); }
 
 /* ---------- Page ---------- */
 .ds-wrap { max-width: var(--page-max); margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }

@@ -316,6 +316,29 @@ dialog.ds-dialog::backdrop { background: var(--scrim); }
 .ds-track { height: 14px; background: var(--sunken); border-radius: 3px; display: flex; overflow: hidden; }
 .ds-track i { display: block; height: 100%; }
 
+/* ---------- Full screen (v1.6): any card, chart or map (Camp de Base's .rt-fs / .rt-full / rt-noscroll) ----------
+   A [data-ds-fs] button inside a [data-ds-fs-card] (else the closest .ds-panel / .ds-card); shell.js toggles .ds-full
+   on the card and .ds-noscroll on <html>, asks the browser for full screen when allowed, and exits on Esc, on the
+   button or when the browser leaves full screen. Both glyphs sit in the button; aria-pressed shows the right one. */
+.ds-fs-btn { flex: none; margin-left: auto; width: 32px; height: 32px; display: grid; place-items: center; padding: 0; border: 1px solid var(--line);
+  border-radius: var(--r); background: var(--surface); color: var(--muted); cursor: pointer; }
+.ds-fs-btn:hover { color: var(--ink); border-color: var(--muted); }
+.ds-fs-btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; display: block; }
+.ds-fs-btn > span { display: block; }
+.ds-fs-btn .ds-fs-exit, .ds-fs-btn[aria-pressed="true"] .ds-fs-enter { display: none; }
+.ds-fs-btn[aria-pressed="true"] .ds-fs-exit { display: block; }
+/* over a map (Camp de Base's .rt-fs: top right, white, like the map's own controls) */
+.ds-fs-btn.ds-fs-btn--over { position: absolute; top: 10px; right: 10px; z-index: 800; width: 34px; height: 34px; border: 2px solid rgba(0, 0, 0, .2);
+  background: #fff; color: #222; background-clip: padding-box; }
+.ds-fs-btn.ds-fs-btn--over:hover { background: #f4f4f4; }
+/* the card in full screen: over the side menu (25), under toasts (70); fills the window, or the frame when the
+   browser refuses full screen (iframes, iPhone) */
+.ds-full { position: fixed; inset: 0; z-index: 50; margin: 0; border: 0; border-radius: 0; max-width: none; width: auto; height: auto; overflow: auto;
+  display: flex; flex-direction: column; gap: 10px; background: var(--surface);
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.ds-full > .ds-chart, .ds-full [data-ds-fs-grow] { flex: 1 1 auto; min-height: 0; } /* the drawing takes the room left; the app redraws it */
+html.ds-noscroll, html.ds-noscroll body { overflow: hidden; }
+
 /* ---------- Login screen ---------- */
 .ds-login { position: fixed; inset: 0; z-index: 60; background: var(--surface); display: grid; place-items: center; padding: 24px; }
 .ds-login > div { display: grid; gap: 18px; justify-items: center; text-align: center; max-width: 360px; }

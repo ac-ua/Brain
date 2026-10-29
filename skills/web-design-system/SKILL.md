@@ -6,8 +6,9 @@ description: The one web design system shared by all of Aurélien's apps (Camp d
 # web-design-system
 
 Every app Aurélien uses should feel like the same product: same colours, type, shell, controls and icons. The
-reference is **Camp de Base** (`ac-ua/Base-Camp`), whose identity comes from his site (aureliencaye.com: Syne and
-Questrial, the `#0a6aa7` button blue, the `#ebf4ff` ice band, the faceted mountain mark).
+reference is **Camp de Base** (`ac-ua/Base-Camp`) and only Camp de Base (Aurélien's call, 2026-10-29): its app screens
+(`web/camp.css`, the expeditions pages) decide every value, never his website. Its identity: Syne and Questrial, the
+`#0a6aa7` button blue, the `#ebf4ff` ice band, the faceted mountain mark.
 
 | File | What |
 |---|---|
@@ -51,7 +52,7 @@ Load the fonts once per page:
 | `--warn` / `--warn-soft` | `#9a5b00` / `#fff1d6` | `#f0b44c` / `#33260f` | to check, missing, still due (not an error) |
 | `--bad` / `--bad-soft` | `#b42318` / `#fde4e1` | `#ff8a7a` / `#3a1612` | errors, over budget, destructive |
 | `--info` / `--info-soft` | `#1f5f99` / `#e0edf9` | `#7db6ef` / `#11263a` | in progress, ordered, sources |
-| `--c1`…`--c7`, `--c-other` | `#0a6aa7 #d9480f #2b7a4b #7a4f9a #e8a33d #5b7f95 #b42318`, `#9ea2ab` | `#6fb0e0 #ff7a3d #6cc795 #b48ad6 #f0b44c #7fa3ba #ff8a7a`, `#6b7a86` | data series, in this order |
+| `--c1`…`--c6`, `--c-other` | `#0a6aa7 #5b7f95 #d9480f #e8a33d #3f9b6b #b42318`, `#adb5bd` | `#6fb0e0 #7fa3ba #ff7a3d #f0b44c #56b07f #ff8a7a`, `#6b7a86` | data series, in this order (Data viz) |
 | `--ci-ink`, `--ci-a`…`--ci-d` | `#0d1117`; `#5b8fc0 #3e5d75 #ffffff #9ea2ab` | `#05080b`; same fills | icon outline; sky, slate, snow, stone |
 | `--shadow` | `0 1px 2px rgba(15,30,39,.06), 0 8px 24px rgba(15,30,39,.08)` | stronger black | hover, menus, dialogs |
 | `--scrim` | `rgba(5,12,16,.45)` | same | behind drawers and dialogs |
@@ -64,7 +65,8 @@ figure, date and unit. Body 15px/1.5. Scale: h1 `clamp(28px, 4.4vw, 40px)/1.05` 
 
 **Spacing** on a 2/4 px rhythm: 4 8 12 16 24 32 64 (`--s1`…`--s7`), plus 6, 10, 14, 18 inside components. Page gap
 18, grid gaps 10–14, panel padding 16, card padding 14×16, page padding 24 top / 64 bottom.
-**Radii:** 4 tags · 6 small buttons, thumbs · 8 buttons, inputs, menu links · 10 panels, cards, tables · 12 dialogs,
+**Radii:** 2 the primary button (Camp de Base's `.btn.primary`) · 4 tags · 6 small buttons, thumbs · 8 buttons, inputs,
+menu links · 10 panels, cards, tables · 12 dialogs,
 big tiles · 18 hero · 999 pills, chips, segments. **Borders:** 1 px `--line`; dashed = empty, optional or "drop
 here"; a 3–4 px left border carries a status or category colour. **Motion:** `.15s` hover (border, shadow,
 `translateY(-1px)` on tiles), `.18s ease-out` drawers, `.3–.4s ease` folding headers; everything off under
@@ -89,7 +91,7 @@ here"; a 3–4 px left border carries a status or category colour. **Motion:** `
 ## Components (`tokens.css`)
 | Component | Class | Rules |
 |---|---|---|
-| Button | `.ds-btn`, `--primary`, `--sm`, `--danger` | 36 px high, radius 8, 14 px 500. One primary per view. Icons 16 px glyphs |
+| Button | `.ds-btn`, `--primary`, `--sm`, `--danger` | 36 px high, radius 8 (primary 2, as on Camp de Base's app screens), 14 px 500. One primary per view. Icons 16 px glyphs |
 | Icon button | `.ds-icon-btn` | 36×36, always with `aria-label` and `title` |
 | Segmented / theme switch | `.ds-seg` + `aria-pressed` | pill; pressed = inverted. Theme: Auto · Light · Dark glyphs |
 | Tabs / sub-tabs | `.ds-tabs` (`aria-selected`), `.ds-subtabs` | tabs in Syne 15 with a 3 px accent underline; sub-tabs as pills, scroll sideways on phones |
@@ -107,6 +109,7 @@ here"; a 3–4 px left border carries a status or category colour. **Motion:** `
 | Empty, loading, error | `.ds-empty` (dashed, title + one line + the action), `.ds-loading` ("Loading expeditions…" in place), `.ds-note.ds-bad` + retry | never a blank page; say what to do next |
 | Login | `.ds-login` | full-screen surface: mark 84 px, app name, one line, one primary button, `.ds-err` line |
 
+**Decided (v1.1):** Camp de Base renames its classes to the `ds-` names below and loads `ds.css`; no alias layer.
 Camp de Base names → system names: `.side*` → `.ds-side*` (`.side-link.on` → `[aria-current=page]`), `.mtop` →
 `.ds-mtop`, `.app` → `.ds-app`, `.wrap` → `.ds-wrap`, `main` → `.ds-main`, `.head/.eyebrow/.facts` → `.ds-head/…`,
 `.btn.primary/.sm/.danger` → `.ds-btn--primary/--sm/--danger`, `.icon-btn` → `.ds-icon-btn`, `.theme`/`.seg` →
@@ -130,8 +133,14 @@ dark background).
 ## Data viz
 - Charts are hand-made SVG (no chart library by default) inside `.ds-chart`; axis text 11 px mono muted; axes and
   grid in `--line`; a chart scrolls sideways under its minimum width (640 px for time series).
-- Series take `--c1`…`--c7` in order; "other" is `--c-other`. Status bars use the status tokens (ok, info, warn,
-  bad). The same thing has the same colour on every chart of an app.
+- Series take `--c1`…`--c6` in order; "other" is `--c-other`. They are the hues of Camp de Base's expedition charts
+  (v1.1): `--c1` accent blue (plan and main series), `--c2` slate (`--c-gear`), `--c3` orange (`--c-food`), `--c4`
+  amber (`--c-fuel`) from the expedition load chart (`expeditions.js`, `camp.css`), `--c5` green (good weather,
+  `simulation.js`), `--c6` red (deadlines on the expedition calendar), `--c-other` the rest grey (`simulation.js`).
+  Dark variants are the same hues lightened just enough for contrast on `--surface`. **No purple**, and no hue Camp de
+  Base doesn't use: an app that needs more series reuses these with a dash pattern or a label. Status bars use the
+  status tokens (ok, info, warn, bad). The same thing has the same colour on every chart of an app; an app may map
+  its own things onto the tokens by meaning (Sport: run `--c1`, swim `--c2`, ride `--c3`, strength `--c4`, hike `--c5`).
 - Plan vs actual: plan = muted dashed (`5 4`); actual = solid 2–2.5 px accent line with an `--accent-soft` area;
   alternative = dotted (`1.5 5`). Today or the cursor = a 1.5 px `--ink` line; hover value in a `.ds-tip`.
 - Bars: 6–14 px high, radius 3, on a `--sunken` track; legends with 10 px squares (radius 2). Big numbers above the

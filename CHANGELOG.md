@@ -9,6 +9,8 @@ The brain is versioned like any project: `v0.x` while the skeleton settles. Each
 - New `docs/drive-map.md`: tree, filing rules, folder ids. Linked from `AGENTS.md`, `domains/work.md`, and the skills
   that save pro files (`work-notes`, `session-close`, `demo-prep`, `case-for-change`, `cep-workbook-filler`,
   `explainer-video`).
+- Rule: every pro file an agent creates is saved straight to its place in the work Drive (sub-folders created as
+  needed) and its link written on the Notion page, without asking (`AGENTS.md` « Where things go », drive-map).
 - `.claude/settings.json`: Drive read, create, move and copy run without a prompt; trash and sharing still ask.
 
 ## v0.4.4 — confidentiality is one way: perso → pro only (2026-10-29)

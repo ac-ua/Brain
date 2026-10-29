@@ -73,15 +73,15 @@ html[data-palette][data-theme="dark"] .ds-side {
   --accent: #6fb0e0; --accent-soft: #10283a; --sunken: #0e1820; --line: #22323e; --muted: #92a5b4; --focus: #8cc0ff; }
 
 /* ---------- Base ---------- */
-*, *::before, *::after { box-sizing: border-box; }
+* { box-sizing: border-box; }
 [hidden] { display: none !important; }
 html, body { margin: 0; }
-body { background: var(--bg); color: var(--ink); font: 15px/1.5 var(--body); -webkit-font-smoothing: antialiased; }
+body { background: var(--bg); color: var(--ink); font: 15px/1.5 var(--body); }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
 button, input, select, textarea { font: inherit; color: inherit; }
 :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 a { color: var(--accent); text-underline-offset: 2px; }
-h1 { font: 700 clamp(28px, 4.4vw, 40px)/1.05 var(--display); letter-spacing: .01em; margin: 0; text-wrap: balance; }
+h1 { font: 700 clamp(28px, 4.4vw, 40px)/1.05 var(--display); margin: 0; text-wrap: balance; }
 h2 { font: 700 22px/1.2 var(--display); margin: 0; }
 h3, .ds-label { font: 600 12px/1.2 var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; }
 .ds-num, .num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
@@ -100,7 +100,6 @@ h3, .ds-label { font: 600 12px/1.2 var(--body); letter-spacing: .1em; text-trans
 .ds-side-h { font: 600 11px/1 var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); padding: 0 10px 6px; }
 .ds-side-link { display: flex; align-items: center; gap: 9px; padding: 7px 10px; border-radius: var(--r); color: var(--ink); text-decoration: none; font-size: 14px;
   border: 0; background: none; font-family: inherit; width: 100%; text-align: left; cursor: pointer; } /* links or buttons */
-.ds-side-link:hover { background: color-mix(in srgb, var(--surface) 60%, transparent); }
 .ds-side-link .ico { width: 1.3em; text-align: center; }
 .ds-side-link[aria-current="page"] { background: var(--surface); box-shadow: inset 3px 0 0 var(--accent); }
 .ds-side-link[aria-disabled="true"] { color: var(--muted); cursor: default; }
@@ -116,7 +115,7 @@ h3, .ds-label { font: 600 12px/1.2 var(--body); letter-spacing: .1em; text-trans
   .ds-side-open .ds-side { translate: 0 0; }
   .ds-mtop { display: flex; align-items: center; gap: 10px; position: sticky; top: env(safe-area-inset-top, 0px); z-index: 6; background: var(--sunken);
     border-bottom: 1px solid var(--line); padding: 8px max(16px, env(safe-area-inset-right, 0px)) 8px max(16px, env(safe-area-inset-left, 0px)); font-size: 14px; color: var(--muted); }
-  .ds-mtop b { color: var(--ink); font: 700 17px var(--display); }
+  .ds-mtop b { color: var(--ink); font-family: var(--display); font-size: 17px; }
 }
 @media (min-width: 860px) { .ds-scrim { display: none !important; } }
 /* Fold (Camp de Base's side.js): icons only at 64 px, the choice kept per app (shell.js); folded, the menu opens over
@@ -163,7 +162,7 @@ h3, .ds-label { font: 600 12px/1.2 var(--body); letter-spacing: .1em; text-trans
 /* ---------- Containers ---------- */
 .ds-panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); padding: 16px; min-width: 0; }
 .ds-card { all: unset; box-sizing: border-box; cursor: pointer; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md);
-  padding: 14px 16px; display: grid; gap: 8px; align-content: start; min-width: 0; transition: box-shadow var(--t-fast), border-color var(--t-fast); }
+  padding: 14px 16px; display: grid; gap: 8px; align-content: start; min-width: 0; }
 .ds-card:hover { box-shadow: var(--shadow); border-color: transparent; }
 .ds-card:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 .ds-card .t { font: 700 19px/1.2 var(--display); }
@@ -178,13 +177,12 @@ h3, .ds-label { font: 600 12px/1.2 var(--body); letter-spacing: .1em; text-trans
 .ds-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 13px; border-radius: var(--r); border: 1px solid var(--line);
   background: var(--surface); color: var(--ink); cursor: pointer; font-size: 14px; white-space: nowrap; text-decoration: none; } /* camp.css .btn */
 .ds-btn:hover { border-color: var(--muted); }
-.ds-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
-.ds-btn--primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); border-radius: 2px; } /* Camp de Base's app screens (camp.css .btn.primary) */
-.ds-btn--primary:hover { border-color: var(--accent); filter: brightness(1.05); }
-.ds-btn--danger { color: var(--bad); }
-.ds-btn--sm { padding: 4px 8px; font-size: 12.5px; border-radius: var(--r-sm); }
+.ds-btn.ds-btn--primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); border-radius: 2px; } /* Camp de Base's app screens (camp.css .btn.primary) */
+.ds-btn.ds-btn--primary:hover { border-color: var(--accent); filter: brightness(1.05); }
+.ds-btn.ds-btn--danger { color: var(--bad); }
+.ds-btn.ds-btn--sm { padding: 4px 8px; font-size: 12.5px; border-radius: var(--r-sm); }
 .ds-btn:disabled { opacity: .5; cursor: not-allowed; }
-.ds-icon-btn { flex: none; border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: var(--r); width: var(--control-h); height: var(--control-h);
+.ds-icon-btn { border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: var(--r); width: var(--control-h); height: var(--control-h);
   display: grid; place-items: center; cursor: pointer; }
 .ds-icon-btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; }
 /* Segmented control (theme switch, view switch): one pressed button, inverted */
@@ -197,6 +195,7 @@ h3, .ds-label { font: 600 12px/1.2 var(--body); letter-spacing: .1em; text-trans
 .ds-tabs button { flex: none; padding: 10px 14px; font: 700 15px/1 var(--display); color: var(--muted); border: 0; background: none; border-bottom: 3px solid transparent; cursor: pointer; }
 .ds-tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
 .ds-tabs button:disabled { opacity: .5; cursor: default; }
+.ds-tabs .ds-soon { font-size: 9px; padding: 2px 5px; margin-left: 6px; vertical-align: 2px; }
 /* Sub-tabs: pills under the tabs */
 .ds-subtabs { display: flex; gap: 6px; flex-wrap: wrap; margin: 12px 0 2px; }
 .ds-subtabs button { font: 14px var(--body); padding: 5px 12px; border-radius: var(--r-pill); border: 1px solid var(--line); background: var(--surface); color: var(--muted); cursor: pointer; }
@@ -210,52 +209,53 @@ h3, .ds-label { font: 600 12px/1.2 var(--body); letter-spacing: .1em; text-trans
 
 /* ---------- Forms ---------- */
 .ds-input, .ds-form input:not([type=checkbox]):not([type=radio]), .ds-form select, .ds-form textarea {
-  padding: 7px 9px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface); color: var(--ink); min-width: 0; width: 100%; } /* camp.css inputs */
+  padding: 7px 9px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface); min-width: 0; } /* camp.css inputs */
 .ds-form { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); }
-.ds-form label { display: grid; gap: 4px; font-size: 13px; color: var(--muted); min-width: 0; }
+.ds-form label { display: grid; gap: 4px; font-size: 13px; color: var(--muted); }
 .ds-form label.full { grid-column: 1 / -1; }
-.ds-form label.chk { display: flex; gap: 8px; align-items: center; color: var(--ink); }
-.ds-form textarea { min-height: 90px; resize: vertical; line-height: 1.45; }
+.ds-form label.chk { display: flex; gap: 8px; align-items: center; }
+.ds-form textarea { min-height: 90px; resize: vertical; }
 .ds-form .missing { border-color: var(--warn); background: var(--warn-soft); }
 .ds-form fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: 10px; }
 .ds-form legend { font: 600 12px/1 var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); padding: 0; margin-bottom: 10px; }
 .ds-search { width: min(320px, 100%); }
-@media (max-width: 700px) { .ds-input, .ds-form input, .ds-form select, .ds-form textarea { font-size: 16px; } }
-.ds-switch { position: relative; display: inline-block; width: 36px; height: 20px; flex: none; }
-.ds-switch input { opacity: 0; width: 0; height: 0; }
-.ds-switch span { position: absolute; inset: 0; border-radius: var(--r-pill); background: var(--line); transition: background var(--t-fast); cursor: pointer; }
+.ds-switch { position: relative; display: inline-block; width: 34px; height: 20px; cursor: pointer; }
+.ds-switch input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: inherit; z-index: 1; }
+.ds-switch span { position: absolute; inset: 0; border-radius: var(--r-pill); background: var(--line); transition: background var(--t-fast); }
 .ds-switch span::after { content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: var(--surface); box-shadow: 0 1px 2px rgba(0,0,0,.25); transition: transform var(--t-fast); }
 .ds-switch input:checked + span { background: var(--accent); }
-.ds-switch input:checked + span::after { transform: translateX(16px); }
+.ds-switch input:checked + span::after { transform: translateX(14px); }
 .ds-switch input:focus-visible + span { outline: 2px solid var(--focus); outline-offset: 2px; }
+.ds-switch input:disabled + span { opacity: .4; } .ds-switch:has(input:disabled) { cursor: not-allowed; }
 
 /* ---------- Status ---------- */
 .ds-pill { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; padding: 2px 8px; border-radius: var(--r-pill); white-space: nowrap; color: var(--muted); background: var(--sunken); }
 .ds-pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 .ds-tag { font-size: 11px; padding: 2px 6px; border-radius: var(--r-xs); background: var(--sunken); color: var(--muted); }
 .ds-soon { font: 600 10px/1 var(--body); letter-spacing: .06em; text-transform: uppercase; border: 1px solid var(--line); border-radius: var(--r-pill); padding: 3px 6px; color: var(--muted); }
-.ds-note { font-size: 14px; padding: 10px 14px; border-radius: var(--r); border: 1px solid var(--line); border-left: 3px solid var(--accent); background: var(--sunken); }
+.ds-note { font-size: 14px; padding: 10px 14px; border-radius: var(--r); border: 1px solid var(--line); border-left: 3px solid var(--accent); background: var(--sunken); margin: 0 0 12px; }
 .ds-ok { color: var(--ok); background: var(--ok-soft); }
 .ds-warn { color: var(--warn); background: var(--warn-soft); }
 .ds-bad { color: var(--bad); background: var(--bad-soft); }
 .ds-info { color: var(--info); background: var(--info-soft); }
-.ds-note.ds-warn, .ds-note.ds-bad, .ds-note.ds-ok, .ds-note.ds-info { border-color: transparent; border-left-color: currentColor; }
+.ds-note.ds-warn, .ds-note.ds-bad, .ds-note.ds-ok, .ds-note.ds-info { border: 0; padding: 10px 12px; margin: 0; }
 .ds-meter { height: 6px; border-radius: 3px; background: var(--sunken); overflow: hidden; }
 .ds-meter i { display: block; height: 100%; background: var(--ok); } /* camp.css .meter */
 .ds-meter.ds-over i { background: var(--bad); }
 
 /* ---------- Tables ---------- */
+/* :where() keeps Camp de Base's specificity (it styled bare table/th/td): an app's own table rules still win. */
 .ds-table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface); }
-.ds-table { border-collapse: collapse; width: 100%; font-size: 14px; }
-.ds-table th { text-align: left; font: 600 11px/1.2 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding: 10px;
-  border-bottom: 1px solid var(--line); background: var(--sunken); white-space: nowrap; position: sticky; top: 0; }
-.ds-table td { padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
-.ds-table tr:last-child td { border-bottom: 0; }
-.ds-table td.n, .ds-table th.n { text-align: right; white-space: nowrap; }
-.ds-table td.n { font-family: var(--mono); font-variant-numeric: tabular-nums; }
-.ds-table tbody tr[data-href], .ds-table tbody tr.ds-click { cursor: pointer; }
-.ds-table tbody tr[data-href]:hover td, .ds-table tbody tr.ds-click:hover td { background: var(--sunken); }
-.ds-table tr.ds-grp td { background: var(--sunken); font: 700 15px/1 var(--display); padding: 9px 10px; }
+:where(.ds-table) { border-collapse: collapse; width: 100%; font-size: 14px; }
+:where(.ds-table) th { text-align: left; font: 600 11px/1.2 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding: 10px;
+  border-bottom: 1px solid var(--line); background: var(--sunken); white-space: nowrap; }
+:where(.ds-table) td { padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+:where(.ds-table) tr:last-child td { border-bottom: 0; }
+:where(.ds-table) td.n, :where(.ds-table) th.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+:where(.ds-table) td.n { font-family: var(--mono); }
+:where(.ds-table) tbody tr[data-href], :where(.ds-table) tbody tr.ds-click { cursor: pointer; }
+:where(.ds-table) tbody tr[data-href]:hover td, :where(.ds-table) tbody tr.ds-click:hover td { background: var(--sunken); }
+:where(.ds-table) tr.ds-grp td { background: var(--sunken); font: 700 15px/1 var(--display); padding: 9px 10px; }
 
 /* ---------- Overlays and feedback ---------- */
 dialog.ds-dialog { border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--surface); color: var(--ink); padding: 0; width: min(640px, calc(100vw - 32px)); box-shadow: var(--shadow); }
@@ -267,7 +267,7 @@ dialog.ds-dialog::backdrop { background: var(--scrim); }
 .ds-toast { position: fixed; z-index: 70; left: 50%; translate: -50% 0; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); background: var(--ink); color: var(--bg);
   padding: 10px 14px; border-radius: var(--r); font-size: 14px; max-width: calc(100vw - 32px); }
 .ds-toast.ds-err { background: var(--bad); color: #fff; } /* camp.css .toast.err */
-.ds-tip { position: absolute; transform: translateX(-50%); background: var(--ink); color: var(--bg); font: 12px var(--mono); padding: 3px 8px; border-radius: var(--r-sm); pointer-events: none; white-space: nowrap; z-index: 30; }
+.ds-tip { position: absolute; transform: translateX(-50%); background: var(--ink); color: var(--bg); font: 12px var(--mono); padding: 3px 8px; border-radius: var(--r-sm); pointer-events: none; white-space: nowrap; }
 .ds-empty { padding: 28px; text-align: center; color: var(--muted); border: 1px dashed var(--line); border-radius: var(--r-md); }
 .ds-empty strong { display: block; color: var(--ink); font: 600 22px/1.2 var(--display); margin-bottom: 6px; }
 .ds-empty > p { margin: 0 auto 12px; max-width: 60ch; } .ds-empty > p:last-child { margin-bottom: 0; }
@@ -283,7 +283,7 @@ dialog.ds-dialog::backdrop { background: var(--scrim); }
 .ds-chart .area { fill: var(--accent-soft); }
 .ds-chart .cur { stroke: var(--ink); stroke-width: 1.5; }
 .ds-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--muted); margin-top: 10px; }
-.ds-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+.ds-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; }
 .ds-track { height: 14px; background: var(--sunken); border-radius: 3px; display: flex; overflow: hidden; }
 .ds-track i { display: block; height: 100%; }
 
@@ -291,6 +291,6 @@ dialog.ds-dialog::backdrop { background: var(--scrim); }
 .ds-login { position: fixed; inset: 0; z-index: 60; background: var(--surface); display: grid; place-items: center; padding: 24px; }
 .ds-login > div { display: grid; gap: 18px; justify-items: center; text-align: center; max-width: 360px; }
 .ds-login img { width: 84px; height: auto; }
-.ds-login h1 { font-size: 34px; }
+.ds-login h1 { margin: 0; font-size: 34px; }
 .ds-login p { margin: 0; color: var(--muted); }
-.ds-login .ds-err { color: var(--bad); min-height: 1.2em; }
+.ds-login .ds-err { color: #b42318; min-height: 1.2em; }

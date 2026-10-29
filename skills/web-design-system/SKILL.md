@@ -131,18 +131,18 @@ mark lives in the app's repo (`web/brand/<app>-mark.svg`) and is also the favico
 ## Components (`tokens.css`)
 | Component | Class | Rules |
 |---|---|---|
-| Button | `.ds-btn`, `--primary`, `--sm`, `--danger` | as Camp de Base's `.btn`: padding 8×13 (no fixed height), radius 8 (primary 2), 14 px regular; `--sm` 4×8, 12.5 px, radius 6. One primary per view. Icons 16 px glyphs |
+| Button | `.ds-btn`, `.ds-btn.ds-btn--primary`, `--sm`, `--danger` | as Camp de Base's `.btn`: padding 8×13 (no fixed height), radius 8 (primary 2), 14 px regular; `--sm` 4×8, 12.5 px, radius 6. Modifiers are written with the base class (`.ds-btn.ds-btn--sm`), the weight of Camp de Base's `.btn.sm`. No rule on icons inside: a glyph in a button gets its size and stroke from the app. One primary per view |
 | Icon button | `.ds-icon-btn` | 36×36, always with `aria-label` and `title` |
 | Segmented / theme switch | `.ds-seg` + `aria-pressed` | pill; pressed = inverted. Theme: Auto · Light · Dark glyphs |
 | Tabs / sub-tabs | `.ds-tabs` (`aria-selected`), `.ds-subtabs` | tabs in Syne 15 with a 3 px accent underline; sub-tabs as pills, scroll sideways on phones |
 | Filter chips | `.ds-chips > .ds-chip` (`aria-pressed`, optional `.num`) | 999 radius, 13 px; pressed = inverted |
-| Status pill | `.ds-pill.ds-ok|warn|bad|info` | dot + word; never colour alone |
+| Status pill | `.ds-pill.ds-ok|warn|bad|info` | dot + word; never colour alone; no tone = neutral (muted on sunken) |
 | Tag, Soon badge | `.ds-tag`, `.ds-soon` | 11 px; source tags in info, gaps in warn |
 | Panel, card, KPI | `.ds-panel`, `.ds-card`, `.ds-kpis > .ds-kpi (.k .v .s)` | radius 10; a whole clickable card is a `button` or `a` with `.ds-card` |
-| Note | `.ds-note` (+ `.ds-warn` …) | inline explanation or warning with a left bar |
+| Note | `.ds-note` (+ `.ds-warn`, `.ds-bad`) | explanation with a 3 px accent bar, 12 px below (Camp de Base's `.infobox`); a warning or error is a tinted box without border (`.warnbox`) |
 | Meter, track | `.ds-meter > i`, `.ds-track > i` | 6 px progress (ok green as on Camp de Base, `.ds-over` = bad); 14 px stacked bar |
-| Table | `.ds-table-wrap > table.ds-table` | sticky sunken head, 11 px uppercase; numbers right-aligned in mono (`.n`); group rows in Syne; clickable rows `tr[data-href]` |
-| Form | `.ds-form` (labels wrap inputs), `.ds-input`, `.ds-switch`, `.ds-search` | label 13 px muted above the field; `.missing` = warn; inputs 16 px on phones (no zoom) |
+| Table | `.ds-table-wrap > table.ds-table` | sunken head (not sticky), 11 px uppercase; numbers right-aligned in mono (`.n`, tabular figures in the head too); group rows `tr.ds-grp` in Syne; clickable rows `tr[data-href]`. Rules sit under `:where(.ds-table)`: they weigh what Camp de Base's bare `table`/`th`/`td` did, so an app's own table rules still win |
+| Form | `.ds-form` (labels wrap inputs), `.ds-input`, `.ds-switch`, `.ds-search` | label 13 px muted above the field; fields 7×9, radius 7; switch 34×20 (14 px travel, whole switch clickable, disabled at .4); `.missing` = warn |
 | Dialog, sheet | `dialog.ds-dialog > .ds-dialog-body + .ds-dialog-foot`, `.ds-sheet` | dialog ≤ 640 px; detail views open as a right sheet (≤ 760 px), full screen on phones |
 | Toast | `.ds-toast` (`.ds-err`) | bottom centre, inverted; errors in bad |
 | Tooltip | `.ds-tip` for charts; native `title` elsewhere | inverted, mono 12 px |
@@ -158,7 +158,11 @@ Camp de Base names → system names: `.side*` → `.ds-side*` (`.side-link.on` �
 `.meter`/`.track` → `.ds-meter`/`.ds-track`, `.tw` + `table` → `.ds-table-wrap` + `.ds-table`, `.form` →
 `.ds-form`, `dialog`/`.dlg` → `dialog.ds-dialog`/`.ds-dialog-body`, `.toast` → `.ds-toast`, `.rt-tip` → `.ds-tip`,
 `.empty` → `.ds-empty`, `.login` → `.ds-login`, `.sc2-switch` → `.ds-switch`, `.legend` → `.ds-legend`,
-`html[data-biome]` → `html[data-palette]`. Tokens keep the same names.
+`html[data-biome]` → `html[data-palette]`; also `.tools` → `.ds-toolbar`, `.cards`/`.cols` → `.ds-cards`/`.ds-cols`,
+`.dlg-foot` → `.ds-dialog-foot`, `tr.grp` → `tr.ds-grp`, `.soon`/`.cnt` → `.ds-soon`/`.ds-count`, `.warnbox(.bad)` →
+`.ds-note.ds-warn` (`.ds-bad`), `.tag.src|warn|ok` → `.ds-tag.ds-info|warn|ok`, `.meter.over` → `.ds-meter.ds-over`,
+`.toast.err` → `.ds-toast.ds-err`, `.pill.s-<status>` → `.ds-pill.ds-<tone>`. Tokens keep the same names. Done in Camp de Base
+on 2026-10-29 (v1.4), with no visible change.
 
 ## Dark mode
 Default follows the device (`prefers-color-scheme`); `<html data-theme="light|dark">` forces one. The switch has three

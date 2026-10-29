@@ -70,6 +70,7 @@ linked views of its Projects and open Tasks; the domain's existing pages sit und
 ## Pages and databases the skills depend on
 | What | ID | Used by |
 |---|---|---|
+| 🥇 Demo Nuggets · Demo Catalog (Work › Unify Apps) | page `2aa19ca79893806a943fef191219aafc` · db `dd1afc51cc5949b889c1318f56f65102` · `collection://937fd73f-a162-416a-85a4-8a0241d8d3a1` | demo-prep (recommend from it, update after each demo) |
 | Sponso (inline in 💰 Sponsoring, under South Pole) | db `2ae19ca7989380408259e428ed7ec36a` · `collection://2ae19ca7-9893-80d6-b263-000b7171b431` | the 3 outreach skills — never move |
 | Idee sponsors · Idee recherche | `37319ca79893804fbd90c46c840c92f4` · `3a419ca7989380c58078d01c44481dcd` | sponsor / research outreach |
 | 🇪🇸 Español hub | `3dc19ca7989381c78132e747f403f832` (Producción, Recomendaciones, Catálogo, Diario: ids in the skill) | spanish-teacher |

@@ -3,6 +3,10 @@
 PURPOSE (one line). Owner: Aurélien. Domain: DOMAIN. Part of the brain (`ac-ua/brain`): its `AGENTS.md` hard rules
 apply here too (autonomy, confidentiality, secrets, voice).
 
+**Before any build, deploy or cloud setup:** read `ac-ua/brain` → `agents/builder.md` and `skills/build-webapp`
+(`skills/release-webapp` for a release). They win over any doc in this repo on stack and deploy (Pages connected to
+this repo, release = merge into `main`, never `wrangler pages deploy`); a doc here that disagrees gets fixed.
+
 ## Context
 - Notion: Projects row `PROJECT_PAGE_ID`; roadmap = Build Roadmap filtered on this project.
 - Configuration guide: `docs/config-guide/guide.html` (published at ARTIFACT_URL), generated from `docs/build-ledger.json`.

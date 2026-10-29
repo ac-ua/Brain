@@ -3,6 +3,25 @@
 The brain is versioned like any project: `v0.x` while the skeleton settles. Each release is a merged PR on
 `ac-ua/brain` and a row in the Notion Build Roadmap (Project = Brain).
 
+## v0.4.14 — sessions are back in the cockpit (2026-10-29)
+- « Brain · Cockpit »: the Claude sessions block is back (Aurélien wants it). When the Claude Code Remote connector
+  does not answer in the page, the block shows the last 7 days of the Session Log instead (new view « Cockpit · recent »).
+
+## v0.4.13 — the cockpit reads Notion only (2026-10-29)
+- « Brain · Cockpit »: the Claude sessions block is removed (the Claude Code Remote connector does not load in
+  artifacts); the page reads Notion only.
+
+## v0.4.12 — the project cockpit (2026-10-29)
+- « Brain · Cockpit » artifact (https://claude.ai/artifact/UqbtEKheEFwqs7P61d6zdi, `docs/cockpit/projects-cockpit.html`):
+  reads Notion and the Claude Code session list live through the claude.ai connectors; shows what waits on Aurélien,
+  one card per project (state, next step, his tasks, roadmap in progress, matching sessions) and lets him tick tasks
+  Done. Nothing stored in the page.
+- Notion: Projects gets `Where we are`, `Next step`, `State updated`; three « Cockpit · » views (`docs/notion-map.md`).
+- `session-close` and `AGENTS.md`: every session writes its project's state and files Aurélien's to-dos as Tasks
+  linked to the project.
+- « Brain · Étude du cockpit » (https://claude.ai/artifact/4xqmHuenUqj4EUZ292uoWF, `docs/cockpit/cockpit-proposals.html`):
+  research and design directions for the full cockpit.
+
 ## v0.4.11 — the personal Drive has a map (2026-10-29)
 - `docs/personal-drive-map.md`: personal Drive sorted and mapped (00_Inbox, 10_Admin, 20_Finance, 30_Expeditions,
   40_Projects, 50_Content, 60_Library, 70_Work, 99_Archive, One Life), rules, Notion links and folder ids. Finance is

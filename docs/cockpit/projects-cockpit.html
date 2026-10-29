@@ -1,0 +1,591 @@
+<title>Brain · Cockpit</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one column of decisions on top ("À toi"), then a responsive grid of project cards, then loose tasks and Claude sessions. */
+:root{
+  --paper:#f2f4f5; --sheet:#ffffff; --ink:#14202b; --ink-2:#4a5866; --ink-3:#7b8894;
+  --line:#d9dfe3; --line-2:#e8ecee;
+  --signal:#e2531b; --signal-soft:#fbe7dd;
+  --ice:#2f6f8f; --ice-soft:#e1eef4;
+  --ok:#2e7d4f; --ok-soft:#e0f0e6; --warn:#a86b00; --warn-soft:#f8ecd2; --bad:#b3261e; --bad-soft:#f8dedb;
+  --f-display:"Familjen Grotesk","Helvetica Neue",Arial,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0f151b; --sheet:#151d25; --ink:#e6ecf0; --ink-2:#a9b5bf; --ink-3:#7d8a95;
+  --line:#2a3540; --line-2:#212b35;
+  --signal:#ff7a45; --signal-soft:#3a2219; --ice:#7cb8d6; --ice-soft:#16303d;
+  --ok:#6cc98f; --ok-soft:#173225; --warn:#e3b04f; --warn-soft:#3a2e14; --bad:#ff8a80; --bad-soft:#3d1c1a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0f151b; --sheet:#151d25; --ink:#e6ecf0; --ink-2:#a9b5bf; --ink-3:#7d8a95;
+  --line:#2a3540; --line-2:#212b35;
+  --signal:#ff7a45; --signal-soft:#3a2219; --ice:#7cb8d6; --ice-soft:#16303d;
+  --ok:#6cc98f; --ok-soft:#173225; --warn:#e3b04f; --warn-soft:#3a2e14; --bad:#ff8a80; --bad-soft:#3d1c1a; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 56px}
+.wrap{max-width:1240px;margin:0 auto}
+h1,h2,h3{font-family:var(--f-display);margin:0;line-height:1.15;text-wrap:balance}
+h1{font-size:clamp(1.6rem,4vw,2.2rem);font-weight:700}
+h2{font-size:1.15rem;font-weight:700;display:flex;align-items:baseline;gap:10px}
+h2 .n{font-family:var(--f-mono);font-size:.85rem;color:var(--ink-3);font-weight:400}
+a{color:var(--ice);text-decoration:none}
+a:hover{text-decoration:underline}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.muted{color:var(--ink-3)}
+section{margin-top:28px}
+
+/* header */
+header{padding-top:28px;display:flex;flex-wrap:wrap;gap:12px 20px;align-items:flex-end;justify-content:space-between}
+.sub{color:var(--ink-2);font-size:.92rem;margin-top:4px}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--sheet)}
+.seg button{border:0;background:transparent;padding:5px 11px;font-size:.85rem;color:var(--ink-2)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--sheet)}
+.btn{border:1px solid var(--line);background:var(--sheet);border-radius:6px;padding:5px 11px;font-size:.85rem}
+.fresh{display:flex;flex-wrap:wrap;gap:6px 14px;font-family:var(--f-mono);font-size:.75rem;color:var(--ink-3);margin-top:10px}
+.fresh .ok::before,.fresh .err::before,.fresh .wait::before{content:"●";margin-right:5px}
+.fresh .ok::before{color:var(--ok)} .fresh .err::before{color:var(--bad)} .fresh .wait::before{color:var(--line)}
+
+/* summary strip */
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:6px;overflow:hidden;margin-top:18px}
+.strip div{background:var(--sheet);padding:10px 14px;min-width:0}
+.strip b{display:block;font-family:var(--f-display);font-size:1.6rem;line-height:1.1;font-variant-numeric:tabular-nums}
+.strip span{font-size:.8rem;color:var(--ink-2)}
+.strip .hot b{color:var(--signal)}
+
+/* à toi */
+.todo{background:var(--sheet);border:1px solid var(--line);border-left:5px solid var(--signal);border-radius:6px;margin-top:10px}
+.todo-row{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:10px;align-items:start;padding:9px 14px;border-bottom:1px solid var(--line-2)}
+.todo-row:last-child{border-bottom:0}
+.todo-row .proj{font-family:var(--f-mono);font-size:.72rem;color:var(--ink-3);text-transform:uppercase;letter-spacing:.05em}
+.todo-row .what{min-width:0}
+.marker{width:14px;height:14px;margin-top:3px;border-radius:50%;border:2px solid var(--signal)}
+
+/* project grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px;margin-top:10px}
+@media (max-width:420px){.grid{grid-template-columns:minmax(0,1fr)}}
+.card{background:var(--sheet);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.card.mine{border-color:var(--signal)}
+.card-h{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.card-h h3{font-size:1.1rem}
+.card-h h3 a{color:var(--ink)}
+.meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:5px}
+.tag{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.04em;text-transform:uppercase;padding:1px 6px;border-radius:3px;background:var(--line-2);color:var(--ink-2);white-space:nowrap}
+.tag.active{background:var(--ok-soft);color:var(--ok)} .tag.paused{background:var(--warn-soft);color:var(--warn)} .tag.idea{background:var(--line-2)}
+.age{font-family:var(--f-mono);font-size:.7rem;white-space:nowrap;color:var(--ink-3)}
+.age.stale{color:var(--warn)} .age.none{color:var(--bad)}
+.lbl{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);margin-bottom:2px}
+.state p{margin:0}
+.next{background:var(--paper);border-radius:6px;padding:8px 10px}
+.next.mine{background:var(--signal-soft)}
+.next.mine .lbl{color:var(--signal)}
+.empty-note{color:var(--ink-3);font-style:italic;font-size:.9rem;margin:0}
+.tasks{list-style:none;margin:0;padding:0}
+.task{display:grid;grid-template-columns:20px minmax(0,1fr) auto;gap:8px;align-items:start;padding:4px 0}
+.task input{width:15px;height:15px;margin:3px 0 0;accent-color:var(--ok)}
+.task.done .t{text-decoration:line-through;color:var(--ink-3)}
+.task .t{min-width:0;overflow-wrap:anywhere}
+.pill{font-family:var(--f-mono);font-size:.66rem;padding:0 5px;border-radius:3px;white-space:nowrap;align-self:start;margin-top:2px}
+.p0{background:var(--bad-soft);color:var(--bad)} .p1{background:var(--warn-soft);color:var(--warn)} .p2,.p3{background:var(--line-2);color:var(--ink-2)}
+.st{font-family:var(--f-mono);font-size:.66rem;color:var(--ink-3);margin-left:4px}
+details{border-top:1px solid var(--line-2);padding-top:6px}
+summary{cursor:pointer;font-size:.85rem;color:var(--ink-2)}
+summary::marker{color:var(--ink-3)}
+.rm{padding:5px 0;border-bottom:1px dashed var(--line-2);font-size:.88rem}
+.rm:last-child{border-bottom:0}
+.rm .d{color:var(--ink-2);font-size:.82rem;margin-top:2px;overflow-wrap:anywhere}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:2px 9px;font-size:.78rem;color:var(--ink-2);background:var(--sheet);max-width:100%}
+.chip span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dot{width:8px;height:8px;border-radius:50%;flex:none;background:var(--line)}
+.b-working{background:var(--ice)} .b-blocked{background:var(--signal)} .b-review{background:var(--warn)} .b-completed{background:var(--ok)} .b-failed{background:var(--bad)}
+.links{display:flex;flex-wrap:wrap;gap:10px;font-size:.8rem}
+
+/* loose tasks + sessions */
+.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;margin-top:10px}
+@media (max-width:860px){.cols{grid-template-columns:minmax(0,1fr)}}
+.panel{background:var(--sheet);border:1px solid var(--line);border-radius:8px;padding:12px 16px;min-width:0}
+.dom-h{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin:10px 0 2px}
+.dom-h:first-child{margin-top:0}
+.sess{display:grid;grid-template-columns:10px minmax(0,1fr) auto;gap:10px;padding:8px 0;border-bottom:1px solid var(--line-2);align-items:start}
+.sess:last-child{border-bottom:0}
+.sess .dot{margin-top:6px}
+.sess .ti{font-weight:500;overflow-wrap:anywhere}
+.sess .ra{font-size:.84rem;color:var(--ink-2);overflow-wrap:anywhere}
+.sess .when{font-family:var(--f-mono);font-size:.7rem;color:var(--ink-3);white-space:nowrap;text-align:right}
+.unread{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--signal);margin-left:6px;vertical-align:middle}
+
+.notice{background:var(--warn-soft);color:var(--ink);border-radius:6px;padding:10px 14px;font-size:.9rem;margin-top:10px}
+.notice.err{background:var(--bad-soft)}
+.skeleton{color:var(--ink-3);font-size:.9rem;padding:8px 0}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--sheet);padding:9px 14px;border-radius:8px;font-size:.88rem;display:flex;gap:14px;align-items:center;z-index:20;max-width:calc(100% - 32px)}
+.toast button{background:transparent;border:0;color:var(--signal);font-weight:600;padding:0}
+.how{margin-top:36px;font-size:.85rem;color:var(--ink-2);max-width:78ch}
+.how b{color:var(--ink)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Cockpit Projets</h1>
+      <div class="sub">Où en est chaque projet, ce qui t'attend, ce que font les sessions Claude. Lu en direct dans Notion et Claude Code.</div>
+    </div>
+    <div class="controls">
+      <div class="seg" role="group" aria-label="Contexte">
+        <button type="button" data-ctx="all" aria-pressed="true">Tout</button>
+        <button type="button" data-ctx="perso" aria-pressed="false">Perso</button>
+        <button type="button" data-ctx="work" aria-pressed="false">Work</button>
+      </div>
+      <button type="button" class="btn" id="refresh">Actualiser</button>
+    </div>
+  </header>
+  <div class="fresh" id="fresh">
+    <span class="wait" data-src="projects">Projets…</span>
+    <span class="wait" data-src="tasks">Tâches…</span>
+    <span class="wait" data-src="roadmap">Roadmap…</span>
+    <span class="wait" data-src="sessions">Sessions…</span>
+  </div>
+  <div id="page-notice"></div>
+
+  <div class="strip" id="strip">
+    <div class="hot"><b id="s-mine">–</b><span>prochaines étapes à toi</span></div>
+    <div><b id="s-tasks">–</b><span>tâches pour toi (P0–P1)</span></div>
+    <div><b id="s-inbox">–</b><span>tâches à trier</span></div>
+    <div><b id="s-proj">–</b><span>projets actifs</span></div>
+    <div><b id="s-sess">–</b><span>sessions en cours</span></div>
+  </div>
+
+  <section>
+    <h2>À toi de jouer <span class="n" id="mine-n"></span></h2>
+    <div id="mine"><div class="todo"><div class="skeleton" style="padding:12px 14px">Chargement des projets et des tâches depuis Notion…</div></div></div>
+  </section>
+
+  <section>
+    <h2>Projets <span class="n" id="proj-n"></span></h2>
+    <div id="projects"><div class="skeleton">Chargement…</div></div>
+  </section>
+
+  <section class="cols">
+    <div>
+      <h2>Hors projet <span class="n" id="loose-n"></span></h2>
+      <div class="panel" id="loose" style="margin-top:10px"><div class="skeleton">Chargement…</div></div>
+    </div>
+    <div>
+      <h2>Sessions Claude <span class="n" id="sess-n"></span></h2>
+      <div class="panel" id="sessions" style="margin-top:10px"><div class="skeleton">Chargement…</div></div>
+    </div>
+  </section>
+
+  <div class="how">
+    <b>Comment ça se met à jour.</b> Cette page ne stocke rien : elle relit Notion et la liste de tes sessions Claude Code toutes les 5 minutes, et quand tu cliques sur Actualiser.
+    Chaque session qui travaille sur un projet écrit, avant de finir, trois champs de sa ligne <i>Projects</i> (Where we are, Next step, State updated) et crée dans <i>Tasks</i> ce qui t'attend, avec Owner = Aurélien et le projet lié (règle du skill <span class="mono">session-close</span>).
+    Cocher une tâche la passe à Done dans Notion. Vues lues : Projects « Cockpit · projects », Tasks « Cockpit · open », Build Roadmap « Cockpit · in progress », et Session Log « Cockpit · recent » si le connecteur Claude Code ne répond pas.
+  </div>
+</div>
+<div id="toast-host"></div>
+
+<script>
+(function(){
+  const VIEWS = {
+    projects: "view://40819ca7-9893-81a8-ab3b-000c6d5d2e58",
+    tasks: "view://40819ca7-9893-81bd-a18b-000c3fb411c6",
+    roadmap: "view://40819ca7-9893-8114-9b31-000cf8a5a634",
+    log: "view://40819ca7-9893-8120-a2ab-000c937d58aa"
+  };
+  const NOTION = "Notion", CCR = "Claude Code Remote";
+  const POLL = 5 * 60 * 1000;
+  const LABELS = {projects:"Projets", tasks:"Tâches", roadmap:"Roadmap", sessions:"Sessions"};
+  const PRIO = {"P0 Now":0,"P1 Next":1,"P2 Later":2,"P3 Someday":3};
+  const STATUS_ORDER = {"Doing":0,"Next":1,"Waiting":2,"Inbox":3};
+  const STATUS_FR = {"Doing":"en cours","Next":"à faire","Waiting":"en attente","Inbox":"à trier"};
+  const BUCKET = {
+    WORKING:["working","en cours"], BLOCKED:["blocked","bloquée"], REVIEW_READY:["review","à relire"],
+    COMPLETED:["completed","terminée"], FAILED:["failed","en échec"]
+  };
+
+  const state = {projects:null, tasks:null, roadmap:null, log:null, sessions:null, errors:{}, at:{}, done:new Set(), ctx:"all"};
+  let mcp = null;
+  const unsubs = [];
+
+  try { const c = localStorage.getItem("cockpit-ctx"); if (c) state.ctx = c; } catch(e) {}
+
+  // ---------- helpers ----------
+  const $ = (s, r=document) => r.querySelector(s);
+  const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const idOf = url => { const m = String(url||"").replace(/-/g,"").match(/[0-9a-f]{32}/i); return m ? m[0].toLowerCase() : ""; };
+  const rel = v => { if (!v) return []; if (Array.isArray(v)) return v; try { const a = JSON.parse(v); return Array.isArray(a) ? a : []; } catch(e) { return []; } };
+  const norm = s => String(s||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]/g,"");
+  // Notion rich text arrives as markdown: keep link labels, drop the syntax
+  const md = s => esc(String(s||"").replace(/\[([^\]]+)\]\((https?:[^)]+)\)/g, "$1").replace(/\\_/g,"_").replace(/<mention[^>]*>([^<]*)<\/mention>/g,"$1"));
+
+  function daysAgo(dateStr){
+    if (!dateStr) return null;
+    const d = new Date(dateStr.length <= 10 ? dateStr + "T12:00:00" : dateStr);
+    if (isNaN(d)) return null;
+    return Math.floor((Date.now() - d.getTime()) / 86400000);
+  }
+  function ago(ms){
+    const m = Math.round((Date.now() - ms) / 60000);
+    if (m < 1) return "à l'instant";
+    if (m < 60) return "il y a " + m + " min";
+    const h = Math.round(m / 60);
+    if (h < 24) return "il y a " + h + " h";
+    return "il y a " + Math.round(h / 24) + " j";
+  }
+  function dayLabel(n){
+    if (n === null) return "";
+    if (n <= 0) return "aujourd'hui";
+    if (n === 1) return "hier";
+    return "il y a " + n + " j";
+  }
+
+  function parsePayload(result){
+    let p = result && result.payload;
+    if (typeof p === "string") {
+      try { p = JSON.parse(p); }
+      catch(e) {
+        const a = p.indexOf("{"), b = p.lastIndexOf("}");
+        if (a >= 0 && b > a) { try { p = JSON.parse(p.slice(a, b + 1)); } catch(e2) {} }
+      }
+    }
+    if ((p == null || typeof p !== "object") && result && Array.isArray(result.content)) {
+      const t = result.content.find(c => c.type === "text");
+      if (t) { try { p = JSON.parse(t.text); } catch(e) {} }
+    }
+    return p;
+  }
+  function findSessions(p){
+    if (!p || typeof p !== "object") return [];
+    if (Array.isArray(p)) return p.filter(x => x && typeof x.id === "string" && x.id.startsWith("session_"));
+    for (const k of ["ccr","data","sessions","items","results"]) {
+      if (p[k]) { const r = findSessions(p[k]); if (r.length) return r; }
+    }
+    return [];
+  }
+
+  function errorText(err, server){
+    const code = err && err.code;
+    if (code === "needs_reauth") return "La connexion " + server + " a expiré. Reconnecte " + server + " dans claude.ai, Réglages, Connecteurs, puis actualise.";
+    if (code === "server_not_connected") return server + " n'est pas connecté à ton compte. Ajoute-le dans claude.ai, Réglages, Connecteurs.";
+    if (code === "selection_required") return "Plusieurs connecteurs " + server + " existent : choisis celui à utiliser dans la fenêtre de claude.ai.";
+    if (code === "not_in_manifest" || code === "approval_required" || code === "consent_required") return "La page n'a pas encore l'accord pour lire " + server + ". Clique sur Actualiser pour le donner.";
+    if (code === "blocked_by_policy") return "Ton organisation bloque cet outil " + server + ".";
+    if (code === "server_unavailable") return server + " ne répond pas pour l'instant ; nouvel essai à la prochaine actualisation.";
+    if (code === "tool_error") return server + " a refusé la requête : " + (err.message || "erreur");
+    return server + " : " + ((err && err.message) || "erreur inconnue");
+  }
+
+  // ---------- data ----------
+  function onData(key, server){
+    return ev => {
+      if (ev.type === "data") {
+        const p = parsePayload(ev.result);
+        state.at[key] = (ev.result.cache && ev.result.cache.storedAt) || Date.now();
+        delete state.errors[key];
+        if (key === "sessions") state.sessions = findSessions(p);
+        else state[key] = (p && Array.isArray(p.results)) ? p.results : [];
+        if (!["sessions","log"].includes(key) && p && p.has_more) state.errors[key + "_more"] = true;
+      } else {
+        const code = ev.error && ev.error.code;
+        state.errors[key] = errorText(ev.error, server);
+        if (["needs_reauth","server_not_connected","blocked_by_policy","approval_required","not_in_manifest","selection_required"].includes(code)) state[key] = null;
+      }
+      render();
+    };
+  }
+
+  function startWatches(){
+    while (unsubs.length) { try { unsubs.pop()(); } catch(e) {} }
+    for (const k of ["projects","tasks","roadmap"]) {
+      unsubs.push(mcp.watchTool(NOTION, "notion-query-data-sources",
+        {data:{mode:"view", view_url:VIEWS[k], page_size:100}}, onData(k, NOTION),
+        {cache:{staleTime:60000, gcTime:86400000}, refetchInterval:POLL}));
+    }
+    unsubs.push(mcp.watchTool(NOTION, "notion-query-data-sources",
+      {data:{mode:"view", view_url:VIEWS.log, page_size:30}}, onData("log", NOTION),
+      {cache:{staleTime:60000, gcTime:86400000}, refetchInterval:POLL}));
+    unsubs.push(mcp.watchTool(CCR, "list_sessions", {limit:30}, onData("sessions", CCR),
+      {cache:{staleTime:60000, gcTime:86400000}, refetchInterval:POLL}));
+  }
+
+  async function refreshAll(){
+    if (!mcp) return;
+    const btn = $("#refresh"); btn.disabled = true; btn.textContent = "Actualisation…";
+    const calls = [];
+    calls.push(mcp.callTool(NOTION, "notion-query-data-sources", {data:{mode:"view", view_url:VIEWS.log, page_size:30}}, {cache:{refresh:true, staleTime:60000, gcTime:86400000}})
+      .then(r => onData("log", NOTION)({type:"data", result:r}), e => onData("log", NOTION)({type:"error", error:e})));
+    for (const k of ["projects","tasks","roadmap"]) {
+      calls.push(mcp.callTool(NOTION, "notion-query-data-sources", {data:{mode:"view", view_url:VIEWS[k], page_size:100}}, {cache:{refresh:true, staleTime:60000, gcTime:86400000}})
+        .then(r => onData(k, NOTION)({type:"data", result:r}), e => onData(k, NOTION)({type:"error", error:e})));
+    }
+    calls.push(mcp.callTool(CCR, "list_sessions", {limit:30}, {cache:{refresh:true, staleTime:60000, gcTime:86400000}})
+      .then(r => onData("sessions", CCR)({type:"data", result:r}), e => onData("sessions", CCR)({type:"error", error:e})));
+    await Promise.allSettled(calls);
+    btn.disabled = false; btn.textContent = "Actualiser";
+  }
+
+  async function setDone(task, done){
+    const id = idOf(task.url);
+    const prev = task.Status;
+    if (done) state.done.add(id); else state.done.delete(id);
+    render();
+    try {
+      await mcp.callTool(NOTION, "notion-update-page", {page_id:id, command:"update_properties", properties:{Status: done ? "Done" : prev}});
+      if (done) toast("« " + task.Name + " » passée à Done dans Notion.", () => setDone(task, false));
+      else toast("Remise à « " + (STATUS_FR[prev] || prev) + " ».");
+      if (!done) { try { await mcp.invalidate(NOTION, "notion-query-data-sources"); } catch(e) {} }
+    } catch(e) {
+      if (done) state.done.delete(id); else state.done.add(id);
+      render();
+      toast(errorText(e, NOTION));
+    }
+  }
+
+  let toastTimer = null;
+  function toast(text, undo){
+    const host = $("#toast-host");
+    host.innerHTML = '<div class="toast" role="status"><span>' + esc(text) + '</span>' + (undo ? '<button type="button">Annuler</button>' : '') + '</div>';
+    if (undo) host.querySelector("button").onclick = () => { host.innerHTML = ""; undo(); };
+    clearTimeout(toastTimer); toastTimer = setTimeout(() => { host.innerHTML = ""; }, 7000);
+  }
+
+  // ---------- model ----------
+  function isWork(row){ return row.Domain === "Work" || row.Context === "Work"; }
+  function inCtx(row){ if (state.ctx === "all") return true; return state.ctx === "work" ? isWork(row) : !isWork(row); }
+  function stripMe(s){ const t = String(s||"").replace(/^\s*aur[ée]lien\s*:\s*/i, ""); return t.charAt(0).toUpperCase() + t.slice(1); }
+  function mineText(s){ return /^\s*(aur[ée]lien|toi|you)\b/i.test(String(s||"")); }
+  function openTasks(){ return (state.tasks || []).filter(t => t.Status !== "Done" && !state.done.has(idOf(t.url))); }
+  function taskSort(a, b){
+    return (STATUS_ORDER[a.Status] ?? 9) - (STATUS_ORDER[b.Status] ?? 9) || (PRIO[a.Priority] ?? 9) - (PRIO[b.Priority] ?? 9);
+  }
+  function aliasesFor(p){
+    const out = new Set();
+    const n = norm(p.Name);
+    if (n.length >= 4) out.add(n);
+    const first = norm(String(p.Name||"").split(/[\s(]/)[0]);
+    if (first.length >= 5) out.add(first);
+    const repo = String(p.Repo||"").split("/").filter(Boolean).pop();
+    const r = norm(repo);
+    if (r.length >= 4 && r !== "website") out.add(r);
+    if (n === "campdebase") out.add("basecamp");
+    return [...out];
+  }
+  function sessionsFor(p){
+    const al = aliasesFor(p);
+    return activeSessions().filter(s => { const t = norm(s.title); return al.some(a => t.includes(a)); });
+  }
+  function activeSessions(){
+    const weekAgo = Date.now() - 7 * 86400000;
+    return (state.sessions || []).filter(s => !/ARCHIVED/.test(s.session_status || "") && new Date(s.updated_at || s.created_at || 0).getTime() > weekAgo);
+  }
+  function bucketOf(s){
+    const b = String(s.status_bucket || "").replace("SESSION_STATUS_BUCKET_","");
+    return BUCKET[b] || ["", b.toLowerCase() || "?"];
+  }
+
+  // ---------- render ----------
+  function taskLi(t, showProject){
+    const id = idOf(t.url);
+    const done = state.done.has(id);
+    const pr = String(t.Priority||"").slice(0,2);
+    return '<li class="task' + (done ? ' done' : '') + '">' +
+      '<input type="checkbox" id="t-' + id + '" data-task="' + id + '"' + (done ? ' checked' : '') + ' aria-label="Marquer comme faite">' +
+      '<label class="t" for="t-' + id + '">' + md(t.Name) + '<span class="st">' + esc(STATUS_FR[t.Status] || t.Status || "") + (showProject ? ' · ' + esc(showProject) : '') + '</span></label>' +
+      (pr ? '<span class="pill ' + pr.toLowerCase() + '">' + esc(pr) + '</span>' : '<span></span>') + '</li>';
+  }
+
+  function render(){
+    // freshness line
+    for (const el of document.querySelectorAll("#fresh [data-src]")) {
+      const k = el.dataset.src;
+      if (state.errors[k]) { el.className = "err"; el.textContent = LABELS[k] + " : erreur"; }
+      else if (state.at[k]) { el.className = "ok"; el.textContent = LABELS[k] + " " + ago(state.at[k]); }
+    }
+    const errs = ["projects","tasks","roadmap","sessions"].filter(k => state.errors[k]);
+    const notice = $("#page-notice");
+    if (errs.length === 4 && new Set(errs.map(k => state.errors[k].split(" ")[0])).size >= 1 && errs.every(k => !state[k])) {
+      notice.innerHTML = '<div class="notice err">' + esc(state.errors.projects) + (state.errors.sessions !== state.errors.projects ? '<br>' + esc(state.errors.sessions) : '') + '</div>';
+    } else notice.innerHTML = "";
+    if (["projects","tasks","roadmap"].some(k => state.errors[k + "_more"])) {
+      notice.innerHTML += '<div class="notice">Plus de 100 lignes dans une vue : seules les 100 premières sont affichées. Ouvre Notion pour le reste.</div>';
+    }
+
+    const projects = (state.projects || []).filter(inCtx);
+    const tasks = openTasks().filter(inCtx);
+    const roadmap = state.roadmap || [];
+    const projById = new Map((state.projects || []).map(p => [idOf(p.url), p]));
+
+    const tasksByProj = new Map(), loose = [];
+    for (const t of tasks) {
+      const ids = rel(t.Project).map(idOf).filter(id => projById.has(id));
+      if (!ids.length) loose.push(t);
+      for (const id of ids) { if (!tasksByProj.has(id)) tasksByProj.set(id, []); tasksByProj.get(id).push(t); }
+    }
+    const rmByProj = new Map();
+    for (const r of roadmap) for (const id of rel(r.Project).map(idOf)) { if (!rmByProj.has(id)) rmByProj.set(id, []); rmByProj.get(id).push(r); }
+
+    // à toi de jouer
+    const mineRows = [];
+    for (const p of projects) if (mineText(p["Next step"])) mineRows.push({proj:p.Name, url:p.url, text:p["Next step"], kind:"step", order:-1});
+    for (const t of tasks) {
+      if (t.Owner !== "Aurélien") continue;
+      const urgent = (PRIO[t.Priority] ?? 9) <= 1 && t.Status !== "Inbox" || t.Status === "Doing";
+      if (!urgent) continue;
+      const pid = rel(t.Project).map(idOf).find(id => projById.has(id));
+      mineRows.push({proj: pid ? projById.get(pid).Name : (t.Domain || ""), url:t.url, text:t.Name, kind:"task", task:t, order:(PRIO[t.Priority] ?? 9)});
+    }
+    mineRows.sort((a, b) => a.order - b.order || String(a.proj).localeCompare(String(b.proj)));
+    const mineEl = $("#mine");
+    if (!state.projects && !state.tasks) {
+      if (state.errors.projects || state.errors.tasks) mineEl.innerHTML = '<div class="notice err">' + esc(state.errors.projects || state.errors.tasks) + '</div>';
+    } else if (!mineRows.length) {
+      mineEl.innerHTML = '<div class="todo"><div class="skeleton" style="padding:12px 14px">Rien ne t\'attend : aucune prochaine étape à ton nom, aucune tâche P0 ou P1 ouverte.</div></div>';
+    } else {
+      mineEl.innerHTML = '<div class="todo">' + mineRows.map(r => {
+        if (r.kind === "task") {
+          const id = idOf(r.task.url), done = state.done.has(id);
+          return '<div class="todo-row"><input type="checkbox" style="margin-top:3px;accent-color:var(--ok)" id="m-' + id + '" data-task="' + id + '"' + (done ? ' checked' : '') + ' aria-label="Marquer comme faite"><label class="what" for="m-' + id + '"><div class="proj">' + esc(r.proj) + ' · tâche</div><div' + (done ? ' style="text-decoration:line-through;color:var(--ink-3)"' : '') + '>' + md(r.text) + '</div></label><span class="pill ' + String(r.task.Priority||"").slice(0,2).toLowerCase() + '">' + esc(String(r.task.Priority||"").slice(0,2)) + '</span></div>';
+        }
+        return '<div class="todo-row"><span class="marker" aria-hidden="true"></span><div class="what"><div class="proj">' + esc(r.proj) + ' · prochaine étape</div><div>' + md(stripMe(r.text)) + '</div></div><a href="' + esc(r.url) + '" target="_blank" rel="noopener" class="age">Notion ↗</a></div>';
+      }).join("") + '</div>';
+    }
+    $("#mine-n").textContent = mineRows.length ? mineRows.length + " éléments" : "";
+
+    // strip
+    const active = projects.filter(p => p.Status === "Active");
+    $("#s-mine").textContent = state.projects ? projects.filter(p => mineText(p["Next step"])).length : "–";
+    $("#s-tasks").textContent = state.tasks ? tasks.filter(t => t.Owner === "Aurélien" && (PRIO[t.Priority] ?? 9) <= 1).length : "–";
+    $("#s-inbox").textContent = state.tasks ? tasks.filter(t => t.Status === "Inbox").length : "–";
+    $("#s-proj").textContent = state.projects ? active.length : "–";
+    $("#s-sess").textContent = state.sessions ? activeSessions().filter(s => /WORKING|BLOCKED/.test(s.status_bucket || "")).length : "–";
+
+    // projects
+    const pEl = $("#projects");
+    if (!state.projects) {
+      if (state.errors.projects) pEl.innerHTML = '<div class="notice err">' + esc(state.errors.projects) + '</div>';
+    } else {
+      const sorted = projects.slice().sort((a, b) => {
+        const ma = mineText(a["Next step"]) ? 0 : 1, mb = mineText(b["Next step"]) ? 0 : 1;
+        if (ma !== mb) return ma - mb;
+        const sa = {Active:0, Paused:1, Idea:2}[a.Status] ?? 3, sb = {Active:0, Paused:1, Idea:2}[b.Status] ?? 3;
+        if (sa !== sb) return sa - sb;
+        return String(b["date:State updated:start"] || "").localeCompare(String(a["date:State updated:start"] || ""));
+      });
+      $("#proj-n").textContent = sorted.length + " · " + active.length + " actifs";
+      pEl.innerHTML = sorted.length ? '<div class="grid">' + sorted.map(p => projectCard(p, tasksByProj.get(idOf(p.url)) || [], rmByProj.get(idOf(p.url)) || [])).join("") + '</div>'
+        : '<div class="skeleton">Aucun projet dans ce contexte.</div>';
+    }
+
+    // loose tasks
+    const lEl = $("#loose");
+    if (!state.tasks) {
+      if (state.errors.tasks) lEl.innerHTML = '<div class="notice err">' + esc(state.errors.tasks) + '</div>';
+    } else {
+      const mineLoose = loose.filter(t => t.Owner === "Aurélien" || !t.Owner).sort(taskSort);
+      const agentLoose = loose.filter(t => t.Owner && t.Owner !== "Aurélien").sort(taskSort);
+      $("#loose-n").textContent = loose.length + " tâches";
+      const main = mineLoose.filter(t => (PRIO[t.Priority] ?? 9) <= 2 || t.Status !== "Inbox");
+      const later = mineLoose.filter(t => !main.includes(t));
+      const byDom = new Map();
+      for (const t of main) { const d = t.Domain || "Sans domaine"; if (!byDom.has(d)) byDom.set(d, []); byDom.get(d).push(t); }
+      let html = "";
+      for (const [d, list] of [...byDom.entries()].sort((a, b) => b[1].length - a[1].length)) {
+        html += '<div class="dom-h">' + esc(d) + ' · ' + list.length + '</div><ul class="tasks">' + list.map(t => taskLi(t)).join("") + '</ul>';
+      }
+      if (!html) html = '<p class="empty-note">Aucune tâche hors projet pour toi.</p>';
+      if (later.length) html += '<details><summary>Un jour peut-être (' + later.length + ')</summary><ul class="tasks">' + later.map(t => taskLi(t, t.Domain)).join("") + '</ul></details>';
+      if (agentLoose.length) html += '<details><summary>Confiées aux agents (' + agentLoose.length + ')</summary><ul class="tasks">' + agentLoose.map(t => taskLi(t, t.Owner)).join("") + '</ul></details>';
+      lEl.innerHTML = html;
+    }
+
+    // sessions
+    const sEl = $("#sessions");
+    if (!state.sessions) {
+      if (state.errors.sessions && state.log) {
+        $("#sess-n").textContent = "Session Log · 7 jours";
+        sEl.innerHTML = '<div class="notice" style="margin:0 0 8px">Le connecteur Claude Code ne répond pas dans cette page : voici les sessions consignées dans le Session Log de Notion.</div>' +
+          (state.log.length ? state.log.map(r => {
+            const d = r["date:Date:start"] || "";
+            return '<div class="sess"><span class="dot b-completed"></span><div style="min-width:0"><div class="ti"><a href="' + esc(r.url) + '" target="_blank" rel="noopener">' + md(r.Title || "Session") + '</a></div>' +
+              (r.Summary ? '<div class="ra">' + md(r.Summary) + '</div>' : '') + '</div><div class="when">' + esc(r.Domain || "") + '<br>' + esc(dayLabel(daysAgo(d))) + '</div></div>';
+          }).join("") : '<p class="empty-note">Aucune session consignée ces 7 derniers jours.</p>');
+      } else if (state.errors.sessions) sEl.innerHTML = '<div class="notice err">' + esc(state.errors.sessions) + '</div>';
+    } else {
+      const list = activeSessions().sort((a, b) => {
+        const rank = s => /BLOCKED/.test(s.status_bucket) ? 0 : /REVIEW/.test(s.status_bucket) ? 1 : /WORKING/.test(s.status_bucket) ? 2 : /FAILED/.test(s.status_bucket) ? 3 : 4;
+        return rank(a) - rank(b) || new Date(b.updated_at) - new Date(a.updated_at);
+      });
+      $("#sess-n").textContent = list.length + " sur 7 jours";
+      sEl.innerHTML = list.length ? list.map(s => {
+        const [cls, label] = bucketOf(s);
+        const sum = (s.post_turn_summary && s.post_turn_summary.recent_action) || s.task_summary || "";
+        return '<div class="sess"><span class="dot b-' + cls + '" title="' + esc(label) + '"></span><div style="min-width:0"><div class="ti"><a href="https://claude.ai/code/' + esc(s.id) + '" target="_blank" rel="noopener">' + esc(s.title || "Session sans titre") + '</a>' + (s.unread ? '<span class="unread" title="Non lue"></span>' : '') + '</div>' +
+          (sum ? '<div class="ra">' + esc(sum) + '</div>' : '') + '</div><div class="when">' + esc(label) + '<br>' + esc(ago(new Date(s.updated_at || s.created_at).getTime())) + '</div></div>';
+      }).join("") : '<p class="empty-note">Aucune session active ces 7 derniers jours.</p>';
+    }
+  }
+
+  function projectCard(p, tasks, roadmap){
+    const mine = mineText(p["Next step"]);
+    const n = daysAgo(p["date:State updated:start"]);
+    const ageCls = n === null ? "none" : n > 7 ? "stale" : "";
+    const ageTxt = n === null ? "état jamais renseigné" : "état " + dayLabel(n);
+    const statusCls = String(p.Status||"").toLowerCase();
+    const forMe = tasks.filter(t => t.Owner === "Aurélien" || !t.Owner).sort(taskSort);
+    const forAgents = tasks.filter(t => t.Owner && t.Owner !== "Aurélien").sort(taskSort);
+    const sess = sessionsFor(p);
+    const links = [];
+    if (p.Repo) links.push('<a href="' + esc(/^https?:/.test(p.Repo) ? p.Repo : "https://github.com/" + p.Repo) + '" target="_blank" rel="noopener">Repo ↗</a>');
+    if (p["Prod URL"]) links.push('<a href="' + esc(p["Prod URL"]) + '" target="_blank" rel="noopener">Prod ↗</a>');
+    links.push('<a href="' + esc(p.url) + '" target="_blank" rel="noopener">Notion ↗</a>');
+
+    let h = '<article class="card' + (mine ? ' mine' : '') + '">';
+    h += '<div class="card-h"><div style="min-width:0"><h3><a href="' + esc(p.url) + '" target="_blank" rel="noopener">' + esc(p.Name) + '</a></h3><div class="meta"><span class="tag ' + esc(statusCls) + '">' + esc(p.Status || "?") + '</span>' + (p.Domain ? '<span class="tag">' + esc(p.Domain) + '</span>' : '') + '</div></div><span class="age ' + ageCls + '">' + esc(ageTxt) + '</span></div>';
+    h += '<div class="state"><div class="lbl">Où on en est</div>' + (p["Where we are"] ? '<p>' + md(p["Where we are"]) + '</p>' : '<p class="empty-note">La prochaine session sur ce projet le renseignera.</p>') + '</div>';
+    if (p["Next step"]) h += '<div class="next' + (mine ? ' mine' : '') + '"><div class="lbl">' + (mine ? 'Prochaine étape · à toi' : 'Prochaine étape') + '</div>' + md(stripMe(p["Next step"])) + '</div>';
+    if (forMe.length) h += '<div><div class="lbl">Tes tâches · ' + forMe.length + '</div><ul class="tasks">' + forMe.slice(0, 6).map(t => taskLi(t)).join("") + '</ul>' + (forMe.length > 6 ? '<details><summary>' + (forMe.length - 6) + ' de plus</summary><ul class="tasks">' + forMe.slice(6).map(t => taskLi(t)).join("") + '</ul></details>' : '') + '</div>';
+    if (roadmap.length) h += '<details><summary>En cours dans la roadmap (' + roadmap.length + ')</summary>' + roadmap.map(r => '<div class="rm"><div>' + md(r.Name) + (r.Priority ? ' <span class="pill ' + String(r.Priority).slice(0,2).toLowerCase() + '">' + esc(String(r.Priority).slice(0,2)) + '</span>' : '') + '</div>' + (r.Detail ? '<div class="d">' + md(r.Detail) + '</div>' : '') + '</div>').join("") + '</details>';
+    if (forAgents.length) h += '<details><summary>Confiées aux agents (' + forAgents.length + ')</summary><ul class="tasks">' + forAgents.map(t => taskLi(t, t.Owner)).join("") + '</ul></details>';
+    if (sess.length) h += '<div class="chips">' + sess.slice(0, 4).map(s => { const [cls, label] = bucketOf(s); return '<a class="chip" href="https://claude.ai/code/' + esc(s.id) + '" target="_blank" rel="noopener" title="' + esc(label) + '"><span class="dot b-' + cls + '"></span><span>' + esc(s.title) + '</span></a>'; }).join("") + '</div>';
+    h += '<div class="links">' + links.join("") + '</div>';
+    return h + '</article>';
+  }
+
+  // ---------- wiring ----------
+  document.addEventListener("change", e => {
+    const id = e.target && e.target.dataset && e.target.dataset.task;
+    if (!id || !mcp) return;
+    const t = (state.tasks || []).find(x => idOf(x.url) === id);
+    if (t) setDone(t, e.target.checked);
+  });
+  for (const b of document.querySelectorAll("[data-ctx]")) {
+    b.setAttribute("aria-pressed", String(b.dataset.ctx === state.ctx));
+    b.addEventListener("click", () => {
+      state.ctx = b.dataset.ctx;
+      try { localStorage.setItem("cockpit-ctx", state.ctx); } catch(e) {}
+      for (const x of document.querySelectorAll("[data-ctx]")) x.setAttribute("aria-pressed", String(x === b));
+      render();
+    });
+  }
+  $("#refresh").addEventListener("click", refreshAll);
+
+  (async () => {
+    const c = window.claude && window.claude.use ? await window.claude.use("mcp") : null;
+    if (!c) {
+      $("#page-notice").innerHTML = '<div class="notice">Cette page lit Notion et Claude Code à travers tes connecteurs claude.ai. Ouvre-la depuis claude.ai, connecté à ton compte, pour voir tes projets.</div>';
+      for (const id of ["#mine","#projects","#loose","#sessions"]) $(id).innerHTML = '<p class="empty-note">Données disponibles seulement dans claude.ai.</p>';
+      return;
+    }
+    mcp = c;
+    startWatches();
+  })();
+})();
+</script>

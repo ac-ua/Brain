@@ -23,7 +23,9 @@ Reference: [`free-tier-playbook.md`](free-tier-playbook.md), copied from `ac-ua/
 3. Batch: a few releases a day at most, never one per small fix.
 4. Docs, scripts, workflows or data only: merge (squash) with a `[CF-Pages-Skip] …` title.
 5. Test **in the session** before shipping (syntax checks, Playwright harness, the project's checks). Don't rely on
-   hosted CI.
+   hosted CI. Run only what the change touches: once the end-to-end suite takes more than a few minutes, give the
+   project a coverage map (which lines each suite runs) and pick the suites from the diff — Element Logbook's
+   `tests/impact.mjs` is the pattern (README › Tests). CI runs the same plan.
 6. GitHub Actions: trigger on `pull_request` / `workflow_dispatch` only; `timeout-minutes`, `concurrency`,
    artifacts ≤ 30 days (3 days for test artifacts, uploaded only on failure).
 7. Supabase migrations are applied **before** merging the code that uses them. Keep a nightly external backup
@@ -45,6 +47,10 @@ Reference: [`free-tier-playbook.md`](free-tier-playbook.md), copied from `ac-ua/
 - Seeds and imports are idempotent (re-runnable: skip what exists) and have a dry run by default (`--apply` to write).
 
 ## Cloudflare Pages pitfalls
+- **Create every Pages project connected to its GitHub repo** (dashboard › Connect to Git, or the API:
+  `POST /pages/projects` with `source.type = github`, preview deployments `none`). **Never `wrangler pages deploy`**
+  for an app: it makes a *direct-upload* project, which Cloudflare can never connect to Git afterwards (it has to be
+  deleted and recreated). Sport data lost a setup round to this on 2026-10-29.
 - **The build output directory is relative to the root directory**: with root `web`, write `dist`, not `web/dist`.
 - Build fails on `npm ci` with a lockfile made by a newer npm: regenerate it with the npm version Pages runs (10).
 - Custom domain: the DNS lives where the domain's nameservers point (registrar or another host); keep the MX

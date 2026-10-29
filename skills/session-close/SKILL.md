@@ -24,6 +24,11 @@ Facts never go to the Brain Inbox, ways of working never go to Memories.
 - Close finished tasks (Status = Done). Move roadmap items you shipped to Done with `Shipped on`.
 - Artifacts: every artifact made or updated is in the project's registry (`docs/artifacts.md` or the Projects row),
   and the project's guide is up to date when the architecture or screens changed.
+- **Project state (feeds the project cockpit).** For every project the session worked on, update its Projects row:
+  `Where we are` (1–2 sentences, the state now), `Next step` (the next concrete step; start it with « Aurélien: »
+  when it is his to do, otherwise name the agent) and `State updated` (today). Everything Aurélien has to do goes to
+  Tasks with Owner = Aurélien and the Project relation set, so it shows on the project's card. A session that works on
+  no registered project skips this.
 - Code: commit, push the session branch and merge the PR once tested (on an app repo, it is the release; the same
   on `ac-ua/brain`).
 

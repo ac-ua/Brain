@@ -158,7 +158,8 @@ Tracked in the Build Roadmap (Project = Brain): "Mac lost" drill · rclone in `p
 (4 mailboxes; candidate: an open-source multi-account Google MCP + an Outlook connector) · Expeditions + Content
 migration · explainer video / podcast skill (`skills/explainer-video/`) · weekly brain-maintenance · pro → perso
 learnings · monthly plugin copy · morning brief · intervals.icu + Strava · Mac mini · Resolve Studio · Finance domain ·
-cockpit app.
+cockpit app (study and design proposals: https://claude.ai/artifact/4xqmHuenUqj4EUZ292uoWF, source
+`docs/cockpit/cockpit-proposals.html`).
 
 ## Open questions
 - Mac mini: whether and when. It decides when the video pipeline and local models start.

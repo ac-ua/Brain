@@ -3,6 +3,10 @@
 The brain is versioned like any project: `v0.x` while the skeleton settles. Each release is a merged PR on
 `ac-ua/brain` and a row in the Notion Build Roadmap (Project = Brain).
 
+## v0.4.9 — shared files go where Aurélien uses them (2026-10-29)
+- `docs/drive-map.md`: a shared file's shortcut target is where Aurélien will use it (a colleague's Medtronic deck
+  reused for competitive benchmarking → `02_Assets/Competitive`), not the client it was made for.
+
 ## v0.4.8 — Demo Catalog (2026-10-29)
 - Notion: Demo Nuggets page restructured (sections, table of contents; synced callouts and logins untouched) and a
   **Demo Catalog** database under it, seeded with 15 demos (use case, type, environment, health, audience, shown to,

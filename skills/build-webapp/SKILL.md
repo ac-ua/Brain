@@ -51,6 +51,9 @@ Reference: [`free-tier-playbook.md`](free-tier-playbook.md), copied from `ac-ua/
   `POST /pages/projects` with `source.type = github`, preview deployments `none`). **Never `wrangler pages deploy`**
   for an app: it makes a *direct-upload* project, which Cloudflare can never connect to Git afterwards (it has to be
   deleted and recreated). Sport data lost a setup round to this on 2026-10-29.
+- **A `wrangler.toml` with `pages_build_output_dir` makes the file the source of truth**: Pages then ignores the
+  dashboard's variables and bindings. Put non-secret vars in `[vars]` and bindings in the file; secrets stay in the
+  dashboard (`wrangler pages secret put`).
 - **The build output directory is relative to the root directory**: with root `web`, write `dist`, not `web/dist`.
 - Build fails on `npm ci` with a lockfile made by a newer npm: regenerate it with the npm version Pages runs (10).
 - Custom domain: the DNS lives where the domain's nameservers point (registrar or another host); keep the MX

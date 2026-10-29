@@ -24,6 +24,8 @@ times):
   `unifyapps-solution-playbook` for past builds, `unifyapps-usecase-studio` for the plan, `unifyapps-builder` /
   `unifyapps-config-apps` / `unifyapps-context-graph` to build);
 - reuse: what exists in the environment already (native settings over custom screens, the platform's own governance);
+  start from the **Demo Catalog** (Notion, under Demo Nuggets): recommend the 1–3 existing demos that fit the use case
+  and audience, with their health and lessons, before proposing anything new;
 - risks and what needs his input.
 Colour and label conventions in diagrams: say what each colour means; "live in production" only for what is live.
 
@@ -48,6 +50,10 @@ the plan if a comment changes the approach, rebuild, bump the version in the gui
 "what changed" (text, or an explainer if asked). "Corrige mais ne régénère pas la vidéo" → fix sources only.
 
 ## 6. Write-back (before the session ends)
+**Demo Catalog** (`collection://937fd73f-a162-416a-85a4-8a0241d8d3a1`): one row per demo. A new demo gets a row (use
+case, type, environment, audience, video, « where to open it » = its Demo Nuggets callout); a demo shown again gets
+« Shown to » (account, date), Health and Last checked updated, and one line in Lessons (what landed, what broke,
+prep time). Links and logins stay in the Demo Nuggets callout, never in the catalog row.
 `work-notes`: the brief's Solution and Assets sections (links to the guide, video, deck, site, Drive folder), a
 meeting-log entry for the demo, next steps, learnings → Memories (Domain Work). Platform learnings worth sharing with
 the team → the team plugin's weekly learnings loop, nothing else.

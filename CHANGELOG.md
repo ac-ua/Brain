@@ -3,6 +3,12 @@
 The brain is versioned like any project: `v0.x` while the skeleton settles. Each release is a merged PR on
 `ac-ua/brain` and a row in the Notion Build Roadmap (Project = Brain).
 
+## v0.4.8 — Demo Catalog (2026-10-29)
+- Notion: Demo Nuggets page restructured (sections, table of contents; synced callouts and logins untouched) and a
+  **Demo Catalog** database under it, seeded with 15 demos (use case, type, environment, health, audience, shown to,
+  lessons). Belcorp and MHW Bev Co pages moved there as references.
+- `demo-prep`: recommends from the catalog before proposing a build, and updates it at write-back.
+
 ## v0.4.7 — shortcuts for shared files (2026-10-29)
 - `tools/drive-shortcuts/`: Apps Script bound to the Sheet « Drive shortcut queue » (work Drive, `05_Internal`).
   Agents append the shared link and the account; every 5 minutes the script adds the shortcut in

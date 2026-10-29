@@ -1,6 +1,6 @@
 ---
 name: release-webapp
-description: Ship a release of a personal web app the same way every time — triage feedback into the release, changelog in users' words, config guide and ledger, full test suite, hosted checks, visuals shown, deploy on Aurélien's go, live check, artifacts republished in place, Build Roadmap card, French recap. Use for every release of Element Logbook, Camp de Base, the website or any app built with build-webapp ("on livre", "envoie en prod", "ship v175", "go"), and to prepare the next release from user feedback and error reports.
+description: Ship a release of a personal web app the same way every time — triage feedback into the release, changelog in users' words, config guide and ledger, the tests the change needs, hosted checks, visuals shown, deploy on Aurélien's go, live check, artifacts republished in place, Build Roadmap card, French recap. Use for every release of Element Logbook, Camp de Base, the website or any app built with build-webapp ("on livre", "envoie en prod", "ship v175", "go"), and to prepare the next release from user feedback and error reports.
 ---
 
 # release-webapp
@@ -37,8 +37,11 @@ code that uses them, by the project's one documented path (`docs/RELEASE.md` §M
 | Architecture | only when services, functions or connections changed |
 
 ## 3. Checks (all green, in the session)
-The project's full suite (unit, db, type check, end-to-end) and its hosted-build checks (CSP, XSS, PWA…). Paste the
-pass/fail counts. A red test is fixed or the release waits; never skip or disable a test.
+The checks the change needs (unit, db, type check, and the end-to-end suites that run the changed code) and the
+hosted-build checks (CSP, XSS, PWA…). Where the project has a coverage map, use it: Element Logbook `cd tests && npm run
+check` (README › Tests). The full suite (`npm run check -- --all`) only when the plan says so (start-up code, build,
+harness) or when the map is refreshed (`npm run impact`, at least monthly). Paste the plan and the pass/fail counts. A red
+test is fixed or the release waits; never skip or disable a test.
 
 ## 4. Show, then go
 Show what changes for the user (screenshots or the rebuilt artifact) in two or three lines. **Deploy only on

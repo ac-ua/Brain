@@ -23,7 +23,9 @@ Reference: [`free-tier-playbook.md`](free-tier-playbook.md), copied from `ac-ua/
 3. Batch: a few releases a day at most, never one per small fix.
 4. Docs, scripts, workflows or data only: merge (squash) with a `[CF-Pages-Skip] …` title.
 5. Test **in the session** before shipping (syntax checks, Playwright harness, the project's checks). Don't rely on
-   hosted CI.
+   hosted CI. Run only what the change touches: once the end-to-end suite takes more than a few minutes, give the
+   project a coverage map (which lines each suite runs) and pick the suites from the diff — Element Logbook's
+   `tests/impact.mjs` is the pattern (README › Tests). CI runs the same plan.
 6. GitHub Actions: trigger on `pull_request` / `workflow_dispatch` only; `timeout-minutes`, `concurrency`,
    artifacts ≤ 30 days (3 days for test artifacts, uploaded only on failure).
 7. Supabase migrations are applied **before** merging the code that uses them. Keep a nightly external backup

@@ -14,7 +14,7 @@ guide that are always current, so any session on any machine can pick a project 
 ## Scope
 - Projects today: Camp de Base (`ac-ua/Base-Camp`), Element Logbook (`ac-ua/c_ET`), Sport data (`ac-ua/sport`:
   training database, nightly sync, BI), personal website (`ac-ua/website`), Spanish app (artifact, moves to a repo),
-  the brain itself. Finance tooling, when it has code, joins this list with its own repo.
+  Finance (`ac-ua/finance`: cockpit artifact now, Supabase + Pages later), the brain itself.
 - Every build in any domain is the builder's (`AGENTS.md`, Agents and skills), data pipelines and BI apps included.
 - New projects from `templates/project-repo/` (`project-kickoff`).
 - Stack rules: `skills/build-webapp` (free-tier playbook); look and feel: `skills/web-design-system` (one design

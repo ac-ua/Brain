@@ -3,6 +3,12 @@
 The brain is versioned like any project: `v0.x` while the skeleton settles. Each release is a merged PR on
 `ac-ua/brain` and a row in the Notion Build Roadmap (Project = Brain).
 
+## v0.4.17 — every app has its builder files (2026-10-29)
+- The personal website (`ac-ua/website#4`) and Camp de Base (`ac-ua/Base-Camp#211`) get the files `builder.md` asks
+  for: ledger, configuration guide published as an artifact, `environment.json`, `RELEASE.md`, registry line.
+  Camp de Base's `deploy.md` no longer says « push sur `main` ».
+- `agents/builder.md`: Finance is in the project list.
+
 ## v0.4.16 — audit: outreach facts, maps, design system v1.3.1 (2026-10-29)
 - Outreach skills (sponsor, research, follow-up) and their context files: South Pole **November 2027 from Berkner
   Island** (~1,350 km, ~60 days, sled over 110 kg, ALE), as on the Expeditions card; they still said November 2026

@@ -8,7 +8,7 @@
 </style>
 <style>
 /* Brain cockpit (app-specific, prefix bc-). Layout: design-system shell; content = one view per side link
-   (Aujourd'hui, Domaines, Projets, Sessions) + the Claude panel on the right (desktop) or as its own view (phone). */
+   (Aujourd'hui, Domaines, Projets, Sessions, Quotas) + the Claude panel on the right (desktop) or as its own view (phone). */
 .bc-layout { display: grid; grid-template-columns: minmax(0, 1fr); }
 .bc-claude-on .bc-layout { grid-template-columns: minmax(0, 1fr) 380px; }
 @media (max-width: 1099px) { .bc-claude-on .bc-layout { grid-template-columns: minmax(0, 1fr); } .bc-claude-on .bc-panel-side { display: none; } }
@@ -116,6 +116,7 @@ details.bc-more summary { cursor: pointer; font-size: 13px; color: var(--muted);
       <a class="ds-side-link" href="#domaines" data-view="domaines"><span class="ico">:ci-map:</span>Domaines</a>
       <a class="ds-side-link" href="#projets" data-view="projets"><span class="ico">:ci-tower:</span>Projets<span class="ds-count" id="n-projets"></span></a>
       <a class="ds-side-link" href="#sessions" data-view="sessions"><span class="ico">:ci-review:</span>Sessions</a>
+      <a class="ds-side-link" href="#quotas" data-view="quotas"><span class="ico">:ci-weight:</span>Quotas<span class="ds-count" id="n-quotas"></span></a>
       <a class="ds-side-link" href="#claude" data-view="claude"><span class="ico">:ci-star:</span>Claude</a>
     </div>
     <div class="ds-side-group"><span class="ds-side-h">Apps</span>
@@ -152,6 +153,7 @@ details.bc-more summary { cursor: pointer; font-size: 13px; color: var(--muted);
         <section id="v-domaines" data-v="domaines" hidden></section>
         <section id="v-projets" data-v="projets" hidden></section>
         <section id="v-sessions" data-v="sessions" hidden></section>
+        <section id="v-quotas" data-v="quotas" hidden></section>
         <section id="v-claude" data-v="claude" hidden></section>
       </main>
       <aside class="bc-panel-side" id="claude-panel" hidden aria-label="Claude">
@@ -194,12 +196,12 @@ details.bc-more summary { cursor: pointer; font-size: 13px; color: var(--muted);
   const STATUS_ORDER = {"Doing":0,"Next":1,"Waiting":2,"Inbox":3};
   const STATUS_FR = {"Doing":"en cours","Next":"à faire","Waiting":"en attente","Inbox":"à trier","Done":"faite"};
   const BUCKET = {WORKING:["info","en cours"], BLOCKED:["bad","bloquée"], REVIEW_READY:["warn","à relire"], COMPLETED:["ok","terminée"], FAILED:["bad","en échec"]};
-  const VIEW_TITLE = {jour:"Aujourd'hui", domaines:"Domaines", projets:"Projets", sessions:"Sessions", claude:"Claude"};
+  const VIEW_TITLE = {jour:"Aujourd'hui", domaines:"Domaines", projets:"Projets", sessions:"Sessions", quotas:"Quotas", claude:"Claude"};
   const DECISION = /\b(decide|decision|choose|confirm|keep or drop|whether|pin down|validate|décider|choisir|valider)\b/i;
 
   const state = {projects:null, tasks:null, roadmap:null, log:null, sessions:null, errors:{}, at:{}, ctx:"all", view:"jour", domain:null,
-                 top:[], cursor:0, chat:[], busy:false, proposals:[]};
-  let mcp = null, sample = null;
+                 top:[], cursor:0, chat:[], busy:false, proposals:[], quota:undefined, quotaWeeks:[], quotaErr:""};
+  let mcp = null, sample = null, db = null;
   const unsubs = [];
   const store = {get(k){ try { return localStorage.getItem("brain." + k); } catch(e) { return null; } },
                  set(k, v){ try { localStorage.setItem("brain." + k, v); } catch(e) {} }};
@@ -558,6 +560,50 @@ details.bc-more summary { cursor: pointer; font-size: 13px; color: var(--muted);
     if (on) setTimeout(() => $("#chat-in").focus(), 50);
   }
 
+  // ---------- Quotas (free tiers) ----------
+  // Written by the weekly free-tier check (ac-ua/brain › skills/free-tier-watch) into this page's db:
+  // quota/latest = the last snapshot, quota_weeks/<date> = one summary per run. The page only reads.
+  const LEVEL = {alert:["bad","alerte"], watch:["warn","à surveiller"], ok:["ok","ok"], "":["","info"]};
+  function meter(r){
+    if (r.pct == null) return "";
+    const w = Math.min(100, Math.round(r.pct * 100));
+    return '<div class="ds-meter' + (r.pct >= 0.8 ? ' ds-over' : '') + '" style="min-width:90px"><i style="width:' + w + '%;' + (r.level === "watch" ? 'background:var(--warn)' : '') + '"></i></div>';
+  }
+  function viewQuotas(){
+    if (state.quotaErr) return '<div class="ds-note ds-bad">' + esc(state.quotaErr) + '</div>';
+    if (state.quota === undefined) return '<p class="ds-loading">Chargement…</p>';
+    if (!state.quota) return '<div class="ds-empty"><strong>Pas encore de mesure.</strong><p>Le contrôle hebdomadaire des quotas (vendredi soir) écrit ici sa dernière mesure : GitHub, Cloudflare et Supabase, comparés aux offres gratuites.</p></div>';
+    const q = state.quota, rows = q.rows || [];
+    const lim = rows.filter(r => r.limit), info = rows.filter(r => !r.limit);
+    const n = lv => lim.filter(r => r.level === lv).length;
+    const order = {alert:0, watch:1, ok:2};
+    lim.sort((a, b) => (order[a.level] ?? 3) - (order[b.level] ?? 3) || (b.pct || 0) - (a.pct || 0));
+    const when = new Date(q.at);
+    const head = '<div class="ds-kpis">' +
+      '<div class="ds-kpi"><span class="k">Alertes</span><span class="v" style="color:var(--' + (n("alert") ? 'bad' : 'ok') + ')">' + n("alert") + '</span><span class="s">≥ 80 % ou bloqué</span></div>' +
+      '<div class="ds-kpi"><span class="k">À surveiller</span><span class="v">' + n("watch") + '</span><span class="s">≥ 50 %</span></div>' +
+      '<div class="ds-kpi"><span class="k">OK</span><span class="v">' + n("ok") + '</span><span class="s">sous 50 %</span></div>' +
+      '<div class="ds-kpi"><span class="k">Mesuré</span><span class="v" style="font-size:17px">' + esc(when.toLocaleDateString("fr-FR", {day:"numeric", month:"short"})) + '</span><span class="s">jour ' + esc(q.day) + ' sur ' + esc(q.days_in_month) + ' du mois · ' + esc(ago(when.getTime())) + '</span></div></div>';
+    const table = '<div class="ds-table-wrap"><table class="ds-table"><thead><tr><th>État</th><th>Service</th><th>Quoi</th><th class="n">Utilisé</th><th class="n">Gratuit</th><th>Part</th><th>Note</th></tr></thead><tbody>' +
+      lim.map(r => { const [tone, label] = LEVEL[r.level] || LEVEL[""]; return '<tr><td><span class="ds-pill ds-pill--body ds-' + tone + '">' + esc(label) + '</span></td><td>' + esc(r.service) + '</td><td>' + esc(r.what) + '</td><td class="n">' + esc(r.unit === "blocked" ? "bloqué" : r.shown) + '</td><td class="n">' + esc(r.unit === "blocked" ? "" : r.limit_shown) + '</td><td><div style="display:flex;gap:8px;align-items:center">' + (r.unit === "blocked" ? "" : meter(r)) + '<span class="num" style="white-space:nowrap">' + (r.pct == null || r.unit === "blocked" ? "" : Math.round(r.pct * 100) + " %") + '</span></div></td><td class="bc-sub">' + esc(r.note || "") + '</td></tr>'; }).join("") +
+      '</tbody></table></div>';
+    const detail = info.length ? '<details class="bc-more ds-panel"><summary>Détail par projet (' + info.length + ')</summary><div class="ds-table-wrap" style="margin-top:10px"><table class="ds-table"><tbody>' +
+      info.map(r => '<tr><td>' + esc(r.service) + '</td><td>' + esc(r.what) + '</td><td class="n">' + esc(r.shown) + '</td><td class="bc-sub">' + esc(r.note || "") + '</td></tr>').join("") + '</tbody></table></div></details>' : '';
+    const gaps = (q.gaps || []).length ? '<div class="ds-panel"><div class="bc-panel-h"><h3>Non mesuré</h3><span class="bc-count">' + q.gaps.length + '</span></div><ul style="margin:0;padding-left:18px;display:grid;gap:4px">' + q.gaps.map(g => '<li class="bc-sub">' + md(g) + '</li>').join("") + '</ul></div>' : '';
+    const weeks = state.quotaWeeks.length > 1 ? '<div class="ds-panel"><div class="bc-panel-h"><h3>Semaine après semaine</h3></div><div class="ds-table-wrap"><table class="ds-table"><thead><tr><th>Semaine</th><th class="n">Alertes</th><th class="n">À surveiller</th><th class="n">Minutes Actions</th><th class="n">Builds Pages</th></tr></thead><tbody>' +
+      state.quotaWeeks.map(w => '<tr><td>' + esc(String(w.at || "").slice(0, 10)) + '</td><td class="n">' + esc(w.alerts) + '</td><td class="n">' + esc(w.watch) + '</td><td class="n">' + esc(w.actions_minutes ?? "–") + '</td><td class="n">' + esc(w.pages_builds ?? "–") + '</td></tr>').join("") + '</tbody></table></div></div>' : '';
+    return head + table + detail + '<div class="ds-cols">' + gaps + weeks + '</div>' +
+      '<p class="bc-sub" style="margin:0">Mesuré chaque vendredi soir par le contrôle des quotas (skill free-tier-watch) ; le résumé part aussi par mail. Limites : skills/build-webapp › free-tier-playbook.</p>';
+  }
+  function startDb(){
+    if (!db) { state.quotaErr = "La base de la page n'est pas disponible ici : ouvre le cockpit dans claude.ai, connecté."; return; }
+    try {
+      db.doc("quota/latest").onSnapshot(snap => { state.quota = snap.exists ? snap.data() : null; state.quotaErr = ""; render(); },
+        e => { state.quotaErr = "Lecture des quotas impossible (" + ((e && (e.code || e.message)) || "erreur") + ")."; render(); });
+      db.collection("quota_weeks").orderBy("at", "desc").limit(8).onSnapshot(snap => { state.quotaWeeks = snap.docs.map(d => d.data()); render(); }, () => {});
+    } catch(e) { state.quotaErr = "Lecture des quotas impossible."; }
+  }
+
   // ---------- main render ----------
   function render(){
     for (const el of document.querySelectorAll("#fresh [data-src]")) {
@@ -581,6 +627,9 @@ details.bc-more summary { cursor: pointer; font-size: 13px; color: var(--muted);
     else if (v === "domaines") host.innerHTML = viewDomaines();
     else if (v === "projets") host.innerHTML = viewProjets();
     else if (v === "sessions") host.innerHTML = viewSessions();
+    else if (v === "quotas") host.innerHTML = viewQuotas();
+    const qa = state.quota && (state.quota.rows || []).filter(r => r.limit && r.level === "alert").length;
+    $("#n-quotas").textContent = qa ? qa : "";
     if (window.AppIcons && window.AppIcons.render) window.AppIcons.render(host);
   }
   function route(){
@@ -667,8 +716,8 @@ details.bc-more summary { cursor: pointer; font-size: 13px; color: var(--muted);
   route();
   (async () => {
     const use = window.claude && window.claude.use;
-    const [m, s] = use ? await Promise.all([window.claude.use("mcp"), window.claude.use("sample")]) : [null, null];
-    sample = s; renderChat();
+    const [m, s, d] = use ? await Promise.all([window.claude.use("mcp"), window.claude.use("sample"), window.claude.use("db")]) : [null, null, null];
+    sample = s; db = d; startDb(); renderChat();
     if (!m) {
       $("#notice").innerHTML = '<div class="ds-note">Cette page lit Notion et Claude Code par tes connecteurs claude.ai : ouvre-la depuis claude.ai, connecté à ton compte.</div>';
       for (const id of ["jour","domaines","projets","sessions"]) $("#v-" + id).innerHTML = '<div class="ds-empty"><strong>Données indisponibles ici.</strong><p>Ouvre le cockpit dans claude.ai.</p></div>';

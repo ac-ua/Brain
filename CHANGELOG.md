@@ -3,6 +3,15 @@
 The brain is versioned like any project: `v0.x` while the skeleton settles. Each release is a merged PR on
 `ac-ua/brain` and a row in the Notion Build Roadmap (Project = Brain).
 
+## v0.4.19 — Quotas page in the cockpit (2026-10-30)
+- « Brain · Cockpit »: new **Quotas** page (side menu, alert count) reading the artifact's own database
+  (`quota/latest`, `quota_weeks/<date>`; written by the owner only). KPIs, every quota with its share and level,
+  detail per project, « not measured », week after week.
+- `free-tier-watch`: exact Pages build count from Cloudflare (production + preview, skipped excluded), JSON snapshot
+  with a weekly summary, the run writes it to the cockpit; GitHub budgets stay at $0 (Aurélien's call).
+- First full measurement (30 Oct): 732 Pages builds in October for 500 free (Element Logbook 423, Camp de Base 281,
+  mostly preview builds); GitHub Actions blocked until 1 Nov.
+
 ## v0.4.18 — weekly free-tier check (2026-10-29)
 - New skill `free-tier-watch` (builder): `scripts/quota_report.py` measures GitHub (Actions minutes, artifacts,
   blocked jobs, repo sizes, Pages builds from merges), Supabase (the backups' `usage.json`) and Cloudflare (read-only

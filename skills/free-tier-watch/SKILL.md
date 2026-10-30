@@ -38,7 +38,19 @@ Order: what needs action now, then what to watch, then « tout va bien » in one
   Settings › Builds › Preview branches…).
 - **🟠 watch** (≥ 50 %): the figure and the pace.
 - Never change a setting, a plan or a payment method; never trigger a workflow to "test" (it costs minutes).
+- **GitHub budgets stay at $0** (Aurélien's call, 2026-10-30): never suggest raising one. When the free Actions minutes
+  run out, the fix is to use fewer (CI on `pull_request` only, previews off, fewer jobs) and wait for the 1st.
+- Pages builds count production **and** preview builds; skipped ones (`[CF-Pages-Skip]`) do not. Previews on a
+  project are the usual culprit: Cloudflare › Pages › the project › Settings › Builds › Branch control › Preview
+  branches › None.
 The run's final message is the recap: the scheduled task sends it by email and push.
+
+## Cockpit (« Quotas » page)
+The run also writes the snapshot into the « Brain · Cockpit » artifact's database
+(https://claude.ai/artifact/UqbtEKheEFwqs7P61d6zdi, rules: read view, write owner), which its Quotas page reads:
+`ArtifactData` `get` `quota/latest` (to learn its `version`), then one `batch`: `set` `quota/latest` from
+`/tmp/quota.json` (`file_path`, `if_version` = that version) and `set` `quota_weeks/<YYYY-MM-DD>` with the JSON's
+`summary` object (new document, no pin). If `ArtifactData` is not available in the run, say so in the recap.
 
 ## Setup (once, Aurélien)
 1. Cloudflare › My Profile › API Tokens › Create token › Custom token, **read only**: Account › Account Analytics:

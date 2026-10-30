@@ -12,7 +12,8 @@ surfaced in the hub. Study with prototypes: « Brain · Plateforme des apps »
 3. **Addresses:** subdomains of `aureliencaye.com` (zone already on Cloudflare): `sport.`, `finance.`, `basecamp.`
    (Camp de Base, Aurélien's call 2026-10-30), later `hub.`. Each is the custom domain of its Pages project;
    `*.pages.dev` stays as a fallback.
-4. **Backups:** weekly, per app, to R2 and to the personal Drive `80_Backups/Apps/<App>`; D1 Time Travel (7 days on
+4. **Backups:** weekly, per app, to the personal Drive `80_Backups/Apps/<App>` only, in clear (Aurélien's call,
+   2026-10-30: the copy he can always reach, even if he loses every other access; no copy in R2, no encryption); D1 Time Travel (7 days on
    the free plan) covers the gap between two backups. **No app data in git**, ever (code, schemas, migrations and
    synthetic fixtures only).
 5. **Hub:** stays the « Brain · Cockpit » artifact for now (it keeps Claude in the page); a Pages app later.
@@ -64,10 +65,11 @@ GET /api/attention        (Access JWT or service token)
 ### Weekly backup (same template in every app repo)
 - `.github/workflows/backup-weekly.yml`: `schedule` once a week (Sunday, staggered: sport 03:11, finance 03:23,
   camp-de-base 03:37 UTC) + `workflow_dispatch`; `timeout-minutes: 10`; `concurrency`.
-- Steps: `wrangler d1 export <db> --remote --output <app>-YYYY-MM-DD.sql` → gzip → `wrangler r2 object put
-  backups/<app>/…` → copy to Drive `80_Backups/Apps/<App>/` (folder id of `80_Backups` in `docs/personal-drive-map.md`).
-- Retention: 8 weekly + 1 per month for 12 months, in R2 and on the Drive (the workflow prunes).
-- Secrets (GitHub, pasted by Aurélien): a Cloudflare token limited to D1 read/export and R2 write on this account; a
+- Steps: `wrangler d1 export <db> --remote --output <app>-YYYY-MM-DD.sql` → gzip → (restore check when the app has one)
+  → copy to Drive `80_Backups/Apps/<App>/` (folder id of `80_Backups` in `docs/personal-drive-map.md`) → check the file
+  is on the Drive, or fail. Never a copy in R2 (same account as the data, and a store that could become paid).
+- Retention: 8 weekly + 1 per month for 12 months on the Drive (the workflow prunes, only after today's file landed).
+- Secrets (GitHub, pasted by Aurélien): a Cloudflare token limited to D1 read/export on this account; a
   Drive credential for the personal account (rclone config). Restore-test once into a scratch D1 and record it in the
   app's ledger.
 - Files in R2 (photos, FIT, statements) are not exported weekly; R2 is their home and is durable. TODO(Aurélien):
@@ -129,7 +131,7 @@ Read in the repos, ledgers and the Cloudflare account; drawn in « Brain · Arch
 | Workers | — | `sport-sync` (2 crons, by hand) | — | `attention-mcp` (Workers Builds, to set up) |
 | D1 / R2 | `camp-de-base` / `camp-de-base` (photos) | `sport` / `sport-raw` (FIT, GPX) | `finance` / — | — / KV `OAUTH_KV` |
 | Access | « Apps · Aurélien », JWT checked; `OWNER_EMAILS` off | same, `ACCESS_EMAILS` | same, `ACCESS_EMAILS`; tokens read-only | OAuth through an Access OIDC app |
-| Backups | Sunday 03:37 → R2 `backups/` + Drive | 03:11 | 03:23 | — |
+| Backups | Sunday 03:37 → Drive | 03:11 → Drive | 03:23 → Drive | — |
 | Attention | tower alerts | `data_health` | insights, refunds, deadlines | reads the three |
 | Design system | v1.7.1 | v1.8 | v1.7.1 | v1.9 |
 

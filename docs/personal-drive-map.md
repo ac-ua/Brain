@@ -33,8 +33,9 @@ My Drive
 ├── 70_Work & Career    CV & Job Search · one folder per employer (UnifyApps, Sprinklr): contracts, career admin and
 │                       copies of pro deliverables brought back from the work Mac (pro → perso is allowed). Payslips
 │                       stay in 20_Finance/Income
-├── 80_Backups          Phone Backup · Claude Backup (claude-home, voice-clone, Notion exports). An app's own backups
-│                       stay with the app (Baraja → 10_Admin/Education)
+├── 80_Backups          Phone Backup · Claude Backup (claude-home, voice-clone, Notion exports) · Apps: one folder per
+│                       personal app (Camp de Base, Sport, Finance), weekly database exports `<app>-YYYY-MM-DD.sql.gz`
+│                       from Cloudflare (Aurélien's call, 2026-10-30). Element Logbook (club app, Supabase) keeps its own
 ├── 99_Archive          dead material and emptied folders. Deleting is Aurélien's call
 ├── One Life            the photo archive, one folder per trip `YYYY.MM.DD Country - Place`. Leave as is
 ├── Saved from Chrome   created by Chrome. Leave as is

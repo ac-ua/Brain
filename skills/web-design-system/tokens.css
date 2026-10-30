@@ -214,6 +214,34 @@ h3, .ds-label { font: 600 12px/1.2 var(--body); letter-spacing: .1em; text-trans
 .ds-chip .num { color: var(--muted); font-size: 12px; margin-left: 4px; }
 .ds-chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 .ds-chip[aria-pressed="true"] .num { color: inherit; opacity: .7; }
+/* v1.7: filter bar at the top of a page, under the title (Camp de Base's toolbar: its selects, segments and chips, the
+   « Filters » button with a count, « Clear filters »). Each control sits in a .ds-filter with a small label; a filter
+   away from its default carries data-on (accent border on its field) and the reset shows. Under 700 px the controls
+   fold behind the Filters button (shell.js toggles aria-expanded and .ds-filters--open) and stack full width. */
+.ds-filters { display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: center; }
+.ds-filters-body { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; min-width: 0; }
+.ds-filter { display: inline-flex; align-items: center; gap: 8px; min-width: 0; }
+.ds-filter > .ds-filter-l { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+.ds-filter select, .ds-filter .ds-input { max-width: 100%; }
+.ds-filter .ds-seg button { font-size: 13px; padding: 5px 12px; }
+.ds-filter .ds-seg button[aria-pressed="true"] { color: var(--bg); }
+.ds-filter[data-on] :is(select, .ds-input) { border-color: var(--accent); background: var(--accent-soft); }
+.ds-filter[data-on] > .ds-filter-l { color: var(--accent); }
+.ds-filters > .ds-filters-toggle { display: none; } /* two classes: wins over .ds-btn wherever the app loads it */
+.ds-fcount { font: 600 11px/1 var(--mono); background: var(--accent); color: var(--accent-ink); border-radius: var(--r-pill); padding: 3px 6px; } /* Camp de Base's .fcount */
+.ds-fcount[hidden], .ds-filters-reset[hidden] { display: none; }
+.ds-filters-note { font-size: 13px; color: var(--muted); }
+@media (max-width: 699px) {
+  .ds-filters > .ds-filters-toggle { display: inline-flex; }
+  .ds-filters-body { display: none; flex-basis: 100%; flex-direction: column; align-items: stretch; gap: 10px; padding: 12px; background: var(--surface);
+    border: 1px solid var(--line); border-radius: var(--r-md); }
+  .ds-filters--open > .ds-filters-body { display: flex; }
+  .ds-filter { display: grid; gap: 4px; }
+  .ds-filter select, .ds-filter .ds-input { width: 100%; font-size: 16px; } /* no zoom on focus */
+  .ds-filter .ds-seg { overflow-x: auto; scrollbar-width: none; justify-self: start; max-width: 100%; }
+  .ds-filter .ds-seg button { flex: none; }
+  .ds-filters-reset { justify-self: start; align-self: flex-start; }
+}
 
 /* ---------- Forms ---------- */
 .ds-input, .ds-form input:not([type=checkbox]):not([type=radio]), .ds-form select, .ds-form textarea {

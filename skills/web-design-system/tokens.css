@@ -231,6 +231,13 @@ h3, .ds-label { font: 600 12px/1.2 var(--body); letter-spacing: .1em; text-trans
 .ds-fcount { font: 600 11px/1 var(--mono); background: var(--accent); color: var(--accent-ink); border-radius: var(--r-pill); padding: 3px 6px; } /* Camp de Base's .fcount */
 .ds-fcount[hidden], .ds-filters-reset[hidden] { display: none; }
 .ds-filters-note { font-size: 13px; color: var(--muted); }
+/* v1.7.1: folded at every width (.ds-filters--fold, Camp de Base's inventory toolbar): the Filters button may sit in the
+   main toolbar row (search, scope, sort, view) and shows on every screen; the controls wait on their own row
+   (.ds-filters-body) until it is pressed, bare selects whose first option names them (« All activities »), the reset at
+   the end of the row. No panel and no stacking on phones: the row keeps its toolbar look. */
+.ds-filters--fold .ds-filters-toggle { display: inline-flex; }
+.ds-filters--fold > .ds-filters-body { display: none; flex-basis: 100%; }
+.ds-filters--fold.ds-filters--open > .ds-filters-body { display: flex; }
 @media (max-width: 699px) {
   .ds-filters > .ds-filters-toggle { display: inline-flex; }
   .ds-filters-body { display: none; flex-basis: 100%; flex-direction: column; align-items: stretch; gap: 10px; padding: 12px; background: var(--surface);
@@ -241,6 +248,8 @@ h3, .ds-label { font: 600 12px/1.2 var(--body); letter-spacing: .1em; text-trans
   .ds-filter .ds-seg { overflow-x: auto; scrollbar-width: none; justify-self: start; max-width: 100%; }
   .ds-filter .ds-seg button { flex: none; }
   .ds-filters-reset { justify-self: start; align-self: flex-start; }
+  .ds-filters--fold > .ds-filters-body { flex-direction: row; align-items: center; padding: 0; background: none; border: 0; border-radius: 0; }
+  .ds-filters--fold .ds-filters-reset { align-self: auto; }
 }
 
 /* ---------- Forms ---------- */

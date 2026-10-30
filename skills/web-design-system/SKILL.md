@@ -162,6 +162,7 @@ mark lives in the app's repo, as `brand/<app>-mark.svg` or `brand/mark.svg` unde
 | Toast | `.ds-toast` (`.ds-err`) | bottom centre, inverted; errors in bad |
 | Full screen (v1.6) | `button.ds-fs-btn[data-ds-fs]` in the card header (`.ds-fs-btn--over` on a map), card `.ds-full` (`[data-ds-fs-card]` or the closest `.ds-panel` / `.ds-card`) | every chart and map card has one (Camp de Base's map button): 32 px glyph button at the right of the title, `aria-label="Full screen"`, `aria-pressed`, both glyphs inside (`span.ds-fs-enter` `fullscreen`, `span.ds-fs-exit` `exit_fullscreen`, shown by `aria-pressed`). `shell.js` puts the card in full screen (v1.6.1, as in Camp de Base: a **map** card, its button `--over`, covers the whole window edge to edge, z 50, over the side menu, under toasts; **any other card** fills the content area, from the side menu's edge, and stays under the menu, never over it), asks the browser for full screen when allowed (refused in iframes and on iPhones: the card still fills the frame), exits on Esc, the button or the browser leaving full screen, then fires `ds-fullscreen` (`detail.on`, `detail.settled`) on the card twice (at once, then after 450 ms) and a window `resize`: **the app redraws its chart at the new size** (width and height; the drawing area is `.ds-chart` or `[data-ds-fs-grow]`, which takes the room left). Only classes and attributes change, so it also works inside a host page such as a claude.ai dashboard |
 | Tooltip | `.ds-tip` for charts; native `title` elsewhere | inverted, mono 12 px |
+| Help mark (v1.10) | `button.ds-help[data-ds-help="…"]` « ? » right after a chart card's title or a KPI label, `aria-label` = the same text, `title` for hover | 16 px circle, 10 px; a tap or click opens `.ds-help-pop` (inverted, 13 px body, ≤ 320 px) under it, Esc / tap elsewhere / scroll closes (`shell.js`). **Every chart and every KPI has one** (Aurélien, 2026-10-30): two or three short sentences for a beginner — what the figure is, how to read the chart (axes, colours, lines, what « good » looks like), jargon defined in the sentence. Apps keep the texts in one module keyed by id |
 | Empty, loading, error | `.ds-empty` (dashed, title + one line + the action; inside a panel `.ds-empty.ds-empty--inline`: text only, body size, `strong` + `p` on one line, v1.5), `.ds-loading` ("Loading expeditions…" in place), `.ds-note.ds-bad` + retry | never a blank page; say what to do next |
 | Login | `.ds-login` | full-screen surface: mark 84 px, app name, one line, one primary button, `.ds-err` line |
 
@@ -221,6 +222,7 @@ dark background).
   alternative = dotted (`1.5 5`). Today or the cursor = a 1.5 px `--ink` line; hover value in a `.ds-tip`.
 - Bars: 6–14 px high, radius 3, on a `--sunken` track; legends with 10 px squares (radius 2). Big numbers above the
   chart, in mono, with the unit small and muted (`1 240 <small>km</small>`).
+- Every chart and KPI carries a help mark (`.ds-help`, Components): what it shows and how to read it, for a non-specialist.
 - Label directly when there are ≤ 4 series; otherwise a legend. Never rely on colour alone: add the value, a dash
   pattern or a label.
 

@@ -344,6 +344,11 @@ dialog.ds-dialog::backdrop { background: var(--scrim); }
   overflow: hidden; } /* two classes' weight, like Camp de Base's .rt-map-wrap.rt-full: the map card's own position, border and radius never win */
 @media (min-width: 860px) { .ds-full:not(:has(> .ds-fs-btn--over)) { left: var(--side-w); z-index: 24; } }
 html.ds-noscroll, html.ds-noscroll body { overflow: hidden; }
+/* v1.6.2: maps stay behind the shell. Leaflet's panes and controls (z 400–1000) and a map's own overlays would escape
+   their card and scroll over the side menu (25), the phone top bar and the drawer: a map, and a card that holds one, make
+   their own stacking context, as Camp de Base's .rt-map-wrap and .wm-wrap do. Isolation only (no position, no z-index),
+   so .ds-full's fixed position and z 50 still win in full screen and the controls stay clickable. */
+.ds-map, .leaflet-container, :where(.ds-panel, .ds-card, [data-ds-fs-card]):has(> .ds-fs-btn--over, .leaflet-container, .ds-map) { isolation: isolate; }
 
 /* ---------- Login screen ---------- */
 .ds-login { position: fixed; inset: 0; z-index: 60; background: var(--surface); display: grid; place-items: center; padding: 24px; }

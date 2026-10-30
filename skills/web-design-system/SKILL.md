@@ -182,6 +182,10 @@ dark background).
   drawing that reads its size when drawn and redraws on `ds-fullscreen`.
   Camp de Base's charts use their own "view larger" instead (a corner button on the chart; a copy of the chart fitted to
   the content area, texts kept legible, legend below; Esc or a click outside closes): same rule, never over the side menu.
+- **Maps stay behind the shell** (v1.6.2): a map (`.ds-map`, a Leaflet container) and the card that holds it make their
+  own stacking context (`isolation: isolate`, in `tokens.css`; Camp de Base's `.rt-map-wrap`, `.wm-wrap`), so Leaflet's
+  layers (z 400–1000) and the map's overlays scroll under the side menu, the phone top bar and the drawer. An app whose
+  map wrapper is not one of those classes adds `position: relative; z-index: 0; isolation: isolate` to it.
 - Charts are hand-made SVG (no chart library by default) inside `.ds-chart`; axis text 11 px mono muted; axes and
   grid in `--line`; a chart scrolls sideways under its minimum width (640 px for time series).
 - Series take `--c1`…`--c6` in order; "other" is `--c-other`. They are the hues of Camp de Base's expedition charts

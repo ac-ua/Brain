@@ -87,7 +87,19 @@ state, Build Roadmap, ledger and configuration guide republished).
 | 1 | **Sport · hébergement** | `ac-ua/sport` · `app-sport` | Pages project connected to the repo; D1 `sport` loaded and synced nightly by `sport-sync`; `sport.aureliencaye.com` behind the shared Access application (created here, documented for the others); `/api/attention`; weekly backup running once; guide republished |
 | 2 | **Finance · mise en ligne** | `ac-ua/finance` · TODO(Aurélien): an `app-finance` environment | `finance.aureliencaye.com` live behind Access, Pages connected; D1 `finance` from `db/schema.sql`; data moved from the artifact's store without loss (counts checked); Functions API used by the front; `/api/attention`; weekly backup; the artifact kept as read-only fallback until Aurélien retires it |
 | 3 | **Camp de Base · migration** | `ac-ua/Base-Camp` · `Base Camp` | D1 `camp-de-base` with the full schema and data (row counts equal to Supabase), API on D1, photos in R2, Access instead of Google sign-in, `basecamp.aureliencaye.com`; `/api/attention` from the tower; weekly backup replaces the old backup workflow; Supabase project left **paused, not deleted** (deletion is Aurélien's call) |
-| 4 | **Brain · hub** (after 1–3) | `ac-ua/brain` · `Default` | « Brain · Cockpit » points to the new addresses and shows each app's attention items next to the Notion tasks; design system v1.6 with the app switcher and `apps.json` |
+| 4 | **Brain · hub** (after 1–3) | `ac-ua/brain` · `Default` | « Brain · Cockpit » points to the new addresses and shows each app's attention items next to the Notion tasks; design system v1.6 with the app switcher and `apps.json`; **architecture map** and **coherence review** (below) |
+
+### Thread 4 also delivers (Aurélien's call, 2026-10-30)
+- **Architecture map** of every app as it really runs (Sport, Finance, Camp de Base, the hub; Element Logbook and the
+  website shown apart): addresses, Pages projects, Workers and crons, D1 databases, R2 prefixes, Access application
+  and hostnames, secrets by name, backups, `/api/attention`, links between apps, artifacts. Read from the repos, the
+  ledgers and Cloudflare, not from this plan. Published as the artifact « Brain · Architecture des apps » (registry
+  `docs/artifacts.md`), source in this repo, and summarised in this file.
+- **Coherence review**, one short table per app: design-system version vs `FEEDBACK.md`, docs that still describe the
+  old setup (Supabase, Google sign-in, `pages.dev` links, old backup workflows), leftovers to retire (Supabase project
+  paused, old secrets, dead code paths), the security findings of 2026-10-30 (Finance tokens over-scoped, Sport
+  `/status` public, `SYNC_TOKEN` in a URL) and their state. Fixes that are small and safe go in a PR per app;
+  everything else becomes a Build Roadmap row or a Task for Aurélien. Nothing is deleted without his OK.
 
 ### Known constraint for thread 4
 An artifact cannot `fetch` other hosts (CSP), so the cockpit cannot call `/api/attention` directly. Options to settle

@@ -14,7 +14,7 @@ reference is **Camp de Base** (`ac-ua/Base-Camp`) and only Camp de Base (Auréli
 |---|---|
 | [`tokens.css`](tokens.css) | tokens (light, dark, context palettes), base styles and the core `ds-` components; copy it as `web/ds.css` |
 | [`icons/`](icons/) | `icons.json` (73 generic faceted icons), `glyphs.json` (16 UI glyphs), `build_icons.py` → `icons.js` |
-| [`shell.js`](shell.js) | the app shell's behaviour (fold the side menu, phone drawer, theme switch); copy it next to the pages |
+| [`shell.js`](shell.js) | the app shell's behaviour (fold the side menu, phone drawer, theme switch, full screen for cards, v1.6); copy it next to the pages |
 | [`brand/`](brand/) | `mark.png` (Camp de Base's faceted mountain), `favicon.png`; every other app has its own mark (Brand marks) |
 | [`FEEDBACK.md`](FEEDBACK.md) | change log of the system and which apps still have to adopt each change |
 
@@ -147,6 +147,7 @@ mark lives in the app's repo, as `brand/<app>-mark.svg` or `brand/mark.svg` unde
 | Form | `.ds-form` (labels wrap inputs), `.ds-input`, `.ds-switch`, `.ds-search` | label 13 px muted above the field; fields 7×9, radius 7; a visible file input is compacted to the same height (v1.5.1); switch 34×20 (14 px travel, whole switch clickable, disabled at .4); `.missing` = warn |
 | Dialog, sheet | `dialog.ds-dialog > .ds-dialog-body + .ds-dialog-foot`, `.ds-sheet` | dialog ≤ 640 px; detail views open as a right sheet (≤ 760 px), full screen on phones |
 | Toast | `.ds-toast` (`.ds-err`) | bottom centre, inverted; errors in bad |
+| Full screen (v1.6) | `button.ds-fs-btn[data-ds-fs]` in the card header (`.ds-fs-btn--over` on a map), card `.ds-full` (`[data-ds-fs-card]` or the closest `.ds-panel` / `.ds-card`) | every chart and map card has one (Camp de Base's map button): 32 px glyph button at the right of the title, `aria-label="Full screen"`, `aria-pressed`, both glyphs inside (`span.ds-fs-enter` `fullscreen`, `span.ds-fs-exit` `exit_fullscreen`, shown by `aria-pressed`). `shell.js` covers the window with the card (`position: fixed`, z 50, over the side menu, under toasts), asks the browser for full screen when allowed (refused in iframes and on iPhones: the card still fills the frame), exits on Esc, the button or the browser leaving full screen, then fires `ds-fullscreen` (`detail.on`, `detail.settled`) on the card twice (at once, then after 450 ms) and a window `resize`: **the app redraws its chart at the new size** (width and height; the drawing area is `.ds-chart` or `[data-ds-fs-grow]`, which takes the room left). Only classes and attributes change, so it also works inside a host page such as a claude.ai dashboard |
 | Tooltip | `.ds-tip` for charts; native `title` elsewhere | inverted, mono 12 px |
 | Empty, loading, error | `.ds-empty` (dashed, title + one line + the action; inside a panel `.ds-empty.ds-empty--inline`: text only, body size, `strong` + `p` on one line, v1.5), `.ds-loading` ("Loading expeditions…" in place), `.ds-note.ds-bad` + retry | never a blank page; say what to do next |
 | Login | `.ds-login` | full-screen surface: mark 84 px, app name, one line, one primary button, `.ds-err` line |
@@ -177,6 +178,8 @@ Photos and product thumbs sit on white (`#fff`) in both themes; icon outlines st
 dark background).
 
 ## Data viz
+- **Every chart, diagram and map can go full screen** (v1.6, Full screen above): a `.ds-fs-btn` in its card header, and a
+  drawing that reads its size when drawn and redraws on `ds-fullscreen`.
 - Charts are hand-made SVG (no chart library by default) inside `.ds-chart`; axis text 11 px mono muted; axes and
   grid in `--line`; a chart scrolls sideways under its minimum width (640 px for time series).
 - Series take `--c1`…`--c6` in order; "other" is `--c-other`. They are the hues of Camp de Base's expedition charts

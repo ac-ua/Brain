@@ -9,9 +9,9 @@ surfaced in the hub. Study with prototypes: « Brain · Plateforme des apps »
    addresses, sign-in, the design system, the attention contract, the backup method.
 2. **Everything on Cloudflare.** One **D1** database per app, files in **R2**, sign-in with **Cloudflare Access**. Camp
    de Base leaves Supabase; Finance starts on D1. **Element Logbook stays on Supabase** (separate club project).
-3. **Addresses:** subdomains of `aureliencaye.com` (zone already on Cloudflare): `sport.`, `finance.`, `expe.` (Camp de
-   Base), later `hub.`. Each is the custom domain of its Pages project; `*.pages.dev` stays as a fallback.
-   TODO(Aurélien): confirm the three names (the study's proposal, not yet confirmed).
+3. **Addresses:** subdomains of `aureliencaye.com` (zone already on Cloudflare): `sport.`, `finance.`, `basecamp.`
+   (Camp de Base, Aurélien's call 2026-10-30), later `hub.`. Each is the custom domain of its Pages project;
+   `*.pages.dev` stays as a fallback.
 4. **Backups:** weekly, per app, to R2 and to the personal Drive `80_Backups/Apps/<App>`; D1 Time Travel (7 days on
    the free plan) covers the gap between two backups. **No app data in git**, ever (code, schemas, migrations and
    synthetic fixtures only).
@@ -26,7 +26,7 @@ surfaced in the hub. Study with prototypes: « Brain · Plateforme des apps »
 - Names: Pages project = D1 database = R2 prefix = the app key: `sport`, `finance`, `camp-de-base`.
 
 ### Sign-in: Cloudflare Access
-- **One** Access application covering `sport.`, `finance.` and `expe.aureliencaye.com` (and their `pages.dev`
+- **One** Access application covering `sport.`, `finance.` and `basecamp.aureliencaye.com` (and their `pages.dev`
   hosts), policy: Aurélien's e-mail only, session 1 month. Team: Sport's existing Zero Trust team. Created once, by the
   Sport thread, and reused by the others (one more hostname each).
 - Every Function verifies the `Cf-Access-Jwt-Assertion` JWT against the team's certs and the application's AUD (Sport's
@@ -75,7 +75,7 @@ state, Build Roadmap, ledger and configuration guide republished).
 |---|---|---|---|
 | 1 | **Sport · hébergement** | `ac-ua/sport` · `app-sport` | Pages project connected to the repo; D1 `sport` loaded and synced nightly by `sport-sync`; `sport.aureliencaye.com` behind the shared Access application (created here, documented for the others); `/api/attention`; weekly backup running once; guide republished |
 | 2 | **Finance · mise en ligne** | `ac-ua/finance` · TODO(Aurélien): an `app-finance` environment | `finance.aureliencaye.com` live behind Access, Pages connected; D1 `finance` from `db/schema.sql`; data moved from the artifact's store without loss (counts checked); Functions API used by the front; `/api/attention`; weekly backup; the artifact kept as read-only fallback until Aurélien retires it |
-| 3 | **Camp de Base · migration** | `ac-ua/Base-Camp` · `Base Camp` | D1 `camp-de-base` with the full schema and data (row counts equal to Supabase), API on D1, photos in R2, Access instead of Google sign-in, `expe.aureliencaye.com`; `/api/attention` from the tower; weekly backup replaces the old backup workflow; Supabase project left **paused, not deleted** (deletion is Aurélien's call) |
+| 3 | **Camp de Base · migration** | `ac-ua/Base-Camp` · `Base Camp` | D1 `camp-de-base` with the full schema and data (row counts equal to Supabase), API on D1, photos in R2, Access instead of Google sign-in, `basecamp.aureliencaye.com`; `/api/attention` from the tower; weekly backup replaces the old backup workflow; Supabase project left **paused, not deleted** (deletion is Aurélien's call) |
 | 4 | **Brain · hub** (after 1–3) | `ac-ua/brain` · `Default` | « Brain · Cockpit » points to the new addresses and shows each app's attention items next to the Notion tasks; design system v1.6 with the app switcher and `apps.json` |
 
 ### Known constraint for thread 4

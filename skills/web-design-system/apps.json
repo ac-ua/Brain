@@ -1,0 +1,10 @@
+{
+  "about": "The registry of Aurélien's apps (design system v1.9): the app switcher at the top of every side menu reads it, the Brain cockpit and the attention connector (tools/attention-mcp) too. One entry per app, in menu order. key = the platform key (Pages project, D1, R2 prefix); shell = the app's data-ds-app value; icon = a kit icon (icons/icons.json); attention = the app's GET /api/attention, null when it has none. Copy it next to the app's pages at each release (as shell.js); change it here only.",
+  "version": "1.9",
+  "apps": [
+    { "key": "hub", "name": "Brain", "note": "Cockpit", "url": "https://claude.ai/artifact/UqbtEKheEFwqs7P61d6zdi", "shell": "brain", "icon": "home", "kind": "hub", "attention": null },
+    { "key": "camp-de-base", "name": "Camp de Base", "note": "Expéditions", "url": "https://basecamp.aureliencaye.com", "shell": "cdb", "icon": "map", "kind": "app", "attention": "https://basecamp.aureliencaye.com/api/attention" },
+    { "key": "sport", "name": "Sport", "note": "Entraînement", "url": "https://sport.aureliencaye.com", "shell": "sport", "icon": "training", "kind": "app", "attention": "https://sport.aureliencaye.com/api/attention" },
+    { "key": "finance", "name": "Finance", "note": "Patrimoine", "url": "https://finance.aureliencaye.com", "shell": "fin", "icon": "budget", "kind": "app", "attention": "https://finance.aureliencaye.com/api/attention" }
+  ]
+}

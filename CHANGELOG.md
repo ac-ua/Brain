@@ -3,6 +3,22 @@
 The brain is versioned like any project: `v0.x` while the skeleton settles. Each release is a merged PR on
 `ac-ua/brain` and a row in the Notion Build Roadmap (Project = Brain).
 
+## v0.4.21 — the hub: app switcher, attention of the apps, architecture map, review (2026-10-30)
+- Design system **v1.9**: `apps.json`, the one registry of the apps (addresses, kit icon, `data-ds-app` key,
+  `/api/attention`), and the **app switcher** under the brand (`shell.js`, `.ds-apps*`); every app adopts it at its
+  next release (`FEEDBACK.md`).
+- « Brain · Cockpit » (same link, v7): Apps group and switcher on `basecamp.`, `sport.`, `finance.aureliencaye.com`
+  from `apps.json` (`build.py`); « Dans tes apps » on the Today page and attention counts in the menu, through the new
+  « Apps attention » connector. The Quotas page is kept.
+- New `tools/attention-mcp`: remote MCP server on Cloudflare Workers (`get_attention`, read-only), OAuth 2.1 with
+  Cloudflare Access as the sign-in and a consent page; reads each app with one Access service token. Tests and bundle
+  check; deployed by Workers Builds once Aurélien has done the setup (`README.md`).
+- New artifact « Brain · Architecture des apps » (`docs/cockpit/src/architecture.html`), registry updated.
+- `docs/platform.md`: thread 4 decisions (connector rather than a Notion job, and why), architecture table, two crons
+  used, v1.9. New `docs/platform-review.md`: coherence and security review per app.
+- App PRs from the review: `ac-ua/sport#54` (Strava connect without the token in the URL, constant-time checks),
+  `ac-ua/Base-Camp#230` (docs after the switch). Found: GitHub Actions refuses every job, so no weekly backup has run.
+
 ## v0.4.20 — the platform plan (2026-10-30)
 - `docs/platform.md`: decisions (federation, everything on Cloudflare with one D1 per app, Element Logbook on Supabase,
   subdomains, one Access application, weekly backups to R2 and the Drive, no app data in git), the `/api/attention`

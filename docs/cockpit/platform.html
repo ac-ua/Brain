@@ -24,9 +24,11 @@
      food orange, fuel amber (expeditions.js load chart), good-weather green (simulation.js), deadline red; no purple.
      --c-other for "rest / other" (simulation.js rest grey). v1.5: --c7 ocean teal and --c8 desert earth (Camp de Base's
      ocean and desert palettes), two more series that are not status colours; use them before --c6 when red would read
-     as "bad" (wealth, allocations) */
+     as "bad" (wealth, allocations). v1.8: --c9 deep ocean, --c10 olive, --c11 deep forest, --c12 granite (Camp de Base's
+     ocean icon slate, forest and mountain palettes; olive between forest and desert), for apps with up to twelve categories */
   --c1: #0a6aa7; --c2: #5b7f95; --c3: #d9480f; --c4: #e8a33d; --c5: #3f9b6b; --c6: #b42318; --c-other: #adb5bd;
   --c7: #1a8a96; --c8: #8b5e34;
+  --c9: #0e3e84; --c10: #6b7a1f; --c11: #1a4f1c; --c12: #4a4c48;
   /* icons (faceted kit): fill roles and the outline, which stays dark in both themes */
   --ci-ink: #0d1117; --ci-a: #5b8fc0; --ci-b: #3e5d75; --ci-c: #ffffff; --ci-d: #9ea2ab;
   /* elevation, overlay */
@@ -55,6 +57,7 @@
   --bad: #ff8a7a; --bad-soft: #3a1612; --info: #7db6ef; --info-soft: #11263a;
   --c1: #6fb0e0; --c2: #7fa3ba; --c3: #ff7a3d; --c4: #f0b44c; --c5: #56b07f; --c6: #ff8a7a; --c-other: #6b7a86;
   --c7: #4fc1c9; --c8: #c49a6c;
+  --c9: #b4cdf7; --c10: #b5c25a; --c11: #9fd49a; --c12: #c4c6c2;
   --ci-ink: #05080b;
   --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .35);
   color-scheme: dark; } }
@@ -65,6 +68,7 @@
   --bad: #ff8a7a; --bad-soft: #3a1612; --info: #7db6ef; --info-soft: #11263a;
   --c1: #6fb0e0; --c2: #7fa3ba; --c3: #ff7a3d; --c4: #f0b44c; --c5: #56b07f; --c6: #ff8a7a; --c-other: #6b7a86;
   --c7: #4fc1c9; --c8: #c49a6c;
+  --c9: #b4cdf7; --c10: #b5c25a; --c11: #9fd49a; --c12: #c4c6c2;
   --ci-ink: #05080b;
   --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .35);
   color-scheme: dark; }
@@ -149,6 +153,31 @@ h3, .ds-label { font: 600 12px/1.2 var(--body); letter-spacing: .1em; text-trans
   .ds-side-mini .ds-side:not(:hover):not(:focus-within) .ds-side-link .ico { font-size: 14px; width: 20px; flex: none; }
 }
 @media (max-width: 859px) { .ds-side-fold { display: none; } }
+/* v1.9: app switcher at the top of the side menu, under the brand (the platform's one menu for every app). shell.js
+   fills [data-ds-apps] from apps.json (inline <script type="application/json" id="ds-apps-data">, else apps.json next
+   to the page): a button with the current app, a menu with every app (links, the current one marked) and the hub.
+   Folded, only the icon shows; on phones it lives in the drawer. Counts (.ds-count[data-ds-apps-count="<key>"]) are
+   the app's to fill, e.g. attention items. */
+.ds-apps { position: relative; padding: 0 2px; }
+.ds-apps-btn { width: 100%; display: flex; align-items: center; gap: 9px; padding: 7px 9px; border: 1px solid var(--line); background: var(--surface);
+  border-radius: var(--r); cursor: pointer; text-align: left; color: var(--ink); font: inherit; }
+.ds-apps-btn:hover { border-color: var(--muted); }
+.ds-apps-btn .ico, .ds-apps-menu .ico { width: 20px; flex: none; text-align: center; }
+.ds-apps-btn .ds-apps-name { flex: 1; min-width: 0; font: 700 15px/1.2 var(--display); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ds-apps-btn .ds-apps-caret { color: var(--muted); font-size: 12px; }
+.ds-apps-menu { position: absolute; left: 2px; right: 2px; top: calc(100% + 4px); z-index: 30; background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--r-md); box-shadow: var(--shadow); padding: 6px; display: grid; gap: 2px; min-width: 200px; }
+.ds-apps-menu[hidden] { display: none; }
+.ds-apps-menu a { display: flex; align-items: center; gap: 9px; padding: 7px 9px; border-radius: var(--r); color: var(--ink); text-decoration: none; font-size: 14px; }
+.ds-apps-menu a:hover, .ds-apps-menu a:focus-visible { background: var(--sunken); }
+.ds-apps-menu a[aria-current="true"] { background: var(--sunken); box-shadow: inset 3px 0 0 var(--accent); }
+.ds-apps-menu small { color: var(--muted); font-size: 11.5px; }
+.ds-apps-menu .ds-count { margin-left: auto; font: 12px var(--mono); color: var(--warn); }
+.ds-apps-menu hr { border: 0; border-top: 1px solid var(--line); margin: 4px 0; }
+@media (min-width: 860px) {
+  .ds-side-mini .ds-side:not(:hover):not(:focus-within) .ds-apps-btn { justify-content: center; padding: 7px 0; border-color: transparent; background: none; }
+  .ds-side-mini .ds-side:not(:hover):not(:focus-within) .ds-apps-btn :is(.ds-apps-name, .ds-apps-caret) { display: none; }
+}
 /* Sign out: bottom left, under the theme switch, full width (Camp de Base's .signout) */
 .ds-signout { flex-basis: 100%; border: 1px solid var(--line); background: var(--surface); color: var(--muted); border-radius: var(--r-sm); padding: 6px 10px;
   font-size: 12px; cursor: pointer; text-align: left; text-decoration: none; }

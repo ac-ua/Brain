@@ -25,9 +25,11 @@
      food orange, fuel amber (expeditions.js load chart), good-weather green (simulation.js), deadline red; no purple.
      --c-other for "rest / other" (simulation.js rest grey). v1.5: --c7 ocean teal and --c8 desert earth (Camp de Base's
      ocean and desert palettes), two more series that are not status colours; use them before --c6 when red would read
-     as "bad" (wealth, allocations) */
+     as "bad" (wealth, allocations). v1.8: --c9 deep ocean, --c10 olive, --c11 deep forest, --c12 granite (Camp de Base's
+     ocean icon slate, forest and mountain palettes; olive between forest and desert), for apps with up to twelve categories */
   --c1: #0a6aa7; --c2: #5b7f95; --c3: #d9480f; --c4: #e8a33d; --c5: #3f9b6b; --c6: #b42318; --c-other: #adb5bd;
   --c7: #1a8a96; --c8: #8b5e34;
+  --c9: #0e3e84; --c10: #6b7a1f; --c11: #1a4f1c; --c12: #4a4c48;
   /* icons (faceted kit): fill roles and the outline, which stays dark in both themes */
   --ci-ink: #0d1117; --ci-a: #5b8fc0; --ci-b: #3e5d75; --ci-c: #ffffff; --ci-d: #9ea2ab;
   /* elevation, overlay */
@@ -56,6 +58,7 @@
   --bad: #ff8a7a; --bad-soft: #3a1612; --info: #7db6ef; --info-soft: #11263a;
   --c1: #6fb0e0; --c2: #7fa3ba; --c3: #ff7a3d; --c4: #f0b44c; --c5: #56b07f; --c6: #ff8a7a; --c-other: #6b7a86;
   --c7: #4fc1c9; --c8: #c49a6c;
+  --c9: #b4cdf7; --c10: #b5c25a; --c11: #9fd49a; --c12: #c4c6c2;
   --ci-ink: #05080b;
   --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .35);
   color-scheme: dark; } }
@@ -66,6 +69,7 @@
   --bad: #ff8a7a; --bad-soft: #3a1612; --info: #7db6ef; --info-soft: #11263a;
   --c1: #6fb0e0; --c2: #7fa3ba; --c3: #ff7a3d; --c4: #f0b44c; --c5: #56b07f; --c6: #ff8a7a; --c-other: #6b7a86;
   --c7: #4fc1c9; --c8: #c49a6c;
+  --c9: #b4cdf7; --c10: #b5c25a; --c11: #9fd49a; --c12: #c4c6c2;
   --ci-ink: #05080b;
   --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .35);
   color-scheme: dark; }
@@ -150,6 +154,31 @@ h3, .ds-label { font: 600 12px/1.2 var(--body); letter-spacing: .1em; text-trans
   .ds-side-mini .ds-side:not(:hover):not(:focus-within) .ds-side-link .ico { font-size: 14px; width: 20px; flex: none; }
 }
 @media (max-width: 859px) { .ds-side-fold { display: none; } }
+/* v1.9: app switcher at the top of the side menu, under the brand (the platform's one menu for every app). shell.js
+   fills [data-ds-apps] from apps.json (inline <script type="application/json" id="ds-apps-data">, else apps.json next
+   to the page): a button with the current app, a menu with every app (links, the current one marked) and the hub.
+   Folded, only the icon shows; on phones it lives in the drawer. Counts (.ds-count[data-ds-apps-count="<key>"]) are
+   the app's to fill, e.g. attention items. */
+.ds-apps { position: relative; padding: 0 2px; }
+.ds-apps-btn { width: 100%; display: flex; align-items: center; gap: 9px; padding: 7px 9px; border: 1px solid var(--line); background: var(--surface);
+  border-radius: var(--r); cursor: pointer; text-align: left; color: var(--ink); font: inherit; }
+.ds-apps-btn:hover { border-color: var(--muted); }
+.ds-apps-btn .ico, .ds-apps-menu .ico { width: 20px; flex: none; text-align: center; }
+.ds-apps-btn .ds-apps-name { flex: 1; min-width: 0; font: 700 15px/1.2 var(--display); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ds-apps-btn .ds-apps-caret { color: var(--muted); font-size: 12px; }
+.ds-apps-menu { position: absolute; left: 2px; right: 2px; top: calc(100% + 4px); z-index: 30; background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--r-md); box-shadow: var(--shadow); padding: 6px; display: grid; gap: 2px; min-width: 200px; }
+.ds-apps-menu[hidden] { display: none; }
+.ds-apps-menu a { display: flex; align-items: center; gap: 9px; padding: 7px 9px; border-radius: var(--r); color: var(--ink); text-decoration: none; font-size: 14px; }
+.ds-apps-menu a:hover, .ds-apps-menu a:focus-visible { background: var(--sunken); }
+.ds-apps-menu a[aria-current="true"] { background: var(--sunken); box-shadow: inset 3px 0 0 var(--accent); }
+.ds-apps-menu small { color: var(--muted); font-size: 11.5px; }
+.ds-apps-menu .ds-count { margin-left: auto; font: 12px var(--mono); color: var(--warn); }
+.ds-apps-menu hr { border: 0; border-top: 1px solid var(--line); margin: 4px 0; }
+@media (min-width: 860px) {
+  .ds-side-mini .ds-side:not(:hover):not(:focus-within) .ds-apps-btn { justify-content: center; padding: 7px 0; border-color: transparent; background: none; }
+  .ds-side-mini .ds-side:not(:hover):not(:focus-within) .ds-apps-btn :is(.ds-apps-name, .ds-apps-caret) { display: none; }
+}
 /* Sign out: bottom left, under the theme switch, full width (Camp de Base's .signout) */
 .ds-signout { flex-basis: 100%; border: 1px solid var(--line); background: var(--surface); color: var(--muted); border-radius: var(--r-sm); padding: 6px 10px;
   font-size: 12px; cursor: pointer; text-align: left; text-decoration: none; }
@@ -421,6 +450,8 @@ html.ds-noscroll, html.ds-noscroll body { overflow: hidden; }
 .bc-item { border: 1px solid var(--line); border-radius: var(--r); padding: 9px 11px; background: var(--surface); display: grid; gap: 6px; }
 .bc-item + .bc-item { margin-top: 8px; }
 .bc-item.bc-need { border-left: 3px solid var(--warn); }
+.bc-item.bc-att.bad { border-left: 3px solid var(--bad); } .bc-item.bc-att.warn { border-left: 3px solid var(--warn); } .bc-item.bc-att.info { border-left: 3px solid var(--info); }
+.bc-item.bc-att .bc-k { display: flex; align-items: center; gap: 6px; }
 .bc-item.bc-mine { border-left: 3px solid var(--accent); }
 .bc-k { font: 600 11px/1.2 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 .bc-t { overflow-wrap: anywhere; }
@@ -507,6 +538,7 @@ details.bc-more summary { cursor: pointer; font-size: 13px; color: var(--muted);
   <nav class="ds-side" id="side" aria-label="Brain">
     <div class="ds-side-brand"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHBvbHlnb24gcG9pbnRzPSI1MCw3IDUwLDUwIDcsNTAgMzksMzkiIGZpbGw9IiM3Mzk3YjMiIHN0cm9rZT0iIzEzMTMxMyIgc3Ryb2tlLXdpZHRoPSI1LjIiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cG9seWdvbiBwb2ludHM9IjUwLDcgNjEsMzkgOTMsNTAgNTAsNTAiIGZpbGw9IiNmM2YzZjAiIHN0cm9rZT0iIzEzMTMxMyIgc3Ryb2tlLXdpZHRoPSI1LjIiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cG9seWdvbiBwb2ludHM9IjcsNTAgNTAsNTAgNTAsOTMgMzksNjEiIGZpbGw9IiNhOWFhYWQiIHN0cm9rZT0iIzEzMTMxMyIgc3Ryb2tlLXdpZHRoPSI1LjIiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cG9seWdvbiBwb2ludHM9IjkzLDUwIDYxLDYxIDUwLDkzIDUwLDUwIiBmaWxsPSIjNWE3NjhiIiBzdHJva2U9IiMxMzEzMTMiIHN0cm9rZS13aWR0aD0iNS4yIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+Cg==" alt=""><span><b>Brain</b><small>Aurélien Caye</small></span>
       <button class="ds-side-fold" data-ds-side-fold title="Replier ou ouvrir le menu" aria-label="Replier ou ouvrir le menu"><span class="ds-fold">«</span><span class="ds-unfold">»</span></button></div>
+    <div class="ds-apps" data-ds-apps></div>
     <div class="ds-side-group"><span class="ds-side-h">Cockpit</span>
       <a class="ds-side-link" href="#jour" data-view="jour"><span class="ico">:ci-home:</span>Aujourd'hui<span class="ds-count" id="n-jour"></span></a>
       <a class="ds-side-link" href="#domaines" data-view="domaines"><span class="ico">:ci-map:</span>Domaines</a>
@@ -516,9 +548,9 @@ details.bc-more summary { cursor: pointer; font-size: 13px; color: var(--muted);
       <a class="ds-side-link" href="#claude" data-view="claude"><span class="ico">:ci-star:</span>Claude</a>
     </div>
     <div class="ds-side-group"><span class="ds-side-h">Apps</span>
-      <a class="ds-side-link" href="#" data-app="campdebase" target="_blank" rel="noopener"><span class="ico">:ci-map:</span>Camp de Base<span class="ds-soon">↗</span></a>
-      <a class="ds-side-link" href="#" data-app="sport" target="_blank" rel="noopener"><span class="ico">:ci-training:</span>Sport<span class="ds-soon">↗</span></a>
-      <a class="ds-side-link" href="#" data-app="finance" target="_blank" rel="noopener"><span class="ico">:ci-budget:</span>Finance<span class="ds-soon">↗</span></a>
+      <a class="ds-side-link" href="#" data-app="camp-de-base" target="_blank" rel="noopener"><span class="ico">:ci-map:</span>Camp de Base<span class="ds-count" data-att="camp-de-base"></span></a>
+      <a class="ds-side-link" href="#" data-app="sport" target="_blank" rel="noopener"><span class="ico">:ci-training:</span>Sport<span class="ds-count" data-att="sport"></span></a>
+      <a class="ds-side-link" href="#" data-app="finance" target="_blank" rel="noopener"><span class="ico">:ci-budget:</span>Finance<span class="ds-count" data-att="finance"></span></a>
     </div>
     <div class="ds-side-foot">
       <div class="ds-seg" role="group" aria-label="Thème"><button data-ds-theme="auto" aria-label="Thème automatique" title="Automatique" data-glyph="theme_auto"></button><button data-ds-theme="light" aria-label="Thème clair" title="Clair" data-glyph="theme_light"></button><button data-ds-theme="dark" aria-label="Thème sombre" title="Sombre" data-glyph="theme_dark"></button></div>
@@ -537,7 +569,7 @@ details.bc-more summary { cursor: pointer; font-size: 13px; color: var(--muted);
           </dl>
         </header>
         <div class="ds-toolbar">
-          <div class="bc-fresh" id="fresh"><span data-src="projects">Projets</span><span data-src="tasks">Tâches</span><span data-src="roadmap">Roadmap</span><span data-src="sessions">Sessions</span></div>
+          <div class="bc-fresh" id="fresh"><span data-src="projects">Projets</span><span data-src="tasks">Tâches</span><span data-src="roadmap">Roadmap</span><span data-src="sessions">Sessions</span><span data-src="att">Apps</span></div>
           <div class="bc-acts">
             <div class="ds-seg" role="group" aria-label="Contexte" id="ctx"><button data-ctx="all" aria-pressed="true" style="padding:5px 11px;font-size:13px">Tout</button><button data-ctx="perso" aria-pressed="false" style="padding:5px 11px;font-size:13px">Perso</button><button data-ctx="work" aria-pressed="false" style="padding:5px 11px;font-size:13px">Work</button></div>
             <button class="ds-btn ds-btn--sm" id="refresh" type="button">Actualiser</button>
@@ -566,6 +598,7 @@ details.bc-more summary { cursor: pointer; font-size: 13px; color: var(--muted);
   </div>
 </div>
 <div id="toast-host"></div>
+<script type="application/json" id="ds-apps-data">{"about": "The registry of Aurélien's apps (design system v1.9): the app switcher at the top of every side menu reads it, the Brain cockpit and the attention connector (tools/attention-mcp) too. One entry per app, in menu order. key = the platform key (Pages project, D1, R2 prefix); shell = the app's data-ds-app value; icon = a kit icon (icons/icons.json); attention = the app's GET /api/attention, null when it has none. Copy it next to the app's pages at each release (as shell.js); change it here only.", "version": "1.9", "apps": [{"key": "hub", "name": "Brain", "note": "Cockpit", "url": "https://claude.ai/artifact/UqbtEKheEFwqs7P61d6zdi", "shell": "brain", "icon": "home", "kind": "hub", "attention": null}, {"key": "camp-de-base", "name": "Camp de Base", "note": "Expéditions", "url": "https://basecamp.aureliencaye.com", "shell": "cdb", "icon": "map", "kind": "app", "attention": "https://basecamp.aureliencaye.com/api/attention"}, {"key": "sport", "name": "Sport", "note": "Entraînement", "url": "https://sport.aureliencaye.com", "shell": "sport", "icon": "training", "kind": "app", "attention": "https://sport.aureliencaye.com/api/attention"}, {"key": "finance", "name": "Finance", "note": "Patrimoine", "url": "https://finance.aureliencaye.com", "shell": "fin", "icon": "budget", "kind": "app", "attention": "https://finance.aureliencaye.com/api/attention"}]}</script>
 
 <script>
 // AppIcons · icons (generated by build_icons.py from the design-system kit: do not edit by hand).
@@ -648,6 +681,10 @@ svg.ds-glyph { width: 18px; height: 18px; fill: none; stroke: currentColor; flex
 // so the app redraws its chart at the new size (a window "resize" is fired too, for maps).
 // Filter bar (v1.7): button[data-ds-filters-toggle] inside a .ds-filters folds or opens its controls on phones (on every
 // screen with .ds-filters--fold, v1.7.1).
+// App switcher (v1.9): <div class="ds-apps" data-ds-apps></div> right under .ds-side-brand; filled from the registry
+// apps.json (inline <script type="application/json" id="ds-apps-data">, else fetched from data-ds-apps-src, default
+// "apps.json" next to the page). Names and links come from the registry, the icons from the kit (":ci-name:" tokens).
+// The current app is the entry whose host is this page's, else whose "shell" equals data-ds-app.
 (() => {
   const start = () => {
     const root = document.querySelector("[data-ds-shell]") || document.body;
@@ -684,6 +721,36 @@ svg.ds-glyph { width: 18px; height: 18px; fill: none; stroke: currentColor; flex
       if (keep) set("theme", t);
     };
     if (buttons.length) { theme(get("theme")); buttons.forEach((b) => b.addEventListener("click", () => theme(b.dataset.dsTheme, true))); }
+
+    // App switcher (v1.9): one registry (apps.json), one menu for every app.
+    const appsBox = root.querySelector("[data-ds-apps]");
+    const esc = (t) => String(t ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+    const drawApps = (reg) => {
+      const list = (reg && reg.apps) || [];
+      if (!appsBox || !list.length) return;
+      const host = location.hostname;
+      const hostOf = (u) => { try { return new URL(u).hostname; } catch { return ""; } };
+      const cur = list.find((a) => host && hostOf(a.url) === host && a.kind !== "hub") || list.find((a) => a.shell === app) || null;
+      const item = (a) => `<a href="${esc(a.url)}" data-ds-apps-key="${esc(a.key)}"${a === cur ? ' aria-current="true"' : ' target="_top"'}>` +
+        `<span class="ico">:ci-${esc(a.icon || "other")}:</span><span>${esc(a.name)}${a.note ? `<br><small>${esc(a.note)}</small>` : ""}</span>` +
+        `<span class="ds-count" data-ds-apps-count="${esc(a.key)}"></span></a>`;
+      const apps = list.filter((a) => a.kind !== "hub"), hubs = list.filter((a) => a.kind === "hub");
+      appsBox.innerHTML = `<button type="button" class="ds-apps-btn" aria-haspopup="true" aria-expanded="false" title="Changer d'app">` +
+        `<span class="ico">:ci-${esc((cur && cur.icon) || "home")}:</span><span class="ds-apps-name">${esc(cur ? cur.name : "Apps")}</span>` +
+        `<span class="ds-apps-caret" aria-hidden="true">⌄</span></button>` +
+        `<div class="ds-apps-menu" hidden>${apps.map(item).join("")}${hubs.length ? "<hr>" + hubs.map(item).join("") : ""}</div>`;
+      const btn = appsBox.querySelector(".ds-apps-btn"), menu = appsBox.querySelector(".ds-apps-menu");
+      const open = (on) => { menu.hidden = !on; btn.setAttribute("aria-expanded", String(on)); };
+      btn.addEventListener("click", () => open(menu.hidden));
+      document.addEventListener("click", (e) => { if (!appsBox.contains(e.target)) open(false); });
+      document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !menu.hidden) { open(false); btn.focus(); } });
+      appsBox.dispatchEvent(new CustomEvent("ds-apps", { bubbles: true, detail: { apps: list, current: cur } }));
+    };
+    if (appsBox) {
+      const inline = document.getElementById("ds-apps-data");
+      if (inline) { try { drawApps(JSON.parse(inline.textContent)); } catch { /* bad registry: no switcher */ } }
+      else fetch(appsBox.dataset.dsAppsSrc || "apps.json", { credentials: "same-origin" }).then((r) => (r.ok ? r.json() : null)).then(drawApps).catch(() => {});
+    }
 
     // Filter bar (v1.7): on phones (every screen for .ds-filters--fold) the « Filters » button opens or folds the controls of its .ds-filters (delegated,
     // so bars drawn later work too); the app keeps the count, data-on and the reset.
@@ -741,8 +808,12 @@ svg.ds-glyph { width: 18px; height: 18px; fill: none; stroke: currentColor; flex
     roadmap: "view://40819ca7-9893-8114-9b31-000cf8a5a634",
     log: "view://40819ca7-9893-8120-a2ab-000c937d58aa"
   };
-  const APPS = {"campdebase": "https://base-camp.pages.dev", "sport": "https://sport-cw7.pages.dev", "finance": "https://claude.ai/artifact/BpPxLtgPLndNv2H6xnmzp5"};
+  const APPS = {"camp-de-base": "https://basecamp.aureliencaye.com", "sport": "https://sport.aureliencaye.com", "finance": "https://finance.aureliencaye.com"};   // key → address, from skills/web-design-system/apps.json (build.py)
   const NOTION = "Notion", CCR = "Claude Code Remote";
+  // « Apps attention »: the custom connector (tools/attention-mcp) that reads each app's /api/attention; an artifact
+  // cannot fetch the apps itself (CSP). Its display name in claude.ai must be exactly this (docs/platform.md).
+  const ATT = "Apps attention";
+  const APP_NAME = {"camp-de-base":"Camp de Base", sport:"Sport", finance:"Finance"};
   const POLL = 5 * 60 * 1000;
   const DOMAINS = ["Expeditions","Sport","Admin & Finance","Brain","Content","Career","Learning","Life","Work"];
   const DOM_ICON = {"Expeditions":"map","Sport":"training","Admin & Finance":"budget","Brain":"star","Content":"content","Career":"partners","Learning":"book","Life":"home","Work":"folder"};
@@ -754,7 +825,7 @@ svg.ds-glyph { width: 18px; height: 18px; fill: none; stroke: currentColor; flex
   const DECISION = /\b(decide|decision|choose|confirm|keep or drop|whether|pin down|validate|décider|choisir|valider)\b/i;
 
   const state = {projects:null, tasks:null, roadmap:null, log:null, sessions:null, errors:{}, at:{}, ctx:"all", view:"jour", domain:null,
-                 top:[], cursor:0, chat:[], busy:false, proposals:[], quota:undefined, quotaWeeks:[], quotaErr:""};
+                 top:[], cursor:0, chat:[], busy:false, proposals:[], quota:undefined, quotaWeeks:[], quotaErr:"", att:null};
   let mcp = null, sample = null, db = null;
   const unsubs = [];
   const store = {get(k){ try { return localStorage.getItem("brain." + k); } catch(e) { return null; } },
@@ -809,6 +880,7 @@ svg.ds-glyph { width: 18px; height: 18px; fill: none; stroke: currentColor; flex
         state.at[key] = (ev.result.cache && ev.result.cache.storedAt) || Date.now();
         delete state.errors[key];
         if (key === "sessions") state.sessions = findSessions(p);
+        else if (key === "att") state.att = (p && Array.isArray(p.apps)) ? p : null;
         else { state[key] = (p && Array.isArray(p.results)) ? p.results : []; if (p && p.has_more) state.errors[key + "_more"] = true; }
       } else {
         const code = ev.error && ev.error.code;
@@ -824,6 +896,7 @@ svg.ds-glyph { width: 18px; height: 18px; fill: none; stroke: currentColor; flex
     while (unsubs.length) { try { unsubs.pop()(); } catch(e) {} }
     for (const k of ["projects","tasks","roadmap","log"]) unsubs.push(mcp.watchTool(NOTION, "notion-query-data-sources", notionInput(k), onData(k, NOTION), {cache:CACHE, refetchInterval:POLL}));
     unsubs.push(mcp.watchTool(CCR, "list_sessions", {limit:30}, onData("sessions", CCR), {cache:CACHE, refetchInterval:POLL}));
+    unsubs.push(mcp.watchTool(ATT, "get_attention", {}, onData("att", ATT), {cache:CACHE, refetchInterval:POLL}));
   }
   async function refreshAll(){
     if (!mcp) return;
@@ -832,6 +905,8 @@ svg.ds-glyph { width: 18px; height: 18px; fill: none; stroke: currentColor; flex
       .then(r => onData(k, NOTION)({type:"data", result:r}), e => onData(k, NOTION)({type:"error", error:e})));
     calls.push(mcp.callTool(CCR, "list_sessions", {limit:30}, {cache:Object.assign({refresh:true}, CACHE)})
       .then(r => onData("sessions", CCR)({type:"data", result:r}), e => onData("sessions", CCR)({type:"error", error:e})));
+    calls.push(mcp.callTool(ATT, "get_attention", {}, {cache:Object.assign({refresh:true}, CACHE)})
+      .then(r => onData("att", ATT)({type:"data", result:r}), e => onData("att", ATT)({type:"error", error:e})));
     await Promise.allSettled(calls);
     btn.disabled = false; btn.textContent = "Actualiser";
   }
@@ -928,6 +1003,30 @@ svg.ds-glyph { width: 18px; height: 18px; fill: none; stroke: currentColor; flex
   }
 
   // ---------- A · Aujourd'hui ----------
+  // ---------- Attention des apps (connector « Apps attention ») ----------
+  const SEV = {bad:0, warn:1, info:2};
+  function attItems(){
+    if (!state.att) return [];
+    return state.att.apps.flatMap(a => (a.items || []).map(i => Object.assign({app:a.app}, i))).sort((x, y) => (SEV[x.severity] ?? 2) - (SEV[y.severity] ?? 2));
+  }
+  function viewAttention(){
+    let body;
+    if (!state.att) {
+      const e = state.errors.att;
+      body = e ? '<div class="ds-empty ds-empty--inline"><strong>Pas encore branché.</strong><p>' + esc(e) + ' Le connecteur « ' + ATT + ' » s\'ajoute dans claude.ai, Réglages, Connecteurs (docs/platform.md).</p></div>'
+               : '<p class="ds-loading">Chargement…</p>';
+    } else {
+      const items = attItems(), down = state.att.apps.filter(a => !a.ok);
+      body = (items.length ? items.slice(0, 12).map(i => '<div class="bc-item bc-att ' + esc(i.severity) + '"><div class="bc-k"><span class="bc-dot ' + esc(i.severity) + '"></span> ' + esc(APP_NAME[i.app] || i.app) + ' · ' + esc({alert:"alerte", deadline:"échéance", decision:"décision", review:"à revoir"}[i.kind] || i.kind) + (i.due ? ' · ' + esc(String(i.due).slice(0, 10)) : '') + '</div>' +
+          '<div class="bc-t">' + esc(i.title) + '</div><div class="bc-acts"><a class="ds-btn ds-btn--sm" href="' + esc(/^https:\/\//.test(i.url || "") ? i.url : (APPS[i.app] || "#")) + '" target="_blank" rel="noopener">Ouvrir dans l\'app ↗</a></div></div>').join("") +
+          (items.length > 12 ? '<p class="bc-sub">' + (items.length - 12) + ' de plus dans les apps.</p>' : '')
+        : empty("Rien dans les apps.", "Camp de Base, Sport et Finance n'ont rien qui t'attende.")) +
+        down.map(a => '<div class="ds-note ds-warn" style="margin-top:8px">' + esc(a.name) + ' : ' + esc(a.error || "injoignable") + '</div>').join("");
+    }
+    const n = state.att ? attItems().length : "–";
+    return '<div class="ds-panel"><div class="bc-panel-h"><h3>Dans tes apps</h3><span class="bc-count">' + n + '</span></div>' + body + '</div>';
+  }
+
   function viewJour(){
     if (!state.tasks && !state.projects) return errBox("tasks");
     const map = projById(), steps = myNextSteps(), dec = decisions(), top = top3(), inb = inbox(), more = ready().filter(t => !top.includes(t));
@@ -955,7 +1054,7 @@ svg.ds-glyph { width: 18px; height: 18px; fill: none; stroke: currentColor; flex
     else agents = '<span class="bc-sub">Chargement…</span>';
 
     return '<div class="bc-row3">' +
-      '<div class="ds-panel"><div class="bc-panel-h"><h3>T\'attend</h3><span class="bc-count">' + needN + '</span></div>' + (need || empty("Rien ne t'attend.", "Aucune prochaine étape à ton nom, aucune décision ouverte.")) + '</div>' +
+      '<div style="display:grid;gap:14px;min-width:0"><div class="ds-panel"><div class="bc-panel-h"><h3>T\'attend</h3><span class="bc-count">' + needN + '</span></div>' + (need || empty("Rien ne t'attend.", "Aucune prochaine étape à ton nom, aucune décision ouverte.")) + '</div>' + viewAttention() + '</div>' +
       '<div style="display:grid;gap:14px;min-width:0"><div class="ds-panel"><div class="bc-panel-h"><h3>Top 3 du jour</h3><span class="bc-sub">' + ready().length + ' prêtes</span></div>' + topHtml + moreHtml + '</div>' +
       '<div class="ds-panel"><div class="bc-panel-h"><h3>À trier</h3><span class="bc-count">' + inb.length + '</span></div><div class="bc-acts" style="margin-bottom:10px"><button type="button" class="ds-btn ds-btn--sm" id="ai-triage"' + (inb.length ? '' : ' disabled') + '>Tri proposé par Claude</button><span class="bc-sub">Clavier : J/K pour bouger, N S A D pour trier</span></div><div class="bc-triage">' + triHtml + '</div></div></div>' +
       '<div style="display:grid;gap:14px;min-width:0"><div class="ds-panel"><div class="bc-panel-h"><h3>Domaines</h3><a href="#domaines" class="bc-sub">Carte ›</a></div>' + domHtml + '</div>' +
@@ -1161,7 +1260,7 @@ svg.ds-glyph { width: 18px; height: 18px; fill: none; stroke: currentColor; flex
   // ---------- main render ----------
   function render(){
     for (const el of document.querySelectorAll("#fresh [data-src]")) {
-      const k = el.dataset.src, lbl = {projects:"Projets", tasks:"Tâches", roadmap:"Roadmap", sessions:"Sessions"}[k];
+      const k = el.dataset.src, lbl = {projects:"Projets", tasks:"Tâches", roadmap:"Roadmap", sessions:"Sessions", att:"Apps"}[k];
       if (k === "sessions" && state.errors.sessions && state.log) { el.className = "ok"; el.textContent = "Sessions (Session Log) " + ago(state.at.log || Date.now()); continue; }
       if (state.errors[k]) { el.className = "err"; el.textContent = lbl + " : erreur"; } else if (state.at[k]) { el.className = "ok"; el.textContent = lbl + " " + ago(state.at[k]); }
     }
@@ -1175,6 +1274,10 @@ svg.ds-glyph { width: 18px; height: 18px; fill: none; stroke: currentColor; flex
     $("#f-proj").textContent = state.projects ? state.projects.filter(inCtx).filter(p => p.Status === "Active").length : "–";
     $("#n-jour").textContent = state.tasks ? (mineN || "") : "";
     $("#n-projets").textContent = state.projects ? state.projects.filter(inCtx).length : "";
+    for (const key of Object.keys(APP_NAME)) {
+      const a = state.att && state.att.apps.find(x => x.app === key), n = a && a.items ? a.items.length : 0;
+      for (const el of document.querySelectorAll('[data-att="' + key + '"], [data-ds-apps-count="' + key + '"]')) el.textContent = n ? n : "";
+    }
     const v = state.view;
     const host = $("#v-" + v);
     if (v === "jour") host.innerHTML = viewJour();

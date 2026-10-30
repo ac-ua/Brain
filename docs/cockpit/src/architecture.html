@@ -1,0 +1,231 @@
+<title>Brain · Architecture des apps</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=Questrial&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/*@DS_TOKENS@*/
+</style>
+<style>
+/* Architecture map (prefix am-): a reference page read top to bottom. Diagram first (how a request travels), then one
+   card per app with the same rows in the same order, then the apps that live apart, then the shared pieces.
+   Facts read on 2026-10-30 in the repos (wrangler.toml, functions, workflows, ledgers) and the Cloudflare account. */
+body { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.am { max-width: 1240px; margin: 0 auto; padding-block: 32px 72px; display: grid; gap: 22px; }
+.am > * { min-width: 0; }
+.am-col { max-width: 78ch; }
+.am-lede { font-size: 17px; margin: 0; }
+.am h2 { margin-top: 10px; }
+.am-diag { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); padding: 14px; }
+.am-diag svg { display: block; min-width: 860px; width: 100%; height: auto; }
+.am-diag .box { fill: var(--surface); stroke: var(--line); stroke-width: 1.2; }
+.am-diag .box.door { fill: var(--accent-soft); stroke: var(--accent); }
+.am-diag .box.store { fill: var(--sunken); }
+.am-diag .box.todo { stroke-dasharray: 5 4; stroke: var(--warn); }
+.am-diag .box.apart { fill: var(--bg); stroke-dasharray: 3 3; }
+.am-diag text { fill: var(--ink); font: 13px var(--body); }
+.am-diag .t { font: 700 14px var(--display); }
+.am-diag .s { fill: var(--muted); font: 11px var(--mono); }
+.am-diag .lbl { fill: var(--muted); font: 11px var(--body); }
+.am-diag .ln { stroke: var(--muted); stroke-width: 1.3; fill: none; }
+.am-diag .ln.att { stroke: var(--c3); stroke-dasharray: 6 4; }
+.am-diag .ln.bk { stroke: var(--c5); }
+.am-diag .ar { fill: var(--muted); } .am-diag .ar.att { fill: var(--c3); } .am-diag .ar.bk { fill: var(--c5); }
+.am-legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13px; color: var(--muted); margin-top: 10px; }
+.am-legend i { display: inline-block; width: 22px; height: 0; border-top: 2px solid var(--muted); vertical-align: middle; margin-right: 6px; }
+.am-legend i.att { border-top: 2px dashed var(--c3); } .am-legend i.bk { border-color: var(--c5); } .am-legend i.todo { border-top: 2px dashed var(--warn); }
+.am-apps { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); align-items: start; }
+.am-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); padding: 16px; display: grid; gap: 10px; min-width: 0; }
+.am-card header { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.am-card header h3 { margin: 0; font: 700 21px/1.2 var(--display); text-transform: none; letter-spacing: 0; color: var(--ink); }
+.am-card dl { margin: 0; display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 7px 12px; font-size: 14px; }
+.am-card dt { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding-top: 3px; }
+.am-card dd { margin: 0; overflow-wrap: anywhere; }
+.am-card code, .am code { font: 12.5px var(--mono); background: var(--sunken); padding: 1px 5px; border-radius: var(--r-xs); }
+.am-apart { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); }
+.am-apart .am-card { background: var(--bg); border-style: dashed; }
+.am-shared { display: grid; gap: 10px; }
+.am-note { font-size: 13px; color: var(--muted); margin: 0; }
+@media (max-width: 520px) { .am-card dl { grid-template-columns: minmax(0, 1fr); gap: 2px; } .am-card dd { margin-bottom: 6px; } }
+</style>
+
+<div class="am">
+  <header class="ds-head">
+    <div><div class="ds-eyebrow">Brain · carte · état au 30 octobre 2026</div><h1>Architecture des apps</h1></div>
+    <dl class="ds-facts"><div><dt>Apps</dt><dd>3 + hub</dd></div><div><dt>Connexion</dt><dd>1 Access</dd></div><div><dt>Crons</dt><dd>2 / 5</dd></div><div><dt>Coût</dt><dd>0 €</dd></div></dl>
+  </header>
+  <p class="am-lede am-col">Comment Camp de Base, Sport et Finance tournent vraiment aujourd'hui : adresses, projets Pages, bases D1, fichiers R2, connexion, secrets (par nom), sauvegardes et ce que chaque app signale au cockpit. Lu dans les dépôts, les ledgers et le compte Cloudflare, pas dans le plan. Element Logbook et le site perso sont montrés à part : ils ne sont pas sur la plateforme.</p>
+
+  <section>
+    <h2>Le chemin d'une requête</h2>
+    <div class="am-diag" role="img" aria-label="Schéma : le navigateur passe par Cloudflare Access (connexion Google) pour atteindre les trois apps sur Pages, chacune avec sa base D1 ; le cockpit dans claude.ai lit leur attention par le connecteur Apps attention, un Worker qui appelle chaque /api/attention avec un jeton de service ; les sauvegardes hebdomadaires partent vers R2 et le Drive.">
+      <svg viewBox="0 0 1180 520" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar" d="M0 0L10 5L0 10z"/></marker>
+          <marker id="aa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar att" d="M0 0L10 5L0 10z"/></marker>
+          <marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar bk" d="M0 0L10 5L0 10z"/></marker>
+        </defs>
+        <!-- people and Claude -->
+        <rect class="box" x="20" y="40" width="170" height="64" rx="8"/><text class="t" x="36" y="66">Aurélien</text><text class="s" x="36" y="88">navigateur, téléphone</text>
+        <rect class="box" x="20" y="300" width="170" height="92" rx="8"/><text class="t" x="36" y="326">Brain · Cockpit</text><text class="s" x="36" y="348">artifact claude.ai</text><text class="s" x="36" y="366">Notion · sessions</text><text class="s" x="36" y="382">quotas (db)</text>
+        <!-- Access -->
+        <rect class="box door" x="250" y="30" width="210" height="84" rx="8"/><text class="t" x="266" y="56">Cloudflare Access</text><text class="s" x="266" y="78">« Apps · Aurélien »</text><text class="s" x="266" y="96">wild-snow-bb5e · Google</text>
+        <!-- connector -->
+        <rect class="box todo" x="250" y="300" width="210" height="92" rx="8"/><text class="t" x="266" y="326">Apps attention</text><text class="s" x="266" y="348">Worker attention-mcp</text><text class="s" x="266" y="366">MCP · OAuth par Access</text><text class="s" x="266" y="382">à déployer</text>
+        <!-- apps -->
+        <rect class="box" x="530" y="20" width="250" height="104" rx="8"/><text class="t" x="546" y="46">Camp de Base</text><text class="s" x="546" y="68">basecamp.aureliencaye.com</text><text class="s" x="546" y="86">Pages base-camp · /api/*</text><text class="s" x="546" y="104">GOOGLE_SA_KEY → Drive</text>
+        <rect class="box" x="530" y="150" width="250" height="104" rx="8"/><text class="t" x="546" y="176">Sport</text><text class="s" x="546" y="198">sport.aureliencaye.com</text><text class="s" x="546" y="216">Pages sport · /api/data, attention</text><text class="s" x="546" y="234">build : scripts/build_app.py</text>
+        <rect class="box" x="530" y="280" width="250" height="104" rx="8"/><text class="t" x="546" y="306">Finance</text><text class="s" x="546" y="328">finance.aureliencaye.com</text><text class="s" x="546" y="346">Pages finance · /api/book…</text><text class="s" x="546" y="364">jeton de service : lecture seule</text>
+        <!-- stores -->
+        <rect class="box store" x="850" y="20" width="150" height="48" rx="8"/><text class="t" x="866" y="40">D1</text><text class="s" x="866" y="58">camp-de-base</text>
+        <rect class="box store" x="850" y="76" width="150" height="48" rx="8"/><text class="t" x="866" y="96">R2</text><text class="s" x="866" y="114">camp-de-base</text>
+        <rect class="box store" x="850" y="150" width="150" height="48" rx="8"/><text class="t" x="866" y="170">D1</text><text class="s" x="866" y="188">sport</text>
+        <rect class="box store" x="850" y="206" width="150" height="48" rx="8"/><text class="t" x="866" y="226">R2</text><text class="s" x="866" y="244">sport-raw</text>
+        <rect class="box store" x="850" y="308" width="150" height="48" rx="8"/><text class="t" x="866" y="328">D1</text><text class="s" x="866" y="346">finance</text>
+        <!-- worker -->
+        <rect class="box" x="1030" y="150" width="130" height="104" rx="8"/><text class="t" x="1044" y="176">sport-sync</text><text class="s" x="1044" y="198">Worker</text><text class="s" x="1044" y="216">17 9 * * *</text><text class="s" x="1044" y="234">*/10 * * * *</text>
+        <!-- backups -->
+        <rect class="box store" x="530" y="430" width="250" height="64" rx="8"/><text class="t" x="546" y="456">Sauvegarde hebdo</text><text class="s" x="546" y="478">GitHub Actions · dimanche</text>
+        <rect class="box store" x="850" y="430" width="150" height="64" rx="8"/><text class="t" x="866" y="456">R2 backups</text><text class="s" x="866" y="478">sport/ finance/ …</text>
+        <rect class="box store" x="1030" y="430" width="130" height="64" rx="8"/><text class="t" x="1044" y="456">Drive perso</text><text class="s" x="1044" y="478">80_Backups/Apps</text>
+        <!-- outside sources -->
+        <rect class="box apart" x="1030" y="290" width="130" height="94" rx="8"/><text class="t" x="1044" y="314">Sources</text><text class="s" x="1044" y="334">intervals.icu</text><text class="s" x="1044" y="350">Strava</text><text class="s" x="1044" y="366">Element API</text>
+        <!-- lines: browser → Access → apps -->
+        <path class="ln" d="M190 72H248" marker-end="url(#a)"/>
+        <path class="ln" d="M460 60H500V72H528" marker-end="url(#a)"/>
+        <path class="ln" d="M500 72V202H528" marker-end="url(#a)"/>
+        <path class="ln" d="M500 202V332H528" marker-end="url(#a)"/>
+        <text class="lbl" x="196" y="64">connexion</text>
+        <!-- apps → stores -->
+        <path class="ln" d="M780 44H848" marker-end="url(#a)"/><path class="ln" d="M780 100H848" marker-end="url(#a)"/>
+        <path class="ln" d="M780 174H848" marker-end="url(#a)"/><path class="ln" d="M780 332H848" marker-end="url(#a)"/>
+        <path class="ln" d="M1030 174H1002" marker-end="url(#a)"/><path class="ln" d="M1030 230H1002" marker-end="url(#a)"/>
+        <path class="ln" d="M1095 290V256" marker-end="url(#a)"/>
+        <!-- attention -->
+        <path class="ln att" d="M190 346H248" marker-end="url(#aa)"/>
+        <path class="ln att" d="M460 346H490V120" marker-end="url(#aa)"/>
+        <text class="lbl" x="482" y="290" transform="rotate(-90 482 290)">jeton de service</text>
+        <!-- backups -->
+        <path class="ln bk" d="M655 384V428" marker-end="url(#ab)"/>
+        <path class="ln bk" d="M780 462H848" marker-end="url(#ab)"/><path class="ln bk" d="M1000 462H1028" marker-end="url(#ab)"/>
+      </svg>
+    </div>
+    <div class="am-legend"><span><i></i>requête, lecture, écriture</span><span><i class="att"></i>attention (lecture seule)</span><span><i class="bk"></i>sauvegarde</span><span><i class="todo"></i>pas encore en ligne</span></div>
+  </section>
+
+  <section>
+    <h2>Les trois apps</h2>
+    <div class="am-apps">
+      <article class="am-card">
+        <header><h3>Camp de Base</h3><span class="ds-pill ds-ok">en ligne · v5</span></header>
+        <dl>
+          <dt>Adresse</dt><dd><a href="https://basecamp.aureliencaye.com" target="_blank" rel="noopener">basecamp.aureliencaye.com</a> · secours <code>base-camp.pages.dev</code></dd>
+          <dt>Pages</dt><dd><code>base-camp</code>, relié à <code>ac-ua/Base-Camp</code>, racine <code>web/</code>, sans build, release = fusion dans <code>main</code></dd>
+          <dt>API</dt><dd><code>/api/[[path]]</code> : données, <code>/api/files</code>, <code>/api/tower</code>, <code>/api/attention</code> ; publics : <code>openapi.json</code>, <code>config</code>, <code>health</code></dd>
+          <dt>Données</dt><dd>D1 <code>camp-de-base</code> (36 tables, 6 vues) · R2 <code>camp-de-base</code> (photos : <code>items/</code>, <code>foods/</code>, <code>uploads/</code>) · documents lus en direct sur le Drive</dd>
+          <dt>Connexion</dt><dd>Access, JWT vérifié (<code>_lib/access.js</code>) ; un jeton de service a lecture et écriture</dd>
+          <dt>Secrets</dt><dd>Pages : <code>GOOGLE_SA_KEY</code> · GitHub : <code>BASECAMP_BACKUP_CLOUDFLARE_API_TOKEN</code>, <code>BASECAMP_CLOUDFLARE_ACCOUNT_ID</code>, <code>BASECAMP_RCLONE_CONFIG</code> · env <code>Base Camp</code> : <code>BASECAMP_CLOUDFLARE_API_TOKEN</code></dd>
+          <dt>Sauvegarde</dt><dd><code>backup-weekly.yml</code>, dimanche 03:37 UTC → R2 <code>backups/camp-de-base/</code> + Drive ; pas encore lancée (Actions bloquées)</dd>
+          <dt>Attention</dt><dd>les alertes de la tour de contrôle (<code>tower:…</code>)</dd>
+          <dt>Ancien</dt><dd>projet Supabase en pause (pas supprimé) ; D1 de test <code>camp-de-base-restore-test</code></dd>
+          <dt>Design</dt><dd>v1.7.1 (référence du système)</dd>
+        </dl>
+      </article>
+      <article class="am-card">
+        <header><h3>Sport</h3><span class="ds-pill ds-ok">en ligne · v0.28</span></header>
+        <dl>
+          <dt>Adresse</dt><dd><a href="https://sport.aureliencaye.com" target="_blank" rel="noopener">sport.aureliencaye.com</a> · <code>sport-cw7.pages.dev</code> renvoie vers elle</dd>
+          <dt>Pages</dt><dd><code>sport</code>, relié à <code>ac-ua/sport</code>, build <code>python3 scripts/build_app.py</code> → <code>web/app</code></dd>
+          <dt>API</dt><dd><code>/api/data/&lt;jeu&gt;</code> (lecture, cache), <code>/api/attention</code></dd>
+          <dt>Worker</dt><dd><code>sport-sync</code> (workers.dev, déployé à la main) : synchro de nuit <code>17 9 * * *</code> et fichiers de traces <code>*/10 * * * *</code> ; <code>/status</code> réduit à <code>{ok, at}</code> sans jeton</dd>
+          <dt>Données</dt><dd>D1 <code>sport</code> · R2 <code>sport-raw</code> (FIT, GPX : <code>garmin/</code>, <code>strava/</code>, <code>padi/</code>, <code>logbook/</code>)</dd>
+          <dt>Connexion</dt><dd>Access, JWT vérifié, plus <code>ACCESS_EMAILS</code> ; un jeton de service passe (API en lecture)</dd>
+          <dt>Secrets</dt><dd>Worker : <code>INTERVALS_API_KEY</code>, <code>ELEMENT_API_KEY</code>, <code>SYNC_TOKEN</code> (Strava à venir) · Pages : <code>ACCESS_EMAILS</code> · GitHub : <code>SPORT_BACKUP_CLOUDFLARE_API_TOKEN</code>, <code>SPORT_CLOUDFLARE_ACCOUNT_ID</code>, <code>SPORT_RCLONE_CONFIG</code> · env <code>app-sport</code> : <code>SPORT_CLOUDFLARE_API_TOKEN</code></dd>
+          <dt>Sauvegarde</dt><dd>dimanche 03:11 UTC → R2 <code>backups/sport/</code> + Drive ; restauration testée le 30/10 ; pas encore lancée</dd>
+          <dt>Attention</dt><dd>éléments à revoir (<code>review_item</code>) et état de la synchro</dd>
+          <dt>Liens</dt><dd>lit l'API d'Element Logbook (<code>/api/v1/sessions</code>), intervals.icu, Strava</dd>
+          <dt>Design</dt><dd>v1.8</dd>
+        </dl>
+      </article>
+      <article class="am-card">
+        <header><h3>Finance</h3><span class="ds-pill ds-ok">en ligne · v0.6</span></header>
+        <dl>
+          <dt>Adresse</dt><dd><a href="https://finance.aureliencaye.com" target="_blank" rel="noopener">finance.aureliencaye.com</a> · secours <code>finance-ci5.pages.dev</code></dd>
+          <dt>Pages</dt><dd><code>finance</code>, relié à <code>ac-ua/finance</code>, sans build, sortie <code>app/</code></dd>
+          <dt>API</dt><dd><code>/api/book</code> (sections versionnées, écriture avec <code>if_version</code>), <code>/api/export</code>, <code>/api/snapshots</code>, <code>/api/audit</code>, <code>/api/health</code>, <code>/api/attention</code></dd>
+          <dt>Données</dt><dd>D1 <code>finance</code> (9 sections, historique, instantanés) · pas de R2</dd>
+          <dt>Connexion</dt><dd>Access, JWT vérifié, <code>ACCESS_EMAILS</code> ; un jeton de service ne lit que <code>/api/attention</code> et <code>/api/health</code> (v0.6)</dd>
+          <dt>Secrets</dt><dd>Pages : <code>ACCESS_EMAILS</code> · GitHub : <code>FINANCE_BACKUP_CLOUDFLARE_TOKEN</code>, <code>FINANCE_CLOUDFLARE_ACCOUNT_ID</code>, <code>FINANCE_RCLONE_CONF</code> · env <code>app-finance</code> : <code>FINANCE_CLOUDFLARE_API_TOKEN</code></dd>
+          <dt>Sauvegarde</dt><dd>dimanche 03:23 UTC → R2 <code>backups/finance/</code> + Drive ; pas encore lancée</dd>
+          <dt>Attention</dt><dd>constats du moteur, remboursements attendus, échéances à 14 jours</dd>
+          <dt>Ancien</dt><dd>l'artifact « Finance · Cockpit » reste en lecture seule, en secours</dd>
+          <dt>Design</dt><dd>v1.7.1</dd>
+        </dl>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <h2>Le hub</h2>
+    <div class="am-apps">
+      <article class="am-card">
+        <header><h3>Brain · Cockpit</h3><span class="ds-pill ds-ok">en ligne</span></header>
+        <dl>
+          <dt>Adresse</dt><dd><a href="https://claude.ai/artifact/UqbtEKheEFwqs7P61d6zdi" target="_blank" rel="noopener">artifact claude.ai</a> (plus tard <code>hub.aureliencaye.com</code>)</dd>
+          <dt>Source</dt><dd><code>ac-ua/brain</code> › <code>docs/cockpit/src/cockpit.html</code>, construit par <code>build.py</code></dd>
+          <dt>Lit</dt><dd>Notion (projets, tâches, roadmap, journal), Claude Code Remote (sessions), sa base (quotas), le connecteur « Apps attention »</dd>
+          <dt>Menu</dt><dd>sélecteur d'apps v1.9, lu dans <code>apps.json</code></dd>
+        </dl>
+      </article>
+      <article class="am-card">
+        <header><h3>Apps attention</h3><span class="ds-pill ds-warn">à déployer</span></header>
+        <dl>
+          <dt>Adresse</dt><dd><code>attention-mcp.a-caye.workers.dev/mcp</code></dd>
+          <dt>Source</dt><dd><code>ac-ua/brain</code> › <code>tools/attention-mcp</code>, Workers Builds depuis <code>main</code></dd>
+          <dt>Outil</dt><dd><code>get_attention</code> : lit chaque <code>/api/attention</code> de <code>apps.json</code>, lecture seule</dd>
+          <dt>Connexion</dt><dd>claude.ai s'inscrit (OAuth 2.1), Aurélien autorise, puis se connecte par Access (application OIDC) ; seule son adresse reçoit un jeton</dd>
+          <dt>Stockage</dt><dd>KV <code>OAUTH_KV</code> (autorisations, hachées)</dd>
+          <dt>Secrets</dt><dd><code>OIDC_CLIENT_ID</code>, <code>OIDC_CLIENT_SECRET</code>, <code>ACCESS_CLIENT_ID</code>, <code>ACCESS_CLIENT_SECRET</code>, <code>ALLOWED_EMAILS</code></dd>
+        </dl>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <h2>À part</h2>
+    <p class="am-note am-col">Hors de la plateforme : pas derrière Access, pas dans le sélecteur d'apps, pas de <code>/api/attention</code>.</p>
+    <div class="am-apart">
+      <article class="am-card">
+        <header><h3>Element Logbook</h3><span class="ds-pill">app du club</span></header>
+        <dl>
+          <dt>Adresse</dt><dd><code>logbook.element-training.com</code> · Pages <code>element-logbook</code>, relié à <code>ac-ua/c_ET</code></dd>
+          <dt>Données</dt><dd>Supabase (projet du club), reste sur Supabase</dd>
+          <dt>Lien</dt><dd>Sport lit ses séances par <code>/api/v1/sessions</code> (clé <code>ELEMENT_API_KEY</code>)</dd>
+        </dl>
+      </article>
+      <article class="am-card">
+        <header><h3>Site perso</h3><span class="ds-pill">public</span></header>
+        <dl>
+          <dt>Adresse</dt><dd><code>aureliencaye.com</code>, <code>www.</code> · Pages <code>aureliencaye</code>, relié à <code>ac-ua/website</code></dd>
+          <dt>Données</dt><dd>aucune base</dd>
+          <dt>Lien</dt><dd>sa zone DNS porte les sous-domaines des apps</dd>
+        </dl>
+      </article>
+    </div>
+  </section>
+
+  <section class="am-shared">
+    <h2>Ce qui est partagé</h2>
+    <div class="ds-table-wrap"><table class="ds-table">
+      <thead><tr><th>Pièce</th><th>État réel</th></tr></thead>
+      <tbody>
+        <tr><td>Domaine</td><td><code>aureliencaye.com</code> sur Cloudflare : <code>basecamp.</code>, <code>sport.</code>, <code>finance.</code> sont les domaines des projets Pages</td></tr>
+        <tr><td>Connexion</td><td>une application Access « Apps · Aurélien », connexion Google, session d'un mois, AUD commun aux trois apps ; déconnexion <code>/cdn-cgi/access/logout</code></td></tr>
+        <tr><td>Crons</td><td>2 sur les 5 du compte, tous deux pris par <code>sport-sync</code></td></tr>
+        <tr><td>Sauvegardes</td><td>bucket R2 <code>backups</code> (un préfixe par app) et Drive <code>80_Backups/Apps</code> ; D1 Time Travel couvre 7 jours ; <strong>aucune sauvegarde hebdomadaire n'a encore tourné</strong> : GitHub Actions refuse de démarrer (facturation du compte)</td></tr>
+        <tr><td>Design system</td><td><code>ac-ua/brain</code> › <code>skills/web-design-system</code> v1.9 ; chaque app en copie <code>ds.css</code>, <code>shell.js</code>, <code>apps.json</code></td></tr>
+        <tr><td>Attention</td><td><code>GET /api/attention</code> dans les trois apps, même contrat (<code>docs/platform.md</code>)</td></tr>
+      </tbody>
+    </table></div>
+    <p class="am-note">Revue de cohérence et points de sécurité : <code>ac-ua/brain</code> › <code>docs/platform-review.md</code>.</p>
+  </section>
+</div>

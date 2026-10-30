@@ -22,7 +22,7 @@ surfaced in the hub. Study with prototypes: « Brain · Plateforme des apps »
 - Pages project **connected to the app's GitHub repo**, release = merge into `main` (`skills/build-webapp`). A project
   created by direct upload can never be connected: if one exists, create a connected project and move the domain.
 - Functions under `/api/*` only (`_routes.json`). Workers for crons and syncs. Cron triggers are 5 per account in total:
-  Sport's `sport-sync` uses one; ask before adding another.
+  Sport's `sport-sync` uses two (nightly sync, track job); ask before adding another.
 - Names: Pages project = D1 database = R2 prefix = the app key: `sport`, `finance`, `camp-de-base`.
 
 ### Sign-in: one Google login for every app (Cloudflare Access)
@@ -74,8 +74,10 @@ GET /api/attention        (Access JWT or service token)
   decide whether R2 files also need a monthly copy to the Drive.
 
 ### Design system
-Apps stay on their current version (v1.5.1) during these threads; the app switcher (v1.6, `apps.json`) comes with
-the hub thread and each app adopts it at its next release.
+The app switcher and the app registry `apps.json` are design system **v1.9** (thread 4; v1.6–v1.8 went to full
+screen, filter bars and more chart series in the meantime). Each app adopts v1.9 at its next release: copy
+`apps.json` and `shell.js`, add `<div class="ds-apps" data-ds-apps></div>` under the brand. A new app or address is a
+change to `skills/web-design-system/apps.json`, nowhere else.
 
 ## Threads (2026-10-30)
 Each thread runs in its own cloud session as `builder` (`agents/builder.md`, `skills/build-webapp`,
@@ -87,7 +89,7 @@ state, Build Roadmap, ledger and configuration guide republished).
 | 1 | **Sport · hébergement** | `ac-ua/sport` · `app-sport` | Pages project connected to the repo; D1 `sport` loaded and synced nightly by `sport-sync`; `sport.aureliencaye.com` behind the shared Access application (created here, documented for the others); `/api/attention`; weekly backup running once; guide republished |
 | 2 | **Finance · mise en ligne** | `ac-ua/finance` · TODO(Aurélien): an `app-finance` environment | `finance.aureliencaye.com` live behind Access, Pages connected; D1 `finance` from `db/schema.sql`; data moved from the artifact's store without loss (counts checked); Functions API used by the front; `/api/attention`; weekly backup; the artifact kept as read-only fallback until Aurélien retires it |
 | 3 | **Camp de Base · migration** | `ac-ua/Base-Camp` · `Base Camp` | D1 `camp-de-base` with the full schema and data (row counts equal to Supabase), API on D1, photos in R2, Access instead of Google sign-in, `basecamp.aureliencaye.com`; `/api/attention` from the tower; weekly backup replaces the old backup workflow; Supabase project left **paused, not deleted** (deletion is Aurélien's call) |
-| 4 | **Brain · hub** (after 1–3) | `ac-ua/brain` · `Default` | « Brain · Cockpit » points to the new addresses and shows each app's attention items next to the Notion tasks; design system v1.6 with the app switcher and `apps.json`; **architecture map** and **coherence review** (below) |
+| 4 | **Brain · hub** (after 1–3) | `ac-ua/brain` · `Default` | « Brain · Cockpit » points to the new addresses and shows each app's attention items next to the Notion tasks; design system v1.9 with the app switcher and `apps.json`; **architecture map** and **coherence review** (below). Done 2026-10-30 (v0.4.21) but the connector's setup by Aurélien |
 
 ### Thread 4 also delivers (Aurélien's call, 2026-10-30)
 - **Architecture map** of every app as it really runs (Sport, Finance, Camp de Base, the hub; Element Logbook and the
@@ -101,11 +103,38 @@ state, Build Roadmap, ledger and configuration guide republished).
   `/status` public, `SYNC_TOKEN` in a URL) and their state. Fixes that are small and safe go in a PR per app;
   everything else becomes a Build Roadmap row or a Task for Aurélien. Nothing is deleted without his OK.
 
-### Known constraint for thread 4
-An artifact cannot `fetch` other hosts (CSP), so the cockpit cannot call `/api/attention` directly. Options to settle
-in thread 4: a small remote MCP server on Cloudflare (`get_attention`, behind Access with OAuth) added as a claude.ai
-custom connector and declared in the artifact's `mcp` capability (preferred); or an hourly job writing attention
-items into a Notion database; or the hub moves to a Pages app.
+### Thread 4 decisions (2026-10-30)
+An artifact cannot `fetch` other hosts (CSP), so the cockpit cannot call `/api/attention` itself. **Chosen: a remote
+MCP server on Cloudflare, « Apps attention »** (`tools/attention-mcp`, Worker `attention-mcp`), added as a claude.ai
+custom connector and declared in the cockpit's `mcp` capability. Why, against the hourly job writing into Notion:
+- **Live, as the contract says** (« items are live, not copied to Notion »): the cockpit reads the apps when it opens
+  or refreshes; a Notion copy would be up to an hour stale and would fill Notion with rows that are not decisions.
+- **No cron and no Notion quota**: the account's crons are 2 of 5, and an hourly job would also spend Notion API calls
+  and the free plan's history for nothing.
+- **Reusable**: any Claude conversation with the connector can ask « what waits on me in my apps », not only the page.
+- **Same security model as the apps**: the connector signs Aurélien in through Cloudflare Access (OIDC application,
+  Google), only his address gets a token, and it reads the apps with one service token they already know how to limit.
+- The cost: one Worker, one KV namespace and a one-time setup by Aurélien (`tools/attention-mcp/README.md`). Moving the
+  hub to a Pages app later (`hub.aureliencaye.com`) needs none of this to change: it would call `/api/attention`
+  with the same service token or the user's Access session.
+
+### Architecture as it runs (2026-10-30)
+Read in the repos, ledgers and the Cloudflare account; drawn in « Brain · Architecture des apps »
+(`docs/cockpit/src/architecture.html`). Review of every app: `docs/platform-review.md`.
+
+| | Camp de Base | Sport | Finance | Hub |
+|---|---|---|---|---|
+| Address | `basecamp.aureliencaye.com` | `sport.aureliencaye.com` | `finance.aureliencaye.com` | « Brain · Cockpit » artifact |
+| Pages (Git) | `base-camp`, root `web/` | `sport`, build `scripts/build_app.py` | `finance`, output `app/` | — |
+| Workers | — | `sport-sync` (2 crons, by hand) | — | `attention-mcp` (Workers Builds, to set up) |
+| D1 / R2 | `camp-de-base` / `camp-de-base` (photos) | `sport` / `sport-raw` (FIT, GPX) | `finance` / — | — / KV `OAUTH_KV` |
+| Access | « Apps · Aurélien », JWT checked; `OWNER_EMAILS` off | same, `ACCESS_EMAILS` | same, `ACCESS_EMAILS`; tokens read-only | OAuth through an Access OIDC app |
+| Backups | Sunday 03:37 → R2 `backups/` + Drive | 03:11 | 03:23 | — |
+| Attention | tower alerts | `data_health` | insights, refunds, deadlines | reads the three |
+| Design system | v1.7.1 | v1.8 | v1.7.1 | v1.9 |
+
+Element Logbook (`logbook.element-training.com`, Supabase, Pages `element-logbook`) and the website
+(`aureliencaye.com`, Pages `aureliencaye`) live apart; Sport reads Element's `/api/v1/sessions`.
 
 ## What Aurélien does by hand
 - Cloudflare dashboard: custom domains, the Access application, D1/R2 creation if a session lacks a token that can do

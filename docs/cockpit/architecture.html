@@ -1,0 +1,656 @@
+<title>Brain · Architecture des apps</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=Questrial&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Aurélien's web design system · tokens, base styles and core components (skills/web-design-system).
+   Source: Camp de Base (ac-ua/Base-Camp, web/camp.css + web/index.html), made generic; Camp de Base is the only
+   reference (v1.1), never the website. Copy this file into an app as
+   web/ds.css, load it before the app's own CSS, and never edit the token values locally: a change goes back to the
+   brain (FEEDBACK.md). Fonts: Syne 700, Questrial, IBM Plex Mono 400/500 (Google Fonts link in SKILL.md).
+   Theme: follows the device; <html data-theme="light|dark"> forces one. Context palette: <html data-palette="…">
+   (see the end of the tokens). Classes are prefixed `ds-`; the mapping to Camp de Base's names is in SKILL.md. */
+
+/* ---------- Tokens: light ---------- */
+:root {
+  /* surfaces and text */
+  --bg: #f6f9fd; --surface: #ffffff; --sunken: #ebf4ff; --ink: #000000; --muted: #5b6b7a; --line: #d6e1ec;
+  /* brand and interaction */
+  --accent: #0a6aa7; --accent-ink: #ffffff; --accent-soft: #e2eef8; --focus: #1b68f6;
+  /* status: text colour + soft background, always as a pair */
+  --ok: #2b7a4b; --ok-soft: #dff2e6; --warn: #9a5b00; --warn-soft: #fff1d6;
+  --bad: #b42318; --bad-soft: #fde4e1; --info: #1f5f99; --info-soft: #e0edf9;
+  /* data series (categorical, in this order), the hues of Camp de Base's expedition charts: accent, gear slate,
+     food orange, fuel amber (expeditions.js load chart), good-weather green (simulation.js), deadline red; no purple.
+     --c-other for "rest / other" (simulation.js rest grey). v1.5: --c7 ocean teal and --c8 desert earth (Camp de Base's
+     ocean and desert palettes), two more series that are not status colours; use them before --c6 when red would read
+     as "bad" (wealth, allocations). v1.8: --c9 deep ocean, --c10 olive, --c11 deep forest, --c12 granite (Camp de Base's
+     ocean icon slate, forest and mountain palettes; olive between forest and desert), for apps with up to twelve categories */
+  --c1: #0a6aa7; --c2: #5b7f95; --c3: #d9480f; --c4: #e8a33d; --c5: #3f9b6b; --c6: #b42318; --c-other: #adb5bd;
+  --c7: #1a8a96; --c8: #8b5e34;
+  --c9: #0e3e84; --c10: #6b7a1f; --c11: #1a4f1c; --c12: #4a4c48;
+  /* icons (faceted kit): fill roles and the outline, which stays dark in both themes */
+  --ci-ink: #0d1117; --ci-a: #5b8fc0; --ci-b: #3e5d75; --ci-c: #ffffff; --ci-d: #9ea2ab;
+  /* elevation, overlay */
+  --shadow: 0 1px 2px rgba(15, 30, 39, .06), 0 8px 24px rgba(15, 30, 39, .08);
+  --scrim: rgba(5, 12, 16, .45);
+  /* type */
+  --display: "Syne", "Arial Narrow", sans-serif;
+  --body: "Questrial", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  /* radii */
+  --r-xs: 4px; --r-sm: 6px; --r: 8px; --r-md: 10px; --r-lg: 12px; --r-xl: 18px; --r-pill: 999px;
+  /* spacing scale (px): 2 4 6 8 10 12 14 16 18 24 32 64 */
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 64px;
+  /* layout */
+  --side-w: 232px; --side-mini: 64px; --page-max: 1320px; --control-h: 36px;
+  /* motion */
+  --t-fast: .15s; --t-panel: .18s; --t-fold: .35s; --ease: ease; --ease-out: ease-out;
+  color-scheme: light;
+}
+
+/* ---------- Tokens: dark (device setting, unless data-theme="light"; or forced with data-theme="dark") ---------- */
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0b1218; --surface: #121c24; --sunken: #0e1820; --ink: #eef4f9; --muted: #92a5b4; --line: #22323e;
+  --accent: #6fb0e0; --accent-ink: #04121c; --accent-soft: #10283a; --focus: #8cc0ff;
+  --ok: #6cc795; --ok-soft: #12301f; --warn: #f0b44c; --warn-soft: #33260f;
+  --bad: #ff8a7a; --bad-soft: #3a1612; --info: #7db6ef; --info-soft: #11263a;
+  --c1: #6fb0e0; --c2: #7fa3ba; --c3: #ff7a3d; --c4: #f0b44c; --c5: #56b07f; --c6: #ff8a7a; --c-other: #6b7a86;
+  --c7: #4fc1c9; --c8: #c49a6c;
+  --c9: #b4cdf7; --c10: #b5c25a; --c11: #9fd49a; --c12: #c4c6c2;
+  --ci-ink: #05080b;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .35);
+  color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #0b1218; --surface: #121c24; --sunken: #0e1820; --ink: #eef4f9; --muted: #92a5b4; --line: #22323e;
+  --accent: #6fb0e0; --accent-ink: #04121c; --accent-soft: #10283a; --focus: #8cc0ff;
+  --ok: #6cc795; --ok-soft: #12301f; --warn: #f0b44c; --warn-soft: #33260f;
+  --bad: #ff8a7a; --bad-soft: #3a1612; --info: #7db6ef; --info-soft: #11263a;
+  --c1: #6fb0e0; --c2: #7fa3ba; --c3: #ff7a3d; --c4: #f0b44c; --c5: #56b07f; --c6: #ff8a7a; --c-other: #6b7a86;
+  --c7: #4fc1c9; --c8: #c49a6c;
+  --c9: #b4cdf7; --c10: #b5c25a; --c11: #9fd49a; --c12: #c4c6c2;
+  --ci-ink: #05080b;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .35);
+  color-scheme: dark; }
+
+/* Context palette (Camp de Base's biomes): a page about one context may retint the accent family and the icon roles.
+   An app declares its own in its CSS, same shape:
+   html[data-palette="forest"] { --accent: #2f7a35; --accent-soft: #e3f1e0; --sunken: #ecf5e9; --bg: #f6faf4;
+     --line: #d3e5cd; --muted: #56695a; --focus: #2f7a35; --info: #2f7a35; --info-soft: #e3f1e0;
+     --ci-a: #6da36d; --ci-b: #1a4f1c; --ci-d: #a8c9a0; }  + its dark values. The side menu never takes it: */
+html[data-palette] .ds-side {
+  --accent: #0a6aa7; --accent-soft: #e2eef8; --sunken: #ebf4ff; --line: #d6e1ec; --muted: #5b6b7a; --focus: #1b68f6;
+  --ci-a: #5b8fc0; --ci-b: #3e5d75; --ci-d: #9ea2ab; }
+@media (prefers-color-scheme: dark) { html[data-palette]:not([data-theme="light"]) .ds-side {
+  --accent: #6fb0e0; --accent-soft: #10283a; --sunken: #0e1820; --line: #22323e; --muted: #92a5b4; --focus: #8cc0ff; } }
+html[data-palette][data-theme="dark"] .ds-side {
+  --accent: #6fb0e0; --accent-soft: #10283a; --sunken: #0e1820; --line: #22323e; --muted: #92a5b4; --focus: #8cc0ff; }
+
+/* ---------- Base ---------- */
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font: 15px/1.5 var(--body); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+a { color: var(--accent); text-underline-offset: 2px; }
+h1 { font: 700 clamp(28px, 4.4vw, 40px)/1.05 var(--display); margin: 0; text-wrap: balance; }
+h2 { font: 700 22px/1.2 var(--display); margin: 0; }
+h3, .ds-label { font: 600 12px/1.2 var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; }
+.ds-num, .num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.ds-muted { color: var(--muted); }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0s !important; animation: none !important; } }
+
+/* ---------- App shell: side menu (desktop), top bar + drawer (phone) ---------- */
+.ds-side { position: fixed; z-index: 25; left: 0; top: 0; bottom: 0; width: var(--side-w); background: var(--sunken); border-right: 1px solid var(--line);
+  display: flex; flex-direction: column; gap: 18px; overflow-y: auto;
+  padding: calc(18px + env(safe-area-inset-top, 0px)) 12px calc(14px + env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-left, 0px)); }
+.ds-side-brand { display: flex; gap: 10px; align-items: center; padding: 0 8px; }
+.ds-side-brand img { width: 34px; height: auto; flex: none; }
+.ds-side-brand b { display: block; font: 700 20px/1 var(--display); white-space: nowrap; }
+.ds-side-brand small { display: block; font-size: 12px; color: var(--muted); margin-top: 2px; }
+.ds-side-group { display: grid; gap: 2px; }
+.ds-side-h { font: 600 11px/1 var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); padding: 0 10px 6px; }
+.ds-side-link { display: flex; align-items: center; gap: 9px; padding: 7px 10px; border-radius: var(--r); color: var(--ink); text-decoration: none; font-size: 14px;
+  border: 0; background: none; font-family: inherit; width: 100%; text-align: left; cursor: pointer; } /* links or buttons */
+.ds-side-link .ico { width: 1.3em; text-align: center; }
+.ds-side-link[aria-current="page"] { background: var(--surface); box-shadow: inset 3px 0 0 var(--accent); }
+.ds-side-link[aria-disabled="true"] { color: var(--muted); cursor: default; }
+.ds-side-link .ds-soon, .ds-side-link .ds-count { margin-left: auto; }
+.ds-side-link .ds-count { font-size: 12px; color: var(--muted); }
+.ds-side-foot { margin-top: auto; padding: 0 8px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.ds-app { margin-left: var(--side-w); }
+.ds-mtop { display: none; }
+.ds-scrim { position: fixed; inset: 0; z-index: 24; background: var(--scrim); }
+@media (max-width: 859px) {
+  .ds-app { margin-left: 0; }
+  .ds-side { translate: -100% 0; transition: translate var(--t-panel) var(--ease-out); box-shadow: var(--shadow); }
+  .ds-side-open .ds-side { translate: 0 0; }
+  .ds-mtop { display: flex; align-items: center; gap: 10px; position: sticky; top: env(safe-area-inset-top, 0px); z-index: 6; background: var(--sunken);
+    border-bottom: 1px solid var(--line); padding: 8px max(16px, env(safe-area-inset-right, 0px)) 8px max(16px, env(safe-area-inset-left, 0px)); font-size: 14px; color: var(--muted); }
+  .ds-mtop b { color: var(--ink); font-family: var(--display); font-size: 17px; }
+}
+@media (min-width: 860px) { .ds-scrim { display: none !important; } }
+/* Fold (Camp de Base's side.js): icons only at 64 px, the choice kept per app (shell.js); folded, the menu opens over
+   the page on hover or keyboard focus without moving it. The state class sits on <body> or the [data-ds-shell] root. */
+.ds-side-fold { margin-left: auto; flex: none; width: 28px; height: 28px; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface);
+  color: var(--muted); cursor: pointer; display: grid; place-items: center; font: 600 15px/1 var(--body); padding: 0; }
+.ds-side-fold:hover { color: var(--ink); }
+.ds-side-fold .ds-unfold, .ds-side-mini .ds-side-fold .ds-fold { display: none; }
+.ds-side-mini .ds-side-fold .ds-unfold { display: inline; }
+@media (min-width: 860px) {
+  .ds-side, .ds-app { transition: width var(--t-panel) ease, margin-left var(--t-panel) ease, box-shadow var(--t-panel) ease; }
+  .ds-side-mini { --side-w: var(--side-mini); }
+  .ds-side-mini .ds-side { width: var(--side-mini); overflow-x: hidden; padding-left: 8px; padding-right: 8px; }
+  .ds-side-mini .ds-side:hover, .ds-side-mini .ds-side:focus-within { width: 232px; box-shadow: var(--shadow); }
+  .ds-side-mini .ds-side-link, .ds-side-mini .ds-side-brand { white-space: nowrap; }
+  .ds-side-mini .ds-side-link, .ds-side-mini .ds-side-h { overflow: hidden; min-width: 0; }
+  .ds-side-mini .ds-side-group { grid-template-columns: minmax(0, 1fr); }
+  .ds-side-mini .ds-side:not(:hover):not(:focus-within) :is(.ds-side-h, .ds-side-foot > *, .ds-side-brand > span) { opacity: 0; }
+  .ds-side-mini .ds-side:not(:hover):not(:focus-within) :is(.ds-soon, .ds-count, .ds-side-fold) { display: none; }
+  .ds-side-mini .ds-side:not(:hover):not(:focus-within) .ds-side-link { font-size: 0; gap: 0; justify-content: center; }
+  .ds-side-mini .ds-side:not(:hover):not(:focus-within) .ds-side-link .ico { font-size: 14px; width: 20px; flex: none; }
+}
+@media (max-width: 859px) { .ds-side-fold { display: none; } }
+/* v1.9: app switcher at the top of the side menu, under the brand (the platform's one menu for every app). shell.js
+   fills [data-ds-apps] from apps.json (inline <script type="application/json" id="ds-apps-data">, else apps.json next
+   to the page): a button with the current app, a menu with every app (links, the current one marked) and the hub.
+   Folded, only the icon shows; on phones it lives in the drawer. Counts (.ds-count[data-ds-apps-count="<key>"]) are
+   the app's to fill, e.g. attention items. */
+.ds-apps { position: relative; padding: 0 2px; }
+.ds-apps-btn { width: 100%; display: flex; align-items: center; gap: 9px; padding: 7px 9px; border: 1px solid var(--line); background: var(--surface);
+  border-radius: var(--r); cursor: pointer; text-align: left; color: var(--ink); font: inherit; }
+.ds-apps-btn:hover { border-color: var(--muted); }
+.ds-apps-btn .ico, .ds-apps-menu .ico { width: 20px; flex: none; text-align: center; }
+.ds-apps-btn .ds-apps-name { flex: 1; min-width: 0; font: 700 15px/1.2 var(--display); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ds-apps-btn .ds-apps-caret { color: var(--muted); font-size: 12px; }
+.ds-apps-menu { position: absolute; left: 2px; right: 2px; top: calc(100% + 4px); z-index: 30; background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--r-md); box-shadow: var(--shadow); padding: 6px; display: grid; gap: 2px; min-width: 200px; }
+.ds-apps-menu[hidden] { display: none; }
+.ds-apps-menu a { display: flex; align-items: center; gap: 9px; padding: 7px 9px; border-radius: var(--r); color: var(--ink); text-decoration: none; font-size: 14px; }
+.ds-apps-menu a:hover, .ds-apps-menu a:focus-visible { background: var(--sunken); }
+.ds-apps-menu a[aria-current="true"] { background: var(--sunken); box-shadow: inset 3px 0 0 var(--accent); }
+.ds-apps-menu small { color: var(--muted); font-size: 11.5px; }
+.ds-apps-menu .ds-count { margin-left: auto; font: 12px var(--mono); color: var(--warn); }
+.ds-apps-menu hr { border: 0; border-top: 1px solid var(--line); margin: 4px 0; }
+@media (min-width: 860px) {
+  .ds-side-mini .ds-side:not(:hover):not(:focus-within) .ds-apps-btn { justify-content: center; padding: 7px 0; border-color: transparent; background: none; }
+  .ds-side-mini .ds-side:not(:hover):not(:focus-within) .ds-apps-btn :is(.ds-apps-name, .ds-apps-caret) { display: none; }
+}
+/* Sign out: bottom left, under the theme switch, full width (Camp de Base's .signout) */
+.ds-signout { flex-basis: 100%; border: 1px solid var(--line); background: var(--surface); color: var(--muted); border-radius: var(--r-sm); padding: 6px 10px;
+  font-size: 12px; cursor: pointer; text-align: left; text-decoration: none; }
+.ds-signout:hover { color: var(--ink); }
+
+/* ---------- Page ---------- */
+.ds-wrap { max-width: var(--page-max); margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.ds-main { padding-block: 24px 64px; display: grid; gap: 18px; }
+.ds-main > * { min-width: 0; }
+.ds-head { display: flex; flex-wrap: wrap; gap: 14px 32px; align-items: end; justify-content: space-between; }
+.ds-eyebrow { font: 600 12px/1 var(--body); letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+.ds-facts { display: flex; flex-wrap: wrap; gap: 8px 26px; margin: 0; }
+.ds-facts div { display: grid; gap: 2px; }
+.ds-facts dt { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.ds-facts dd { margin: 0; font: 500 20px/1.1 var(--mono); font-variant-numeric: tabular-nums; }
+.ds-toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.ds-sticky { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); padding-block: 12px; }
+.ds-cols { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); }
+.ds-cards { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr)); }
+
+/* ---------- Containers ---------- */
+.ds-panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); padding: 16px; min-width: 0; }
+.ds-card { all: unset; box-sizing: border-box; cursor: pointer; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md);
+  padding: 14px 16px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.ds-card:hover { box-shadow: var(--shadow); border-color: transparent; }
+.ds-card:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.ds-card .t { font: 700 19px/1.2 var(--display); }
+.ds-card .d { font-size: 13px; color: var(--muted); }
+.ds-kpis { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr)); }
+.ds-kpi { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); padding: 12px 14px; display: grid; gap: 4px; }
+.ds-kpi .k { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.ds-kpi .v { font: 500 22px/1.1 var(--mono); font-variant-numeric: tabular-nums; }
+.ds-kpi .s { font-size: 12px; color: var(--muted); }
+
+/* ---------- Controls ---------- */
+.ds-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 13px; border-radius: var(--r); border: 1px solid var(--line);
+  background: var(--surface); color: var(--ink); cursor: pointer; font-size: 14px; white-space: nowrap; text-decoration: none; } /* camp.css .btn */
+.ds-btn:hover { border-color: var(--muted); }
+.ds-btn.ds-btn--primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); border-radius: 2px; } /* Camp de Base's app screens (camp.css .btn.primary) */
+.ds-btn.ds-btn--primary:hover { border-color: var(--accent); filter: brightness(1.05); }
+.ds-btn.ds-btn--danger { color: var(--bad); }
+.ds-btn.ds-btn--sm { padding: 4px 8px; font-size: 12.5px; border-radius: var(--r-sm); }
+.ds-btn:disabled { opacity: .5; cursor: not-allowed; }
+.ds-icon-btn { border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: var(--r); width: var(--control-h); height: var(--control-h);
+  display: grid; place-items: center; cursor: pointer; }
+.ds-icon-btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; }
+/* Segmented control (theme switch, view switch): one pressed button, inverted */
+.ds-seg { display: inline-flex; border: 1px solid var(--line); border-radius: var(--r-pill); overflow: hidden; background: var(--surface); }
+.ds-seg button { border: 0; background: transparent; padding: 6px 10px; cursor: pointer; color: var(--muted); display: grid; place-items: center; }
+.ds-seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.ds-seg svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
+/* Tabs: display font, underline in accent */
+.ds-tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--line); overflow-x: auto; scrollbar-width: none; }
+.ds-tabs button { flex: none; padding: 10px 14px; font: 700 15px/1 var(--display); color: var(--muted); border: 0; background: none; border-bottom: 3px solid transparent; cursor: pointer; }
+.ds-tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+/* v1.5: link tabs (routes), same look; the current one has aria-current="page" */
+.ds-tabs a { flex: none; padding: 10px 14px; font: 700 15px/1 var(--display); color: var(--muted); border-bottom: 3px solid transparent; text-decoration: none; }
+.ds-tabs a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); }
+.ds-tabs button:disabled { opacity: .5; cursor: default; }
+.ds-tabs .ds-soon { font-size: 9px; padding: 2px 5px; margin-left: 6px; vertical-align: 2px; }
+/* Sub-tabs: pills under the tabs */
+.ds-subtabs { display: flex; gap: 6px; flex-wrap: wrap; margin: 12px 0 2px; }
+.ds-subtabs button { font: 14px var(--body); padding: 5px 12px; border-radius: var(--r-pill); border: 1px solid var(--line); background: var(--surface); color: var(--muted); cursor: pointer; }
+.ds-subtabs button[aria-selected="true"] { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+/* Filter chips: toggles with an optional count */
+.ds-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.ds-chip { padding: 5px 11px; border-radius: var(--r-pill); border: 1px solid var(--line); background: var(--surface); cursor: pointer; font-size: 13px; }
+.ds-chip .num { color: var(--muted); font-size: 12px; margin-left: 4px; }
+.ds-chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.ds-chip[aria-pressed="true"] .num { color: inherit; opacity: .7; }
+/* v1.7: filter bar at the top of a page, under the title (Camp de Base's toolbar: its selects, segments and chips, the
+   « Filters » button with a count, « Clear filters »). Each control sits in a .ds-filter with a small label; a filter
+   away from its default carries data-on (accent border on its field) and the reset shows. Under 700 px the controls
+   fold behind the Filters button (shell.js toggles aria-expanded and .ds-filters--open) and stack full width. */
+.ds-filters { display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: center; }
+.ds-filters-body { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; min-width: 0; }
+.ds-filter { display: inline-flex; align-items: center; gap: 8px; min-width: 0; }
+.ds-filter > .ds-filter-l { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+.ds-filter select, .ds-filter .ds-input { max-width: 100%; }
+.ds-filter .ds-seg button { font-size: 13px; padding: 5px 12px; }
+.ds-filter .ds-seg button[aria-pressed="true"] { color: var(--bg); }
+.ds-filter[data-on] :is(select, .ds-input) { border-color: var(--accent); background: var(--accent-soft); }
+.ds-filter[data-on] > .ds-filter-l { color: var(--accent); }
+.ds-filters > .ds-filters-toggle { display: none; } /* two classes: wins over .ds-btn wherever the app loads it */
+.ds-fcount { font: 600 11px/1 var(--mono); background: var(--accent); color: var(--accent-ink); border-radius: var(--r-pill); padding: 3px 6px; } /* Camp de Base's .fcount */
+.ds-fcount[hidden], .ds-filters-reset[hidden] { display: none; }
+.ds-filters-note { font-size: 13px; color: var(--muted); }
+/* v1.7.1: folded at every width (.ds-filters--fold, Camp de Base's inventory toolbar): the Filters button may sit in the
+   main toolbar row (search, scope, sort, view) and shows on every screen; the controls wait on their own row
+   (.ds-filters-body) until it is pressed, bare selects whose first option names them (« All activities »), the reset at
+   the end of the row. No panel and no stacking on phones: the row keeps its toolbar look. */
+.ds-filters--fold .ds-filters-toggle { display: inline-flex; }
+.ds-filters--fold > .ds-filters-body { display: none; flex-basis: 100%; }
+.ds-filters--fold.ds-filters--open > .ds-filters-body { display: flex; }
+@media (max-width: 699px) {
+  .ds-filters > .ds-filters-toggle { display: inline-flex; }
+  .ds-filters-body { display: none; flex-basis: 100%; flex-direction: column; align-items: stretch; gap: 10px; padding: 12px; background: var(--surface);
+    border: 1px solid var(--line); border-radius: var(--r-md); }
+  .ds-filters--open > .ds-filters-body { display: flex; }
+  .ds-filter { display: grid; gap: 4px; }
+  .ds-filter select, .ds-filter .ds-input { width: 100%; font-size: 16px; } /* no zoom on focus */
+  .ds-filter .ds-seg { overflow-x: auto; scrollbar-width: none; justify-self: start; max-width: 100%; }
+  .ds-filter .ds-seg button { flex: none; }
+  .ds-filters-reset { justify-self: start; align-self: flex-start; }
+  .ds-filters--fold > .ds-filters-body { flex-direction: row; align-items: center; padding: 0; background: none; border: 0; border-radius: 0; }
+  .ds-filters--fold .ds-filters-reset { align-self: auto; }
+}
+
+/* ---------- Forms ---------- */
+.ds-input, .ds-form input:not([type=checkbox]):not([type=radio]), .ds-form select, .ds-form textarea {
+  padding: 7px 9px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface); min-width: 0; } /* camp.css inputs */
+.ds-form { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); }
+.ds-form label { display: grid; gap: 4px; font-size: 13px; color: var(--muted); }
+.ds-form label.full { grid-column: 1 / -1; }
+.ds-form label.chk { display: flex; gap: 8px; align-items: center; }
+.ds-form textarea { min-height: 90px; resize: vertical; }
+/* v1.5.1: a visible file input matches the height of the other fields (its button made it taller) */
+.ds-form input[type=file]:not([type=checkbox]):not([type=radio]) { padding-block: 4px; }
+.ds-form input[type=file]::file-selector-button { font: inherit; font-size: 13px; padding: 2px 9px; margin-right: 9px; border: 1px solid var(--line); border-radius: 6px; background: var(--sunken); color: var(--ink); line-height: 1.2; cursor: pointer; }
+.ds-form .missing { border-color: var(--warn); background: var(--warn-soft); }
+.ds-form fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: 10px; }
+.ds-form legend { font: 600 12px/1 var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); padding: 0; margin-bottom: 10px; }
+.ds-search { width: min(320px, 100%); }
+.ds-switch { position: relative; display: inline-block; width: 34px; height: 20px; cursor: pointer; }
+.ds-switch input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: inherit; z-index: 1; }
+.ds-switch span { position: absolute; inset: 0; border-radius: var(--r-pill); background: var(--line); transition: background var(--t-fast); }
+.ds-switch span::after { content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: var(--surface); box-shadow: 0 1px 2px rgba(0,0,0,.25); transition: transform var(--t-fast); }
+.ds-switch input:checked + span { background: var(--accent); }
+.ds-switch input:checked + span::after { transform: translateX(14px); }
+.ds-switch input:focus-visible + span { outline: 2px solid var(--focus); outline-offset: 2px; }
+.ds-switch input:disabled + span { opacity: .4; } .ds-switch:has(input:disabled) { cursor: not-allowed; }
+
+/* ---------- Status ---------- */
+.ds-pill { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; padding: 2px 8px; border-radius: var(--r-pill); white-space: nowrap; color: var(--muted); background: var(--sunken); }
+.ds-pill.ds-pill--body { font-family: var(--body); } /* v1.5: opt-in, for pills inside mono cells (td.n, .num); plain pills inherit */
+.ds-pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.ds-tag { font-size: 11px; padding: 2px 6px; border-radius: var(--r-xs); background: var(--sunken); color: var(--muted); }
+.ds-soon { font: 600 10px/1 var(--body); letter-spacing: .06em; text-transform: uppercase; border: 1px solid var(--line); border-radius: var(--r-pill); padding: 3px 6px; color: var(--muted); }
+.ds-note { font-size: 14px; padding: 10px 14px; border-radius: var(--r); border: 1px solid var(--line); border-left: 3px solid var(--accent); background: var(--sunken); margin: 0 0 12px; }
+.ds-ok { color: var(--ok); background: var(--ok-soft); }
+.ds-warn { color: var(--warn); background: var(--warn-soft); }
+.ds-bad { color: var(--bad); background: var(--bad-soft); }
+.ds-info { color: var(--info); background: var(--info-soft); }
+.ds-note.ds-warn, .ds-note.ds-bad, .ds-note.ds-ok, .ds-note.ds-info { border: 0; padding: 10px 12px; margin: 0; }
+.ds-meter { height: 6px; border-radius: 3px; background: var(--sunken); overflow: hidden; }
+.ds-meter i { display: block; height: 100%; background: var(--ok); } /* camp.css .meter */
+.ds-meter.ds-over i { background: var(--bad); }
+
+/* ---------- Tables ---------- */
+/* :where() keeps Camp de Base's specificity (it styled bare table/th/td): an app's own table rules still win. */
+.ds-table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface); }
+:where(.ds-table) { border-collapse: collapse; width: 100%; font-size: 14px; }
+:where(.ds-table) th { text-align: left; font: 600 11px/1.2 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding: 10px;
+  border-bottom: 1px solid var(--line); background: var(--sunken); white-space: nowrap; }
+:where(.ds-table) td { padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+:where(.ds-table) tr:last-child td { border-bottom: 0; }
+:where(.ds-table) td.n, :where(.ds-table) th.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+:where(.ds-table) td.n { font-family: var(--mono); }
+:where(.ds-table) tbody tr[data-href], :where(.ds-table) tbody tr.ds-click { cursor: pointer; }
+:where(.ds-table) tbody tr[data-href]:hover td, :where(.ds-table) tbody tr.ds-click:hover td { background: var(--sunken); }
+:where(.ds-table) tr.ds-grp td { background: var(--sunken); font: 700 15px/1 var(--display); padding: 9px 10px; }
+/* v1.5: subtotal / total row: sunken, bold, numbers stay mono */
+:where(.ds-table) tr.ds-total { --total-bg: var(--sunken); }
+/* v1.5.1: in dark, --sunken is darker than --surface and barely shows; the total row is lifted towards ink instead */
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) :where(.ds-table) tr.ds-total { --total-bg: color-mix(in srgb, var(--ink) 8%, var(--surface)); } }
+:root[data-theme="dark"] :where(.ds-table) tr.ds-total { --total-bg: color-mix(in srgb, var(--ink) 8%, var(--surface)); }
+:where(.ds-table) tr.ds-total td, :where(.ds-table) tr.ds-total th { background: var(--total-bg); font-weight: 700; color: var(--ink); }
+:where(.ds-table) tr.ds-total td { border-top: 1px solid var(--line); }
+/* v1.5: wide tables become cards under 700 px in the app; .ds-table--matrix opts out (year matrices, comparisons):
+   it stays a table and scrolls sideways in its .ds-table-wrap (figures on one line, labels wrap). Apps write card rules as
+   table.ds-table:not(.ds-table--matrix). The first column stays visible while scrolling. */
+:where(.ds-table.ds-table--matrix) :is(td, th):not(:first-child) { white-space: nowrap; }
+:where(.ds-table.ds-table--matrix) :is(td, th):first-child { position: sticky; left: 0; z-index: 1; background: var(--surface); min-width: 9em; }
+:where(.ds-table.ds-table--matrix) th:first-child, :where(.ds-table.ds-table--matrix) tr.ds-grp > :first-child { background: var(--sunken); }
+:where(.ds-table.ds-table--matrix) tr.ds-total > :first-child { background: var(--total-bg); }
+
+/* ---------- Overlays and feedback ---------- */
+dialog.ds-dialog { border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--surface); color: var(--ink); padding: 0; width: min(640px, calc(100vw - 32px)); box-shadow: var(--shadow); }
+dialog.ds-dialog::backdrop { background: var(--scrim); }
+.ds-dialog-body { display: grid; gap: 14px; padding: 18px; max-height: min(80vh, 760px); overflow-y: auto; }
+.ds-dialog-foot { display: flex; justify-content: flex-end; gap: 8px; }
+.ds-sheet { position: fixed; z-index: 21; top: 0; right: 0; bottom: 0; width: min(760px, 100%); background: var(--surface); box-shadow: var(--shadow); display: flex; flex-direction: column;
+  padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+.ds-toast { position: fixed; z-index: 70; left: 50%; translate: -50% 0; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); background: var(--ink); color: var(--bg);
+  padding: 10px 14px; border-radius: var(--r); font-size: 14px; max-width: calc(100vw - 32px); }
+.ds-toast.ds-err { background: var(--bad); color: #fff; } /* camp.css .toast.err */
+.ds-tip { position: absolute; transform: translateX(-50%); background: var(--ink); color: var(--bg); font: 12px var(--mono); padding: 3px 8px; border-radius: var(--r-sm); pointer-events: none; white-space: nowrap; }
+.ds-empty { padding: 28px; text-align: center; color: var(--muted); border: 1px dashed var(--line); border-radius: var(--r-md); }
+.ds-empty strong { display: block; color: var(--ink); font: 600 22px/1.2 var(--display); margin-bottom: 6px; }
+.ds-empty > p { margin: 0 auto 12px; max-width: 60ch; } .ds-empty > p:last-child { margin-bottom: 0; }
+.ds-empty.ds-empty--inline { padding: 12px 14px; margin: 0; text-align: left; font-size: 15px; } /* v1.5: compact, text only, inside panels */
+.ds-empty.ds-empty--inline strong { display: inline; font: inherit; color: var(--ink); margin: 0 6px 0 0; }
+.ds-empty.ds-empty--inline > p { display: inline; margin: 0; max-width: none; }
+.ds-loading { color: var(--muted); }
+
+/* ---------- Charts (SVG drawn by the app) ---------- */
+.ds-chart { overflow-x: auto; }
+.ds-chart svg { display: block; width: 100%; height: auto; }
+.ds-chart text { fill: var(--muted); font: 11px var(--mono); }
+.ds-chart .ax, .ds-chart .grid { stroke: var(--line); }
+.ds-chart .plan { fill: none; stroke: var(--muted); stroke-dasharray: 5 4; }
+.ds-chart .line { fill: none; stroke: var(--c1); stroke-width: 2; stroke-linejoin: round; }
+.ds-chart .area { fill: var(--accent-soft); }
+.ds-chart .cur { stroke: var(--ink); stroke-width: 1.5; }
+.ds-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--muted); margin-top: 10px; }
+.ds-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; }
+.ds-track { height: 14px; background: var(--sunken); border-radius: 3px; display: flex; overflow: hidden; }
+.ds-track i { display: block; height: 100%; }
+
+/* ---------- Full screen (v1.6): any card, chart or map (Camp de Base's .rt-fs / .rt-full / rt-noscroll) ----------
+   A [data-ds-fs] button inside a [data-ds-fs-card] (else the closest .ds-panel / .ds-card); shell.js toggles .ds-full
+   on the card and .ds-noscroll on <html>, asks the browser for full screen when allowed, and exits on Esc, on the
+   button or when the browser leaves full screen. Both glyphs sit in the button; aria-pressed shows the right one. */
+.ds-fs-btn { flex: none; margin-left: auto; width: 32px; height: 32px; display: grid; place-items: center; padding: 0; border: 1px solid var(--line);
+  border-radius: var(--r); background: var(--surface); color: var(--muted); cursor: pointer; }
+.ds-fs-btn:hover { color: var(--ink); border-color: var(--muted); }
+.ds-fs-btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; display: block; }
+.ds-fs-btn > span { display: block; }
+.ds-fs-btn .ds-fs-exit, .ds-fs-btn[aria-pressed="true"] .ds-fs-enter { display: none; }
+.ds-fs-btn[aria-pressed="true"] .ds-fs-exit { display: block; }
+/* over a map (Camp de Base's .rt-fs: top right, white, like the map's own controls) */
+.ds-fs-btn.ds-fs-btn--over { position: absolute; top: 10px; right: 10px; z-index: 800; width: 34px; height: 34px; border: 2px solid rgba(0, 0, 0, .2);
+  background: #fff; color: #222; background-clip: padding-box; }
+.ds-fs-btn.ds-fs-btn--over:hover { background: #f4f4f4; }
+/* the card in full screen: over the side menu (25), under toasts (70); fills the window, or the frame when the
+   browser refuses full screen (iframes, iPhone) */
+.ds-full { position: fixed; inset: 0; z-index: 50; margin: 0; border: 0; border-radius: 0; max-width: none; width: auto; height: auto; overflow: auto;
+  display: flex; flex-direction: column; gap: 10px; background: var(--surface);
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.ds-full > .ds-chart, .ds-full [data-ds-fs-grow] { flex: 1 1 auto; min-height: 0; } /* the drawing takes the room left; the app redraws it */
+/* v1.6.1 (Camp de Base is the reference): a map (its button over it, .ds-fs-btn--over) fills the window edge to edge,
+   as Camp de Base's .rt-full did; any other card fills the content area and never covers the side menu (Camp de Base's
+   "view larger", #218): it starts at the menu's edge and sits under it, so the folded menu still opens over it. */
+.ds-full:has(> .ds-fs-btn--over) { position: fixed; inset: 0; z-index: 50; margin: 0; border: 0; border-radius: 0; display: block; padding: 0; gap: 0;
+  overflow: hidden; } /* two classes' weight, like Camp de Base's .rt-map-wrap.rt-full: the map card's own position, border and radius never win */
+@media (min-width: 860px) { .ds-full:not(:has(> .ds-fs-btn--over)) { left: var(--side-w); z-index: 24; } }
+html.ds-noscroll, html.ds-noscroll body { overflow: hidden; }
+/* v1.6.2: maps stay behind the shell. Leaflet's panes and controls (z 400–1000) and a map's own overlays would escape
+   their card and scroll over the side menu (25), the phone top bar and the drawer: a map, and a card that holds one, make
+   their own stacking context, as Camp de Base's .rt-map-wrap and .wm-wrap do. Isolation only (no position, no z-index),
+   so .ds-full's fixed position and z 50 still win in full screen and the controls stay clickable. */
+.ds-map, .leaflet-container, :where(.ds-panel, .ds-card, [data-ds-fs-card]):has(> .ds-fs-btn--over, .leaflet-container, .ds-map) { isolation: isolate; }
+
+/* ---------- Login screen ---------- */
+.ds-login { position: fixed; inset: 0; z-index: 60; background: var(--surface); display: grid; place-items: center; padding: 24px; }
+.ds-login > div { display: grid; gap: 18px; justify-items: center; text-align: center; max-width: 360px; }
+.ds-login img { width: 84px; height: auto; }
+.ds-login h1 { margin: 0; font-size: 34px; }
+.ds-login p { margin: 0; color: var(--muted); }
+.ds-login .ds-err { color: #b42318; min-height: 1.2em; }
+
+</style>
+<style>
+/* Architecture map (prefix am-): a reference page read top to bottom. Diagram first (how a request travels), then one
+   card per app with the same rows in the same order, then the apps that live apart, then the shared pieces.
+   Facts read on 2026-10-30 in the repos (wrangler.toml, functions, workflows, ledgers) and the Cloudflare account. */
+body { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.am { max-width: 1240px; margin: 0 auto; padding-block: 32px 72px; display: grid; gap: 22px; }
+.am > * { min-width: 0; }
+.am-col { max-width: 78ch; }
+.am-lede { font-size: 17px; margin: 0; }
+.am h2 { margin-top: 10px; }
+.am-diag { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); padding: 14px; }
+.am-diag svg { display: block; min-width: 860px; width: 100%; height: auto; }
+.am-diag .box { fill: var(--surface); stroke: var(--line); stroke-width: 1.2; }
+.am-diag .box.door { fill: var(--accent-soft); stroke: var(--accent); }
+.am-diag .box.store { fill: var(--sunken); }
+.am-diag .box.todo { stroke-dasharray: 5 4; stroke: var(--warn); }
+.am-diag .box.apart { fill: var(--bg); stroke-dasharray: 3 3; }
+.am-diag text { fill: var(--ink); font: 13px var(--body); }
+.am-diag .t { font: 700 14px var(--display); }
+.am-diag .s { fill: var(--muted); font: 11px var(--mono); }
+.am-diag .lbl { fill: var(--muted); font: 11px var(--body); }
+.am-diag .ln { stroke: var(--muted); stroke-width: 1.3; fill: none; }
+.am-diag .ln.att { stroke: var(--c3); stroke-dasharray: 6 4; }
+.am-diag .ln.bk { stroke: var(--c5); }
+.am-diag .ar { fill: var(--muted); } .am-diag .ar.att { fill: var(--c3); } .am-diag .ar.bk { fill: var(--c5); }
+.am-legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13px; color: var(--muted); margin-top: 10px; }
+.am-legend i { display: inline-block; width: 22px; height: 0; border-top: 2px solid var(--muted); vertical-align: middle; margin-right: 6px; }
+.am-legend i.att { border-top: 2px dashed var(--c3); } .am-legend i.bk { border-color: var(--c5); } .am-legend i.todo { border-top: 2px dashed var(--warn); }
+.am-apps { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); align-items: start; }
+.am-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); padding: 16px; display: grid; gap: 10px; min-width: 0; }
+.am-card header { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.am-card header h3 { margin: 0; font: 700 21px/1.2 var(--display); text-transform: none; letter-spacing: 0; color: var(--ink); }
+.am-card dl { margin: 0; display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 7px 12px; font-size: 14px; }
+.am-card dt { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding-top: 3px; }
+.am-card dd { margin: 0; overflow-wrap: anywhere; }
+.am-card code, .am code { font: 12.5px var(--mono); background: var(--sunken); padding: 1px 5px; border-radius: var(--r-xs); }
+.am-apart { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); }
+.am-apart .am-card { background: var(--bg); border-style: dashed; }
+.am-shared { display: grid; gap: 10px; }
+.am-note { font-size: 13px; color: var(--muted); margin: 0; }
+@media (max-width: 520px) { .am-card dl { grid-template-columns: minmax(0, 1fr); gap: 2px; } .am-card dd { margin-bottom: 6px; } }
+</style>
+
+<div class="am">
+  <header class="ds-head">
+    <div><div class="ds-eyebrow">Brain · carte · état au 30 octobre 2026</div><h1>Architecture des apps</h1></div>
+    <dl class="ds-facts"><div><dt>Apps</dt><dd>3 + hub</dd></div><div><dt>Connexion</dt><dd>1 Access</dd></div><div><dt>Crons</dt><dd>2 / 5</dd></div><div><dt>Coût</dt><dd>0 €</dd></div></dl>
+  </header>
+  <p class="am-lede am-col">Comment Camp de Base, Sport et Finance tournent vraiment aujourd'hui : adresses, projets Pages, bases D1, fichiers R2, connexion, secrets (par nom), sauvegardes et ce que chaque app signale au cockpit. Lu dans les dépôts, les ledgers et le compte Cloudflare, pas dans le plan. Element Logbook et le site perso sont montrés à part : ils ne sont pas sur la plateforme.</p>
+
+  <section>
+    <h2>Le chemin d'une requête</h2>
+    <div class="am-diag" role="img" aria-label="Schéma : le navigateur passe par Cloudflare Access (connexion Google) pour atteindre les trois apps sur Pages, chacune avec sa base D1 ; le cockpit dans claude.ai lit leur attention par le connecteur Apps attention, un Worker qui appelle chaque /api/attention avec un jeton de service ; les sauvegardes hebdomadaires partent vers R2 et le Drive.">
+      <svg viewBox="0 0 1180 520" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar" d="M0 0L10 5L0 10z"/></marker>
+          <marker id="aa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar att" d="M0 0L10 5L0 10z"/></marker>
+          <marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar bk" d="M0 0L10 5L0 10z"/></marker>
+        </defs>
+        <!-- people and Claude -->
+        <rect class="box" x="20" y="40" width="170" height="64" rx="8"/><text class="t" x="36" y="66">Aurélien</text><text class="s" x="36" y="88">navigateur, téléphone</text>
+        <rect class="box" x="20" y="300" width="170" height="92" rx="8"/><text class="t" x="36" y="326">Brain · Cockpit</text><text class="s" x="36" y="348">artifact claude.ai</text><text class="s" x="36" y="366">Notion · sessions</text><text class="s" x="36" y="382">quotas (db)</text>
+        <!-- Access -->
+        <rect class="box door" x="250" y="30" width="210" height="84" rx="8"/><text class="t" x="266" y="56">Cloudflare Access</text><text class="s" x="266" y="78">« Apps · Aurélien »</text><text class="s" x="266" y="96">wild-snow-bb5e · Google</text>
+        <!-- connector -->
+        <rect class="box todo" x="250" y="300" width="210" height="92" rx="8"/><text class="t" x="266" y="326">Apps attention</text><text class="s" x="266" y="348">Worker attention-mcp</text><text class="s" x="266" y="366">MCP · OAuth par Access</text><text class="s" x="266" y="382">à déployer</text>
+        <!-- apps -->
+        <rect class="box" x="530" y="20" width="250" height="104" rx="8"/><text class="t" x="546" y="46">Camp de Base</text><text class="s" x="546" y="68">basecamp.aureliencaye.com</text><text class="s" x="546" y="86">Pages base-camp · /api/*</text><text class="s" x="546" y="104">GOOGLE_SA_KEY → Drive</text>
+        <rect class="box" x="530" y="150" width="250" height="104" rx="8"/><text class="t" x="546" y="176">Sport</text><text class="s" x="546" y="198">sport.aureliencaye.com</text><text class="s" x="546" y="216">Pages sport · /api/data, attention</text><text class="s" x="546" y="234">build : scripts/build_app.py</text>
+        <rect class="box" x="530" y="280" width="250" height="104" rx="8"/><text class="t" x="546" y="306">Finance</text><text class="s" x="546" y="328">finance.aureliencaye.com</text><text class="s" x="546" y="346">Pages finance · /api/book…</text><text class="s" x="546" y="364">jeton de service : lecture seule</text>
+        <!-- stores -->
+        <rect class="box store" x="850" y="20" width="150" height="48" rx="8"/><text class="t" x="866" y="40">D1</text><text class="s" x="866" y="58">camp-de-base</text>
+        <rect class="box store" x="850" y="76" width="150" height="48" rx="8"/><text class="t" x="866" y="96">R2</text><text class="s" x="866" y="114">camp-de-base</text>
+        <rect class="box store" x="850" y="150" width="150" height="48" rx="8"/><text class="t" x="866" y="170">D1</text><text class="s" x="866" y="188">sport</text>
+        <rect class="box store" x="850" y="206" width="150" height="48" rx="8"/><text class="t" x="866" y="226">R2</text><text class="s" x="866" y="244">sport-raw</text>
+        <rect class="box store" x="850" y="308" width="150" height="48" rx="8"/><text class="t" x="866" y="328">D1</text><text class="s" x="866" y="346">finance</text>
+        <!-- worker -->
+        <rect class="box" x="1030" y="150" width="130" height="104" rx="8"/><text class="t" x="1044" y="176">sport-sync</text><text class="s" x="1044" y="198">Worker</text><text class="s" x="1044" y="216">17 9 * * *</text><text class="s" x="1044" y="234">*/10 * * * *</text>
+        <!-- backups -->
+        <rect class="box store" x="530" y="430" width="250" height="64" rx="8"/><text class="t" x="546" y="456">Sauvegarde hebdo</text><text class="s" x="546" y="478">GitHub Actions · dimanche</text>
+        <rect class="box store" x="850" y="430" width="150" height="64" rx="8"/><text class="t" x="866" y="456">R2 backups</text><text class="s" x="866" y="478">sport/ finance/ …</text>
+        <rect class="box store" x="1030" y="430" width="130" height="64" rx="8"/><text class="t" x="1044" y="456">Drive perso</text><text class="s" x="1044" y="478">80_Backups/Apps</text>
+        <!-- outside sources -->
+        <rect class="box apart" x="1030" y="290" width="130" height="94" rx="8"/><text class="t" x="1044" y="314">Sources</text><text class="s" x="1044" y="334">intervals.icu</text><text class="s" x="1044" y="350">Strava</text><text class="s" x="1044" y="366">Element API</text>
+        <!-- lines: browser → Access → apps -->
+        <path class="ln" d="M190 72H248" marker-end="url(#a)"/>
+        <path class="ln" d="M460 60H500V72H528" marker-end="url(#a)"/>
+        <path class="ln" d="M500 72V202H528" marker-end="url(#a)"/>
+        <path class="ln" d="M500 202V332H528" marker-end="url(#a)"/>
+        <text class="lbl" x="196" y="64">connexion</text>
+        <!-- apps → stores -->
+        <path class="ln" d="M780 44H848" marker-end="url(#a)"/><path class="ln" d="M780 100H848" marker-end="url(#a)"/>
+        <path class="ln" d="M780 174H848" marker-end="url(#a)"/><path class="ln" d="M780 332H848" marker-end="url(#a)"/>
+        <path class="ln" d="M1030 174H1002" marker-end="url(#a)"/><path class="ln" d="M1030 230H1002" marker-end="url(#a)"/>
+        <path class="ln" d="M1095 290V256" marker-end="url(#a)"/>
+        <!-- attention -->
+        <path class="ln att" d="M190 346H248" marker-end="url(#aa)"/>
+        <path class="ln att" d="M460 346H490V120" marker-end="url(#aa)"/>
+        <text class="lbl" x="482" y="290" transform="rotate(-90 482 290)">jeton de service</text>
+        <!-- backups -->
+        <path class="ln bk" d="M655 384V428" marker-end="url(#ab)"/>
+        <path class="ln bk" d="M780 462H848" marker-end="url(#ab)"/><path class="ln bk" d="M1000 462H1028" marker-end="url(#ab)"/>
+      </svg>
+    </div>
+    <div class="am-legend"><span><i></i>requête, lecture, écriture</span><span><i class="att"></i>attention (lecture seule)</span><span><i class="bk"></i>sauvegarde</span><span><i class="todo"></i>pas encore en ligne</span></div>
+  </section>
+
+  <section>
+    <h2>Les trois apps</h2>
+    <div class="am-apps">
+      <article class="am-card">
+        <header><h3>Camp de Base</h3><span class="ds-pill ds-ok">en ligne · v5</span></header>
+        <dl>
+          <dt>Adresse</dt><dd><a href="https://basecamp.aureliencaye.com" target="_blank" rel="noopener">basecamp.aureliencaye.com</a> · secours <code>base-camp.pages.dev</code></dd>
+          <dt>Pages</dt><dd><code>base-camp</code>, relié à <code>ac-ua/Base-Camp</code>, racine <code>web/</code>, sans build, release = fusion dans <code>main</code></dd>
+          <dt>API</dt><dd><code>/api/[[path]]</code> : données, <code>/api/files</code>, <code>/api/tower</code>, <code>/api/attention</code> ; publics : <code>openapi.json</code>, <code>config</code>, <code>health</code></dd>
+          <dt>Données</dt><dd>D1 <code>camp-de-base</code> (36 tables, 6 vues) · R2 <code>camp-de-base</code> (photos : <code>items/</code>, <code>foods/</code>, <code>uploads/</code>) · documents lus en direct sur le Drive</dd>
+          <dt>Connexion</dt><dd>Access, JWT vérifié (<code>_lib/access.js</code>) ; un jeton de service a lecture et écriture</dd>
+          <dt>Secrets</dt><dd>Pages : <code>GOOGLE_SA_KEY</code> · GitHub : <code>BASECAMP_BACKUP_CLOUDFLARE_API_TOKEN</code>, <code>BASECAMP_CLOUDFLARE_ACCOUNT_ID</code>, <code>BASECAMP_RCLONE_CONFIG</code> · env <code>Base Camp</code> : <code>BASECAMP_CLOUDFLARE_API_TOKEN</code></dd>
+          <dt>Sauvegarde</dt><dd><code>backup-weekly.yml</code>, dimanche 03:37 UTC → R2 <code>backups/camp-de-base/</code> + Drive ; pas encore lancée (Actions bloquées)</dd>
+          <dt>Attention</dt><dd>les alertes de la tour de contrôle (<code>tower:…</code>)</dd>
+          <dt>Ancien</dt><dd>projet Supabase en pause (pas supprimé) ; D1 de test <code>camp-de-base-restore-test</code></dd>
+          <dt>Design</dt><dd>v1.7.1 (référence du système)</dd>
+        </dl>
+      </article>
+      <article class="am-card">
+        <header><h3>Sport</h3><span class="ds-pill ds-ok">en ligne · v0.28</span></header>
+        <dl>
+          <dt>Adresse</dt><dd><a href="https://sport.aureliencaye.com" target="_blank" rel="noopener">sport.aureliencaye.com</a> · <code>sport-cw7.pages.dev</code> renvoie vers elle</dd>
+          <dt>Pages</dt><dd><code>sport</code>, relié à <code>ac-ua/sport</code>, build <code>python3 scripts/build_app.py</code> → <code>web/app</code></dd>
+          <dt>API</dt><dd><code>/api/data/&lt;jeu&gt;</code> (lecture, cache), <code>/api/attention</code></dd>
+          <dt>Worker</dt><dd><code>sport-sync</code> (workers.dev, déployé à la main) : synchro de nuit <code>17 9 * * *</code> et fichiers de traces <code>*/10 * * * *</code> ; <code>/status</code> réduit à <code>{ok, at}</code> sans jeton</dd>
+          <dt>Données</dt><dd>D1 <code>sport</code> · R2 <code>sport-raw</code> (FIT, GPX : <code>garmin/</code>, <code>strava/</code>, <code>padi/</code>, <code>logbook/</code>)</dd>
+          <dt>Connexion</dt><dd>Access, JWT vérifié, plus <code>ACCESS_EMAILS</code> ; un jeton de service passe (API en lecture)</dd>
+          <dt>Secrets</dt><dd>Worker : <code>INTERVALS_API_KEY</code>, <code>ELEMENT_API_KEY</code>, <code>SYNC_TOKEN</code> (Strava à venir) · Pages : <code>ACCESS_EMAILS</code> · GitHub : <code>SPORT_BACKUP_CLOUDFLARE_API_TOKEN</code>, <code>SPORT_CLOUDFLARE_ACCOUNT_ID</code>, <code>SPORT_RCLONE_CONFIG</code> · env <code>app-sport</code> : <code>SPORT_CLOUDFLARE_API_TOKEN</code></dd>
+          <dt>Sauvegarde</dt><dd>dimanche 03:11 UTC → R2 <code>backups/sport/</code> + Drive ; restauration testée le 30/10 ; pas encore lancée</dd>
+          <dt>Attention</dt><dd>éléments à revoir (<code>review_item</code>) et état de la synchro</dd>
+          <dt>Liens</dt><dd>lit l'API d'Element Logbook (<code>/api/v1/sessions</code>), intervals.icu, Strava</dd>
+          <dt>Design</dt><dd>v1.8</dd>
+        </dl>
+      </article>
+      <article class="am-card">
+        <header><h3>Finance</h3><span class="ds-pill ds-ok">en ligne · v0.6</span></header>
+        <dl>
+          <dt>Adresse</dt><dd><a href="https://finance.aureliencaye.com" target="_blank" rel="noopener">finance.aureliencaye.com</a> · secours <code>finance-ci5.pages.dev</code></dd>
+          <dt>Pages</dt><dd><code>finance</code>, relié à <code>ac-ua/finance</code>, sans build, sortie <code>app/</code></dd>
+          <dt>API</dt><dd><code>/api/book</code> (sections versionnées, écriture avec <code>if_version</code>), <code>/api/export</code>, <code>/api/snapshots</code>, <code>/api/audit</code>, <code>/api/health</code>, <code>/api/attention</code></dd>
+          <dt>Données</dt><dd>D1 <code>finance</code> (9 sections, historique, instantanés) · pas de R2</dd>
+          <dt>Connexion</dt><dd>Access, JWT vérifié, <code>ACCESS_EMAILS</code> ; un jeton de service ne lit que <code>/api/attention</code> et <code>/api/health</code> (v0.6)</dd>
+          <dt>Secrets</dt><dd>Pages : <code>ACCESS_EMAILS</code> · GitHub : <code>FINANCE_BACKUP_CLOUDFLARE_TOKEN</code>, <code>FINANCE_CLOUDFLARE_ACCOUNT_ID</code>, <code>FINANCE_RCLONE_CONF</code> · env <code>app-finance</code> : <code>FINANCE_CLOUDFLARE_API_TOKEN</code></dd>
+          <dt>Sauvegarde</dt><dd>dimanche 03:23 UTC → R2 <code>backups/finance/</code> + Drive ; pas encore lancée</dd>
+          <dt>Attention</dt><dd>constats du moteur, remboursements attendus, échéances à 14 jours</dd>
+          <dt>Ancien</dt><dd>l'artifact « Finance · Cockpit » reste en lecture seule, en secours</dd>
+          <dt>Design</dt><dd>v1.7.1</dd>
+        </dl>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <h2>Le hub</h2>
+    <div class="am-apps">
+      <article class="am-card">
+        <header><h3>Brain · Cockpit</h3><span class="ds-pill ds-ok">en ligne</span></header>
+        <dl>
+          <dt>Adresse</dt><dd><a href="https://claude.ai/artifact/UqbtEKheEFwqs7P61d6zdi" target="_blank" rel="noopener">artifact claude.ai</a> (plus tard <code>hub.aureliencaye.com</code>)</dd>
+          <dt>Source</dt><dd><code>ac-ua/brain</code> › <code>docs/cockpit/src/cockpit.html</code>, construit par <code>build.py</code></dd>
+          <dt>Lit</dt><dd>Notion (projets, tâches, roadmap, journal), Claude Code Remote (sessions), sa base (quotas), le connecteur « Apps attention »</dd>
+          <dt>Menu</dt><dd>sélecteur d'apps v1.9, lu dans <code>apps.json</code></dd>
+        </dl>
+      </article>
+      <article class="am-card">
+        <header><h3>Apps attention</h3><span class="ds-pill ds-warn">à déployer</span></header>
+        <dl>
+          <dt>Adresse</dt><dd><code>attention-mcp.a-caye.workers.dev/mcp</code></dd>
+          <dt>Source</dt><dd><code>ac-ua/brain</code> › <code>tools/attention-mcp</code>, Workers Builds depuis <code>main</code></dd>
+          <dt>Outil</dt><dd><code>get_attention</code> : lit chaque <code>/api/attention</code> de <code>apps.json</code>, lecture seule</dd>
+          <dt>Connexion</dt><dd>claude.ai s'inscrit (OAuth 2.1), Aurélien autorise, puis se connecte par Access (application OIDC) ; seule son adresse reçoit un jeton</dd>
+          <dt>Stockage</dt><dd>KV <code>OAUTH_KV</code> (autorisations, hachées)</dd>
+          <dt>Secrets</dt><dd><code>OIDC_CLIENT_ID</code>, <code>OIDC_CLIENT_SECRET</code>, <code>ACCESS_CLIENT_ID</code>, <code>ACCESS_CLIENT_SECRET</code>, <code>ALLOWED_EMAILS</code></dd>
+        </dl>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <h2>À part</h2>
+    <p class="am-note am-col">Hors de la plateforme : pas derrière Access, pas dans le sélecteur d'apps, pas de <code>/api/attention</code>.</p>
+    <div class="am-apart">
+      <article class="am-card">
+        <header><h3>Element Logbook</h3><span class="ds-pill">app du club</span></header>
+        <dl>
+          <dt>Adresse</dt><dd><code>logbook.element-training.com</code> · Pages <code>element-logbook</code>, relié à <code>ac-ua/c_ET</code></dd>
+          <dt>Données</dt><dd>Supabase (projet du club), reste sur Supabase</dd>
+          <dt>Lien</dt><dd>Sport lit ses séances par <code>/api/v1/sessions</code> (clé <code>ELEMENT_API_KEY</code>)</dd>
+        </dl>
+      </article>
+      <article class="am-card">
+        <header><h3>Site perso</h3><span class="ds-pill">public</span></header>
+        <dl>
+          <dt>Adresse</dt><dd><code>aureliencaye.com</code>, <code>www.</code> · Pages <code>aureliencaye</code>, relié à <code>ac-ua/website</code></dd>
+          <dt>Données</dt><dd>aucune base</dd>
+          <dt>Lien</dt><dd>sa zone DNS porte les sous-domaines des apps</dd>
+        </dl>
+      </article>
+    </div>
+  </section>
+
+  <section class="am-shared">
+    <h2>Ce qui est partagé</h2>
+    <div class="ds-table-wrap"><table class="ds-table">
+      <thead><tr><th>Pièce</th><th>État réel</th></tr></thead>
+      <tbody>
+        <tr><td>Domaine</td><td><code>aureliencaye.com</code> sur Cloudflare : <code>basecamp.</code>, <code>sport.</code>, <code>finance.</code> sont les domaines des projets Pages</td></tr>
+        <tr><td>Connexion</td><td>une application Access « Apps · Aurélien », connexion Google, session d'un mois, AUD commun aux trois apps ; déconnexion <code>/cdn-cgi/access/logout</code></td></tr>
+        <tr><td>Crons</td><td>2 sur les 5 du compte, tous deux pris par <code>sport-sync</code></td></tr>
+        <tr><td>Sauvegardes</td><td>bucket R2 <code>backups</code> (un préfixe par app) et Drive <code>80_Backups/Apps</code> ; D1 Time Travel couvre 7 jours ; <strong>aucune sauvegarde hebdomadaire n'a encore tourné</strong> : GitHub Actions refuse de démarrer (facturation du compte)</td></tr>
+        <tr><td>Design system</td><td><code>ac-ua/brain</code> › <code>skills/web-design-system</code> v1.9 ; chaque app en copie <code>ds.css</code>, <code>shell.js</code>, <code>apps.json</code></td></tr>
+        <tr><td>Attention</td><td><code>GET /api/attention</code> dans les trois apps, même contrat (<code>docs/platform.md</code>)</td></tr>
+      </tbody>
+    </table></div>
+    <p class="am-note">Revue de cohérence et points de sécurité : <code>ac-ua/brain</code> › <code>docs/platform-review.md</code>.</p>
+  </section>
+</div>

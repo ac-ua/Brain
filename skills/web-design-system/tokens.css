@@ -148,6 +148,31 @@ h3, .ds-label { font: 600 12px/1.2 var(--body); letter-spacing: .1em; text-trans
   .ds-side-mini .ds-side:not(:hover):not(:focus-within) .ds-side-link .ico { font-size: 14px; width: 20px; flex: none; }
 }
 @media (max-width: 859px) { .ds-side-fold { display: none; } }
+/* v1.9: app switcher at the top of the side menu, under the brand (the platform's one menu for every app). shell.js
+   fills [data-ds-apps] from apps.json (inline <script type="application/json" id="ds-apps-data">, else apps.json next
+   to the page): a button with the current app, a menu with every app (links, the current one marked) and the hub.
+   Folded, only the icon shows; on phones it lives in the drawer. Counts (.ds-count[data-ds-apps-count="<key>"]) are
+   the app's to fill, e.g. attention items. */
+.ds-apps { position: relative; padding: 0 2px; }
+.ds-apps-btn { width: 100%; display: flex; align-items: center; gap: 9px; padding: 7px 9px; border: 1px solid var(--line); background: var(--surface);
+  border-radius: var(--r); cursor: pointer; text-align: left; color: var(--ink); font: inherit; }
+.ds-apps-btn:hover { border-color: var(--muted); }
+.ds-apps-btn .ico, .ds-apps-menu .ico { width: 20px; flex: none; text-align: center; }
+.ds-apps-btn .ds-apps-name { flex: 1; min-width: 0; font: 700 15px/1.2 var(--display); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ds-apps-btn .ds-apps-caret { color: var(--muted); font-size: 12px; }
+.ds-apps-menu { position: absolute; left: 2px; right: 2px; top: calc(100% + 4px); z-index: 30; background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--r-md); box-shadow: var(--shadow); padding: 6px; display: grid; gap: 2px; min-width: 200px; }
+.ds-apps-menu[hidden] { display: none; }
+.ds-apps-menu a { display: flex; align-items: center; gap: 9px; padding: 7px 9px; border-radius: var(--r); color: var(--ink); text-decoration: none; font-size: 14px; }
+.ds-apps-menu a:hover, .ds-apps-menu a:focus-visible { background: var(--sunken); }
+.ds-apps-menu a[aria-current="true"] { background: var(--sunken); box-shadow: inset 3px 0 0 var(--accent); }
+.ds-apps-menu small { color: var(--muted); font-size: 11.5px; }
+.ds-apps-menu .ds-count { margin-left: auto; font: 12px var(--mono); color: var(--warn); }
+.ds-apps-menu hr { border: 0; border-top: 1px solid var(--line); margin: 4px 0; }
+@media (min-width: 860px) {
+  .ds-side-mini .ds-side:not(:hover):not(:focus-within) .ds-apps-btn { justify-content: center; padding: 7px 0; border-color: transparent; background: none; }
+  .ds-side-mini .ds-side:not(:hover):not(:focus-within) .ds-apps-btn :is(.ds-apps-name, .ds-apps-caret) { display: none; }
+}
 /* Sign out: bottom left, under the theme switch, full width (Camp de Base's .signout) */
 .ds-signout { flex-basis: 100%; border: 1px solid var(--line); background: var(--surface); color: var(--muted); border-radius: var(--r-sm); padding: 6px 10px;
   font-size: 12px; cursor: pointer; text-align: left; text-decoration: none; }

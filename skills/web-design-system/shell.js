@@ -10,6 +10,10 @@
 // so the app redraws its chart at the new size (a window "resize" is fired too, for maps).
 // Filter bar (v1.7): button[data-ds-filters-toggle] inside a .ds-filters folds or opens its controls on phones (on every
 // screen with .ds-filters--fold, v1.7.1).
+// App switcher (v1.9): <div class="ds-apps" data-ds-apps></div> right under .ds-side-brand; filled from the registry
+// apps.json (inline <script type="application/json" id="ds-apps-data">, else fetched from data-ds-apps-src, default
+// "apps.json" next to the page). Names and links come from the registry, the icons from the kit (":ci-name:" tokens).
+// The current app is the entry whose host is this page's, else whose "shell" equals data-ds-app.
 (() => {
   const start = () => {
     const root = document.querySelector("[data-ds-shell]") || document.body;
@@ -46,6 +50,36 @@
       if (keep) set("theme", t);
     };
     if (buttons.length) { theme(get("theme")); buttons.forEach((b) => b.addEventListener("click", () => theme(b.dataset.dsTheme, true))); }
+
+    // App switcher (v1.9): one registry (apps.json), one menu for every app.
+    const appsBox = root.querySelector("[data-ds-apps]");
+    const esc = (t) => String(t ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+    const drawApps = (reg) => {
+      const list = (reg && reg.apps) || [];
+      if (!appsBox || !list.length) return;
+      const host = location.hostname;
+      const hostOf = (u) => { try { return new URL(u).hostname; } catch { return ""; } };
+      const cur = list.find((a) => host && hostOf(a.url) === host && a.kind !== "hub") || list.find((a) => a.shell === app) || null;
+      const item = (a) => `<a href="${esc(a.url)}" data-ds-apps-key="${esc(a.key)}"${a === cur ? ' aria-current="true"' : ' target="_top"'}>` +
+        `<span class="ico">:ci-${esc(a.icon || "other")}:</span><span>${esc(a.name)}${a.note ? `<br><small>${esc(a.note)}</small>` : ""}</span>` +
+        `<span class="ds-count" data-ds-apps-count="${esc(a.key)}"></span></a>`;
+      const apps = list.filter((a) => a.kind !== "hub"), hubs = list.filter((a) => a.kind === "hub");
+      appsBox.innerHTML = `<button type="button" class="ds-apps-btn" aria-haspopup="true" aria-expanded="false" title="Changer d'app">` +
+        `<span class="ico">:ci-${esc((cur && cur.icon) || "home")}:</span><span class="ds-apps-name">${esc(cur ? cur.name : "Apps")}</span>` +
+        `<span class="ds-apps-caret" aria-hidden="true">⌄</span></button>` +
+        `<div class="ds-apps-menu" hidden>${apps.map(item).join("")}${hubs.length ? "<hr>" + hubs.map(item).join("") : ""}</div>`;
+      const btn = appsBox.querySelector(".ds-apps-btn"), menu = appsBox.querySelector(".ds-apps-menu");
+      const open = (on) => { menu.hidden = !on; btn.setAttribute("aria-expanded", String(on)); };
+      btn.addEventListener("click", () => open(menu.hidden));
+      document.addEventListener("click", (e) => { if (!appsBox.contains(e.target)) open(false); });
+      document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !menu.hidden) { open(false); btn.focus(); } });
+      appsBox.dispatchEvent(new CustomEvent("ds-apps", { bubbles: true, detail: { apps: list, current: cur } }));
+    };
+    if (appsBox) {
+      const inline = document.getElementById("ds-apps-data");
+      if (inline) { try { drawApps(JSON.parse(inline.textContent)); } catch { /* bad registry: no switcher */ } }
+      else fetch(appsBox.dataset.dsAppsSrc || "apps.json", { credentials: "same-origin" }).then((r) => (r.ok ? r.json() : null)).then(drawApps).catch(() => {});
+    }
 
     // Filter bar (v1.7): on phones (every screen for .ds-filters--fold) the « Filters » button opens or folds the controls of its .ds-filters (delegated,
     // so bars drawn later work too); the app keeps the count, data-on and the reset.

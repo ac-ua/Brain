@@ -1,0 +1,24 @@
+# « Apps · attention » — the remote MCP server behind the cockpit's attention panel (README.md, docs/platform.md).
+# Built and deployed by Workers Builds from ac-ua/brain (root directory tools/attention-mcp), release = merge into main;
+# never deployed by hand from a session.
+name = "attention-mcp"
+main = "src/index.js"
+compatibility_date = "2026-10-01"
+# Client ID Metadata Documents (claude.ai) are fetched from public hosts only.
+compatibility_flags = ["global_fetch_strictly_public"]
+workers_dev = true
+# No cron: the connector answers when called.
+
+# OAuth grants (hashed by @cloudflare/workers-oauth-provider). The id is not a secret.
+# TODO(Aurélien): create the KV namespace « attention-mcp-oauth » (README.md, step 1); its id goes here.
+[[kv_namespaces]]
+binding = "OAUTH_KV"
+id = "TODO-attention-mcp-oauth"
+
+[vars]
+ACCESS_TEAM_DOMAIN = "wild-snow-bb5e.cloudflareaccess.com"
+
+# Secrets (Workers › attention-mcp › Settings › Variables and Secrets, pasted by Aurélien; README.md):
+#   OIDC_CLIENT_ID, OIDC_CLIENT_SECRET   the Access SaaS (OIDC) application « Apps · attention (connecteur) »
+#   ACCESS_CLIENT_ID, ACCESS_CLIENT_SECRET   the Access service token « hub-attention », admitted by « Apps · Aurélien »
+#   ALLOWED_EMAILS   Aurélien's Google address (comma-separated if several)

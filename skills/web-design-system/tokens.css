@@ -227,12 +227,12 @@ h3, .ds-label { font: 600 12px/1.2 var(--body); letter-spacing: .1em; text-trans
 .ds-filter .ds-seg button[aria-pressed="true"] { color: var(--bg); }
 .ds-filter[data-on] :is(select, .ds-input) { border-color: var(--accent); background: var(--accent-soft); }
 .ds-filter[data-on] > .ds-filter-l { color: var(--accent); }
-.ds-filters-toggle { display: none; }
+.ds-filters > .ds-filters-toggle { display: none; } /* two classes: wins over .ds-btn wherever the app loads it */
 .ds-fcount { font: 600 11px/1 var(--mono); background: var(--accent); color: var(--accent-ink); border-radius: var(--r-pill); padding: 3px 6px; } /* Camp de Base's .fcount */
 .ds-fcount[hidden], .ds-filters-reset[hidden] { display: none; }
 .ds-filters-note { font-size: 13px; color: var(--muted); }
 @media (max-width: 699px) {
-  .ds-filters-toggle { display: inline-flex; }
+  .ds-filters > .ds-filters-toggle { display: inline-flex; }
   .ds-filters-body { display: none; flex-basis: 100%; flex-direction: column; align-items: stretch; gap: 10px; padding: 12px; background: var(--surface);
     border: 1px solid var(--line); border-radius: var(--r-md); }
   .ds-filters--open > .ds-filters-body { display: flex; }

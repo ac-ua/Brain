@@ -14,7 +14,7 @@ reference is **Camp de Base** (`ac-ua/Base-Camp`) and only Camp de Base (Auréli
 |---|---|
 | [`tokens.css`](tokens.css) | tokens (light, dark, context palettes), base styles and the core `ds-` components; copy it as `web/ds.css` |
 | [`icons/`](icons/) | `icons.json` (73 generic faceted icons), `glyphs.json` (16 UI glyphs), `build_icons.py` → `icons.js` |
-| [`shell.js`](shell.js) | the app shell's behaviour (fold the side menu, phone drawer, theme switch, full screen for cards, v1.6); copy it next to the pages |
+| [`shell.js`](shell.js) | the app shell's behaviour (fold the side menu, phone drawer, theme switch, full screen for cards v1.6, the filter bar's phone toggle v1.7); copy it next to the pages |
 | [`brand/`](brand/) | `mark.png` (Camp de Base's faceted mountain), `favicon.png`; every other app has its own mark (Brand marks) |
 | [`FEEDBACK.md`](FEEDBACK.md) | change log of the system and which apps still have to adopt each change |
 
@@ -105,7 +105,7 @@ here"; a 3–4 px left border carries a status or category colour. **Motion:** `
   <script src="shell.js"></script>
   ```
 - **Page:** `.ds-head` = eyebrow (12 px uppercase accent: the app or the context) + h1 (the page's title) on the left, `.ds-facts` (label over mono value) on the
-  right; then tabs or a sticky toolbar (`.ds-sticky`: search, filters, chips, view switch); then content.
+  right; then the filter bar (`.ds-filters`, v1.7) or tabs or a sticky toolbar (`.ds-sticky`: search, filters, chips, view switch); then content.
 - **Grids:** `repeat(auto-fit|auto-fill, minmax(min(100%, N), 1fr))` with N = 170 (KPIs), 210–230 (tiles, forms),
   290 (cards), 320 (columns). Overview + side column: `minmax(0, 1fr) 300px`, one column under 900 px.
 - **Breakpoints:** 600–640 (two KPIs per row, stacked rows), 700 (tables → cards, smaller maps), 860 (menu),
@@ -138,6 +138,7 @@ mark lives in the app's repo, as `brand/<app>-mark.svg` or `brand/mark.svg` unde
 | Segmented / theme switch | `.ds-seg` + `aria-pressed` | pill; pressed = inverted. Theme: Auto · Light · Dark glyphs |
 | Tabs / sub-tabs | `.ds-tabs` (buttons with `aria-selected`, or links with `aria-current="page"`, v1.5), `.ds-subtabs` | tabs in Syne 15 with a 3 px accent underline; link tabs for routes (same look); sub-tabs as pills, scroll sideways on phones |
 | Filter chips | `.ds-chips > .ds-chip` (`aria-pressed`, optional `.num`) | 999 radius, 13 px; pressed = inverted |
+| Filter bar (v1.7) | `.ds-filters` > `button.ds-btn.ds-filters-toggle[data-ds-filters-toggle]` (filter glyph, « Filters », `.ds-fcount`) + `.ds-filters-body` > `.ds-filter` (`.ds-filter-l` label + a `select.ds-input`, a `.ds-seg` or `.ds-chips`) … + `button.ds-btn.ds-btn--sm.ds-filters-reset` « Clear filters » | Camp de Base's toolbar (its « Filters » button with a count, « Clear filters »). Right under `.ds-head`, before the KPIs: the page's relevant filters only, **Period first**. Selects for long lists (period, sport, source), `.ds-seg` for 2–5 short choices. A filter away from its default gets `data-on` (accent border and soft fill on its field, accent label); the count and the reset show only then; the reset puts every filter of the page back. Under 700 px the controls fold behind the Filters button (`shell.js` toggles `aria-expanded` and `.ds-filters--open`) and stack full width, fields at 16 px. Filters are state, not text: keep them in the URL (hash or query) so a reload or a link keeps them; a shared filter (the period) keeps its value across pages. Every chart, KPI and table on the page follows them; a filter that leaves nothing shows the empty state (`.ds-empty--inline` « Nothing for these filters »), never a blank chart; KPI comparisons use the previous period of the same length |
 | Status pill | `.ds-pill.ds-ok|warn|bad|info` | dot + word; never colour alone; no tone = neutral (muted on sunken). A pill inherits the font (Camp de Base's `.pill`); inside a mono cell add `.ds-pill--body` (v1.5) |
 | Tag, Soon badge | `.ds-tag`, `.ds-soon` | 11 px; source tags in info, gaps in warn |
 | Panel, card, KPI | `.ds-panel`, `.ds-card`, `.ds-kpis > .ds-kpi (.k .v .s)` | radius 10; a whole clickable card is a `button` or `a` with `.ds-card` |

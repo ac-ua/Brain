@@ -8,6 +8,7 @@
 // Full screen: button.ds-fs-btn[data-ds-fs] inside the card ([data-ds-fs-card], else the closest .ds-panel / .ds-card);
 // the card gets .ds-full and fires "ds-fullscreen" (detail {on, settled}) right away and once the window has settled,
 // so the app redraws its chart at the new size (a window "resize" is fired too, for maps).
+// Filter bar (v1.7): button[data-ds-filters-toggle] inside a .ds-filters folds or opens its controls on phones.
 (() => {
   const start = () => {
     const root = document.querySelector("[data-ds-shell]") || document.body;
@@ -44,6 +45,16 @@
       if (keep) set("theme", t);
     };
     if (buttons.length) { theme(get("theme")); buttons.forEach((b) => b.addEventListener("click", () => theme(b.dataset.dsTheme, true))); }
+
+    // Filter bar (v1.7): on phones the « Filters » button opens or folds the controls of its .ds-filters (delegated,
+    // so bars drawn later work too); the app keeps the count, data-on and the reset.
+    document.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-ds-filters-toggle]"), bar = b && b.closest(".ds-filters");
+      if (!bar) return;
+      const on = b.getAttribute("aria-expanded") !== "true";
+      b.setAttribute("aria-expanded", String(on));
+      bar.classList.toggle("ds-filters--open", on);
+    });
 
     // Full screen (Camp de Base's setFullscreen): the card covers the window, and the screen when the browser allows
     // it; refused (an iframe, an iPhone) the card still fills its frame. Esc, the button again, or leaving the

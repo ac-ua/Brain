@@ -1,0 +1,16 @@
+{
+  "name": "attention-mcp",
+  "private": true,
+  "type": "module",
+  "description": "« Apps · attention »: the remote MCP server that gives the Brain cockpit each app's /api/attention",
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "check": "wrangler deploy --dry-run --outdir dist"
+  },
+  "dependencies": {
+    "@cloudflare/workers-oauth-provider": "1.2.4"
+  },
+  "devDependencies": {
+    "wrangler": "4.156.0"
+  }
+}

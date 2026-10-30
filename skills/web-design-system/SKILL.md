@@ -14,7 +14,8 @@ reference is **Camp de Base** (`ac-ua/Base-Camp`) and only Camp de Base (Auréli
 |---|---|
 | [`tokens.css`](tokens.css) | tokens (light, dark, context palettes), base styles and the core `ds-` components; copy it as `web/ds.css` |
 | [`icons/`](icons/) | `icons.json` (73 generic faceted icons), `glyphs.json` (16 UI glyphs), `build_icons.py` → `icons.js` |
-| [`shell.js`](shell.js) | the app shell's behaviour (fold the side menu, phone drawer, theme switch, full screen for cards v1.6, the filter bar's phone toggle v1.7); copy it next to the pages |
+| [`shell.js`](shell.js) | the app shell's behaviour (fold the side menu, phone drawer, theme switch, full screen for cards v1.6, the filter bar's phone toggle v1.7, the app switcher v1.9); copy it next to the pages |
+| [`apps.json`](apps.json) | the registry of the apps (v1.9): name, address, kit icon, `data-ds-app` key, `/api/attention`; read by the app switcher, the Brain cockpit and the attention connector; copy it next to the pages |
 | [`brand/`](brand/) | `mark.png` (Camp de Base's faceted mountain), `favicon.png`; every other app has its own mark (Brand marks) |
 | [`FEEDBACK.md`](FEEDBACK.md) | change log of the system and which apps still have to adopt each change |
 
@@ -105,6 +106,15 @@ here"; a 3–4 px left border carries a status or category colour. **Motion:** `
   <div class="ds-app"><main class="ds-wrap ds-main"><header class="ds-head">…</header>…</main></div>
   <script src="shell.js"></script>
   ```
+- **App switcher (v1.9, required at the next release):** right under `.ds-side-brand`, `<div class="ds-apps"
+  data-ds-apps></div>`; `shell.js` fills it from `apps.json` (copied next to the pages, or inlined as
+  `<script type="application/json" id="ds-apps-data">` where the page cannot fetch, like a claude.ai artifact): a
+  button with the current app (found by host, else by `data-ds-app` = `shell`), a menu with every app and, under a
+  rule, the hub (Brain cockpit). Folded, only the icon shows; on phones it sits in the drawer. Moving between apps
+  needs no new login (one Access application). Each item carries an empty `.ds-count[data-ds-apps-count="<key>"]`
+  the page may fill (the cockpit puts the attention count there); a `ds-apps` event (`detail.apps`,
+  `detail.current`) fires once it is drawn. A new app, a new address or a renamed app is a change to `apps.json`
+  here, then every app re-copies it.
 - **Page:** `.ds-head` = eyebrow (12 px uppercase accent: the app or the context) + h1 (the page's title) on the left, `.ds-facts` (label over mono value) on the
   right; then the filter bar (`.ds-filters`, v1.7) or tabs or a sticky toolbar (`.ds-sticky`: search, filters, chips, view switch); then content.
 - **Grids:** `repeat(auto-fit|auto-fill, minmax(min(100%, N), 1fr))` with N = 170 (KPIs), 210–230 (tiles, forms),
@@ -118,6 +128,7 @@ here"; a 3–4 px left border carries a status or category colour. **Motion:** `
 ## What every app must have
 - [ ] The shell above: side menu with the app's mark and name, its sections with their icons, fold button (state kept),
       phone top bar and drawer.
+- [ ] The app switcher (v1.9) under the brand, from the brain's `apps.json`.
 - [ ] The theme switch (Auto · Light · Dark) at the bottom left of the side menu, set before the first paint.
 - [ ] Sign out at the bottom left, under the theme switch (the app's own sign-out: Supabase, Cloudflare Access
       `/cdn-cgi/access/logout`…); hidden only where there is nothing to sign out of.
@@ -286,7 +297,7 @@ at its next release (`release-webapp` UI check).
 - [ ] Build `icons.js` from the kit (plus `data/icons.app.json` for domain icons) with the app's global name; load it
       on every page; no emojis left in the UI.
 - [ ] Use the shell (side menu with fold, top bar and drawer on phones, theme switch with the pre-paint script, sign
-      out; copy `shell.js`) and the `ds-` components;
+      out; copy `shell.js` and `apps.json`, v1.9) and the `ds-` components;
       the app's CSS adds only what is specific, with its own prefix, and uses tokens only (no hex outside icons).
 - [ ] Charts follow the data-viz rules; empty, loading and error states exist on every screen.
 - [ ] Check both themes, 375 px and 1280 px wide, keyboard focus, contrast; record the adoption (version) in the

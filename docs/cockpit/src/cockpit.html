@@ -25,6 +25,8 @@
 .bc-item { border: 1px solid var(--line); border-radius: var(--r); padding: 9px 11px; background: var(--surface); display: grid; gap: 6px; }
 .bc-item + .bc-item { margin-top: 8px; }
 .bc-item.bc-need { border-left: 3px solid var(--warn); }
+.bc-item.bc-att.bad { border-left: 3px solid var(--bad); } .bc-item.bc-att.warn { border-left: 3px solid var(--warn); } .bc-item.bc-att.info { border-left: 3px solid var(--info); }
+.bc-item.bc-att .bc-k { display: flex; align-items: center; gap: 6px; }
 .bc-item.bc-mine { border-left: 3px solid var(--accent); }
 .bc-k { font: 600 11px/1.2 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 .bc-t { overflow-wrap: anywhere; }
@@ -111,6 +113,7 @@ details.bc-more summary { cursor: pointer; font-size: 13px; color: var(--muted);
   <nav class="ds-side" id="side" aria-label="Brain">
     <div class="ds-side-brand"><img src="/*@BRAND_MARK@*/" alt=""><span><b>Brain</b><small>Aurélien Caye</small></span>
       <button class="ds-side-fold" data-ds-side-fold title="Replier ou ouvrir le menu" aria-label="Replier ou ouvrir le menu"><span class="ds-fold">«</span><span class="ds-unfold">»</span></button></div>
+    <div class="ds-apps" data-ds-apps></div>
     <div class="ds-side-group"><span class="ds-side-h">Cockpit</span>
       <a class="ds-side-link" href="#jour" data-view="jour"><span class="ico">:ci-home:</span>Aujourd'hui<span class="ds-count" id="n-jour"></span></a>
       <a class="ds-side-link" href="#domaines" data-view="domaines"><span class="ico">:ci-map:</span>Domaines</a>
@@ -120,9 +123,9 @@ details.bc-more summary { cursor: pointer; font-size: 13px; color: var(--muted);
       <a class="ds-side-link" href="#claude" data-view="claude"><span class="ico">:ci-star:</span>Claude</a>
     </div>
     <div class="ds-side-group"><span class="ds-side-h">Apps</span>
-      <a class="ds-side-link" href="#" data-app="campdebase" target="_blank" rel="noopener"><span class="ico">:ci-map:</span>Camp de Base<span class="ds-soon">↗</span></a>
-      <a class="ds-side-link" href="#" data-app="sport" target="_blank" rel="noopener"><span class="ico">:ci-training:</span>Sport<span class="ds-soon">↗</span></a>
-      <a class="ds-side-link" href="#" data-app="finance" target="_blank" rel="noopener"><span class="ico">:ci-budget:</span>Finance<span class="ds-soon">↗</span></a>
+      <a class="ds-side-link" href="#" data-app="camp-de-base" target="_blank" rel="noopener"><span class="ico">:ci-map:</span>Camp de Base<span class="ds-count" data-att="camp-de-base"></span></a>
+      <a class="ds-side-link" href="#" data-app="sport" target="_blank" rel="noopener"><span class="ico">:ci-training:</span>Sport<span class="ds-count" data-att="sport"></span></a>
+      <a class="ds-side-link" href="#" data-app="finance" target="_blank" rel="noopener"><span class="ico">:ci-budget:</span>Finance<span class="ds-count" data-att="finance"></span></a>
     </div>
     <div class="ds-side-foot">
       <div class="ds-seg" role="group" aria-label="Thème"><button data-ds-theme="auto" aria-label="Thème automatique" title="Automatique" data-glyph="theme_auto"></button><button data-ds-theme="light" aria-label="Thème clair" title="Clair" data-glyph="theme_light"></button><button data-ds-theme="dark" aria-label="Thème sombre" title="Sombre" data-glyph="theme_dark"></button></div>
@@ -141,7 +144,7 @@ details.bc-more summary { cursor: pointer; font-size: 13px; color: var(--muted);
           </dl>
         </header>
         <div class="ds-toolbar">
-          <div class="bc-fresh" id="fresh"><span data-src="projects">Projets</span><span data-src="tasks">Tâches</span><span data-src="roadmap">Roadmap</span><span data-src="sessions">Sessions</span></div>
+          <div class="bc-fresh" id="fresh"><span data-src="projects">Projets</span><span data-src="tasks">Tâches</span><span data-src="roadmap">Roadmap</span><span data-src="sessions">Sessions</span><span data-src="att">Apps</span></div>
           <div class="bc-acts">
             <div class="ds-seg" role="group" aria-label="Contexte" id="ctx"><button data-ctx="all" aria-pressed="true" style="padding:5px 11px;font-size:13px">Tout</button><button data-ctx="perso" aria-pressed="false" style="padding:5px 11px;font-size:13px">Perso</button><button data-ctx="work" aria-pressed="false" style="padding:5px 11px;font-size:13px">Work</button></div>
             <button class="ds-btn ds-btn--sm" id="refresh" type="button">Actualiser</button>
@@ -170,6 +173,7 @@ details.bc-more summary { cursor: pointer; font-size: 13px; color: var(--muted);
   </div>
 </div>
 <div id="toast-host"></div>
+<script type="application/json" id="ds-apps-data">/*@APPS_JSON@*/</script>
 
 <script>
 /*@DS_ICONS@*/
@@ -187,8 +191,12 @@ details.bc-more summary { cursor: pointer; font-size: 13px; color: var(--muted);
     roadmap: "view://40819ca7-9893-8114-9b31-000cf8a5a634",
     log: "view://40819ca7-9893-8120-a2ab-000c937d58aa"
   };
-  const APPS = /*@APP_LINKS@*/{};
+  const APPS = /*@APP_LINKS@*/{};   // key → address, from skills/web-design-system/apps.json (build.py)
   const NOTION = "Notion", CCR = "Claude Code Remote";
+  // « Apps attention »: the custom connector (tools/attention-mcp) that reads each app's /api/attention; an artifact
+  // cannot fetch the apps itself (CSP). Its display name in claude.ai must be exactly this (docs/platform.md).
+  const ATT = "Apps attention";
+  const APP_NAME = {"camp-de-base":"Camp de Base", sport:"Sport", finance:"Finance"};
   const POLL = 5 * 60 * 1000;
   const DOMAINS = ["Expeditions","Sport","Admin & Finance","Brain","Content","Career","Learning","Life","Work"];
   const DOM_ICON = {"Expeditions":"map","Sport":"training","Admin & Finance":"budget","Brain":"star","Content":"content","Career":"partners","Learning":"book","Life":"home","Work":"folder"};
@@ -200,7 +208,7 @@ details.bc-more summary { cursor: pointer; font-size: 13px; color: var(--muted);
   const DECISION = /\b(decide|decision|choose|confirm|keep or drop|whether|pin down|validate|décider|choisir|valider)\b/i;
 
   const state = {projects:null, tasks:null, roadmap:null, log:null, sessions:null, errors:{}, at:{}, ctx:"all", view:"jour", domain:null,
-                 top:[], cursor:0, chat:[], busy:false, proposals:[], quota:undefined, quotaWeeks:[], quotaErr:""};
+                 top:[], cursor:0, chat:[], busy:false, proposals:[], quota:undefined, quotaWeeks:[], quotaErr:"", att:null};
   let mcp = null, sample = null, db = null;
   const unsubs = [];
   const store = {get(k){ try { return localStorage.getItem("brain." + k); } catch(e) { return null; } },
@@ -255,6 +263,7 @@ details.bc-more summary { cursor: pointer; font-size: 13px; color: var(--muted);
         state.at[key] = (ev.result.cache && ev.result.cache.storedAt) || Date.now();
         delete state.errors[key];
         if (key === "sessions") state.sessions = findSessions(p);
+        else if (key === "att") state.att = (p && Array.isArray(p.apps)) ? p : null;
         else { state[key] = (p && Array.isArray(p.results)) ? p.results : []; if (p && p.has_more) state.errors[key + "_more"] = true; }
       } else {
         const code = ev.error && ev.error.code;
@@ -270,6 +279,7 @@ details.bc-more summary { cursor: pointer; font-size: 13px; color: var(--muted);
     while (unsubs.length) { try { unsubs.pop()(); } catch(e) {} }
     for (const k of ["projects","tasks","roadmap","log"]) unsubs.push(mcp.watchTool(NOTION, "notion-query-data-sources", notionInput(k), onData(k, NOTION), {cache:CACHE, refetchInterval:POLL}));
     unsubs.push(mcp.watchTool(CCR, "list_sessions", {limit:30}, onData("sessions", CCR), {cache:CACHE, refetchInterval:POLL}));
+    unsubs.push(mcp.watchTool(ATT, "get_attention", {}, onData("att", ATT), {cache:CACHE, refetchInterval:POLL}));
   }
   async function refreshAll(){
     if (!mcp) return;
@@ -278,6 +288,8 @@ details.bc-more summary { cursor: pointer; font-size: 13px; color: var(--muted);
       .then(r => onData(k, NOTION)({type:"data", result:r}), e => onData(k, NOTION)({type:"error", error:e})));
     calls.push(mcp.callTool(CCR, "list_sessions", {limit:30}, {cache:Object.assign({refresh:true}, CACHE)})
       .then(r => onData("sessions", CCR)({type:"data", result:r}), e => onData("sessions", CCR)({type:"error", error:e})));
+    calls.push(mcp.callTool(ATT, "get_attention", {}, {cache:Object.assign({refresh:true}, CACHE)})
+      .then(r => onData("att", ATT)({type:"data", result:r}), e => onData("att", ATT)({type:"error", error:e})));
     await Promise.allSettled(calls);
     btn.disabled = false; btn.textContent = "Actualiser";
   }
@@ -374,6 +386,30 @@ details.bc-more summary { cursor: pointer; font-size: 13px; color: var(--muted);
   }
 
   // ---------- A · Aujourd'hui ----------
+  // ---------- Attention des apps (connector « Apps attention ») ----------
+  const SEV = {bad:0, warn:1, info:2};
+  function attItems(){
+    if (!state.att) return [];
+    return state.att.apps.flatMap(a => (a.items || []).map(i => Object.assign({app:a.app}, i))).sort((x, y) => (SEV[x.severity] ?? 2) - (SEV[y.severity] ?? 2));
+  }
+  function viewAttention(){
+    let body;
+    if (!state.att) {
+      const e = state.errors.att;
+      body = e ? '<div class="ds-empty ds-empty--inline"><strong>Pas encore branché.</strong><p>' + esc(e) + ' Le connecteur « ' + ATT + ' » s\'ajoute dans claude.ai, Réglages, Connecteurs (docs/platform.md).</p></div>'
+               : '<p class="ds-loading">Chargement…</p>';
+    } else {
+      const items = attItems(), down = state.att.apps.filter(a => !a.ok);
+      body = (items.length ? items.slice(0, 12).map(i => '<div class="bc-item bc-att ' + esc(i.severity) + '"><div class="bc-k"><span class="bc-dot ' + esc(i.severity) + '"></span> ' + esc(APP_NAME[i.app] || i.app) + ' · ' + esc({alert:"alerte", deadline:"échéance", decision:"décision", review:"à revoir"}[i.kind] || i.kind) + (i.due ? ' · ' + esc(String(i.due).slice(0, 10)) : '') + '</div>' +
+          '<div class="bc-t">' + esc(i.title) + '</div><div class="bc-acts"><a class="ds-btn ds-btn--sm" href="' + esc(/^https:\/\//.test(i.url || "") ? i.url : (APPS[i.app] || "#")) + '" target="_blank" rel="noopener">Ouvrir dans l\'app ↗</a></div></div>').join("") +
+          (items.length > 12 ? '<p class="bc-sub">' + (items.length - 12) + ' de plus dans les apps.</p>' : '')
+        : empty("Rien dans les apps.", "Camp de Base, Sport et Finance n'ont rien qui t'attende.")) +
+        down.map(a => '<div class="ds-note ds-warn" style="margin-top:8px">' + esc(a.name) + ' : ' + esc(a.error || "injoignable") + '</div>').join("");
+    }
+    const n = state.att ? attItems().length : "–";
+    return '<div class="ds-panel"><div class="bc-panel-h"><h3>Dans tes apps</h3><span class="bc-count">' + n + '</span></div>' + body + '</div>';
+  }
+
   function viewJour(){
     if (!state.tasks && !state.projects) return errBox("tasks");
     const map = projById(), steps = myNextSteps(), dec = decisions(), top = top3(), inb = inbox(), more = ready().filter(t => !top.includes(t));
@@ -401,7 +437,7 @@ details.bc-more summary { cursor: pointer; font-size: 13px; color: var(--muted);
     else agents = '<span class="bc-sub">Chargement…</span>';
 
     return '<div class="bc-row3">' +
-      '<div class="ds-panel"><div class="bc-panel-h"><h3>T\'attend</h3><span class="bc-count">' + needN + '</span></div>' + (need || empty("Rien ne t'attend.", "Aucune prochaine étape à ton nom, aucune décision ouverte.")) + '</div>' +
+      '<div style="display:grid;gap:14px;min-width:0"><div class="ds-panel"><div class="bc-panel-h"><h3>T\'attend</h3><span class="bc-count">' + needN + '</span></div>' + (need || empty("Rien ne t'attend.", "Aucune prochaine étape à ton nom, aucune décision ouverte.")) + '</div>' + viewAttention() + '</div>' +
       '<div style="display:grid;gap:14px;min-width:0"><div class="ds-panel"><div class="bc-panel-h"><h3>Top 3 du jour</h3><span class="bc-sub">' + ready().length + ' prêtes</span></div>' + topHtml + moreHtml + '</div>' +
       '<div class="ds-panel"><div class="bc-panel-h"><h3>À trier</h3><span class="bc-count">' + inb.length + '</span></div><div class="bc-acts" style="margin-bottom:10px"><button type="button" class="ds-btn ds-btn--sm" id="ai-triage"' + (inb.length ? '' : ' disabled') + '>Tri proposé par Claude</button><span class="bc-sub">Clavier : J/K pour bouger, N S A D pour trier</span></div><div class="bc-triage">' + triHtml + '</div></div></div>' +
       '<div style="display:grid;gap:14px;min-width:0"><div class="ds-panel"><div class="bc-panel-h"><h3>Domaines</h3><a href="#domaines" class="bc-sub">Carte ›</a></div>' + domHtml + '</div>' +
@@ -607,7 +643,7 @@ details.bc-more summary { cursor: pointer; font-size: 13px; color: var(--muted);
   // ---------- main render ----------
   function render(){
     for (const el of document.querySelectorAll("#fresh [data-src]")) {
-      const k = el.dataset.src, lbl = {projects:"Projets", tasks:"Tâches", roadmap:"Roadmap", sessions:"Sessions"}[k];
+      const k = el.dataset.src, lbl = {projects:"Projets", tasks:"Tâches", roadmap:"Roadmap", sessions:"Sessions", att:"Apps"}[k];
       if (k === "sessions" && state.errors.sessions && state.log) { el.className = "ok"; el.textContent = "Sessions (Session Log) " + ago(state.at.log || Date.now()); continue; }
       if (state.errors[k]) { el.className = "err"; el.textContent = lbl + " : erreur"; } else if (state.at[k]) { el.className = "ok"; el.textContent = lbl + " " + ago(state.at[k]); }
     }
@@ -621,6 +657,10 @@ details.bc-more summary { cursor: pointer; font-size: 13px; color: var(--muted);
     $("#f-proj").textContent = state.projects ? state.projects.filter(inCtx).filter(p => p.Status === "Active").length : "–";
     $("#n-jour").textContent = state.tasks ? (mineN || "") : "";
     $("#n-projets").textContent = state.projects ? state.projects.filter(inCtx).length : "";
+    for (const key of Object.keys(APP_NAME)) {
+      const a = state.att && state.att.apps.find(x => x.app === key), n = a && a.items ? a.items.length : 0;
+      for (const el of document.querySelectorAll('[data-att="' + key + '"], [data-ds-apps-count="' + key + '"]')) el.textContent = n ? n : "";
+    }
     const v = state.view;
     const host = $("#v-" + v);
     if (v === "jour") host.innerHTML = viewJour();

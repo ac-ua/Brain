@@ -17,7 +17,7 @@ The brain is versioned like any project: `v0.x` while the skeleton settles. Each
 - `docs/platform.md`: thread 4 decisions (connector rather than a Notion job, and why), architecture table, two crons
   used, v1.9. New `docs/platform-review.md`: coherence and security review per app.
 - App PRs from the review: `ac-ua/sport#54` (Strava connect without the token in the URL, constant-time checks),
-  `ac-ua/Base-Camp#230` (docs after the switch). Found: GitHub Actions refuses every job, so no weekly backup has run.
+  `ac-ua/Base-Camp#230` (docs after the switch). No weekly backup has run yet: Actions minutes are used up until 1 Nov, the first runs fall on Sunday 1 Nov.
 
 ## v0.4.20 — the platform plan (2026-10-30)
 - `docs/platform.md`: decisions (federation, everything on Cloudflare with one D1 per app, Element Logbook on Supabase,

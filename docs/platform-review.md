@@ -8,7 +8,7 @@ row or a Task for Aurélien (last section). Nothing was deleted.
 ## Across the apps
 | Point | State | Next |
 |---|---|---|
-| **Backups have never run** | GitHub Actions refuses every job on the account (« recent account payments have failed or your spending limit needs to be increased »): `backup-weekly.yml` of the three apps will not start on Sunday. Only D1 Time Travel (7 days) protects the data today | Aurélien: GitHub billing (Task); then a manual run of each Weekly backup |
+| **Backups have never run** | GitHub Actions refuses every job on the account until the monthly reset: October's free minutes are used up and the budget stays at $0 (Aurélien's call). The three `backup-weekly.yml` runs fall on Sunday 1 Nov, 03:11–03:37 UTC, just after the reset; until then only D1 Time Travel (7 days) protects the data | Claude: check the three first runs on 1 Nov (existing reminder); then the restore tests |
 | Design system | v1.9 (app switcher, `apps.json`); Sport v1.8, Finance v1.7.1, Camp de Base v1.7.1. v1.8 is opt-in series only: nothing to adopt for Finance and Camp de Base | each app adopts v1.9 at its next release (`FEEDBACK.md`) |
 | One AUD for three apps | a service token admitted by « Apps · Aurélien » opens every app. Finance limits it to `GET /api/attention` and `/api/health` (v0.6); Sport's API is read-only; **Camp de Base lets it read and write** | Camp de Base: same limit as Finance at its next release (Roadmap), before the hub token goes live if possible |
 | Backup token | documented as account-wide **D1 Edit + R2 Edit** and shared by the three repos (`platform.md` asked for D1 read/export + R2 write): a leak from one repo can erase every D1 and the R2 originals | Aurélien: test D1 Read for `wrangler d1 export`; then one token per repo, the narrowest that works (Task) |
@@ -53,7 +53,7 @@ row or a Task for Aurélien (last section). Nothing was deleted.
 | Artifact titles | several outside the « Camp de Base · … » rule (« Base Camp Expeditions Guide », « Expedition Gear Planner ») | Roadmap: rename in place at the next guide update |
 
 ## For Aurélien
-Tasks in Notion (Owner Aurélien), in the order that matters: GitHub billing (backups), deploy `sport-sync` then rotate
+Tasks in Notion (Owner Aurélien), in the order that matters: deploy `sport-sync` then rotate
 `SYNC_TOKEN`, narrow `claude-finance`, backup token and rclone scopes, `OWNER_EMAILS` on Camp de Base, the Google OAuth
 client's mode, the Supabase leftovers and the scratch D1 (his call), and the « Apps attention » connector setup
 (`tools/attention-mcp/README.md`).

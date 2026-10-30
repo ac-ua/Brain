@@ -549,7 +549,7 @@ body { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: m
           <dt>Données</dt><dd>D1 <code>camp-de-base</code> (36 tables, 6 vues) · R2 <code>camp-de-base</code> (photos : <code>items/</code>, <code>foods/</code>, <code>uploads/</code>) · documents lus en direct sur le Drive</dd>
           <dt>Connexion</dt><dd>Access, JWT vérifié (<code>_lib/access.js</code>) ; un jeton de service a lecture et écriture</dd>
           <dt>Secrets</dt><dd>Pages : <code>GOOGLE_SA_KEY</code> · GitHub : <code>BASECAMP_BACKUP_CLOUDFLARE_API_TOKEN</code>, <code>BASECAMP_CLOUDFLARE_ACCOUNT_ID</code>, <code>BASECAMP_RCLONE_CONFIG</code> · env <code>Base Camp</code> : <code>BASECAMP_CLOUDFLARE_API_TOKEN</code></dd>
-          <dt>Sauvegarde</dt><dd><code>backup-weekly.yml</code>, dimanche 03:37 UTC → R2 <code>backups/camp-de-base/</code> + Drive ; pas encore lancée (Actions bloquées)</dd>
+          <dt>Sauvegarde</dt><dd><code>backup-weekly.yml</code>, dimanche 03:37 UTC → R2 <code>backups/camp-de-base/</code> + Drive ; pas encore lancée (minutes Actions épuisées jusqu'au 1er novembre)</dd>
           <dt>Attention</dt><dd>les alertes de la tour de contrôle (<code>tower:…</code>)</dd>
           <dt>Ancien</dt><dd>projet Supabase en pause (pas supprimé) ; D1 de test <code>camp-de-base-restore-test</code></dd>
           <dt>Design</dt><dd>v1.7.1 (référence du système)</dd>
@@ -646,7 +646,7 @@ body { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: m
         <tr><td>Domaine</td><td><code>aureliencaye.com</code> sur Cloudflare : <code>basecamp.</code>, <code>sport.</code>, <code>finance.</code> sont les domaines des projets Pages</td></tr>
         <tr><td>Connexion</td><td>une application Access « Apps · Aurélien », connexion Google, session d'un mois, AUD commun aux trois apps ; déconnexion <code>/cdn-cgi/access/logout</code></td></tr>
         <tr><td>Crons</td><td>2 sur les 5 du compte, tous deux pris par <code>sport-sync</code></td></tr>
-        <tr><td>Sauvegardes</td><td>bucket R2 <code>backups</code> (un préfixe par app) et Drive <code>80_Backups/Apps</code> ; D1 Time Travel couvre 7 jours ; <strong>aucune sauvegarde hebdomadaire n'a encore tourné</strong> : GitHub Actions refuse de démarrer (facturation du compte)</td></tr>
+        <tr><td>Sauvegardes</td><td>bucket R2 <code>backups</code> (un préfixe par app) et Drive <code>80_Backups/Apps</code> ; D1 Time Travel couvre 7 jours ; <strong>aucune sauvegarde hebdomadaire n'a encore tourné</strong> : les minutes GitHub Actions d'octobre sont épuisées (budget à 0 $) ; premières sauvegardes le dimanche 1er novembre, juste après la remise à zéro</td></tr>
         <tr><td>Design system</td><td><code>ac-ua/brain</code> › <code>skills/web-design-system</code> v1.9 ; chaque app en copie <code>ds.css</code>, <code>shell.js</code>, <code>apps.json</code></td></tr>
         <tr><td>Attention</td><td><code>GET /api/attention</code> dans les trois apps, même contrat (<code>docs/platform.md</code>)</td></tr>
       </tbody>

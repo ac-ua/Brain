@@ -3,6 +3,12 @@
 The brain is versioned like any project: `v0.x` while the skeleton settles. Each release is a merged PR on
 `ac-ua/brain` and a row in the Notion Build Roadmap (Project = Brain).
 
+## v0.4.20 — the platform plan (2026-10-30)
+- `docs/platform.md`: decisions (federation, everything on Cloudflare with one D1 per app, Element Logbook on Supabase,
+  subdomains, one Access application, weekly backups to R2 and the Drive, no app data in git), the `/api/attention`
+  contract, the weekly backup template, and the four threads (Sport hosting, Finance online, Camp de Base migration,
+  then the hub).
+
 ## v0.4.19 — Quotas page in the cockpit (2026-10-30)
 - « Brain · Cockpit »: new **Quotas** page (side menu, alert count) reading the artifact's own database
   (`quota/latest`, `quota_weeks/<date>`; written by the owner only). KPIs, every quota with its share and level,

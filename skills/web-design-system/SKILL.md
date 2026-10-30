@@ -55,6 +55,7 @@ Load the fonts once per page:
 | `--info` / `--info-soft` | `#1f5f99` / `#e0edf9` | `#7db6ef` / `#11263a` | in progress, ordered, sources |
 | `--c1`…`--c6`, `--c-other` | `#0a6aa7 #5b7f95 #d9480f #e8a33d #3f9b6b #b42318`, `#adb5bd` | `#6fb0e0 #7fa3ba #ff7a3d #f0b44c #56b07f #ff8a7a`, `#6b7a86` | data series, in this order (Data viz) |
 | `--c7`, `--c8` (v1.5) | `#1a8a96 #8b5e34` | `#4fc1c9 #c49a6c` | two more series, not status colours: ocean teal, desert earth (Data viz) |
+| `--c9`…`--c12` (v1.8) | `#0e3e84 #6b7a1f #1a4f1c #4a4c48` | `#b4cdf7 #b5c25a #9fd49a #c4c6c2` | four more series for apps with up to twelve categories: deep ocean, olive, deep forest, granite (Data viz) |
 | `--ci-ink`, `--ci-a`…`--ci-d` | `#0d1117`; `#5b8fc0 #3e5d75 #ffffff #9ea2ab` | `#05080b`; same fills | icon outline; sky, slate, snow, stone |
 | `--shadow` | `0 1px 2px rgba(15,30,39,.06), 0 8px 24px rgba(15,30,39,.08)` | stronger black | hover, menus, dialogs |
 | `--scrim` | `rgba(5,12,16,.45)` | same | behind drawers and dialogs |
@@ -197,9 +198,14 @@ dark background).
   Base doesn't use. **Seven or eight series** (v1.5): add `--c7` ocean teal and `--c8` desert earth (the hues of Camp
   de Base's ocean and desert palettes), each ≥ 3:1 on `--bg`, `--surface` and `--sunken` in both themes (light 3.7–5.6,
   dark 6.7–8.8). Where red would read as "bad" (wealth, allocations, budgets that are not over), skip `--c6` and use
-  `--c7`, `--c8` instead; beyond eight, reuse with a dash pattern or a label. Never red, never purple. Status bars use the
+  `--c7`, `--c8` instead. **Up to twelve series** (v1.8, Sport data's water and air sports): `--c9` deep ocean (Camp de
+  Base's ocean slate), `--c10` olive (between its forest and desert palettes), `--c11` deep forest (its forest palette),
+  `--c12` granite (its mountain palette), each ≥ 3:1 on `--bg`, `--surface` and `--sunken` (light 4.3–9.3, dark
+  8.9–10.7) and at least ΔE 17 from every other series in both themes; take them after `--c8`, by meaning where one
+  fits. Beyond twelve, reuse with a dash pattern or a label. Never red, never purple. Status bars use the
   status tokens (ok, info, warn, bad). The same thing has the same colour on every chart of an app; an app may map
-  its own things onto the tokens by meaning (Sport: run `--c1`, swim `--c2`, ride `--c3`, strength `--c4`, hike `--c5`).
+  its own things onto the tokens by meaning (Sport: run `--c1`, swim `--c2`, ride `--c3`, strength `--c4`, hike `--c5`, pulling tires `--c8`, kitesurf `--c9`,
+  paragliding `--c10`, dive `--c11`, surf `--c12`).
 - Plan vs actual: plan = muted dashed (`5 4`); actual = solid 2–2.5 px accent line with an `--accent-soft` area;
   alternative = dotted (`1.5 5`). Today or the cursor = a 1.5 px `--ink` line; hover value in a `.ds-tip`.
 - Bars: 6–14 px high, radius 3, on a `--sunken` track; legends with 10 px squares (radius 2). Big numbers above the

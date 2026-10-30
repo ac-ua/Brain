@@ -19,9 +19,11 @@
      food orange, fuel amber (expeditions.js load chart), good-weather green (simulation.js), deadline red; no purple.
      --c-other for "rest / other" (simulation.js rest grey). v1.5: --c7 ocean teal and --c8 desert earth (Camp de Base's
      ocean and desert palettes), two more series that are not status colours; use them before --c6 when red would read
-     as "bad" (wealth, allocations) */
+     as "bad" (wealth, allocations). v1.8: --c9 deep ocean, --c10 olive, --c11 deep forest, --c12 granite (Camp de Base's
+     ocean icon slate, forest and mountain palettes; olive between forest and desert), for apps with up to twelve categories */
   --c1: #0a6aa7; --c2: #5b7f95; --c3: #d9480f; --c4: #e8a33d; --c5: #3f9b6b; --c6: #b42318; --c-other: #adb5bd;
   --c7: #1a8a96; --c8: #8b5e34;
+  --c9: #0e3e84; --c10: #6b7a1f; --c11: #1a4f1c; --c12: #4a4c48;
   /* icons (faceted kit): fill roles and the outline, which stays dark in both themes */
   --ci-ink: #0d1117; --ci-a: #5b8fc0; --ci-b: #3e5d75; --ci-c: #ffffff; --ci-d: #9ea2ab;
   /* elevation, overlay */
@@ -50,6 +52,7 @@
   --bad: #ff8a7a; --bad-soft: #3a1612; --info: #7db6ef; --info-soft: #11263a;
   --c1: #6fb0e0; --c2: #7fa3ba; --c3: #ff7a3d; --c4: #f0b44c; --c5: #56b07f; --c6: #ff8a7a; --c-other: #6b7a86;
   --c7: #4fc1c9; --c8: #c49a6c;
+  --c9: #b4cdf7; --c10: #b5c25a; --c11: #9fd49a; --c12: #c4c6c2;
   --ci-ink: #05080b;
   --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .35);
   color-scheme: dark; } }
@@ -60,6 +63,7 @@
   --bad: #ff8a7a; --bad-soft: #3a1612; --info: #7db6ef; --info-soft: #11263a;
   --c1: #6fb0e0; --c2: #7fa3ba; --c3: #ff7a3d; --c4: #f0b44c; --c5: #56b07f; --c6: #ff8a7a; --c-other: #6b7a86;
   --c7: #4fc1c9; --c8: #c49a6c;
+  --c9: #b4cdf7; --c10: #b5c25a; --c11: #9fd49a; --c12: #c4c6c2;
   --ci-ink: #05080b;
   --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .35);
   color-scheme: dark; }

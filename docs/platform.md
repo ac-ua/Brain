@@ -25,10 +25,17 @@ surfaced in the hub. Study with prototypes: « Brain · Plateforme des apps »
   Sport's `sport-sync` uses one; ask before adding another.
 - Names: Pages project = D1 database = R2 prefix = the app key: `sport`, `finance`, `camp-de-base`.
 
-### Sign-in: Cloudflare Access
+### Sign-in: one Google login for every app (Cloudflare Access)
+- **Google SSO, logged in once** (Aurélien's call, 2026-10-30): Cloudflare Access with **Google** as the login method
+  (Zero Trust › Settings › Authentication › Login methods › Google, with an OAuth client Aurélien creates in Google
+  Cloud and pastes into Cloudflare). The login happens on the team domain; its session then opens every other app
+  without asking again.
 - **One** Access application covering `sport.`, `finance.` and `basecamp.aureliencaye.com` (and their `pages.dev`
-  hosts), policy: Aurélien's e-mail only, session 1 month. Team: Sport's existing Zero Trust team. Created once, by the
-  Sport thread, and reused by the others (one more hostname each).
+  hosts), policy: Aurélien's Google account only (TODO(Aurélien): which address), session 1 month. Team: Sport's
+  existing Zero Trust team. Created once, by the Sport thread, and reused by the others (one more hostname each). The
+  apps drop their own logins (Camp de Base's Supabase Google sign-in, Finance's planned Supabase TOTP): Access is the
+  only door; Google's 2-step verification protects it.
+- **The hub** (`hub.aureliencaye.com`) joins the same application the day it leaves the claude.ai artifact.
 - Every Function verifies the `Cf-Access-Jwt-Assertion` JWT against the team's certs and the application's AUD (Sport's
   `functions/api/data/[name].js` is the reference implementation). Never trust the e-mail header alone.
 - Sign out: `/cdn-cgi/access/logout` (design system: `.ds-signout`).

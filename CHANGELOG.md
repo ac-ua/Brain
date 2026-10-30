@@ -3,6 +3,11 @@
 The brain is versioned like any project: `v0.x` while the skeleton settles. Each release is a merged PR on
 `ac-ua/brain` and a row in the Notion Build Roadmap (Project = Brain).
 
+## v0.4.22 — backups on the Drive only (2026-10-30)
+- `docs/platform.md` › Weekly backup: each app's weekly D1 export goes to the personal Drive `80_Backups/Apps/<App>`
+  only, in clear, and the workflow checks the file landed there; no copy in R2, no encryption (Aurélien's call: the
+  copy he can always reach, even if he loses every other access). Applied in Sport, Finance and Camp de Base.
+
 ## v0.4.21 — the hub: app switcher, attention of the apps, architecture map, review (2026-10-30)
 - Design system **v1.9**: `apps.json`, the one registry of the apps (addresses, kit icon, `data-ds-app` key,
   `/api/attention`), and the **app switcher** under the brand (`shell.js`, `.ds-apps*`); every app adopts it at its

@@ -209,10 +209,10 @@ def d1_rows(acc):
     if reads:
         day = max(reads, key=reads.get)
         top = max(by_db[day], key=by_db[day].get)
-        add("Cloudflare", "D1 rows read, busiest day of the last 7 (all databases)", reads[day], LIM["d1_rows_read_day"], "rows",
+        add("Cloudflare", "D1 rows read, busiest day of the last 7 (all databases; vs the 1.5 M ceiling)", reads[day], LIM["d1_rows_read_day"], "rows",
             f"{day}, mostly `{names.get(top, top[:8])}` ({by_db[day][top]:,})")
     else:
-        add("Cloudflare", "D1 rows read, busiest day of the last 7 (all databases)", 0, LIM["d1_rows_read_day"], "rows", "no reads")
+        add("Cloudflare", "D1 rows read, busiest day of the last 7 (all databases; vs the 1.5 M ceiling)", 0, LIM["d1_rows_read_day"], "rows", "no reads")
     peak_w = max(writes.values()) if writes else 0
     add("Cloudflare", "D1 rows written, busiest day of the last 7 (all databases)", peak_w, LIM["d1_rows_written_day"], "rows",
         max(writes, key=writes.get) if writes else "no writes")

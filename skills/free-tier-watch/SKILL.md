@@ -24,11 +24,11 @@ python3 scripts/quota_report.py --json /tmp/quota.json > /tmp/quota.md; echo "ex
   bytes, file storage bytes and count, dump size), kept 7 days. Without it, the last backup artifact's size is
   shown as a lower bound. Egress and monthly active users are dashboard-only (Organization › Usage).
 - **Cloudflare** (`WATCH_CLOUDFLARE_API_TOKEN`, read-only, in `perso-general`): D1 size per database, **D1 rows read
-  and written on the busiest day of the last 7, all databases together** (5 M reads and 100 k writes a day for the
-  whole account: past it every app's D1 reads fail until 00:00 UTC; the database behind the peak is named), busiest
+  and written on the busiest day of the last 7, all databases together** (Aurélien's ceiling 1.5 M reads a day, never 2 M;
+  free plan 5 M reads and 100 k writes for the whole account; the database behind the peak is named), busiest
   day of Workers + Pages Functions requests over 7 days, R2 storage, Pages deployments this month (exact, previews
   included). A D1 peak at 🟠 or 🔴 names the app and points to its read-budget rules (Sport data: `docs/RELEASE.md` ›
-  D1 read budget, `scripts/d1_budget.py`); never suggest a paid plan.
+  D1 read budget, `scripts/d1_remote.py`); never suggest a paid plan.
 
 Accounts: GitHub minutes and artifact storage are one pool for the whole `ac-ua` account; the account-level billing
 page is not reachable from a session, so the per-repo sum is the measure and GitHub's own budget alerts (playbook §3)

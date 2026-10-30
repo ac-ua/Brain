@@ -45,11 +45,14 @@ Reference: [`free-tier-playbook.md`](free-tier-playbook.md), copied from `ac-ua/
   Applied before merging the code that uses them.
 - **Writes to production data** (database, library, users) need Aurélien's explicit OK in the request, through the
   app's own API when it has one; the auto-mode classifier blocks them otherwise.
-- **Cloudflare D1 reads are an account-wide budget** (free plan: 5 M rows read per day for all the apps together; past
-  it, every app's reads fail until 00:00 UTC). Explore on a local copy (`wrangler d1 export <db> --remote --output
-  x.sql`, then SQLite), never with ad-hoc SQL on the remote base: a full scan of a view or a correlated subquery per row
-  costs millions of rows (2026-10-30: two such queries read 4.5 M). On the remote D1, only scripted, indexed or
-  locally measured statements; cache what an app recomputes on every load.
+- **Cloudflare D1 reads: Aurélien's ceiling is 1.5 M rows a day for the whole account, never 2 M** (2026-10-31; the
+  free plan's 5 M is never approached: past it every app's reads fail until 00:00 UTC). On 2026-10-30 sessions' ad-hoc
+  queries read 5.1 M (a full scan of a view, a correlated subquery per row). Every app on D1 ships the Sport data guard
+  (`ac-ua/sport`): a session reaches the remote base only through the repo's gate script (`scripts/d1_remote.py`:
+  measured on a local copy, refused over 100 k rows or past the day's 1 M, logged in kv `d1_rows:<day>`), and a
+  `.claude/hooks/d1_guard.py` PreToolUse hook blocks `wrangler d1 … --remote` typed directly. Explore on a local
+  export only. The app reads D1 once per data version (files in R2, ETag/304), never per page view; it warns from
+  750 k and serves stored copies from 1 M. Writes stay under 100 k rows a day: spread big imports.
 - Seeds and imports are idempotent (re-runnable: skip what exists) and have a dry run by default (`--apply` to write).
 
 ## Cloudflare Pages pitfalls

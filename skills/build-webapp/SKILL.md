@@ -45,6 +45,11 @@ Reference: [`free-tier-playbook.md`](free-tier-playbook.md), copied from `ac-ua/
   Applied before merging the code that uses them.
 - **Writes to production data** (database, library, users) need Aurélien's explicit OK in the request, through the
   app's own API when it has one; the auto-mode classifier blocks them otherwise.
+- **Cloudflare D1 reads are an account-wide budget** (free plan: 5 M rows read per day for all the apps together; past
+  it, every app's reads fail until 00:00 UTC). Explore on a local copy (`wrangler d1 export <db> --remote --output
+  x.sql`, then SQLite), never with ad-hoc SQL on the remote base: a full scan of a view or a correlated subquery per row
+  costs millions of rows (2026-10-30: two such queries read 4.5 M). On the remote D1, only scripted, indexed or
+  locally measured statements; cache what an app recomputes on every load.
 - Seeds and imports are idempotent (re-runnable: skip what exists) and have a dry run by default (`--apply` to write).
 
 ## Cloudflare Pages pitfalls

@@ -19,7 +19,8 @@ DAYS_IN_MONTH = ((MONTH0 + timedelta(days=32)).replace(day=1) - MONTH0).days
 SKIP = ("[cf-pages-skip]", "[ci skip]", "[skip ci]")
 MERGE = re.compile(r"\(#\d+\)$")   # squash-merge title; merge commits start with "Merge pull request"
 
-rows, gaps = [], []          # rows: (service, what, used, limit, unit, note); gaps: what could not be measured
+rows, gaps = [], []
+CF_BUILDS, GH_BUILDS = None, 0          # rows: (service, what, used, limit, unit, note); gaps: what could not be measured
 
 
 def gh(path, raw=False):
@@ -93,8 +94,8 @@ def github():
     add("GitHub", "Actions minutes, all private repos (month)", minutes, LIM["actions_minutes_month"], "min",
         project(minutes, LIM["actions_minutes_month"]))
     add("GitHub", "Actions artifact storage", artifacts_bytes, LIM["actions_artifact_bytes"], "bytes")
-    add("Cloudflare", "Pages production builds this month (estimate: merges to main without the marker)",
-        builds, LIM["pages_builds_month"], "builds", project(builds, LIM["pages_builds_month"]))
+    global GH_BUILDS
+    GH_BUILDS = builds
 
 
 def blocked(owner, name, app, runs):
@@ -218,11 +219,29 @@ def r2(acc):
 
 
 def pages(acc):
+    """Exact count: every real build this month, production and preview (both use the 500-build quota); skipped ones excluded."""
+    total = 0
     for p in cf(f"accounts/{acc}/pages/projects")["result"]:
-        deps = cf(f"accounts/{acc}/pages/projects/{p['name']}/deployments?per_page=25")["result"]
-        month = [x for x in deps if x["created_on"] >= MONTH0.isoformat()[:10]]
-        add("Cloudflare", f"Pages `{p['name']}` deployments this month (last 25 read)", len(month), None, "builds",
-            "previews on" if any(x.get("environment") == "preview" for x in month) else "")
+        prod = prev = 0
+        for page in range(1, 41):
+            deps = cf(f"accounts/{acc}/pages/projects/{p['name']}/deployments?per_page=25&page={page}")["result"]
+            month = [x for x in deps if x["created_on"] >= MONTH0.isoformat()[:10]]
+            for x in month:
+                if x.get("is_skipped"):        # [CF-Pages-Skip] commits: listed, never built, not counted
+                    continue
+                if x.get("environment") == "preview":
+                    prev += 1
+                else:
+                    prod += 1
+            if len(deps) < 25 or len(month) < len(deps):
+                break
+        total += prod + prev
+        add("Cloudflare", f"Pages `{p['name']}` builds this month", prod + prev, None, "builds",
+            f"{prod} production, {prev} preview" + (" (previews on: Settings › Builds › Preview branches › None)" if prev else ""))
+    global CF_BUILDS
+    CF_BUILDS = total
+    add("Cloudflare", "Pages builds this month, all projects (exact)", total, LIM["pages_builds_month"], "builds",
+        project(total, LIM["pages_builds_month"]))
 
 
 def project(used, limit):
@@ -257,6 +276,9 @@ def main():
     a = ap.parse_args()
     github()
     cloudflare()
+    if CF_BUILDS is None:
+        add("Cloudflare", "Pages production builds this month (estimate: merges to main without the marker)",
+            GH_BUILDS, LIM["pages_builds_month"], "builds", project(GH_BUILDS, LIM["pages_builds_month"]))
     out = [f"# Free-tier check · {NOW:%Y-%m-%d}", "",
            f"Month {MONTH0:%B %Y}, day {NOW.day} of {DAYS_IN_MONTH}. Levels: watch ≥ {LEV['watch']:.0%}, alert ≥ {LEV['alert']:.0%}.", "",
            "| Level | Service | What | Used | Free limit | % | Note |", "|---|---|---|---|---|---|---|"]
@@ -267,7 +289,18 @@ def main():
     out += ["", "## Not measured", ""] + [f"- {g}" for g in gaps] if gaps else []
     print("\n".join(out))
     if a.json:
-        json.dump({"at": NOW.isoformat(), "rows": rows, "gaps": gaps}, open(a.json, "w"), indent=1, ensure_ascii=False)
+        lv = {"🔴 alert": "alert", "🟠 watch": "watch", "🟢 ok": "ok", "": ""}
+        snap = {"at": NOW.isoformat(timespec="seconds"), "month": f"{MONTH0:%Y-%m}", "day": NOW.day, "days_in_month": DAYS_IN_MONTH,
+                "rows": [{"level": lv[level(u, l)], "service": s_, "what": w, "used": u, "limit": l, "unit": unit,
+                          "shown": human(u, unit), "limit_shown": human(l, unit) if l else "", "pct": round(u / l, 4) if l else None,
+                          "note": n} for s_, w, u, l, unit, n in rows],
+                "gaps": gaps}
+        pick = lambda key: next((r["used"] for r in snap["rows"] if key in r["what"] and r["limit"]), None)
+        snap["summary"] = {"at": snap["at"], "alerts": sum(r["level"] == "alert" for r in snap["rows"]),
+                           "watch": sum(r["level"] == "watch" for r in snap["rows"]),
+                           "actions_minutes": pick("Actions minutes"), "pages_builds": pick("Pages builds this month, all projects")
+                           if CF_BUILDS is not None else pick("Pages production builds")}
+        json.dump(snap, open(a.json, "w"), indent=1, ensure_ascii=False)
     alerts = sum(1 for r in rows if level(r[2], r[3]) == "🔴 alert")
     sys.exit(2 if alerts else 0)
 

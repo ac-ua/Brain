@@ -219,6 +219,43 @@ h3, .ds-label { font: 600 12px/1.2 var(--body); letter-spacing: .1em; text-trans
 .ds-chip .num { color: var(--muted); font-size: 12px; margin-left: 4px; }
 .ds-chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 .ds-chip[aria-pressed="true"] .num { color: inherit; opacity: .7; }
+/* v1.7: filter bar at the top of a page, under the title (Camp de Base's toolbar: its selects, segments and chips, the
+   « Filters » button with a count, « Clear filters »). Each control sits in a .ds-filter with a small label; a filter
+   away from its default carries data-on (accent border on its field) and the reset shows. Under 700 px the controls
+   fold behind the Filters button (shell.js toggles aria-expanded and .ds-filters--open) and stack full width. */
+.ds-filters { display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: center; }
+.ds-filters-body { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; min-width: 0; }
+.ds-filter { display: inline-flex; align-items: center; gap: 8px; min-width: 0; }
+.ds-filter > .ds-filter-l { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+.ds-filter select, .ds-filter .ds-input { max-width: 100%; }
+.ds-filter .ds-seg button { font-size: 13px; padding: 5px 12px; }
+.ds-filter .ds-seg button[aria-pressed="true"] { color: var(--bg); }
+.ds-filter[data-on] :is(select, .ds-input) { border-color: var(--accent); background: var(--accent-soft); }
+.ds-filter[data-on] > .ds-filter-l { color: var(--accent); }
+.ds-filters > .ds-filters-toggle { display: none; } /* two classes: wins over .ds-btn wherever the app loads it */
+.ds-fcount { font: 600 11px/1 var(--mono); background: var(--accent); color: var(--accent-ink); border-radius: var(--r-pill); padding: 3px 6px; } /* Camp de Base's .fcount */
+.ds-fcount[hidden], .ds-filters-reset[hidden] { display: none; }
+.ds-filters-note { font-size: 13px; color: var(--muted); }
+/* v1.7.1: folded at every width (.ds-filters--fold, Camp de Base's inventory toolbar): the Filters button may sit in the
+   main toolbar row (search, scope, sort, view) and shows on every screen; the controls wait on their own row
+   (.ds-filters-body) until it is pressed, bare selects whose first option names them (« All activities »), the reset at
+   the end of the row. No panel and no stacking on phones: the row keeps its toolbar look. */
+.ds-filters--fold .ds-filters-toggle { display: inline-flex; }
+.ds-filters--fold > .ds-filters-body { display: none; flex-basis: 100%; }
+.ds-filters--fold.ds-filters--open > .ds-filters-body { display: flex; }
+@media (max-width: 699px) {
+  .ds-filters > .ds-filters-toggle { display: inline-flex; }
+  .ds-filters-body { display: none; flex-basis: 100%; flex-direction: column; align-items: stretch; gap: 10px; padding: 12px; background: var(--surface);
+    border: 1px solid var(--line); border-radius: var(--r-md); }
+  .ds-filters--open > .ds-filters-body { display: flex; }
+  .ds-filter { display: grid; gap: 4px; }
+  .ds-filter select, .ds-filter .ds-input { width: 100%; font-size: 16px; } /* no zoom on focus */
+  .ds-filter .ds-seg { overflow-x: auto; scrollbar-width: none; justify-self: start; max-width: 100%; }
+  .ds-filter .ds-seg button { flex: none; }
+  .ds-filters-reset { justify-self: start; align-self: flex-start; }
+  .ds-filters--fold > .ds-filters-body { flex-direction: row; align-items: center; padding: 0; background: none; border: 0; border-radius: 0; }
+  .ds-filters--fold .ds-filters-reset { align-self: auto; }
+}
 
 /* ---------- Forms ---------- */
 .ds-input, .ds-form input:not([type=checkbox]):not([type=radio]), .ds-form select, .ds-form textarea {
@@ -320,6 +357,40 @@ dialog.ds-dialog::backdrop { background: var(--scrim); }
 .ds-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; }
 .ds-track { height: 14px; background: var(--sunken); border-radius: 3px; display: flex; overflow: hidden; }
 .ds-track i { display: block; height: 100%; }
+
+/* ---------- Full screen (v1.6): any card, chart or map (Camp de Base's .rt-fs / .rt-full / rt-noscroll) ----------
+   A [data-ds-fs] button inside a [data-ds-fs-card] (else the closest .ds-panel / .ds-card); shell.js toggles .ds-full
+   on the card and .ds-noscroll on <html>, asks the browser for full screen when allowed, and exits on Esc, on the
+   button or when the browser leaves full screen. Both glyphs sit in the button; aria-pressed shows the right one. */
+.ds-fs-btn { flex: none; margin-left: auto; width: 32px; height: 32px; display: grid; place-items: center; padding: 0; border: 1px solid var(--line);
+  border-radius: var(--r); background: var(--surface); color: var(--muted); cursor: pointer; }
+.ds-fs-btn:hover { color: var(--ink); border-color: var(--muted); }
+.ds-fs-btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; display: block; }
+.ds-fs-btn > span { display: block; }
+.ds-fs-btn .ds-fs-exit, .ds-fs-btn[aria-pressed="true"] .ds-fs-enter { display: none; }
+.ds-fs-btn[aria-pressed="true"] .ds-fs-exit { display: block; }
+/* over a map (Camp de Base's .rt-fs: top right, white, like the map's own controls) */
+.ds-fs-btn.ds-fs-btn--over { position: absolute; top: 10px; right: 10px; z-index: 800; width: 34px; height: 34px; border: 2px solid rgba(0, 0, 0, .2);
+  background: #fff; color: #222; background-clip: padding-box; }
+.ds-fs-btn.ds-fs-btn--over:hover { background: #f4f4f4; }
+/* the card in full screen: over the side menu (25), under toasts (70); fills the window, or the frame when the
+   browser refuses full screen (iframes, iPhone) */
+.ds-full { position: fixed; inset: 0; z-index: 50; margin: 0; border: 0; border-radius: 0; max-width: none; width: auto; height: auto; overflow: auto;
+  display: flex; flex-direction: column; gap: 10px; background: var(--surface);
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.ds-full > .ds-chart, .ds-full [data-ds-fs-grow] { flex: 1 1 auto; min-height: 0; } /* the drawing takes the room left; the app redraws it */
+/* v1.6.1 (Camp de Base is the reference): a map (its button over it, .ds-fs-btn--over) fills the window edge to edge,
+   as Camp de Base's .rt-full did; any other card fills the content area and never covers the side menu (Camp de Base's
+   "view larger", #218): it starts at the menu's edge and sits under it, so the folded menu still opens over it. */
+.ds-full:has(> .ds-fs-btn--over) { position: fixed; inset: 0; z-index: 50; margin: 0; border: 0; border-radius: 0; display: block; padding: 0; gap: 0;
+  overflow: hidden; } /* two classes' weight, like Camp de Base's .rt-map-wrap.rt-full: the map card's own position, border and radius never win */
+@media (min-width: 860px) { .ds-full:not(:has(> .ds-fs-btn--over)) { left: var(--side-w); z-index: 24; } }
+html.ds-noscroll, html.ds-noscroll body { overflow: hidden; }
+/* v1.6.2: maps stay behind the shell. Leaflet's panes and controls (z 400–1000) and a map's own overlays would escape
+   their card and scroll over the side menu (25), the phone top bar and the drawer: a map, and a card that holds one, make
+   their own stacking context, as Camp de Base's .rt-map-wrap and .wm-wrap do. Isolation only (no position, no z-index),
+   so .ds-full's fixed position and z 50 still win in full screen and the controls stay clickable. */
+.ds-map, .leaflet-container, :where(.ds-panel, .ds-card, [data-ds-fs-card]):has(> .ds-fs-btn--over, .leaflet-container, .ds-map) { isolation: isolate; }
 
 /* ---------- Login screen ---------- */
 .ds-login { position: fixed; inset: 0; z-index: 60; background: var(--surface); display: grid; place-items: center; padding: 24px; }

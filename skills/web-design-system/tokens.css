@@ -337,6 +337,12 @@ dialog.ds-dialog::backdrop { background: var(--scrim); }
   display: flex; flex-direction: column; gap: 10px; background: var(--surface);
   padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
 .ds-full > .ds-chart, .ds-full [data-ds-fs-grow] { flex: 1 1 auto; min-height: 0; } /* the drawing takes the room left; the app redraws it */
+/* v1.6.1 (Camp de Base is the reference): a map (its button over it, .ds-fs-btn--over) fills the window edge to edge,
+   as Camp de Base's .rt-full did; any other card fills the content area and never covers the side menu (Camp de Base's
+   "view larger", #218): it starts at the menu's edge and sits under it, so the folded menu still opens over it. */
+.ds-full:has(> .ds-fs-btn--over) { position: fixed; inset: 0; z-index: 50; margin: 0; border: 0; border-radius: 0; display: block; padding: 0; gap: 0;
+  overflow: hidden; } /* two classes' weight, like Camp de Base's .rt-map-wrap.rt-full: the map card's own position, border and radius never win */
+@media (min-width: 860px) { .ds-full:not(:has(> .ds-fs-btn--over)) { left: var(--side-w); z-index: 24; } }
 html.ds-noscroll, html.ds-noscroll body { overflow: hidden; }
 
 /* ---------- Login screen ---------- */

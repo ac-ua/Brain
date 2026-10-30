@@ -14,6 +14,8 @@
 // apps.json (inline <script type="application/json" id="ds-apps-data">, else fetched from data-ds-apps-src, default
 // "apps.json" next to the page). Names and links come from the registry, the icons from the kit (":ci-name:" tokens).
 // The current app is the entry whose host is this page's, else whose "shell" equals data-ds-app.
+// Help mark (v1.10): button.ds-help[data-ds-help="plain-language text"] beside a chart or KPI title; a tap or click
+// opens the text in one .ds-help-pop under the mark (works on touch screens, where a title never shows).
 (() => {
   const start = () => {
     const root = document.querySelector("[data-ds-shell]") || document.body;
@@ -123,5 +125,28 @@
     document.addEventListener("fullscreenchange", () => { if (!document.fullscreenElement && full) fs(full, false); });
     window.addEventListener("hashchange", () => { if (full && !full.isConnected) { html.classList.remove("ds-noscroll"); full = null; } });
   };
+  // Help marks (v1.10): one popover for the page, opened by a tap or click on a .ds-help, closed by Esc, a tap elsewhere or scrolling.
+  const helpStart = () => {
+    let pop = null, owner = null;
+    const close = () => { if (pop) pop.remove(); if (owner) owner.setAttribute("aria-expanded", "false"); pop = owner = null; };
+    document.addEventListener("click", (e) => {
+      const b = e.target.closest(".ds-help[data-ds-help]");
+      if (!b) { if (pop && !e.target.closest(".ds-help-pop")) close(); return; }
+      e.preventDefault(); e.stopPropagation();
+      if (owner === b) { close(); return; }
+      close();
+      pop = document.createElement("div");
+      pop.className = "ds-help-pop"; pop.setAttribute("role", "tooltip"); pop.id = "ds-help-pop"; pop.textContent = b.dataset.dsHelp;
+      document.body.append(pop);
+      const r = b.getBoundingClientRect(), w = pop.offsetWidth, h = pop.offsetHeight;
+      const left = Math.max(16, Math.min(r.left + r.width / 2 - w / 2, innerWidth - w - 16));
+      const top = r.bottom + 8 + h > innerHeight - 8 ? r.top - h - 8 : r.bottom + 8;
+      pop.style.left = left + "px"; pop.style.top = Math.max(8, top) + "px";
+      owner = b; b.setAttribute("aria-expanded", "true"); b.setAttribute("aria-describedby", "ds-help-pop");
+    }, true);
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape" && pop) close(); });
+    window.addEventListener("scroll", close, true); window.addEventListener("resize", close);
+  };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", helpStart); else helpStart();
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start); else start();
 })();

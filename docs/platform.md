@@ -35,6 +35,10 @@ surfaced in the hub. Study with prototypes: « Brain · Plateforme des apps »
   existing Zero Trust team. Created once, by the Sport thread, and reused by the others (one more hostname each). The
   apps drop their own logins (Camp de Base's Supabase Google sign-in, Finance's planned Supabase TOTP): Access is the
   only door; Google's 2-step verification protects it.
+- **Add a hostname to the shared application only once its DNS answers** (learned 2026-10-30): after the Google login,
+  Access visits `/cdn-cgi/access/authorized` on every hostname of the application to set its cookie, so one hostname
+  without DNS (NXDOMAIN) breaks the login for every app. Order: custom domain active on Pages → CNAME resolves → add the
+  hostname (and its `pages.dev` hosts) to the application. Details: `ac-ua/sport` › `docs/access.md`.
 - **The hub** (`hub.aureliencaye.com`) joins the same application the day it leaves the claude.ai artifact.
 - Every Function verifies the `Cf-Access-Jwt-Assertion` JWT against the team's certs and the application's AUD (Sport's
   `functions/api/data/[name].js` is the reference implementation). Never trust the e-mail header alone.

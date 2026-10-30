@@ -166,6 +166,7 @@ def cloudflare():
         gaps.append(f"Cloudflare: account not readable ({e})")
         return
     step(lambda: d1(acc), "D1")
+    step(lambda: d1_rows(acc), "D1 rows read")
     step(lambda: workers(acc), "Workers requests")
     step(lambda: r2(acc), "R2")
     step(lambda: pages(acc), "Pages deployments")
@@ -186,6 +187,35 @@ def d1(acc):
         total += size
         add("Cloudflare", f"D1 `{db['name']}`", size, None, "bytes")
     add("Cloudflare", "D1 storage, all databases", total, LIM["d1_bytes_total"], "bytes")
+
+
+def d1_rows(acc):
+    """Rows read and written per day, every database together: the free plan's daily limits are per account (past
+    5 M reads, every app's D1 reads fail until 00:00 UTC). Busiest day of the last 7, and the database behind it."""
+    d0 = (NOW - timedelta(days=7)).strftime("%Y-%m-%d")
+    a = graphql("query($a:String!,$d:Date!){viewer{accounts(filter:{accountTag:$a}){d1AnalyticsAdaptiveGroups("
+                "limit:10000,filter:{date_geq:$d}){sum{rowsRead rowsWritten} dimensions{date databaseId}}}}}", {"a": acc, "d": d0})
+    reads, writes, by_db = {}, {}, {}
+    for g in a["d1AnalyticsAdaptiveGroups"]:
+        day, db = g["dimensions"]["date"], g["dimensions"]["databaseId"]
+        reads[day] = reads.get(day, 0) + g["sum"]["rowsRead"]
+        writes[day] = writes.get(day, 0) + g["sum"]["rowsWritten"]
+        by_db.setdefault(day, {})[db] = by_db.get(day, {}).get(db, 0) + g["sum"]["rowsRead"]
+    names = {}
+    try:
+        names = {x["uuid"]: x["name"] for x in cf(f"accounts/{acc}/d1/database?per_page=100")["result"]}
+    except Exception:  # noqa: BLE001
+        pass
+    if reads:
+        day = max(reads, key=reads.get)
+        top = max(by_db[day], key=by_db[day].get)
+        add("Cloudflare", "D1 rows read, busiest day of the last 7 (all databases)", reads[day], LIM["d1_rows_read_day"], "rows",
+            f"{day}, mostly `{names.get(top, top[:8])}` ({by_db[day][top]:,})")
+    else:
+        add("Cloudflare", "D1 rows read, busiest day of the last 7 (all databases)", 0, LIM["d1_rows_read_day"], "rows", "no reads")
+    peak_w = max(writes.values()) if writes else 0
+    add("Cloudflare", "D1 rows written, busiest day of the last 7 (all databases)", peak_w, LIM["d1_rows_written_day"], "rows",
+        max(writes, key=writes.get) if writes else "no writes")
 
 
 def graphql(q, v):

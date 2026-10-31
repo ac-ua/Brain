@@ -353,6 +353,22 @@ h3, .ds-label { font: 600 12px/1.2 var(--body); letter-spacing: .1em; text-trans
 dialog.ds-dialog { border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--surface); color: var(--ink); padding: 0; width: min(640px, calc(100vw - 32px)); box-shadow: var(--shadow); }
 dialog.ds-dialog::backdrop { background: var(--scrim); }
 .ds-dialog-body { display: grid; gap: 14px; padding: 18px; max-height: min(80vh, 760px); overflow-y: auto; }
+
+/* ---------- Logo tile (v1.11): an institution's, employer's or platform's logo next to its name ----------
+   <span class="ds-logo"><img src="brand/logos/x.webp" alt=""></span>, or the kit icon of the kind of thing when no logo
+   is known (<span class="ds-logo ds-logo--icon">svg</span>). 20 px in rows, --md 28 px in card heads. The tile is
+   white in both themes (logos are drawn for white) with the line border; decorative, the text next to it names it.
+   .ds-with-logo puts a tile left of a one- or two-line label. */
+.ds-logo { display: inline-flex; align-items: center; justify-content: center; flex: none; width: 20px; height: 20px;
+  border-radius: 5px; border: 1px solid var(--line); background: #ffffff; overflow: hidden; vertical-align: middle; }
+.ds-logo img { width: 100%; height: 100%; object-fit: contain; padding: 1px; display: block; }
+.ds-logo--md { width: 28px; height: 28px; border-radius: 7px; }
+.ds-logo--md img { padding: 2px; }
+.ds-logo--icon { background: var(--sunken); }
+.ds-logo--icon svg { width: 16px; height: 16px; }
+.ds-logo--md.ds-logo--icon svg { width: 22px; height: 22px; }
+.ds-with-logo { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.ds-with-logo > :last-child { min-width: 0; }
 .ds-dialog-foot { display: flex; justify-content: flex-end; gap: 8px; }
 .ds-sheet { position: fixed; z-index: 21; top: 0; right: 0; bottom: 0; width: min(760px, 100%); background: var(--surface); box-shadow: var(--shadow); display: flex; flex-direction: column;
   padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }

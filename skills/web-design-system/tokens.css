@@ -394,6 +394,10 @@ dialog.ds-dialog::backdrop { background: var(--scrim); }
 .ds-with-logo { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .ds-with-logo > :last-child { min-width: 0; }
 .ds-dialog-foot { display: flex; justify-content: flex-end; gap: 8px; }
+/* Folded table (v1.14): the first 20 rows, then « Show all N » (button[data-ds-fold-toggle] right after the wrap) unfolds
+   the rest (tbody.ds-fold-extra) in a scrolling box; shell.js toggles .ds-fold--open. */
+.ds-fold:not(.ds-fold--open) .ds-fold-extra { display: none; }
+.ds-fold.ds-fold--open { max-height: 560px; overflow: auto; }
 /* Sheet (v1.13): a detail view from the right (≤ 760 px wide), the whole screen under 700 px. It sits over the side menu
    and over a card in full screen (z 55), under help popovers and toasts; its scrim dims the page. Behaviour in shell.js:
    DSSheet.open(sheet, opener) / DSSheet.close(), [data-ds-sheet-close] buttons, Esc and a click on the scrim close it,

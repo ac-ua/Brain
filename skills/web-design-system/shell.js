@@ -188,6 +188,23 @@
     if (e.shiftKey && (document.activeElement === a || !sheet.contains(document.activeElement))) { e.preventDefault(); z.focus(); }
     else if (!e.shiftKey && (document.activeElement === z || !sheet.contains(document.activeElement))) { e.preventDefault(); a.focus(); }
   });
+  // Folded tables and add dialogs (v1.14): « Show all N » / « Show fewer » under a .ds-fold wrap; a « + Add … » button
+  // with data-ds-dialog-open="<id>" opens dialog.ds-dialog#<id>, data-ds-dialog-close closes it.
+  document.addEventListener("click", (e) => {
+    const ft = e.target.closest("[data-ds-fold-toggle]");
+    if (ft) {
+      const w = ft.closest(".ds-fold-more")?.previousElementSibling || ft.previousElementSibling;
+      if (!w || !w.classList.contains("ds-fold")) return;
+      const open = w.classList.toggle("ds-fold--open");
+      ft.setAttribute("aria-expanded", String(open));
+      ft.textContent = open ? "Show fewer" : (ft.dataset.label || "Show all");
+      return;
+    }
+    const op = e.target.closest("[data-ds-dialog-open]");
+    if (op) { const d = document.getElementById(op.dataset.dsDialogOpen); if (d && typeof d.showModal === "function") d.showModal(); return; }
+    const cl = e.target.closest("[data-ds-dialog-close]");
+    if (cl) cl.closest("dialog")?.close();
+  });
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", helpStart); else helpStart();
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start); else start();
 })();

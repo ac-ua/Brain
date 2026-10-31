@@ -16,6 +16,9 @@
 // The current app is the entry whose host is this page's, else whose "shell" equals data-ds-app.
 // Help mark (v1.10): button.ds-help[data-ds-help="plain-language text"] beside a chart or KPI title; a tap or click
 // opens the text in one .ds-help-pop under the mark (works on touch screens, where a title never shows).
+// Sheet (v1.13): window.DSSheet.open(sheet, opener) shows an aside.ds-sheet and the .ds-sheet-scrim right before it,
+// keeps Tab inside, closes on Esc, on a click on the scrim or a [data-ds-sheet-close] button, then gives the focus back
+// to the opener; the sheet fires "ds-sheet" (detail {open}) so the app can keep its state (e.g. the URL).
 (() => {
   const start = () => {
     const root = document.querySelector("[data-ds-shell]") || document.body;
@@ -41,7 +44,7 @@
     };
     if (opener) opener.addEventListener("click", () => drawer(true));
     if (scrim) scrim.addEventListener("click", () => drawer(false));
-    document.addEventListener("keydown", (e) => { if (e.key === "Escape" && root.classList.contains("ds-side-open")) drawer(false); });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !e.defaultPrevented && root.classList.contains("ds-side-open")) drawer(false); });
     root.addEventListener("click", (e) => { if (e.target.closest(".ds-side .ds-side-link")) drawer(false); }); // also links rendered later
 
     const buttons = [...root.querySelectorAll("[data-ds-theme]")];
@@ -121,7 +124,7 @@
       setTimeout(() => { if ((full === card) === on) fire(card, on, true); }, 450); // after the browser's own switch
     };
     document.addEventListener("click", (e) => { const b = e.target.closest("[data-ds-fs]"); if (b) fs(cardOf(b), b.getAttribute("aria-pressed") !== "true"); });
-    document.addEventListener("keydown", (e) => { if (e.key === "Escape" && full && !document.querySelector("dialog[open]")) fs(full, false); });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !e.defaultPrevented && full && !document.querySelector("dialog[open]")) fs(full, false); });
     document.addEventListener("fullscreenchange", () => { if (!document.fullscreenElement && full) fs(full, false); });
     window.addEventListener("hashchange", () => { if (full && !full.isConnected) { html.classList.remove("ds-noscroll"); full = null; } });
   };
@@ -147,6 +150,44 @@
     document.addEventListener("keydown", (e) => { if (e.key === "Escape" && pop) close(); });
     window.addEventListener("scroll", close, true); window.addEventListener("resize", close);
   };
+  // Sheet (v1.13): one open at a time.
+  let sheet = null, back = null;
+  const focusables = (el) => [...el.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')]
+    .filter((n) => n.offsetParent !== null || n === document.activeElement);
+  const scrimOf = (el) => (el.previousElementSibling && el.previousElementSibling.classList.contains("ds-sheet-scrim") ? el.previousElementSibling : null);
+  const closeSheet = () => {
+    if (!sheet) return;
+    const el = sheet, to = back;
+    sheet = back = null;
+    el.hidden = true; const s = scrimOf(el); if (s) s.hidden = true;
+    if (!document.querySelector(".ds-full")) document.documentElement.classList.remove("ds-noscroll"); // a card may still be in full screen
+    el.dispatchEvent(new CustomEvent("ds-sheet", { bubbles: true, detail: { open: false } }));
+    if (to && to.isConnected && typeof to.focus === "function") to.focus();
+  };
+  const openSheet = (el, opener) => {
+    if (!el) return;
+    if (sheet && sheet !== el) closeSheet();
+    if (!sheet) back = opener || document.activeElement;
+    sheet = el; el.hidden = false; const s = scrimOf(el); if (s) s.hidden = false;
+    document.documentElement.classList.add("ds-noscroll");
+    const first = el.querySelector("[data-ds-sheet-close]") || focusables(el)[0];
+    if (first) first.focus({ preventScroll: true });
+    el.dispatchEvent(new CustomEvent("ds-sheet", { bubbles: true, detail: { open: true } }));
+  };
+  window.DSSheet = { open: openSheet, close: closeSheet, get current() { return sheet; } };
+  document.addEventListener("click", (e) => {
+    if (!sheet) return;
+    if (e.target.closest("[data-ds-sheet-close]") || e.target.classList.contains("ds-sheet-scrim")) closeSheet();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (!sheet) return;
+    if (e.key === "Escape" && !document.querySelector(".ds-help-pop")) { e.preventDefault(); closeSheet(); return; }
+    if (e.key !== "Tab") return;
+    const f = focusables(sheet); if (!f.length) return;
+    const a = f[0], z = f[f.length - 1];
+    if (e.shiftKey && (document.activeElement === a || !sheet.contains(document.activeElement))) { e.preventDefault(); z.focus(); }
+    else if (!e.shiftKey && (document.activeElement === z || !sheet.contains(document.activeElement))) { e.preventDefault(); a.focus(); }
+  });
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", helpStart); else helpStart();
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start); else start();
 })();

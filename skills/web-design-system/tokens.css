@@ -394,8 +394,21 @@ dialog.ds-dialog::backdrop { background: var(--scrim); }
 .ds-with-logo { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .ds-with-logo > :last-child { min-width: 0; }
 .ds-dialog-foot { display: flex; justify-content: flex-end; gap: 8px; }
-.ds-sheet { position: fixed; z-index: 21; top: 0; right: 0; bottom: 0; width: min(760px, 100%); background: var(--surface); box-shadow: var(--shadow); display: flex; flex-direction: column;
-  padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+/* Sheet (v1.13): a detail view from the right (≤ 760 px wide), the whole screen under 700 px. It sits over the side menu
+   and over a card in full screen (z 55), under help popovers and toasts; its scrim dims the page. Behaviour in shell.js:
+   DSSheet.open(sheet, opener) / DSSheet.close(), [data-ds-sheet-close] buttons, Esc and a click on the scrim close it,
+   Tab stays inside, focus goes back to the opener. Markup: aside.ds-sheet[role=dialog][aria-modal=true][aria-labelledby]
+   > .ds-sheet-head (h2 + close button) + .ds-sheet-body, and a .ds-sheet-scrim before it, both hidden. */
+.ds-sheet { position: fixed; z-index: 55; top: 0; right: 0; bottom: 0; width: min(760px, 100%); background: var(--surface); box-shadow: var(--shadow); display: flex; flex-direction: column;
+  padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); border-left: 1px solid var(--line); animation: ds-sheet-in .18s ease-out; }
+.ds-sheet[hidden], .ds-sheet-scrim[hidden] { display: none; }
+.ds-sheet-scrim { position: fixed; inset: 0; z-index: 54; background: var(--scrim); }
+.ds-sheet-head { display: flex; align-items: flex-start; gap: 12px; padding: 16px 16px 12px; border-bottom: 1px solid var(--line); }
+.ds-sheet-head h2 { flex: 1; min-width: 0; margin: 0; font: 700 20px/1.2 var(--display); overflow-wrap: anywhere; }
+.ds-sheet-body { flex: 1; min-height: 0; overflow-y: auto; padding: 16px; display: grid; gap: 16px; align-content: start; }
+@keyframes ds-sheet-in { from { transform: translateX(24px); opacity: .6; } to { transform: none; opacity: 1; } }
+@media (max-width: 700px) { .ds-sheet { width: 100%; border-left: 0; } }
+@media (prefers-reduced-motion: reduce) { .ds-sheet { animation: none; } }
 .ds-toast { position: fixed; z-index: 70; left: 50%; translate: -50% 0; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); background: var(--ink); color: var(--bg);
   padding: 10px 14px; border-radius: var(--r); font-size: 14px; max-width: calc(100vw - 32px); }
 .ds-toast.ds-err { background: var(--bad); color: #fff; } /* camp.css .toast.err */

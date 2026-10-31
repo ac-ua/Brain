@@ -206,6 +206,12 @@ h3, .ds-label { font: 600 12px/1.2 var(--body); letter-spacing: .1em; text-trans
 .ds-kpi .k { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 .ds-kpi .v { font: 500 22px/1.1 var(--mono); font-variant-numeric: tabular-nums; }
 .ds-kpi .s { font-size: 12px; color: var(--muted); }
+/* v1.12: two KPIs per row on phones (one per row pushed the page's answer below the fold) */
+@media (max-width: 640px) {
+  .ds-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .ds-kpi { padding: 10px 12px; }
+  .ds-kpi .v { font-size: 18px; overflow-wrap: anywhere; }
+}
 
 /* ---------- Controls ---------- */
 .ds-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 13px; border-radius: var(--r); border: 1px solid var(--line);
@@ -353,6 +359,24 @@ h3, .ds-label { font: 600 12px/1.2 var(--body); letter-spacing: .1em; text-trans
 dialog.ds-dialog { border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--surface); color: var(--ink); padding: 0; width: min(640px, calc(100vw - 32px)); box-shadow: var(--shadow); }
 dialog.ds-dialog::backdrop { background: var(--scrim); }
 .ds-dialog-body { display: grid; gap: 14px; padding: 18px; max-height: min(80vh, 760px); overflow-y: auto; }
+
+/* ---------- Table as cards on phones (v1.12) ----------
+   <table class="ds-table ds-table--cards"> with each <td data-label="Column">: under 700 px every row becomes a card,
+   the first cell as its title, the others as « label … value » lines. Opt-in (a table without labels would lose its
+   headers); matrices keep .ds-table--matrix and scroll. data-label="" hides the label (an actions cell). */
+@media (max-width: 699px) {
+  table.ds-table--cards, .ds-table--cards > tbody, .ds-table--cards > tfoot, .ds-table--cards tr, .ds-table--cards td { display: block; width: 100%; }
+  .ds-table--cards > thead { display: none; }
+  .ds-table--cards tr { padding: 10px 12px; border-bottom: 1px solid var(--line); }
+  .ds-table--cards td { border: 0; padding: 3px 0; display: flex; justify-content: space-between; align-items: baseline; gap: 12px; text-align: right; }
+  .ds-table--cards td::before { content: attr(data-label); flex: none; max-width: 45%; text-align: left; font: 11px/1.4 var(--body);
+    letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+  .ds-table--cards td:first-child, .ds-table--cards td[colspan] { display: block; text-align: left; padding-bottom: 6px; }
+  .ds-table--cards td:first-child::before, .ds-table--cards td[colspan]::before, .ds-table--cards td[data-label=""]::before,
+  .ds-table--cards td:not([data-label])::before { content: none; }
+  .ds-table--cards td:empty { display: none; }
+  .ds-table--cards tr.ds-grp { padding: 8px 12px; background: var(--sunken); }
+}
 
 /* ---------- Logo tile (v1.11): an institution's, employer's or platform's logo next to its name ----------
    <span class="ds-logo"><img src="brand/logos/x.webp" alt=""></span>, or the kit icon of the kind of thing when no logo
